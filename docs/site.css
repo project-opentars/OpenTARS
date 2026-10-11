@@ -296,3 +296,60 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
 .texto li::marker { color: var(--signal); }
 .texto p, .texto li { max-width: var(--measure); }
 .texto a { color: var(--ink); }
+
+/* ------------------------------------------------------------
+   Efeitos de scroll e de mouse (11/10). Todos são decorativos:
+   - só rodam sem "reduzir movimento" no sistema;
+   - os de scroll usam animation-timeline (Chrome, Edge, Brave, Safari 26); onde não existe, a página fica parada e igual;
+   - os de mouse só existem com mouse de verdade (hover: hover e pointer: fine), ligados pelo script de site.js.
+   ------------------------------------------------------------ */
+.progresso { position: fixed; inset: 0 0 auto 0; height: 2px; background: var(--signal); transform-origin: 0 50%;
+  transform: scaleX(0); z-index: 50; pointer-events: none; display: none; }
+
+/* Brilho que segue o cursor nos painéis escuros (as variáveis --mx e --my vêm do site.js) */
+.term, .model, .tested, .cloud, .shot, .cmd { position: relative; }
+.term::after, .model::after, .tested::after, .cloud::after, .shot::after, .cmd::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(95, 217, 122, .10), transparent 60%);
+  transition: opacity .3s ease;
+}
+.com-mouse .sob-mouse::after { opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Inclinação 3D leve no terminal do topo e nas capturas (--rx e --ry vêm do site.js) */
+  .com-mouse :is(.term, .shot) { transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform .25s ease-out; will-change: transform; }
+
+  /* Linhas de pedidos: o pedido anda um pouco e a linha acende */
+  .ledger li { transition: background-color .25s ease; }
+  .ledger q { display: inline-block; transition: transform .25s ease, color .25s ease; }
+  .ledger li:hover { background: rgba(232, 236, 244, .03); }
+  .ledger li:hover q { transform: translateX(8px); }
+  .ledger li:not(.stop):hover q { color: var(--signal); }
+
+  .btn, .btn2, .link { transition: transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease; }
+  .btn:hover, .btn2:hover { transform: translateY(-2px); }
+  .concept img, .strip img { transition: transform .35s ease; }
+  .concept figure:hover img, .strip figure:hover img { transform: scale(1.015); }
+
+  @supports (animation-timeline: scroll()) {
+    /* Barra de leitura no topo */
+    .progresso { display: block; animation: progresso linear both; animation-timeline: scroll(root); }
+    /* O título do topo se estreita e apaga um pouco ao rolar: a fonte é variável na largura */
+    .hero h1 { animation: titulo-estreita linear both; animation-timeline: scroll(root); animation-range: 0 70vh; }
+  }
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    /* Blocos entram com um deslize curto, uma vez por bloco, enquanto entram na tela */
+    .head, .ledger li, .show > *, .strip figure, .layers > li, .model, .pair figure, .steps > li, .get > *,
+    .next li, .concept figure, .demo-frame, .safe .shot, .lite, .legacy {
+      animation: entra linear both; animation-timeline: view(); animation-range: entry 0% entry 70%;
+    }
+    /* O "openTARS" gigante do rodapé estica até a largura máxima quando aparece */
+    footer .big { animation: estica linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }  /* é o último bloco: a página acaba quando ele termina de entrar */
+  }
+}
+@keyframes progresso { to { transform: scaleX(1); } }
+@keyframes titulo-estreita { to { font-variation-settings: "wdth" 88; opacity: .55; } }
+/* "translate" e não "transform": assim a entrada não briga com a inclinação do mouse nas capturas */
+@keyframes entra { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: none; } }
+@keyframes estica { from { font-variation-settings: "wdth" 62; letter-spacing: .02em; } to { font-variation-settings: "wdth" 125; letter-spacing: -.03em; } }
