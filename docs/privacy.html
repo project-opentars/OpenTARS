@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy & security · openTARS</title>
+<meta name="description" content="What openTARS keeps on your computer, what can leave it, and how risky actions stay under your control.">
+<link rel="canonical" href="https://project-opentars.github.io/openTars-lightweight-local-addon/privacy.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacy & security · openTARS">
+<meta property="og:description" content="What openTARS keeps on your computer, what can leave it, and how risky actions stay under your control.">
+<meta property="og:image" content="https://project-opentars.github.io/openTars-lightweight-local-addon/img/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#141C38">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="icon" href="img/icon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="./"><img src="logo.svg" alt="" width="32" height="32">openTARS</a>
+    <nav aria-label="Main">
+      <a class="hide-s" href="changelog.html">Changelog</a>
+      <a class="hide-s" href="privacy.html">Privacy</a>
+      <a href="./#install">Install</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="texto">
+  <div class="wrap">
+    <h1 class="display">Privacy &amp; security</h1>
+    <p class="lede quiet">openTARS runs on your computer. This page lists everything that can leave it, what stays, and how openTARS keeps risky actions under your control.</p>
+
+    <article>
+      <h2>What stays on your computer</h2>
+      <ul>
+        <li>The AI models run locally through Ollama. What you type, say and show is processed on your machine.</li>
+        <li>No account, no telemetry and no analytics.</li>
+        <li>Your chats, memory and settings are files in your home folder. Settings → Memory &amp; privacy shows what openTARS remembers, forgets items one by one and erases everything.</li>
+        <li>The log (<code>~/.tars_log</code>) records the actions taken, in a private folder. It keeps only the length of text typed on your behalf, not the text itself.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h2>What can leave it</h2>
+      <ul>
+        <li><strong>The update check.</strong> At most once a day, read-only requests to GitHub (<code>api.github.com</code>, <code>raw.githubusercontent.com</code>, <code>github.com</code>) to see if there is a new package. Nothing about you is sent besides the request itself. <code>TARS_SEM_AVISO_VERSAO=1</code> turns it off.</li>
+        <li><strong>The cloud, only if you turn it on.</strong> The text you write and the screenshots you ask about go to the provider you chose, with your own key or account. The key is stored only on this computer, never shown, never written to the log and never passed to the commands the AI runs. A cloud model is never picked automatically, and the window warns you when your text goes to a provider.</li>
+        <li><strong>Model downloads.</strong> The installer downloads Gargantua and, if you want, Cooper from Ollama.</li>
+        <li><strong>Websites you ask for.</strong> When you ask openTARS to open or search a site, your browser visits it as usual.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h2>How it stays in your control</h2>
+      <ul>
+        <li>Commands that delete data or change the system (<code>rm -r</code>, <code>rm</code> with wildcards, <code>find -exec rm</code>, <code>dd</code>, <code>mkfs</code>, <code>git reset --hard</code>, <code>curl | sh</code>, <code>ssh</code>, shutting down) wait for your Allow. These are fixed rules, not AI.</li>
+        <li>Commands that ask for a password with <code>sudo</code> do not hang: they stop and show you the command to run yourself.</li>
+        <li>Scheduled routines only delete, send or install if you allowed that when you created them. Anything else makes them stop and tell you.</li>
+        <li>Closing a program is like clicking its X: if it asks to save, openTARS does not force it.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h2>This website</h2>
+      <p>This site is a static page hosted on GitHub Pages. It sets no cookies, has no analytics, and loads its fonts, images and video from this same site. GitHub, as the host, may log visits under the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>.</p>
+    </article>
+
+    <article>
+      <h2>Report a security issue</h2>
+      <p>Write to <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a> before opening a public issue. Include the openTARS version (<code>opentars --version</code>), your distro, what you did and what happened. Reports are answered as soon as possible, and fixes ship as a new package that installed copies pick up on their own.</p>
+    </article>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="rodape-marca">
+      <p class="big">openTARS</p>
+      <p class="contato">Questions, bugs or security reports: <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a></p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html">Privacy &amp; security</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+      <a href="https://www.instagram.com/open.tars/">Instagram</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon/blob/main/LICENSE">MIT License</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

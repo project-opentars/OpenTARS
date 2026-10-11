@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog · openTARS</title>
+<meta name="description" content="What changed in each version of openTARS, the local AI assistant for Linux.">
+<link rel="canonical" href="https://project-opentars.github.io/openTars-lightweight-local-addon/changelog.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Changelog · openTARS">
+<meta property="og:description" content="What changed in each version of openTARS, the local AI assistant for Linux.">
+<meta property="og:image" content="https://project-opentars.github.io/openTars-lightweight-local-addon/img/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#141C38">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="icon" href="img/icon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="./"><img src="logo.svg" alt="" width="32" height="32">openTARS</a>
+    <nav aria-label="Main">
+      <a class="hide-s" href="changelog.html">Changelog</a>
+      <a class="hide-s" href="privacy.html">Privacy</a>
+      <a href="./#install">Install</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="texto">
+  <div class="wrap">
+    <h1 class="display">Changelog</h1>
+    <p class="lede quiet">What changed in each version of openTARS. Updates install from the same package: your chats and settings are kept.</p>
+
+    <article>
+      <h2>5.0 Tesseract</h2>
+      <p class="quando">October 6 to 10, 2026</p>
+      <p>A new window built in Qt, on top of the lean 4.6 core: Ollama underneath, Cooper looking at the screen and Gargantua as the official AI.</p>
+      <ul>
+        <li>First run in five steps: language, Ollama, optional cloud, downloading Gargantua with a progress bar you can pause, and a quick test.</li>
+        <li>History by day with search, a model picker, a Stop button and the steps of each task with their timings.</li>
+        <li>Risky commands turn into a card with Allow and Deny.</li>
+        <li>Voice is back, fully local: hold to talk, continuous, or the wake word “TARS”.</li>
+        <li>Attachments, a visible memory you can edit, and scheduled routines that never decide alone.</li>
+        <li>An optional cloud with your own account, off by default and never used by the automatic model choice.</li>
+        <li>Updates noticed by the app itself, verified against GitHub and installed after you confirm.</li>
+        <li>A quick bar on <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Space</kbd>.</li>
+        <li>A code audit with about 50 fixes: atomic settings files, more commands that ask first (<code>rm</code> with wildcards, <code>find -exec rm</code>, <code>curl | sh</code>, <code>ssh</code>), and the cloud key never passed to commands.</li>
+      </ul>
+      <h3>Updated on October 10</h3>
+      <ul>
+        <li>A mascot that walks along the chat, shows what the AI is doing and naps after a few quiet minutes.</li>
+        <li>A terminal styled like today's AI command-line tools: welcome panel, steps you can follow, a spinner and a clearer <code>/help</code>.</li>
+        <li>Fixes: <code>opentars --voz</code>, turning the update check fully off, commands ending in <code>&amp;</code>, and more <code>mv</code> commands that ask first.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h2>4.6 Endurance</h2>
+      <p class="quando">October 4 and 5, 2026</p>
+      <p>The lighter release: it only removed what was heavy or unused.</p>
+      <ul>
+        <li>Ollama only: external servers and importing <code>.gguf</code> files from other programs were removed.</li>
+        <li>Only Cooper looks at the screen: OCR, the zoom grid and the fallback vision model were removed.</li>
+        <li>Less dead code and fewer duplicated command-line options.</li>
+        <li>Voice, attachments and routines were removed here and came back in 5.0.</li>
+      </ul>
+      <p class="quiet">Still available for download at the end of the <a href="./#install">install section</a>.</p>
+    </article>
+
+    <article>
+      <h2>4.5 Endurance</h2>
+      <p class="quando">October 3 and 4, 2026</p>
+      <ul>
+        <li>Cooper, a vision model fine-tuned to find buttons, read fields and list windows on a screenshot.</li>
+        <li>WSL 1 and 2, with the Ollama running on Windows found automatically.</li>
+        <li>A terminal mode for servers and SSH sessions without a screen.</li>
+        <li>From 28 to 19 tools, and more than 40 fixes, including Stop while a model loads and a real right click.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h2>4.0 Endurance</h2>
+      <p class="quando">September 30 to October 2, 2026</p>
+      <ul>
+        <li>Gargantua, the official AI: a Qwen3 4B trained to use openTARS, downloaded by the installer.</li>
+        <li>Murph, a tiny classifier that decides the type of each request in about 0.2 ms.</li>
+        <li>Longer tasks, the real names of your personal folders, and a notice when a new version comes out.</li>
+      </ul>
+    </article>
+
+    <p class="quiet" style="margin-top: 3rem">What comes next is on the <a href="./#nxt">home page</a>.</p>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="rodape-marca">
+      <p class="big">openTARS</p>
+      <p class="contato">Questions, bugs or security reports: <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a></p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html">Privacy &amp; security</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+      <a href="https://www.instagram.com/open.tars/">Instagram</a>
+      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon/blob/main/LICENSE">MIT License</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
