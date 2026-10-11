@@ -240,7 +240,7 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
 .demo-say { margin: 0; font-variation-settings: "wdth" 125; font-weight: 800; letter-spacing: -.02em; font-size: clamp(1.6rem, 5vw, 3.6rem); line-height: 1.05; }
 .demo-soon { margin: 0; color: var(--steel); }
 .demo-frame figcaption { text-align: center; }
-.demo-video { display: block; height: auto; object-fit: cover; }
+.demo-video { display: block; aspect-ratio: 1600 / 850; height: auto; }
 
 /* Segurança */
 .layers { list-style: none; margin: 0; padding: 0; display: grid; gap: 2rem; }
@@ -317,7 +317,7 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
     <div class="wrap">
       <h2 id="demo-t" class="visually-hidden">Demo</h2>
       <figure class="demo-frame">
-        <video class="demo-video" src="img/demo.mp4" poster="img/demo-poster.jpg" width="1600" height="900" autoplay muted loop playsinline preload="metadata" aria-label="Typing “search for lasagna recipes on youtube” into openTARS, which opens the YouTube results in the browser"></video>
+        <video class="demo-video" src="img/demo.mp4" poster="img/demo-poster.jpg" width="1600" height="850" autoplay muted loop playsinline preload="metadata" aria-label="Typing “search for lasagna recipes on youtube” into openTARS, which opens the YouTube results in the browser"></video>
         <figcaption>Typed once: “search for lasagna recipes on youtube”. openTARS opens the results in your browser. Real recording, not sped up.</figcaption>
       </figure>
     </div>
