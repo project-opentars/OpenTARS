@@ -269,6 +269,14 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
 .tested li { font-weight: 600; font-size: 1.1rem; font-variation-settings: "wdth" 110; }
 .tested li::before { content: "✓"; color: var(--signal); margin-right: .7rem; font-weight: 700; }
 .tested p { margin: 0; font-size: .95rem; }
+.legacy { margin-top: 3rem; border-top: 1px solid var(--rule); padding-top: 1.5rem; max-width: 52rem; }
+.legacy summary { cursor: pointer; font-weight: 600; font-variation-settings: "wdth" 110; color: var(--steel); }
+.legacy summary:hover, .legacy[open] summary { color: var(--ink); }
+.legacy-body { padding-top: 1rem; }
+.legacy-body p { max-width: var(--measure); }
+.legacy .aviso { color: var(--caution); }
+.btn2 { display: inline-block; margin: .5rem 0 0; padding: .7rem 1.1rem; border: 1px solid var(--rule); border-radius: 6px; text-decoration: none; font-weight: 600; }
+.btn2:hover { border-color: var(--signal); color: var(--ink); }
 </style>
 </head>
 <body>
@@ -479,6 +487,19 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
           <p class="quiet">Any distro with apt should work. X11 and Wayland, NVIDIA, AMD or CPU only.</p>
         </div>
       </div>
+      <details class="legacy">
+        <summary>Need the older 4.6 Endurance?</summary>
+        <div class="legacy-body">
+          <p>4.6 is the release before the new window: the simpler Tk window, Ollama only, without voice or attachments. Use it only if 5.0 does not run on your computer.</p>
+          <p class="aviso">It does not get the security fixes from 5.0 and it will not tell you when a new version comes out. Commands like <code>rm</code> with wildcards and <code>curl | sh</code> are not confirmed the way 5.0 does it.</p>
+          <a class="btn2" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/5a9ea9f/opentars_all.deb">Download 4.6 Endurance (.deb, 0.7 MB)</a>
+          <div class="cmd">
+            <pre id="cmd46">wget -O /tmp/opentars-4.6.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/5a9ea9f/opentars_all.deb &amp;&amp; sudo apt install -y --allow-downgrades /tmp/opentars-4.6.deb</pre>
+            <button type="button" data-copy="cmd46">Copy</button>
+          </div>
+          <p class="quiet">To go back to the current version, run the install command above again.</p>
+        </div>
+      </details>
     </div>
   </section>
 
