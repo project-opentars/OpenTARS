@@ -353,3 +353,7 @@ footer :focus-visible { outline-color: var(--signal-on-slab); }
 /* "translate" e não "transform": assim a entrada não briga com a inclinação do mouse nas capturas */
 @keyframes entra { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: none; } }
 @keyframes estica { from { font-variation-settings: "wdth" 62; letter-spacing: .02em; } to { font-variation-settings: "wdth" 125; letter-spacing: -.03em; } }
+
+.models.duo { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.5rem; }
+@media (max-width: 60rem) { .models.duo { grid-template-columns: 1fr; } }
+.model dd code { overflow-wrap: anywhere; }

@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=2">
+<link rel="stylesheet" href="site.css?v=3">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
  "operatingSystem": "Linux (Debian, Ubuntu, Linux Mint, Zorin OS, Pop!_OS)", "softwareVersion": "5.0",
@@ -204,7 +204,29 @@
           </dl>
         </article>
       </div>
-      <p class="lite">Coming next: <strong>Gargantua Lite</strong>, a smaller model for computers without a graphics card and with little memory. It is still in training.</p>
+      <p class="lite"><strong>Two smaller Gargantuas</strong> you can add with one command. Same tools, same safety rules, a quarter of the size. We tested both on requests they never saw during training.</p>
+      <div class="models duo">
+        <article class="model">
+          <p class="role">Writes code</p>
+          <h3>Gargantua Code</h3>
+          <p>Trained to write a script, run it, fix what fails and explain what a file does, using the same openTARS tools. When it is installed, openTARS sends coding requests to it first. It explains code less well than it writes it.</p>
+          <dl>
+            <dt>Test</dt><dd>43 of 48 coding tasks done right</dd>
+            <dt>Size</dt><dd>about 1.1 GB, optional</dd>
+            <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua:code</code></dd>
+          </dl>
+        </article>
+        <article class="model">
+          <p class="role">Runs anywhere</p>
+          <h3>Gargantua Lite</h3>
+          <p>The everyday Gargantua in a much smaller model, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it makes more mistakes than the full model, most of all with images and the calculator. Pick it in the model picker.</p>
+          <dl>
+            <dt>Test</dt><dd>63 of 84 everyday tasks done right</dd>
+            <dt>Size</dt><dd>about 1.1 GB, optional</dd>
+            <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua:lite</code></dd>
+          </dl>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -279,7 +301,7 @@
       <ul class="next">
         <li><h3>Steadier everywhere</h3><p>End-to-end checks of updates, Wayland and fresh installs.</p></li>
         <li><h3>Three modes: Lite, Base and Pro</h3><p>Chosen on first run, so the window shows only what you need. Switch any time in Settings.</p></li>
-        <li><h3>Gargantua Lite</h3><p>A smaller model for computers without a graphics card and with little memory. Installed on those computers, or downloaded when you create your first Probe.</p></li>
+        <li><h3>Gargantua Lite, built in</h3><p>Already available as an optional download. In 5.1 it comes installed on computers without a graphics card, or is downloaded when you create your first Probe.</p></li>
         <li><h3>Easier cloud setup</h3><p>Sign in to Ollama Cloud without copying keys. Still off by default.</p></li>
         <li><h3>Probes</h3><p>Write a mission in your own words and Gargantua Lite turns it into a small watcher that runs in the background and tells you when something matters. Off until you turn one on. Probes can act too: anything that changes your computer or sends something asks you first, and nothing runs without your yes.</p></li>
         <li><h3>A terminal like today's AI tools</h3><p>Resume a conversation, see how much context is left, plan before acting, and approve a command once or for the whole session.</p></li>
@@ -332,6 +354,6 @@ document.querySelectorAll('[data-copy]').forEach(function (b) {
   });
 });
 </script>
-<script src="site.js?v=2" defer></script>
+<script src="site.js?v=3" defer></script>
 </body>
 </html>
