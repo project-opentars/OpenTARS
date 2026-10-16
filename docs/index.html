@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="site.css?v=3">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
- "operatingSystem": "Linux (Debian, Ubuntu, Linux Mint, Zorin OS, Pop!_OS)", "softwareVersion": "5.0",
+ "operatingSystem": "Linux (Debian, Ubuntu, Linux Mint, Zorin OS, Pop!_OS)", "softwareVersion": "5.1",
  "license": "https://opensource.org/licenses/MIT", "url": "https://project-opentars.github.io/openTars-lightweight-local-addon/",
  "downloadUrl": "https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb",
  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -60,7 +60,7 @@
           <a class="btn" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb">Download the .deb</a>
           <a class="link" href="#install">Or install with one command</a>
         </div>
-        <p class="facts">Version 5.0 Tesseract. Free and open source under the MIT license, for Ubuntu, Debian, Mint, Zorin and Pop!_OS.</p>
+        <p class="facts">Version 5.1 Tesseract. Free and open source under the MIT license, for Ubuntu, Debian, Mint, Zorin and Pop!_OS.</p>
       </div>
 
       <div class="term play" role="img" aria-label="A terminal session: the request “open the calculator and work out 7 + 2”, then four steps that open Calculator and press 7, plus, 2 and equals, then the answer 9.">
@@ -219,7 +219,7 @@
         <article class="model">
           <p class="role">Runs anywhere</p>
           <h3>Gargantua Lite</h3>
-          <p>The everyday Gargantua in a much smaller model, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it makes more mistakes than the full model, most of all with images and the calculator. Pick it in the model picker.</p>
+          <p>The everyday Gargantua in a much smaller model, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it makes more mistakes than the full model, most of all with images and the calculator. Computers without a graphics card and with little memory get it on their own; anywhere else, pick it in the model picker.</p>
           <dl>
             <dt>Test</dt><dd>63 of 84 everyday tasks done right</dd>
             <dt>Size</dt><dd>about 1.1 GB, optional</dd>
@@ -255,10 +255,10 @@
         <div class="get-main">
           <a class="btn big" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb">Download opentars_all.deb</a>
           <dl class="pacote">
-            <div><dt>Version</dt><dd>5.0 Tesseract</dd></div>
+            <div><dt>Version</dt><dd>5.1 Tesseract</dd></div>
             <div><dt>Size</dt><dd>1.1 MB</dd></div>
-            <div><dt>Updated</dt><dd>October 15, 2026</dd></div>
-            <div class="sha"><dt>SHA-256</dt><dd><code>51ade6cd39552d18cc552e7296630a1497e8bd1699f15defcbed20924e50418e</code></dd></div>
+            <div><dt>Updated</dt><dd>October 16, 2026</dd></div>
+            <div class="sha"><dt>SHA-256</dt><dd><code>07a7c3d9fa88ea24f2863204fea56917b778e86b8aa39fcc19337be25d2ab9b4</code></dd></div>
           </dl>
           <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved. To check the download first: <code>sha256sum opentars_all.deb</code> must print the SHA-256 above.</p>
           <h3 class="or">Or paste one line in a terminal</h3>
@@ -279,7 +279,7 @@
       <details class="legacy">
         <summary>Need the older 4.6 Endurance?</summary>
         <div class="legacy-body">
-          <p>4.6 is the release before the new window: the simpler Tk window, Ollama only, without voice or attachments. Use it only if 5.0 does not run on your computer.</p>
+          <p>4.6 is the release before the new window: the simpler Tk window, Ollama only, without voice or attachments. Use it only if 5.1 does not run on your computer.</p>
           <p class="aviso">It does not get the security fixes from 5.0 and it will not tell you when a new version comes out. Commands like <code>rm</code> with wildcards and <code>curl | sh</code> are not confirmed the way 5.0 does it.</p>
           <a class="btn2" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/5a9ea9f/opentars_all.deb">Download 4.6 Endurance (.deb, 0.7 MB)</a>
           <div class="cmd">
@@ -295,26 +295,31 @@
   <section class="band" aria-labelledby="nxt">
     <div class="wrap">
       <div class="head">
-        <h2 id="nxt" class="display">Planned for 5.1</h2>
-        <p class="lede quiet">Work in progress. The plan may change before release.</p>
+        <h2 id="nxt" class="display">New in 5.1</h2>
+        <p class="lede quiet">Out now. Update from the app, or download the .deb above.</p>
       </div>
       <ul class="next">
-        <li><h3>Steadier everywhere</h3><p>End-to-end checks of updates, Wayland and fresh installs.</p></li>
-        <li><h3>Three modes: Lite, Base and Pro</h3><p>Chosen on first run, so the window shows only what you need. Switch any time in Settings.</p></li>
-        <li><h3>Gargantua Lite, built in</h3><p>Already available as an optional download. In 5.1 it comes installed on computers without a graphics card, or is downloaded when you create your first Probe.</p></li>
-        <li><h3>Easier cloud setup</h3><p>Sign in to Ollama Cloud without copying keys. Still off by default.</p></li>
-        <li><h3>Probes</h3><p>Write a mission in your own words and Gargantua Lite turns it into a small watcher that runs in the background and tells you when something matters. Off until you turn one on. Probes can act too: anything that changes your computer or sends something asks you first, and nothing runs without your yes.</p></li>
-        <li><h3>A terminal like today's AI tools</h3><p>Resume a conversation, see how much context is left, plan before acting, and approve a command once or for the whole session.</p></li>
-        <li><h3>More than Google and YouTube</h3><p>Search inside Spotify, Netflix, Reddit and others, open a profile or a channel, and get directions on the map. General web search through SearXNG.</p></li>
+        <li><h3>Three modes: Lite, Base and Pro</h3><p>Chosen on first run and switchable any time in Settings. Lite is just the chat, the microphone and attachments. Pro adds advanced settings and diagnostics. Updating keeps everything you had.</p></li>
+        <li><h3>Probes</h3><p>Write a mission in your own words and Gargantua turns it into a small watcher you check before creating. It only reads folders, files, disk, memory and git, and tells you when something matters. Off until you turn it on. Moving a file is up to you; sending something to the trash asks every time.</p></li>
+        <li><h3>Gargantua Lite, built in</h3><p>Computers without a graphics card and with little memory get the smaller Gargantua from the first run.</p></li>
+        <li><h3>A terminal like today's AI tools</h3><p>Resume a conversation, compact it, see how much context is left, plan before acting, review a diff before any file changes and undo it, read an AGENTS.md, and use <code>opentars -p</code> in scripts.</p></li>
+        <li><h3>Cloud with your Ollama account</h3><p>Sign in without copying keys. Still off by default, and a cloud model is only used when you pick it.</p></li>
+        <li><h3>Web search through SearXNG</h3><p>Off by default. The AI can search and read pages through a SearXNG on your own computer, and pages are treated as data, never as instructions.</p></li>
       </ul>
-      <h3 class="concept-titulo">How it could look</h3>
-      <p class="quiet">Concept screens, not the finished app. The design may change before release.</p>
+      <h3 class="concept-titulo">How it looks</h3>
+      <p class="quiet">Screenshots of the real app.</p>
       <div class="concept">
-        <figure><img src="img/concept-51-main-lite.webp" loading="lazy" width="1280" height="800" alt="Concept of the 5.1 window in Lite mode: only the chat, the microphone and attachments"><figcaption>Lite: just the chat</figcaption></figure>
-        <figure><img src="img/concept-51-main-pro.webp" loading="lazy" width="1280" height="800" alt="Concept of the 5.1 window in Pro mode, with probes, routines, logs, the model in use and an activity panel"><figcaption>Pro: models, activity, probes and logs</figcaption></figure>
-        <figure><img src="img/concept-51-probes.webp" loading="lazy" width="1280" height="800" alt="Concept of the Probes screen: a mission written by the user and how Gargantua Lite understood it"><figcaption>Probes: a mission, and how Gargantua Lite understood it</figcaption></figure>
-        <figure><img src="img/concept-51-first-run.webp" loading="lazy" width="1280" height="800" alt="Concept of the first run asking whether to use Lite, Base or Pro"><figcaption>First run: choosing the mode</figcaption></figure>
-        <figure class="largo"><img src="img/concept-51-terminal.webp" loading="lazy" width="1280" height="800" alt="Concept of the openTARS terminal resuming a chat, planning before acting and asking to approve a command"><figcaption>Terminal: resume, plan first, approve once or for the session</figcaption></figure>
+        <figure><img src="img/real-51-probes.webp" loading="lazy" width="1280" height="824" alt="Settings, Probes: a mission in your own words turned into a plan to check, with optional actions"><figcaption>Probes: a mission becomes a plan you check</figcaption></figure>
+        <figure><img src="img/real-51-modes.webp" loading="lazy" width="1280" height="824" alt="Settings, General: choosing the Lite, Base or Pro mode"><figcaption>Lite, Base or Pro, any time</figcaption></figure>
+        <figure><img src="img/real-51-advanced.webp" loading="lazy" width="1280" height="824" alt="Settings, Advanced: temperature, context size and extra instructions"><figcaption>Pro: advanced settings</figcaption></figure>
+        <figure><img src="img/real-51-first-run.webp" loading="lazy" width="1280" height="896" alt="First run, step 2: choosing the mode"><figcaption>First run: choosing the mode</figcaption></figure>
+      </div>
+      <h3 class="concept-titulo">Planned for 5.2</h3>
+      <ul class="next">
+        <li><h3>Probes in their own computer</h3><p>Probes that act inside an isolated environment on your PC, away from your files and accounts.</p></li>
+        <li><h3>More for the terminal</h3><p>Hooks, MCP servers and sub-agents, each with the same ask-first rules.</p></li>
+        <li><h3>A lighter Cooper</h3><p>A much smaller model to look at the screen.</p></li>
+      </ul>
       </div>
     </div>
   </section>

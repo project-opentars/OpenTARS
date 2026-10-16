@@ -8,9 +8,9 @@
 
 Ask in your own words. It opens programs, clicks buttons by their name, types, searches the web, looks at the screen and runs commands.<br>
 Everything happens on your machine through Ollama by default. The cloud is optional and off until you turn it on. No subscription.<br>
-**5.0 Tesseract:** a brand-new Qt window with first-run setup, chat history, voice, visible memory, scheduled routines and an optional cloud. Underneath it is the same lean core as 4.6: just Ollama, with **Cooper** as the only model that looks at the screen. **Gargantua** is still the official AI.
+**5.1 Tesseract:** three modes (Lite, Base and Pro), **Probes** that watch things for you in the background, a terminal on par with today's AI command-line tools, **Gargantua Lite** for modest computers, the cloud through your Ollama account and web search through SearXNG. **Gargantua** is still the official AI.
 
-[![Version 5.0 Tesseract](https://img.shields.io/badge/version-5.0%20Tesseract-5FD97A?style=flat-square)](#installation)
+[![Version 5.1 Tesseract](https://img.shields.io/badge/version-5.1%20Tesseract-5FD97A?style=flat-square)](#installation)
 [![Official AI: Gargantua](https://img.shields.io/badge/official%20AI-Gargantua-5FD97A?style=flat-square)](#gargantua-the-official-ai)
 [![MIT License](https://img.shields.io/badge/license-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibility)
@@ -18,7 +18,7 @@ Everything happens on your machine through Ollama by default. The cloud is optio
 [![Languages](https://img.shields.io/badge/languages-EN%20%C2%B7%20PT--BR-1A2446?style=flat-square)](#languages)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[What's new](#whats-new-in-50-tesseract) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [Train your own](gargantua/TUTORIAL.md) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
+[What's new](#whats-new-in-51-tesseract) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [Train your own](gargantua/TUTORIAL.md) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
@@ -62,6 +62,35 @@ Nothing you type or show leaves your machine. Dangerous commands ask for confirm
 </td>
 </tr>
 </table>
+
+## What's new in 5.1 Tesseract
+
+5.1 keeps the 5.0 window and core and adds what was planned for it: **three modes**, **Probes**, a **terminal on par with today's AI command-line tools**, **Gargantua Lite** for modest computers, the **cloud through your Ollama account** and **web search through SearXNG**. It also fixes the way openTARS asked Ollama to turn reasoning off, which made Gargantua answer without using its tools in some requests.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/18-probes.png" alt="Settings: Probes, with a mission turned into a plan to check"></td>
+<td width="50%"><img src="docs/img/05-settings-general.png" alt="Settings: General, with the Lite, Base and Pro modes"></td>
+</tr>
+<tr>
+<td align="center"><sub>Probes: a mission in your words becomes a plan you check</sub></td>
+<td align="center"><sub>Lite, Base or Pro: switch any time</sub></td>
+</tr>
+</table>
+
+| | |
+|---|---|
+| 🎚️ **Three modes: Lite, Base and Pro** | Chosen on first run (step 2) and switchable in **Settings → General**; nothing is deleted when you switch. **Lite** is chat, microphone and attachments, everything automatic. **Base** adds the history, the model picker, memory, routines, Probes and the cloud. **Pro** adds **Advanced settings** (temperature, context size, extra instructions sent with every conversation, and tools you turn off) and **Diagnostics** (the last tools the AI called and the same check as `opentars --diagnostico`). Updating from 5.0 keeps you in Pro, so nothing disappears. A tool you turn off is refused when it runs, not removed from the list: Gargantua still sees the exact list it was trained on |
+| 🛰️ **Probes** | **Settings → Probes** (or the button in the sidebar): write a mission in your own words ("keep an eye on Downloads and tell me when a .deb installer shows up, at most twice a day"). Gargantua turns it into a plan (what it watches, what it looks for, how often, when it tells you, what it will not do) and you check it before creating. A Probe only **reads** folders, files, disk, memory, running programs and git repositories; keys, passwords and browser data are off limits, and what it reads is data, never instructions. It tells you with a desktop notification and keeps a short history. **Off by default**: you turn on the background service and each Probe (at most 5 on). The service (`opentars --probes`) runs at low priority, one Probe at a time, with Gargantua Lite on the CPU (about 2.5 s per check here), so it does not compete with the chat for the graphics card. **Actions are yours to choose, never the model's:** move what it finds to a folder (runs on its own once you tick it) or send it to the trash (asks every time; no answer in 30 minutes means no). Sending, installing and the cloud do not exist in Probes |
+| 🪶 **Gargantua Lite** | A computer without a 4 GB graphics card and with up to 6 GB of RAM (or fewer than 4 threads) gets **Gargantua Lite** (Qwen3 1.7B, 1.1 GB) from the first run and from the installer, instead of the 4B. `TARS_GARGANTUA=lite` or `completo` forces either one. In our test it did 63 of 84 everyday tasks it never saw in training |
+| 💻 **Gargantua Code** | An optional download (`ollama pull ProjectOpenTARS/Gargantua:code`): writes, runs, fixes and explains scripts with the same tools. When it is installed, coding requests go to it first. 43 of 48 coding tasks in our test |
+| 🖥️ **A terminal like today's AI CLIs** | `opentars -p "request"` for scripts (only the answer on stdout; `--output-format json` adds the model, the tools and the time; `--model` picks the model; text piped on stdin is included as data). `--new`, `--resume` (the same saved conversations as the window), `/compact` (summarizes the start of the conversation), `/context` (how much is in use), `/mode ask \| plan \| auto` (`--plan`, `--auto`): **plan** only describes, nothing that changes anything runs; **auto** applies file edits inside the current folder without asking. "Always for this session" exists only for sending and installing commands; mass deletion asks every time, in every mode. For models with tools other than Gargantua: `read_file`, `search_files`, `edit_file` and `write_file`, with a **diff and your approval** before anything is written, and `/undo` to revert the last request's edits. An `AGENTS.md` in the folder goes into every conversation (`/init` writes a first one), `!command` runs a shell command and hands its output to the next request, and a status line shows the model, the context in use and the mode. See [Terminal](#terminal) |
+| ☁️ **Cloud through your Ollama account** | **Settings → Cloud** and the first run now start with **Sign in with your Ollama account**: no API key, the credential stays with Ollama and openTARS stores nothing. Then download a cloud model (for example `gpt-oss:20b-cloud`) and pick it in the model picker when you want it; it never enters the automatic choice. The footer now also warns when the chosen model is an Ollama cloud model (before, it said everything ran on your computer). The free account has session and weekly limits that Ollama does not publish in detail |
+| 🔎 **Web search through SearXNG** | Off by default. `opentars --searxng` sets up a SearXNG that only answers on this computer (Docker) and turns search on; or point **Settings → Cloud** at your own. Then the AI can search and read pages and answer inside the app (`web_search` and `read_page`, offered only when you ask to search). Pages come in cut and as data; only public addresses can be read. Gargantua does not use these tools (it was not trained with them): pick another model with tools, such as `qwen3:8b`, to search |
+| 🧠 **Gargantua uses its tools reliably** | openTARS asked Ollama to turn reasoning off in a way that made Gargantua think it should answer right away, so sometimes it replied without doing the task. Fixed: in our tests Gargantua went from 15 to 18 of 18 tries, and Gargantua Lite from 34 to 63 of 84 tasks |
+| 🔁 **Smarter fallback** | When a model fails in the middle of a request, the automatic switch goes to a model of the same size or bigger, never down to a much smaller one (before, the 0.6B model could end up answering) |
+
+**Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and hooks, MCP and sub-agents in the terminal, are planned for 5.2. The smaller Cooper (SmolVLM2 500M) is still being trained: the published Cooper is the 5.0 one. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
 
 ## What's new in 5.0 Tesseract
 
@@ -413,18 +442,28 @@ On KDE and other environments, register by hand a shortcut running `opentars-gui
 - **Steps you can follow:** each action is a `●` line (opening app, clicking, running command) and its result hangs under it with `⎿` (`✓` and the time, or `✗` and why).
 - **A spinner while it works:** it says what is happening (loading the model, thinking, running a tool) and for how long. `ctrl+c` stops the answer; twice in a row leaves.
 - **Risky commands still ask first**, right in the terminal, before anything runs.
-- `↑` / `↓` bring back earlier requests.
+- `↑` / `↓` bring back earlier requests and `ctrl+r` searches them.
+- **A status line** after each answer: the model, how much of the context is in use, the permission mode and whether an `AGENTS.md` was read.
 
 | In the chat | What it does |
 |---|---|
 | `/help` | lists the commands |
 | `/models` · `/model <name>` · `/model auto` | lists, pins or unpins a model |
+| `/resume` | picks a saved conversation to continue (the same ones as the window) |
+| `/compact` | summarizes the start of the conversation and keeps the last three requests whole |
+| `/context` | shows how much of the context is in use |
+| `/mode ask \| plan \| auto` | **ask** (default) asks before changing files and before risky commands; **plan** only describes what it would do; **auto** applies file edits inside the current folder without asking. Deleting, sending and installing always ask |
+| `/undo` | reverts the file edits of the last request |
+| `/init` | writes a first `AGENTS.md` for the folder |
+| `!<command>` | runs a shell command; its output goes to the next request |
 | `/clear` | starts a new conversation |
 | `/language <code>` | changes the language |
 | `/unload` | unloads every model from memory |
 | `/exit` | leaves |
 
-`opentars --chat "request"` answers one request and exits with an error code if it failed, which is handy in scripts. `NO_COLOR=1` turns colors, the logo and the spinner off.
+**For scripts:** `opentars -p "request"` prints only the answer (the steps go to stderr) and exits with `0` or `1`; `--output-format json` gives `{"ok", "resposta", "modelo", "ferramentas", "plano", "segundos"}`; `--model <name>` picks the model; text piped into it is included as data (`git diff | opentars -p "review this"`). A one-off request never overwrites your saved conversation. `opentars --chat "request"` still works as before. `NO_COLOR=1` turns colors, the logo and the spinner off.
+
+**Code:** with a model that has tools and is not Gargantua (for example `qwen3:8b`), a coding request in the terminal also gets `read_file`, `search_files`, `edit_file` and `write_file`. Every change shows a **diff** and waits for your approval (answer `always` to approve edits inside this folder for the rest of the session). Gargantua keeps the exact tools it was trained on; Gargantua Code programs through the terminal, as it was trained to. An `AGENTS.md` in the folder (or the nearest one above it, up to the git root) goes into every conversation.
 
 <br clear="right">
 
@@ -447,6 +486,11 @@ Other commands:
 | `opentars-gui --rapido` | opens the quick bar |
 | `opentars --chat` | chats in the terminal (WSL, SSH, no graphical session) |
 | `opentars --chat "request"` | answers one request in the terminal and exits |
+| `opentars -p "request"` | for scripts: only the answer (`--output-format json`, `--model <name>`, reads stdin) |
+| `opentars --new` · `opentars --resume` | starts a new conversation · picks a saved one |
+| `opentars --plan` · `opentars --auto` | starts the terminal chat in plan mode · in auto mode |
+| `opentars --probes` | runs the Probes service (Settings → Probes turns it on at login) |
+| `opentars --searxng` | sets up a local SearXNG with Docker and turns web search on (asks first) |
 | `opentars --idioma <code>` | changes the language (`pt_BR` or `en`) |
 | `opentars --atalho [keys\|off]` | shows, changes or removes the global shortcut |
 | `opentars --cooper` | downloads Cooper, the model that looks at the screen |
