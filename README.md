@@ -7,7 +7,7 @@
 **The local AI assistant for Linux, now with an AI trained just for it.**
 
 Ask in your own words. It opens programs, clicks buttons by their name, types, searches the web, looks at the screen and runs commands.<br>
-Everything happens on your machine through Ollama by default. The cloud is optional and off until you turn it on. No subscription.<br>
+With a local Ollama model, processing stays on your machine. Ollama Cloud is optional and only used when you choose a cloud model. No subscription.<br>
 **5.1 Tesseract:** three modes (Lite, Base and Pro), **Probes** that watch things for you in the background, a terminal on par with today's AI command-line tools, **Gargantua Lite** for modest computers, the cloud through your Ollama account and web search through SearXNG. **Gargantua** is still the official AI.
 
 [![Version 5.1 Tesseract](https://img.shields.io/badge/version-5.1%20Tesseract-5FD97A?style=flat-square)](#installation)
@@ -56,8 +56,8 @@ It presses buttons by the text they show ("7", "=", "Save") through Linux access
 </td>
 <td width="50%" valign="top">
 
-### Stays on your PC
-Nothing you type or show leaves your machine. Dangerous commands ask for confirmation, and it never closes a program with unsaved work.
+### Local by default
+With a local model and web search off, your conversation and screen stay on your machine. Ollama Cloud and web search are optional; when enabled, requests go to the provider or SearXNG you chose. Dangerous commands ask for confirmation, and it never closes a program with unsaved work.
 
 </td>
 </tr>
@@ -92,7 +92,7 @@ Nothing you type or show leaves your machine. Dangerous commands ask for confirm
 | 🧠 **Gargantua uses its tools reliably** | openTARS asked Ollama to turn reasoning off in a way that made Gargantua think it should answer right away, so sometimes it replied without doing the task. Fixed: in our tests Gargantua went from 15 to 18 of 18 tries, and Gargantua Lite from 34 to 63 of 84 tasks |
 | 🔁 **Smarter fallback** | When a model fails in the middle of a request, the automatic switch goes to a model of the same size or bigger, never down to a much smaller one (before, the 0.6B model could end up answering) |
 
-**Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and hooks, MCP and sub-agents in the terminal, are planned for 5.2. The smaller Cooper (SmolVLM2 500M) is still being trained: the published Cooper is the 5.0 one. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
+**Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and hooks, MCP and sub-agents in the terminal, are planned for 5.2. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
 
 ## What's new in 5.0 Tesseract
 
@@ -208,7 +208,7 @@ Voice, attachments and scheduled routines were removed in 4.6 and came back in 5
 ## Cooper, the model that looks at the screen
 
 ```bash
-ollama pull ProjectOpenTARS/cooper     # or: opentars --cooper
+ollama pull ProjectOpenTARS/cooper:1.2  # about 636 MB; the app currently requests latest (~2.65 GB)
 ```
 
 Cooper **does not chat or click**: it receives a screenshot and a question and answers about what it sees. With it installed, openTARS can:
@@ -236,7 +236,7 @@ That single command installs **everything** openTARS needs, skipping what you al
 - Ollama (or uses the one already running, Docker included)
 - an isolated Python environment (with PySide6 for the new window)
 - **Gargantua (4.0)**, the official AI (~2.5 GB, `ProjectOpenTARS/Gargantua`), trained to use its tools. See [Gargantua](#gargantua-the-official-ai)
-- **Cooper (4.5)**, optional (~2.7 GB, `ProjectOpenTARS/cooper`): the first-run window offers to download it right after Gargantua (ticked when both fit on the disk; untick it to skip, and if it fails or is paused you can still continue); the installer also asks when run in a terminal with a graphical session, and otherwise prints the command. `TARS_COM_COOPER=1` downloads without asking, `TARS_SEM_COOPER=1` skips it. See [Cooper](#cooper-the-model-that-looks-at-the-screen)
+- **Cooper (4.5)**, optional vision model. Tag `1.2` is 636,273,249 bytes (about 636 MB / 607 MiB); the untagged model requested by the current app is `latest` (about 2.65 GB). See [Cooper](#cooper-the-model-that-looks-at-the-screen)
 - **a chat model chosen for your hardware**, only if Gargantua was not downloaded and you have no other model yet: `qwen3:8b` with a 6 GB+ graphics card, `qwen3:4b` with 12 GB+ of RAM and `qwen3:1.7b` otherwise
 - the application-menu shortcut
 
@@ -526,12 +526,12 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 | **Ollama** | local, Docker or another machine | another address: `OLLAMA_HOST` variable |
 | **WSL 1 and 2** | terminal chat (`opentars --chat`), commands, files; window and screenshots with WSLg | Ollama can be on Windows (found by itself; there, `OLLAMA_HOST=0.0.0.0`) or inside WSL. Without systemd: `ollama serve` in another terminal |
 | **No GUI** | `opentars --chat`: chat, commands, files, search (returns the link) | no mouse, keyboard, windows, screenshots or opening graphical programs |
-| **Cooper** | optional, ~2.7 GB (`ollama pull ProjectOpenTARS/cooper`) | only useful with a screen; needs Ollama 0.12.7 or newer |
+| **Cooper** | tag `1.2`: 636,273,249 bytes (about 636 MB / 607 MiB); `ollama pull ProjectOpenTARS/cooper:1.2` | the app currently requests untagged `latest` (about 2.65 GB); only useful with a screen |
 | **Qt window** | needs PySide6 (installed in the package's own environment) | without it, the 4.6 Tkinter window opens |
 
 ## Security and privacy
 
-- Everything runs locally. openTARS sends data to no server. Its only own connections are the update check (read-only requests to GitHub) and the cloud provider **if you chose to enable one**.
+- With a local model, processing stays on your computer. If you choose an Ollama Cloud model, your request goes to Ollama; if you enable web search, your search goes to the SearXNG service you configured. The app also checks GitHub for updates.
 - Commands that delete data or change the system (`rm -r`, `rm` with wildcards, `find -exec rm`, `mkfs`, `dd`, `git reset --hard`, `curl | sh`, `ssh`, shutting down the PC...) only run after your confirmation. Typing such a command into a terminal window is covered too.
 - Routines never decide alone: a risky command inside a routine passes only if you pre-approved that category (delete / send / install) when creating it; otherwise the routine stops and tells you.
 - Cloud keys are stored only on this computer (file mode 0600), never displayed, never written to the log, and not passed to the commands the AI runs.
@@ -539,7 +539,7 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 - Commands that ask for a password (`sudo`) do not hang: they fail at once, and the AI shows you the command to run yourself. (Risky `sudo` commands still go through the Allow/Deny card first.)
 - Closing a program is like clicking the X: if it asks "save changes?", openTARS does not force it.
 - For clicking by name, openTARS turns on the session's accessibility (the same one a screen reader uses) only when needed, and it returns to normal when the session ends.
-- Vision (Cooper) runs on your PC like everything else.
+- Cooper runs locally through Ollama. The 636 MB figure refers to tag `1.2`; the app's current untagged request resolves to `latest` (about 2.65 GB).
 - Settings files (`agenda.json`, `nuvem.json`, history, memory, update state) are written atomically; a broken file is kept as `*.corrompido` instead of being lost.
 - The models' success history is in `~/.cache/opentars/historico_modelos.json` (delete it to reset).
 - Everything it runs is recorded in `~/.tars_log/tars.log`; Qt problems go to `~/.tars_log/qt.log`.

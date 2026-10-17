@@ -10,14 +10,14 @@
 <meta property="og:site_name" content="openTARS">
 <meta property="og:url" content="https://project-opentars.github.io/openTars-lightweight-local-addon/">
 <meta property="og:title" content="openTARS: the local AI assistant for Linux">
-<meta property="og:description" content="Tell your Linux desktop what to do. Open source, runs on your own machine through Ollama.">
+<meta property="og:description" content="Tell your Linux desktop what to do. Open source. Runs locally with Ollama by default, with optional cloud models and web search.">
 <meta property="og:image" content="https://project-opentars.github.io/openTars-lightweight-local-addon/img/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="openTARS, the local AI assistant for Linux, with a screenshot of its window">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="openTARS: the local AI assistant for Linux">
-<meta name="twitter:description" content="Tell your Linux desktop what to do. Open source, runs on your own machine.">
+<meta name="twitter:description" content="Tell your Linux desktop what to do. Open source, local by default, with optional external services.">
 <meta name="twitter:image" content="https://project-opentars.github.io/openTars-lightweight-local-addon/img/og-card.png">
 <meta name="theme-color" content="#141C38">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
@@ -55,7 +55,7 @@
     <div class="wrap">
       <div>
         <h1 class="display">Tell your Linux desktop what to do.</h1>
-        <p class="lede">openTARS is an AI assistant that does the work on your computer. It opens programs, presses buttons by their name, types, runs commands and looks at the screen. The AI runs on your own machine.</p>
+        <p class="lede">openTARS is an AI assistant that does the work on your computer. It opens programs, presses buttons by their name, types, runs commands and looks at the screen. With a local Ollama model, processing stays on your machine; cloud models and web search are optional.</p>
         <div class="actions">
           <a class="btn" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb">Download the .deb</a>
           <a class="link" href="#install">Or install with one command</a>
@@ -162,7 +162,7 @@
           <div class="shot"><img src="img/03-approval.webp" loading="lazy" width="1770" height="1140" alt="An approval card asking to allow or deny a sudo command"></div>
           <div class="cloud">
             <h3>The cloud is off by default</h3>
-            <p>Everything runs on your PC. If you want a bigger model, you can switch on Ollama Cloud with your own account. Your key stays on this computer and is never shown or logged, and the window warns you whenever your text goes to a provider.</p>
+            <p>Local models are the default. If you choose an Ollama Cloud model, your request is processed by Ollama. Optional web search sends the search text to the SearXNG service you configure. Your Ollama sign-in stays with Ollama, and the window warns when a cloud model is selected.</p>
           </div>
         </div>
       </div>
@@ -188,9 +188,10 @@
         <article class="model">
           <p class="role">Sees</p>
           <h3>Cooper</h3>
-          <p>A vision model that only looks at the screen. When an app does not tell Linux what its buttons are, Cooper finds the one you meant from a screenshot.</p>
+          <p>A vision model for questions about screenshots and controls that Linux accessibility cannot identify. The published <code>1.2</code> tag is about 636 MB (607 MiB). The app currently requests the untagged <code>latest</code> model, about 2.65 GB; the smaller tag is available separately.</p>
           <dl>
-            <dt>Size</dt><dd>about 2.7 GB, optional</dd>
+            <dt>Tag 1.2</dt><dd>about 636 MB (607 MiB)</dd>
+            <dt>App default</dt><dd><code>latest</code>, about 2.65 GB</dd>
             <dt>Needs</dt><dd>a graphical session</dd>
           </dl>
         </article>
@@ -302,9 +303,11 @@
         <li><h3>Three modes: Lite, Base and Pro</h3><p>Chosen on first run and switchable any time in Settings. Lite is just the chat, the microphone and attachments. Pro adds advanced settings and diagnostics. Updating keeps everything you had.</p></li>
         <li><h3>Probes</h3><p>Small watchers for a folder, a web page, news and releases (RSS, YouTube, GitHub), this computer (battery, temperature, internet, updates), a program or a git project. Three steps to create one, no AI needed, or write a mission in your own words. Alerts come with a bell next to the clock and inside the app. They only read; off until you turn them on. Moving a file is up to you; sending something to the trash asks every time.</p></li>
         <li><h3>Gargantua Lite, built in</h3><p>Computers without a graphics card and with little memory get the smaller Gargantua from the first run.</p></li>
+        <li><h3>Gargantua Code</h3><p>An optional coding model handles programming requests when installed.</p></li>
         <li><h3>A terminal like today's AI tools</h3><p>Resume a conversation, compact it, see how much context is left, plan before acting, review a diff before any file changes and undo it, read an AGENTS.md, and use <code>opentars -p</code> in scripts.</p></li>
         <li><h3>Cloud with your Ollama account</h3><p>Sign in without copying keys. Still off by default, and a cloud model is only used when you pick it.</p></li>
         <li><h3>Web search through SearXNG</h3><p>Off by default. The AI can search and read pages through a SearXNG on your own computer, and pages are treated as data, never as instructions.</p></li>
+        <li><h3>More reliable tool use and fallback</h3><p>Fixes help Gargantua use its tools more reliably, and automatic fallback no longer switches to a much smaller model mid-request.</p></li>
       </ul>
       <h3 class="concept-titulo">How it looks</h3>
       <p class="quiet">Screenshots of the real app.</p>
@@ -318,7 +321,6 @@
       <ul class="next">
         <li><h3>Probes in their own computer</h3><p>Probes that act inside an isolated environment on your PC, away from your files and accounts.</p></li>
         <li><h3>More for the terminal</h3><p>Hooks, MCP servers and sub-agents, each with the same ask-first rules.</p></li>
-        <li><h3>A lighter Cooper</h3><p>A much smaller model to look at the screen.</p></li>
       </ul>
       </div>
     </div>
