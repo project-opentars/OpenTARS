@@ -183,7 +183,7 @@ Voice, attachments and scheduled routines were removed in 4.6 and came back in 5
 
 | | |
 |---|---|
-| 👁️ **Cooper, the model that looks at the screen** | A Qwen3-VL 2B fine-tuned by the openTARS team to answer about a screenshot: **where** a button is, **what** a field says, which windows are open. Positions come in thousandths of the image (0 to 1000) and become pixels automatically. [Details](#cooper-the-model-that-looks-at-the-screen) |
+| 👁️ **Cooper, the model that looks at the screen** | A SmolVLM2 500M fine-tuned by the openTARS team (0.6 GB) to answer about a screenshot: **where** a button is, **what** a field says, which windows are open. Positions come in thousandths of the image (0 to 1000) and become pixels automatically. [Details](#cooper-the-model-that-looks-at-the-screen) |
 | 🪟 **WSL** | Runs on WSL 1 and 2. With **WSLg** (Windows 11) the window opens normally; without it, it goes to the terminal. It finds the **Ollama running on Windows** by itself and opens links in the Windows browser |
 | 🖥️ **Linux without a GUI** | Server, SSH, container: with no `DISPLAY`, openTARS becomes a terminal assistant. **`opentars --chat`** talks to the AI, runs commands and edits files. `TARS_SEM_INTERFACE=1` forces this mode |
 | 🌱 **Everything on demand** | Nothing is loaded when openTARS opens. Cooper leaves memory 2 min after its last use and the chat model after 5 min |
@@ -208,7 +208,7 @@ Voice, attachments and scheduled routines were removed in 4.6 and came back in 5
 ## Cooper, the model that looks at the screen
 
 ```bash
-ollama pull ProjectOpenTARS/cooper:1.2  # about 636 MB; the app currently requests latest (~2.65 GB)
+ollama pull ProjectOpenTARS/cooper:1.2  # about 636 MB; this is what the app and the installer download
 ```
 
 Cooper **does not chat or click**: it receives a screenshot and a question and answers about what it sees. With it installed, openTARS can:
@@ -236,7 +236,7 @@ That single command installs **everything** openTARS needs, skipping what you al
 - Ollama (or uses the one already running, Docker included)
 - an isolated Python environment (with PySide6 for the new window)
 - **Gargantua (4.0)**, the official AI (~2.5 GB, `ProjectOpenTARS/Gargantua`), trained to use its tools. See [Gargantua](#gargantua-the-official-ai)
-- **Cooper (4.5)**, optional vision model. Tag `1.2` is 636,273,249 bytes (about 636 MB / 607 MiB); the untagged model requested by the current app is `latest` (about 2.65 GB). See [Cooper](#cooper-the-model-that-looks-at-the-screen)
+- **Cooper (4.5)**, optional vision model. `ProjectOpenTARS/cooper:1.2`, 636,273,249 bytes (about 636 MB / 607 MiB); the first-run window and the installer download this tag. See [Cooper](#cooper-the-model-that-looks-at-the-screen)
 - **a chat model chosen for your hardware**, only if Gargantua was not downloaded and you have no other model yet: `qwen3:8b` with a 6 GB+ graphics card, `qwen3:4b` with 12 GB+ of RAM and `qwen3:1.7b` otherwise
 - the application-menu shortcut
 
@@ -526,7 +526,7 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 | **Ollama** | local, Docker or another machine | another address: `OLLAMA_HOST` variable |
 | **WSL 1 and 2** | terminal chat (`opentars --chat`), commands, files; window and screenshots with WSLg | Ollama can be on Windows (found by itself; there, `OLLAMA_HOST=0.0.0.0`) or inside WSL. Without systemd: `ollama serve` in another terminal |
 | **No GUI** | `opentars --chat`: chat, commands, files, search (returns the link) | no mouse, keyboard, windows, screenshots or opening graphical programs |
-| **Cooper** | tag `1.2`: 636,273,249 bytes (about 636 MB / 607 MiB); `ollama pull ProjectOpenTARS/cooper:1.2` | the app currently requests untagged `latest` (about 2.65 GB); only useful with a screen |
+| **Cooper** | optional, `ollama pull ProjectOpenTARS/cooper:1.2`: 636,273,249 bytes (about 636 MB / 607 MiB) | only useful with a screen |
 | **Qt window** | needs PySide6 (installed in the package's own environment) | without it, the 4.6 Tkinter window opens |
 
 ## Security and privacy
@@ -539,7 +539,7 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 - Commands that ask for a password (`sudo`) do not hang: they fail at once, and the AI shows you the command to run yourself. (Risky `sudo` commands still go through the Allow/Deny card first.)
 - Closing a program is like clicking the X: if it asks "save changes?", openTARS does not force it.
 - For clicking by name, openTARS turns on the session's accessibility (the same one a screen reader uses) only when needed, and it returns to normal when the session ends.
-- Cooper runs locally through Ollama. The 636 MB figure refers to tag `1.2`; the app's current untagged request resolves to `latest` (about 2.65 GB).
+- Cooper runs locally through Ollama (`ProjectOpenTARS/cooper:1.2`, about 636 MB). An older Cooper (`latest`, about 2.65 GB) that is already installed keeps working; when both are installed the app uses 1.2.
 - Settings files (`agenda.json`, `nuvem.json`, history, memory, update state) are written atomically; a broken file is kept as `*.corrompido` instead of being lost.
 - The models' success history is in `~/.cache/opentars/historico_modelos.json` (delete it to reset).
 - Everything it runs is recorded in `~/.tars_log/tars.log`; Qt problems go to `~/.tars_log/qt.log`.
