@@ -39,8 +39,10 @@
 
     <article>
       <h2>5.1 Tesseract</h2>
-      <p class="quando">October 16, 2026 · updated October 17</p>
+      <p class="quando">October 16, 2026 · updated October 18</p>
       <ul>
+        <li><strong>Gargantua 2 is the main AI, and Cooper is discontinued (October 18):</strong> <code>ProjectOpenTARS/Gargantua-2</code> is a Qwen3.5 2B trained by us, 1.6 GB (the first Gargantua was 2.5 GB), and it sees the screen itself. In our test of 84 everyday tasks it did 72 right and ran no dangerous command. The installer and the first-run window download it, Settings offers it to anyone who has the old Gargantua (nothing is removed), and it is preferred when both are installed. <strong>Cooper, the separate vision model, is discontinued:</strong> it is no longer downloaded, trained or supported, and <code>opentars --cooper</code> only says so. openTARS asks Gargantua 2 the same screen questions, with the model that is already in memory, so there is no extra download and no model swap. An old Cooper still installed is used only when there is no Gargantua 2. Older openTARS versions keep working with the old Gargantua.</li>
+        <li><strong>Murph and Probes (October 18):</strong> Murph now recognizes short chat messages that only continue a conversation, so they are not taken for commands; a Probe mission that asks to delete, install or change anything is refused by the code itself, and every Probe gets a name taken from its mission.</li>
         <li><strong>New Gargantua Lite (October 17):</strong> 0.6 GB with vision, down from 1.1 GB without it, and 70 of 84 everyday tasks in our test, up from 63. It runs on the processor alone. Computers without a graphics card and with little memory download <code>ProjectOpenTARS/Gargantua:2.0-lite</code>.</li>
         <li><strong>Fixes (October 17):</strong> openTARS no longer pushes the AI to act when it only guessed that a chat message was a request; a model that needs a newer Ollama now says how to update it.</li>
         <li><strong>Three modes:</strong> Lite (chat, microphone, attachments), Base (adds history, memory, routines, Probes and the cloud) and Pro (adds advanced settings and diagnostics). Chosen on first run, switchable in Settings; updating from 5.0 keeps you in Pro.</li>

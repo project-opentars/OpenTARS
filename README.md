@@ -8,10 +8,10 @@
 
 Ask in your own words. It opens programs, clicks buttons by their name, types, searches the web, looks at the screen and runs commands.<br>
 With a local Ollama model, processing stays on your machine. Ollama Cloud is optional and only used when you choose a cloud model. No subscription.<br>
-**5.1 Tesseract:** three modes (Lite, Base and Pro), **Probes** that watch things for you in the background, a terminal on par with today's AI command-line tools, **Gargantua Lite** for modest computers, the cloud through your Ollama account and web search through SearXNG. **Gargantua** is still the official AI.
+**5.1 Tesseract:** three modes (Lite, Base and Pro), **Probes** that watch things for you in the background, a terminal on par with today's AI command-line tools, the cloud through your Ollama account and web search through SearXNG. **Gargantua 2** is now the official AI: smaller, and it sees the screen by itself. **Cooper has been discontinued.**
 
 [![Version 5.1 Tesseract](https://img.shields.io/badge/version-5.1%20Tesseract-5FD97A?style=flat-square)](#installation)
-[![Official AI: Gargantua](https://img.shields.io/badge/official%20AI-Gargantua-5FD97A?style=flat-square)](#gargantua-the-official-ai)
+[![Official AI: Gargantua 2](https://img.shields.io/badge/official%20AI-Gargantua%202-5FD97A?style=flat-square)](#gargantua-the-official-ai)
 [![MIT License](https://img.shields.io/badge/license-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibility)
 [![Ollama](https://img.shields.io/badge/runs%20on-Ollama-1A2446?style=flat-square)](https://ollama.com)
@@ -37,7 +37,7 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 <td width="50%" valign="top">
 
 ### It has its own AI
-**Gargantua** was trained on thousands of requests that were actually solved inside openTARS and checked one by one. It already knows the tools: it opens, clicks, calculates and creates files on the first try, fast, on a 6 GB graphics card.
+**Gargantua 2** was trained on thousands of requests that were actually solved inside openTARS and checked one by one, and it also learned to read the screen. It already knows the tools: it opens, clicks, calculates and creates files on the first try, fast, in 1.6 GB.
 
 </td>
 <td width="50%" valign="top">
@@ -51,7 +51,7 @@ Several layers read each request in milliseconds, without spending any AI, and r
 <td width="50%" valign="top">
 
 ### Clicks by name, not by position
-It presses buttons by the text they show ("7", "=", "Save") through Linux accessibility: no screenshot, no coordinates, in milliseconds, even on Wayland. A screenshot remains the plan B.
+It presses buttons by the text they show ("7", "=", "Save") through Linux accessibility: no screenshot, no coordinates, in milliseconds, even on Wayland. Looking at the screen (Gargantua 2 itself) is the plan B.
 
 </td>
 <td width="50%" valign="top">
@@ -82,9 +82,11 @@ With a local model and web search off, your conversation and screen stay on your
 
 | | |
 |---|---|
+| 🪐 **Gargantua 2 is the official AI (October 18)** | `ProjectOpenTARS/Gargantua-2`: a Qwen3.5 2B trained by us with quantization-aware training, **1.6 GB** (the old Gargantua was 2.5 GB) and **it sees the screen by itself**. In our test of 84 everyday tasks it did 72 right, with no dangerous command run; it picked the right tool in 21 of 21 requests, 0.7 s each on a graphics card. It is weakest at the text editor (2 of 4) and at looking at an image file (1 of 4). The installer and the first-run window now download it; if you have the old Gargantua, **Settings → General → AI on your computer** offers the new one (nothing is removed). Older openTARS versions keep using `ProjectOpenTARS/Gargantua` |
+| 🚫 **Cooper has been discontinued** | The separate vision model is gone: no download, no second model in memory. Gargantua 2 answers the same screen questions in the same format (find a button, read a field, say whether something is checked, describe the windows): on screens it never saw in training it located the right control in 34 of 40 tries when openTARS asked the way it does when clicking. `opentars --cooper` now only says so. An old Cooper that is already installed is only used as a reserve when there is no Gargantua 2 |
 | 🎚️ **Three modes: Lite, Base and Pro** | Chosen on first run (step 2) and switchable in **Settings → General**; nothing is deleted when you switch. **Lite** is chat, microphone and attachments, everything automatic. **Base** adds the history, the model picker, memory, routines, Probes and the cloud. **Pro** adds **Advanced settings** (temperature, context size, extra instructions sent with every conversation, and tools you turn off) and **Diagnostics** (the last tools the AI called and the same check as `opentars --diagnostico`). Updating from 5.0 keeps you in Pro, so nothing disappears. A tool you turn off is refused when it runs, not removed from the list: Gargantua still sees the exact list it was trained on |
 | 🛰️ **Probes** | Small watchers that run in the background, even with the window closed, and tell you when something matters. **Settings → Probes** (or the button in the sidebar) is a three-step guide: pick what to watch (**a folder**, **a web page**, **news and releases** from an RSS feed, a YouTube channel or a GitHub repository, **this computer**: battery, temperature, CPU, internet and system updates, **a program** that closes, opens or uses too much memory, or **a git project**), fill in one or two fields and check the sentence of what it will do ("It will tell you when a new file with .deb shows up…"). **Create and turn on** does it all, including the background service. These Probes use a fixed rule, no AI, so they work without any model. **In my own words** is still there: write a mission and Gargantua turns it into a plan you check. **Alerts:** a bell next to the clock (the service `opentars --probes`) shows how many alerts you have and opens a panel on click, with a desktop notification for each one; inside the app, the same bell sits at the top and a bar shows new alerts. A Probe only **reads**; pages and feeds only from public addresses and at most once every 15 minutes; keys, passwords and browser data are off limits, and what it reads is data, never instructions. **Off by default**, at most 5 on, low priority. **Actions are yours to choose, never the model's:** move what it finds to a folder, or send it to the trash (asks every time, from the alerts panel; no answer in 30 minutes means no) |
-| 🪶 **Gargantua Lite** | A computer without a 4 GB graphics card and with up to 6 GB of RAM (or fewer than 4 threads) gets **Gargantua Lite** from the first run and from the installer, instead of the 4B: since October 17 it is `ProjectOpenTARS/Gargantua:2.0-lite`, **0.6 GB with vision** (it was 1.1 GB without it), trained by us on Qwen3.5 0.8B with quantization-aware training and saved in 4 bits. It runs fine on the processor alone. `TARS_GARGANTUA=lite` or `completo` forces either one. In our test it did **70 of 84** everyday tasks it never saw in training (the previous Lite did 63) and refused all the dangerous ones |
+| 🪶 **Gargantua Lite** | A computer without a 4 GB graphics card and with up to 6 GB of RAM (or fewer than 4 threads) gets **Gargantua Lite** from the first run and from the installer, instead of Gargantua 2: since October 17 it is `ProjectOpenTARS/Gargantua:2.0-lite`, **0.6 GB with vision** (it was 1.1 GB without it), trained by us on Qwen3.5 0.8B with quantization-aware training and saved in 4 bits. It runs fine on the processor alone. `TARS_GARGANTUA=lite` or `completo` forces either one. In our test it did **70 of 84** everyday tasks it never saw in training (the previous Lite did 63) and refused all the dangerous ones |
 | 💻 **Gargantua Code** | An optional download (`ollama pull ProjectOpenTARS/Gargantua:code`): writes, runs, fixes and explains scripts with the same tools. When it is installed, coding requests go to it first. 43 of 48 coding tasks in our test |
 | 🖥️ **A terminal like today's AI CLIs** | `opentars -p "request"` for scripts (only the answer on stdout; `--output-format json` adds the model, the tools and the time; `--model` picks the model; text piped on stdin is included as data). `--new`, `--resume` (the same saved conversations as the window), `/compact` (summarizes the start of the conversation), `/context` (how much is in use), `/mode ask \| plan \| auto` (`--plan`, `--auto`): **plan** only describes, nothing that changes anything runs; **auto** applies file edits inside the current folder without asking. "Always for this session" exists only for sending and installing commands; mass deletion asks every time, in every mode. For models with tools other than Gargantua: `read_file`, `search_files`, `edit_file` and `write_file`, with a **diff and your approval** before anything is written, and `/undo` to revert the last request's edits. An `AGENTS.md` in the folder goes into every conversation (`/init` writes a first one), `!command` runs a shell command and hands its output to the next request, and a status line shows the model, the context in use and the mode. See [Terminal](#terminal) |
 | ☁️ **Cloud through your Ollama account** | **Settings → Cloud** and the first run now start with **Sign in with your Ollama account**: no API key, the credential stays with Ollama and openTARS stores nothing. Then download a cloud model (for example `gpt-oss:20b-cloud`) and pick it in the model picker when you want it; it never enters the automatic choice. The footer now also warns when the chosen model is an Ollama cloud model (before, it said everything ran on your computer). The free account has session and weekly limits that Ollama does not publish in detail |
@@ -171,7 +173,7 @@ With a local model and web search off, your conversation and screen stay on your
 | | |
 |---|---|
 | ✂️ **Ollama only** | External servers (`--servidor`, `api:<name>`: vLLM, LM Studio, llama.cpp...) and `.gguf` import from other programs are gone. Models come from Ollama |
-| 👁️ **Only Cooper looks at the screen** | OCR (`tesseract`), the zoom grid and the fallback vision model are gone. Clicking an icon without text: accessibility → Cooper. If Cooper fails or is not installed, the screen shows why instead of trying another path |
+| 👁️ **Only one model looks at the screen** | OCR (`tesseract`), the zoom grid and the fallback vision model are gone. Clicking an icon without text: accessibility → the vision model (Cooper then; Gargantua 2 since October 18). If it fails or is not installed, the screen shows why instead of trying another path |
 | 🧹 **Less dead code** | Unused functions and duplicated Portuguese/English command-line options were removed |
 | 🧪 **Murph phrases out of the package** | `tars_exemplos*.py` (only used to train Murph) moved to `murph/` in the source |
 
@@ -205,22 +207,22 @@ Voice, attachments and scheduled routines were removed in 4.6 and came back in 5
 | 🪶 **Lighter (Neo)** | The embedding model, the old Naive Bayes classifier and the `qwen2.5:0.5b` helper are gone: **Murph**, keywords, context, format and your apps decide the request type |
 </details>
 
-## Cooper, the model that looks at the screen
+## Looking at the screen (Cooper was discontinued)
+
+Until 5.1 a separate model, **Cooper**, looked at the screen. **On October 18, 2026 it was discontinued**: Gargantua 2 sees images itself, so there is no second download and no second model taking memory. Nothing else changes for you.
 
 ```bash
-ollama pull ProjectOpenTARS/cooper:1.2  # about 636 MB; this is what the app and the installer download
+ollama pull ProjectOpenTARS/Gargantua-2   # 1.6 GB, with vision; this is what the app and the installer download
 ```
 
-Cooper **does not chat or click**: it receives a screenshot and a question and answers about what it sees. With it installed, openTARS can:
+openTARS asks Gargantua 2 the same questions Cooper answered, in the format it was trained with, and gets the same kind of answer. With it installed, openTARS can:
 
 - **find icons and buttons without text** ("click the gear icon"): it asks where the icon is, clicks that point, then checks that the screen changed, as always;
-- **describe the screen** to an AI that cannot see, with the positions already in pixels.
+- **describe the screen** to a model that cannot see, with the positions already in pixels.
 
-`--diagnostico` shows whether it is installed. `TARS_COOPER=0` turns its use off (it stays installed). It never enters the AUTO choice of chat AI.
+How well it does it, on screens it never saw in training (synthetic ones, drawn by us with the exact answer): reading a field 15 of 15, checking a statement 14 of 15, locating a control 9 of 15 (34 of 40 when openTARS asks the way it does when clicking), describing the windows 44%. Real screens are messier, so openTARS still checks the result of every click.
 
-**Cooper is the only model that looks at the screen.** If it answers, the answer stands. If it fails (or is not installed), openTARS shows the reason and the AI is told to use `list_elements` and `click_element`. There is no fallback vision model.
-
-> **First version:** Cooper was trained only on synthetic screens and has not been measured on real screens yet. That is why openTARS verifies the result of every click.
+`--diagnostico` shows which model looks at the screen. `TARS_COOPER=0` turns the use of the vision step off. If a Cooper is still installed it is used only when there is no Gargantua 2, and `ollama rm cooper` frees its 0.6 GB. The vision step always uses the model of the conversation: it is already in memory, so it costs no extra graphics-card memory and no model swap.
 
 ## Installation
 
@@ -235,9 +237,8 @@ That single command installs **everything** openTARS needs, skipping what you al
 - all system dependencies through apt (including accessibility, for clicking by name)
 - Ollama (or uses the one already running, Docker included)
 - an isolated Python environment (with PySide6 for the new window)
-- **Gargantua (4.0)**, the official AI (~2.5 GB, `ProjectOpenTARS/Gargantua`), trained to use its tools. See [Gargantua](#gargantua-the-official-ai)
-- **Cooper (4.5)**, optional vision model. `ProjectOpenTARS/cooper:1.2`, 636,273,249 bytes (about 636 MB / 607 MiB); the first-run window and the installer download this tag. See [Cooper](#cooper-the-model-that-looks-at-the-screen)
-- **a chat model chosen for your hardware**, only if Gargantua was not downloaded and you have no other model yet: `qwen3:8b` with a 6 GB+ graphics card, `qwen3:4b` with 12 GB+ of RAM and `qwen3:1.7b` otherwise
+- **Gargantua 2**, the official AI (~1.6 GB, `ProjectOpenTARS/Gargantua-2`), trained to use its tools and to see the screen. See [Gargantua](#gargantua-the-official-ai). Computers without a graphics card and with little memory get Gargantua Lite (0.6 GB) instead
+- **a chat model chosen for your hardware**, only if no Gargantua was downloaded and you have no other model yet: `qwen3:8b` with a 6 GB+ graphics card, `qwen3:4b` with 12 GB+ of RAM and `qwen3:1.7b` otherwise
 - the application-menu shortcut
 
 No helper model is downloaded: the type of each request is decided by the **Murph 1.0** helper, which ships in the package.
@@ -292,17 +293,17 @@ openTARS notices a new version **by itself**. There are no releases, tags or che
 
 ## Gargantua, the official AI
 
-**Gargantua** is the AI made for openTARS: a Qwen3 4B trained on thousands of requests actually solved inside openTARS (opening and closing apps, calculator, folders and files, searches, text editor, memory, refusing dangerous commands). Only conversations approved by an automatic checker went into training: the calculator display showed the right sum, the folder existed, nothing was deleted.
+**Gargantua 2** is the AI made for openTARS: a Qwen3.5 2B trained on thousands of requests actually solved inside openTARS (opening and closing apps, calculator, folders and files, searches, text editor, memory, refusing dangerous commands) and on questions about screens. Only conversations approved by an automatic checker went into training: the calculator display showed the right sum, the folder existed, nothing was deleted. It was trained with quantization in mind (4 bits), so it stays small: 1.6 GB with vision. **The first Gargantua** (a Qwen3 4B, 2.5 GB, `ProjectOpenTARS/Gargantua`) stays available for those who already use it and for older openTARS versions; Gargantua 2 is preferred when both are installed.
 
 ```bash
-ollama pull ProjectOpenTARS/Gargantua
+ollama pull ProjectOpenTARS/Gargantua-2
 ```
 
-The installer already does this. With it:
+The installer already does this. In our own test of 84 everyday tasks (requests it never saw in training) it did 72 right and ran no dangerous command; it chose the right tool in 21 of 21 requests, in 0.7 s each on a graphics card. With it:
 
 - **For actions and searches, AUTO mode uses Gargantua first.** To chat, code or explain, the queue still picks the best model you have. If it fails a lot on your PC, the success scoreboard sends it to the back of the queue, like any other.
 - **Short format.** Since it learned the rules during training, it gets a small prompt, tools with one-sentence descriptions and no "reasoning": it answers faster and fits on a 4–6 GB card.
-- **To pick it by hand:** `/modelo gargantua` (or the AI selector in the window).
+- **To pick it by hand:** `/modelo gargantua-2` (or the AI selector in the window).
 - **To check it is installed:** `opentars --version` or `opentars --diagnostico`.
 - **To turn the preference off:** `TARS_SEM_GARGANTUA=1`.
 
@@ -321,7 +322,7 @@ flowchart LR
     P([Your request]) --> L{{"Layers<br/>keywords · context · format<br/>Murph helper · apps"}}
     L --> M["Model queue<br/>Gargantua first for actions<br/>size · VRAM · success on your PC"]
     M --> IA["Chat AI<br/>thinks first if there are several steps"]
-    IA --> F["Tools<br/>accessibility · Cooper · keyboard · terminal · web"]
+    IA --> F["Tools<br/>accessibility · vision · keyboard · terminal · web"]
     F -- "nothing worked" --> M
     F --> S([Answer])
 ```
@@ -369,13 +370,13 @@ openTARS chooses among the models you have by size and by what fits in VRAM. For
 Clicking by name tries, in this order:
 
 1. **Accessibility:** presses the button by name, with no mouse and no screenshot (GTK, Qt, Firefox, LibreOffice apps...).
-2. **Cooper:** an icon without text ("send icon")? Cooper looks at the screenshot and says where it is; openTARS clicks the point and checks that the screen changed.
+2. **Looking at the screen:** an icon without text ("send icon")? Gargantua 2 looks at the screenshot and says where it is; openTARS clicks the point and checks that the screen changed.
 3. **Keyboard:** with none of the above, the AI types into the field that has focus.
 
 #### Precise mouse
 
 - **Real dragging:** `drag_mouse` holds the button, leaves slowly (Chrome/Brave only understand a drag after a few pixels) and drops at the destination: a place on the screen ("top-left", "right", "center", "left half"), another element ("Trash") or a point. The source can be described ("YouTube tab"): openTARS finds it by itself.
-- **Aim:** `click_mouse` receives what you want to click (`target="X of the YouTube tab"`). The coordinate the AI guesses is usually off by 10–40 px; with Cooper installed it points to the exact spot (only accepted if close to the guess). Without it, a click that landed beside a button snaps to it.
+- **Aim:** `click_mouse` receives what you want to click (`target="X of the YouTube tab"`). The coordinate the AI guesses is usually off by 10–40 px; with a vision model installed (Gargantua 2) it points to the exact spot (only accepted if close to the guess). Without it, a click that landed beside a button snaps to it.
 - **Real window moves:** "drag the openTARS window to the top left", "put Firefox on the right half", "maximize the terminal": openTARS asks the window manager (`move_window`) instead of dragging what is written inside the window.
 - **It checks the click:** it compares the screen before and after. If nothing changed, the AI hears "the click MISSED" instead of claiming it worked.
 
@@ -495,7 +496,7 @@ Other commands:
 | `opentars --searxng` | sets up a local SearXNG with Docker and turns web search on (asks first) |
 | `opentars --idioma <code>` | changes the language (`pt_BR` or `en`) |
 | `opentars --atalho [keys\|off]` | shows, changes or removes the global shortcut |
-| `opentars --cooper` | downloads Cooper, the model that looks at the screen |
+| `opentars --cooper` | only says that Cooper was discontinued and how to install Gargantua 2 |
 | `opentars --diagnostico` | checks Ollama, models, GPU, screen, windows, accessibility and shortcut (changes nothing) |
 | `opentars --autoteste` | diagnosis + task-choice accuracy + the real calculator test |
 | `opentars --avaliar-classificador` | measures how well each layer (and AUTO mode) does on your PC |
@@ -520,13 +521,12 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 | **Desktop** | GNOME, KDE, Cinnamon, XFCE, MATE and others | menu apps, Snap and Flatpak, by name in any language |
 | **Xorg (X11) session** | everything | |
 | **Wayland session** | chat, opening apps and sites, commands, screenshots and **clicking by name** | click and typing by coordinate only reach some apps (a Wayland limitation); not yet validated on a clean install |
-| **Click by name** | GTK (GNOME), Qt/KDE, Firefox, LibreOffice apps and, by reading the screen, any app that shows text (Electron, games, Java) | icon without text: needs a vision model (e.g. `qwen3-vl:8b`) or Cooper; clicking by reading the screen needs an X11 session |
+| **Click by name** | GTK (GNOME), Qt/KDE, Firefox, LibreOffice apps and, by reading the screen, any app that shows text (Electron, games, Java) | icon without text: needs a vision model (Gargantua 2, or e.g. `qwen3-vl:8b`); clicking by reading the screen needs an X11 session |
 | **GPU** | NVIDIA, AMD or CPU only | without a GPU, automatic mode avoids models that are too large |
-| **Gargantua** | card with ~3 GB free, or CPU with 8 GB of RAM | it works on CPU, only slower; training your own needs an NVIDIA card with 6 GB |
+| **Gargantua 2** | card with ~3 GB free, or CPU with 8 GB of RAM | 1.6 GB; on the processor alone it took about 4 s per request on a 16-thread CPU (0.7 s on a graphics card); training your own needs an NVIDIA card with 6 GB |
 | **Ollama** | local, Docker or another machine | another address: `OLLAMA_HOST` variable |
 | **WSL 1 and 2** | terminal chat (`opentars --chat`), commands, files; window and screenshots with WSLg | Ollama can be on Windows (found by itself; there, `OLLAMA_HOST=0.0.0.0`) or inside WSL. Without systemd: `ollama serve` in another terminal |
 | **No GUI** | `opentars --chat`: chat, commands, files, search (returns the link) | no mouse, keyboard, windows, screenshots or opening graphical programs |
-| **Cooper** | optional, `ollama pull ProjectOpenTARS/cooper:1.2`: 636,273,249 bytes (about 636 MB / 607 MiB) | only useful with a screen |
 | **Qt window** | needs PySide6 (installed in the package's own environment) | without it, the 4.6 Tkinter window opens |
 
 ## Security and privacy
@@ -539,7 +539,7 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 - Commands that ask for a password (`sudo`) do not hang: they fail at once, and the AI shows you the command to run yourself. (Risky `sudo` commands still go through the Allow/Deny card first.)
 - Closing a program is like clicking the X: if it asks "save changes?", openTARS does not force it.
 - For clicking by name, openTARS turns on the session's accessibility (the same one a screen reader uses) only when needed, and it returns to normal when the session ends.
-- Cooper runs locally through Ollama (`ProjectOpenTARS/cooper:1.2`, about 636 MB). An older Cooper (`latest`, about 2.65 GB) that is already installed keeps working; when both are installed the app uses 1.2.
+- The vision step runs locally through Ollama, with the same Gargantua 2 that holds the conversation. A Cooper that is already installed is only used when there is no Gargantua 2.
 - Settings files (`agenda.json`, `nuvem.json`, history, memory, update state) are written atomically; a broken file is kept as `*.corrompido` instead of being lost.
 - The models' success history is in `~/.cache/opentars/historico_modelos.json` (delete it to reset).
 - Everything it runs is recorded in `~/.tars_log/tars.log`; Qt problems go to `~/.tars_log/qt.log`.
@@ -565,9 +565,9 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 | `TARS_IDIOMA` | language for this run only, not saved | the one chosen in the menu |
 | `TARS_CONTEXTO` | the AI's memory, in tokens | 16384 with a 16 GB+ GPU, else 8192 |
 | `TARS_KEEP_ALIVE` | how long the chat model stays in memory after last use (`30s`, `5m`, `1h`, `0` = unload now) | `5m` |
-| `TARS_KEEP_ALIVE_VISAO` | the same for Cooper and models that only describe screenshots | `2m` |
+| `TARS_KEEP_ALIVE_VISAO` | the same for an old Cooper and models that only describe screenshots (Gargantua 2 uses the chat's) | `2m` |
 | `TARS_KEEP_ALIVE_AJUDANTE` | the same for the light background AI | `2m` |
-| `TARS_PRECARGA=1` | loads the helper and Cooper at start (strong PC, faster first request) | off |
+| `TARS_PRECARGA=1` | loads the helper at start (strong PC, faster first request) | off |
 | `TARS_LARGURA_SCREENSHOT` | maximum width of the screenshot sent to the AI | 1280 |
 | `TARS_SEM_ACESSIBILIDADE=1` | turns off clicking by name | on |
 | `TARS_CLIQUE_POR_VISAO=0` | does not use the vision model to find icons without text | on |
@@ -612,9 +612,9 @@ openTARS reminds it of its tools and, if it refuses again, passes the request to
 <details>
 <summary><b>Clicking by name does not find an app's buttons</b></summary>
 
-When the app does not expose its buttons to accessibility, openTARS asks Cooper to find the spot. If even that does not work, check:
+When the app does not expose its buttons to accessibility, openTARS asks Gargantua 2 to find the spot on the screen. If even that does not work, check:
 
-- **Is it an icon without text?** Install Cooper (`opentars --cooper`) and describe the icon ("click the send icon").
+- **Is it an icon without text?** Install Gargantua 2 (`ollama pull ProjectOpenTARS/Gargantua-2`) and describe the icon ("click the send icon").
 - **Is it an Electron app** (Claude, Discord, VS Code...) that was already open? Close it and ask openTARS to open it: when opened by it, the app starts with accessibility on.
 - **Wayland session?** Clicking by vision needs X11. On the login screen, choose "Ubuntu on Xorg" (or equivalent).
 - Run `opentars --diagnostico` and look at the "Click by name" line. Qt/KDE apps start to appear after the first time openTARS uses accessibility (reopen the app).
@@ -623,7 +623,7 @@ When the app does not expose its buttons to accessibility, openTARS asks Cooper 
 <details>
 <summary><b>"Multimodal data provided, but model does not support multimodal requests"</b></summary>
 
-When the chat model cannot see images (qwen3, llama...), the screenshot is not sent to it: Cooper describes the screen in text. If it is not installed, the AI reads the buttons through accessibility (`list_elements`). To get the description, run `opentars --cooper`.
+When the chat model cannot see images (qwen3, llama...), the screenshot is not sent to it: Gargantua 2 describes the screen in text. If it is not installed, the AI reads the buttons through accessibility (`list_elements`). To get the description, run `ollama pull ProjectOpenTARS/Gargantua-2`.
 </details>
 
 <details>
@@ -690,7 +690,7 @@ nucleo/                 the core in parts (registro, ollama, hardware, aplicacoe
                         utilidades, gargantua, voz, terminal), all in the same namespace:
                         tars.<name> remains valid for everything
 nucleo/rotinas.py       5.0: schedule_task / list_tasks / delete_task (only offered on routine requests)
-nucleo/cooper.py        4.5: Cooper in icon clicking and screen description
+nucleo/cooper.py        the vision step (was Cooper): icon clicking and screen description with Gargantua 2
 nucleo/gargantua.py     4.0: Gargantua's short format (identical to training) and its AUTO preference
 gargantua/              Gargantua training kit (virtual-screen collection, QLoRA, GGUF, proof);
                         start with gargantua/TUTORIAL.md
@@ -711,7 +711,7 @@ murph/                  Murph training (not in the package): generated phrases, 
 tars_mouse.py           precise mouse: drag, screen places, snap to button, checks the screen changed
 tars_memoria.py         preference memory
 tars_ambiente.py        4.5: WSL, no GUI, Windows paths, Windows Ollama (pure)
-tars_cooper.py          4.5: Cooper questions in the training format, answer parsing, thousandths -> pixels (pure)
+tars_cooper.py          the vision step: questions in the training format, answer parsing, thousandths -> pixels (pure)
 tars_wayland.py         mouse and keyboard through ydotool on Wayland
 tars_atalho.py          global shortcut (GNOME, Cinnamon, MATE, XFCE)
 tars_instancia.py       single instance (the bar opens instantly)
