@@ -84,127 +84,56 @@ With a local model and web search off, your conversation and screen stay on your
 |---|---|
 | 🪐 **Gargantua 2 is the official AI (October 18)** | `ProjectOpenTARS/Gargantua-2`: a Qwen3.5 2B trained by us with quantization-aware training, **1.6 GB** (the old Gargantua was 2.5 GB) and **it sees the screen by itself**. In our test of 84 everyday tasks it did 72 right, with no dangerous command run; it picked the right tool in 21 of 21 requests, 0.7 s each on a graphics card. It is weakest at the text editor (2 of 4) and at looking at an image file (1 of 4). The installer and the first-run window now download it; if you have the old Gargantua, **Settings → General → AI on your computer** offers the new one (nothing is removed). Older openTARS versions keep using `ProjectOpenTARS/Gargantua` |
 | 🚫 **Cooper has been discontinued** | The separate vision model is gone: no download, no second model in memory. Gargantua 2 answers the same screen questions in the same format (find a button, read a field, say whether something is checked, describe the windows): on screens it never saw in training it located the right control in 34 of 40 tries when openTARS asked the way it does when clicking. `opentars --cooper` now only says so. An old Cooper that is already installed is only used as a reserve when there is no Gargantua 2 |
-| 🎚️ **Three modes: Lite, Base and Pro** | Chosen on first run (step 2) and switchable in **Settings → General**; nothing is deleted when you switch. **Lite** is chat, microphone and attachments, everything automatic. **Base** adds the history, the model picker, memory, routines, Probes and the cloud. **Pro** adds **Advanced settings** (temperature, context size, extra instructions sent with every conversation, and tools you turn off) and **Diagnostics** (the last tools the AI called and the same check as `opentars --diagnostico`). Updating from 5.0 keeps you in Pro, so nothing disappears. A tool you turn off is refused when it runs, not removed from the list: Gargantua still sees the exact list it was trained on |
-| 🛰️ **Probes** | Small watchers that run in the background, even with the window closed, and tell you when something matters. **Settings → Probes** (or the button in the sidebar) is a three-step guide: pick what to watch (**a folder**, **a web page**, **news and releases** from an RSS feed, a YouTube channel or a GitHub repository, **this computer**: battery, temperature, CPU, internet and system updates, **a program** that closes, opens or uses too much memory, or **a git project**), fill in one or two fields and check the sentence of what it will do ("It will tell you when a new file with .deb shows up…"). **Create and turn on** does it all, including the background service. These Probes use a fixed rule, no AI, so they work without any model. **In my own words** is still there: write a mission and Gargantua turns it into a plan you check. **Alerts:** a bell next to the clock (the service `opentars --probes`) shows how many alerts you have and opens a panel on click, with a desktop notification for each one; inside the app, the same bell sits at the top and a bar shows new alerts. A Probe only **reads**; pages and feeds only from public addresses and at most once every 15 minutes; keys, passwords and browser data are off limits, and what it reads is data, never instructions. **Off by default**, at most 5 on, low priority. **Actions are yours to choose, never the model's:** move what it finds to a folder, or send it to the trash (asks every time, from the alerts panel; no answer in 30 minutes means no) |
+| 🎚️ **Three modes: Lite, Base and Pro** | Chosen on first run and switchable in **Settings → General**; nothing is deleted when you switch. **Lite** is chat, microphone and attachments, all automatic. **Base** adds history, the model picker, memory, routines, Probes and the cloud. **Pro** adds **Advanced settings** (temperature, context size, extra instructions, tools you turn off) and **Diagnostics**. Updating from 5.0 keeps you in Pro. A tool you turn off is refused when it runs, not removed from the list: Gargantua still sees the exact list it was trained on |
+| 🛰️ **Probes** | Small watchers that run in the background, even with the window closed, and tell you when something matters. **Settings → Probes** is a three-step guide: pick what to watch (**a folder**, **a web page**, **news and releases** from an RSS feed, a YouTube channel or GitHub, **this computer**, **a program** or **a git project**), fill in a field and check the sentence of what it will do. These Probes use a fixed rule, no AI. **In my own words** turns a mission into a plan you check (the code refuses missions that ask to delete, install or change anything). A bell next to the clock shows the alerts, with a desktop notification for each. A Probe only **reads**: public addresses at most every 15 minutes, no keys, passwords or browser data, and what it reads is data, never instructions. **Off by default**, at most 5 on, low priority. **Actions are yours to choose, never the model's:** move what it finds to a folder, or send it to the trash (asks every time; no answer in 30 minutes means no) |
 | 🪶 **Gargantua Lite** | A computer without a 4 GB graphics card and with up to 6 GB of RAM (or fewer than 4 threads) gets **Gargantua Lite** from the first run and from the installer, instead of Gargantua 2: since October 17 it is `ProjectOpenTARS/Gargantua-2:lite` (also available as `Gargantua:2.0-lite`), **0.6 GB with vision** (it was 1.1 GB without it), trained by us on Qwen3.5 0.8B with quantization-aware training and saved in 4 bits. It runs fine on the processor alone. `TARS_GARGANTUA=lite` or `completo` forces either one. In our test it did **70 of 84** everyday tasks it never saw in training (the previous Lite did 63) and refused all the dangerous ones. It was not trained on screens: asked where a button is, it was right in 0 of 40 tries when openTARS asks the way it does to click, so openTARS does not use it to look at the screen (only Gargantua 2 does; **Settings** offers it) |
 | 💻 **Gargantua Code** | An optional download (`ollama pull ProjectOpenTARS/Gargantua:code`): writes, runs, fixes and explains scripts with the same tools. When it is installed, coding requests go to it first. 43 of 48 coding tasks in our test |
-| 🖥️ **A terminal like today's AI CLIs** | `opentars -p "request"` for scripts (only the answer on stdout; `--output-format json` adds the model, the tools and the time; `--model` picks the model; text piped on stdin is included as data). `--new`, `--resume` (the same saved conversations as the window), `/compact` (summarizes the start of the conversation), `/context` (how much is in use), `/mode ask \| plan \| auto` (`--plan`, `--auto`): **plan** only describes, nothing that changes anything runs; **auto** applies file edits inside the current folder without asking. "Always for this session" exists only for sending and installing commands; mass deletion asks every time, in every mode. For models with tools other than Gargantua: `read_file`, `search_files`, `edit_file` and `write_file`, with a **diff and your approval** before anything is written, and `/undo` to revert the last request's edits. An `AGENTS.md` in the folder goes into every conversation (`/init` writes a first one), `!command` runs a shell command and hands its output to the next request, and a status line shows the model, the context in use and the mode. See [Terminal](#terminal) |
-| ☁️ **Cloud through your Ollama account** | **Settings → Cloud** and the first run now start with **Sign in with your Ollama account**: no API key, the credential stays with Ollama and openTARS stores nothing. Then download a cloud model (for example `gpt-oss:20b-cloud`) and pick it in the model picker when you want it; it never enters the automatic choice. The footer now also warns when the chosen model is an Ollama cloud model (before, it said everything ran on your computer). The free account has session and weekly limits that Ollama does not publish in detail |
-| 🔎 **Web search through SearXNG** | Off by default. `opentars --searxng` sets up a SearXNG that only answers on this computer (Docker) and turns search on; or point **Settings → Cloud** at your own. Then the AI can search and read pages and answer inside the app (`web_search` and `read_page`, offered only when you ask to search). Pages come in cut and as data; only public addresses can be read. Gargantua does not use these tools (it was not trained with them): pick another model with tools, such as `qwen3:8b`, to search |
+| 🖥️ **A terminal like today's AI CLIs** | `opentars -p "request"` for scripts (`--output-format json`, `--model`, stdin as data), `--new`, `--resume`, `/compact`, `/context`, `/mode ask \| plan \| auto`, a **diff and your approval** before any file is written with `/undo`, `AGENTS.md`, `!command` and a status line. See [Terminal](#terminal) |
+| ☁️ **Cloud through your Ollama account** | **Settings → Cloud** and the first run start with **Sign in with your Ollama account**: no API key, and openTARS stores nothing. Then download a cloud model (for example `gpt-oss:20b-cloud`) and pick it when you want; it never enters the automatic choice, and the footer warns when it is selected |
+| 🔎 **Web search through SearXNG** | Off by default. `opentars --searxng` sets up a SearXNG that only answers on this computer (Docker), or point **Settings → Cloud** at your own. The AI can then search and read pages (`web_search`, `read_page`; pages come in as data, public addresses only). Gargantua was not trained with these tools: pick another model with tools, such as `qwen3:8b`, to search |
 | 🧠 **Gargantua uses its tools reliably** | openTARS asked Ollama to turn reasoning off in a way that made Gargantua think it should answer right away, so sometimes it replied without doing the task. Fixed: in our tests Gargantua went from 15 to 18 of 18 tries, and Gargantua Lite from 34 to 63 of 84 tasks |
 | 🔁 **Smarter fallback** | When a model fails in the middle of a request, the automatic switch goes to a model of the same size or bigger, never down to a much smaller one (before, the 0.6B model could end up answering) |
 
 **Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and hooks, MCP and sub-agents in the terminal, are planned for 5.2. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
 
-## What's new in 5.0 Tesseract
+## Earlier releases
 
-5.0 replaces the window with a new one built in **Qt (PySide6)**. The core underneath is the 4.6 one (Ollama only, Cooper looking at the screen) with **voice**, **attachments** and the **optional cloud** back.
+Full history: the [changelog](https://project-opentars.github.io/openTars-lightweight-local-addon/changelog.html).
 
-<table>
-<tr>
-<td width="50%"><img src="docs/img/01-home.png" alt="Home screen with four suggestions, the history sidebar and the model pill"></td>
-<td width="50%"><img src="docs/img/03-approval.png" alt="Approval card asking to allow or deny a sudo command"></td>
-</tr>
-<tr>
-<td align="center"><sub>Home: history by day, model pill, suggestions</sub></td>
-<td align="center"><sub>Risky actions ask first: <b>Allow</b> / <b>Deny</b></sub></td>
-</tr>
-</table>
+<details>
+<summary><b>5.0 Tesseract</b>: a new Qt window, voice, attachments, routines, the KIPP mascot</summary>
 
-| | |
-|---|---|
-| 🧭 **First run** | 5 steps: language, Ollama, cloud (optional), downloading Gargantua and a quick test. It looks for Ollama, installs it if missing (asks for the system password), downloads the model with a progress bar (pause and resume) and checks it with a simple sum |
-| 💬 **Main window** | Sidebar with the **history by day** (search, delete; opening a conversation gives the exact context back to the AI), model pill (Automatic, local or cloud), **Stop** button, bubbles, collapsed reasoning, tools with timings and notices. Shortcuts: `Ctrl+N` new chat, `Ctrl+K` search, `Ctrl+,` settings, `Ctrl+M` microphone, `Esc` stop |
-| ✅ **Step list** | On long tasks, the **Steps** card shows what is left; each finished action ticks a step (an approximation: looking at the screen does not count) and everything closes at the end. When it needs you, it shows "waiting for you" |
-| 🛡️ **Asks before risky actions** | A dangerous command becomes a card with **Allow** / **Deny** (3 lines and "Show all"). Stopping also denies whatever was waiting |
-| 🎙️ **Voice, 3 modes** | **Hold** to talk, **Continuous** and the wake word **"TARS"**, all local (faster-whisper + Kokoro). English and Portuguese (the Portuguese voice is less natural than the English one). The voice screen has waves, "you said", mute and stop. Without the voice installed, the microphone takes you to **Settings → Voice** to install it |
-| 📎 **Attachments** | Paperclip or drag files onto the window; text and images (images only for a model that can see) |
-| 🧠 **Visible memory** | **Settings → Memory & privacy** lists what TARS remembers, forgets item by item, exports your chats and erases history/memory (with confirmation) |
-| ☁️ **Cloud, only if you want it** | The default is **"No, only on my computer"**. If you want, use Ollama Cloud, Groq, Cerebras or any OpenAI-compatible address with **your own** key, stored only on this computer (mode 0600) and never displayed. A cloud model never enters the automatic choice; when you pick one, the footer warns that the text goes to the provider. *The Ollama Cloud address and the free limits are still "to be confirmed".* |
-| 🔄 **Automatic update detection** | Upload a new `opentars_all.deb` to the repository and every installed copy notices it on its own: no release, tag or checksum file to maintain. See [Updates](#updates) |
-| ⏰ **Scheduled routines** | **Settings → Routines**: "every day at 8, open the newspaper". Daily, weekdays, every N minutes (5 or more) or once. Each routine runs in its own chat (⏰ in the history), without speaking aloud, and records the result (done, stopped, unfinished). **It only runs while openTARS is open**: with routines on, closing the window leaves the app in the system tray (if your desktop has one). If the computer or the app was off at the time, the routine is **skipped** (more than 10 min late) and you are told. When you create one, you tick what it may do **without asking** (delete files, send/publish, install/change the system); anything else makes it **stop and tell you**, it never decides alone. A routine created by the AI in chat starts **disabled** until you approve it. (Gargantua does not know these tools, since it was trained on a fixed list; use the form.) Stored in `~/.config/opentars/agenda.json` |
-| ⚡ **Quick bar in Qt** | `Ctrl+Alt+Space` (or `opentars-gui --rapido`): floating box, ask, answer in place, `Esc` closes, `Ctrl+Enter` opens the window. Follow-up questions continue the same chat; a risky action brings up the window with the Allow/Deny card. Opened only by the bar, it quits by itself after 30 min idle |
-| 🤖 **KIPP, the mascot** | The monolith from the logo, in pixel art, named after the third robot of *Interstellar*, walks along the chat above the input box, looks where it is going, gives tips (click it for one) and reacts with its face and body to what the AI is doing: dots over its head while thinking, a focused frown while working, wide eyes and a "!" when it needs your permission, a smile when it is done and a sad face when something fails. After a few quiet minutes it naps (no walking, no tips); any request or a click wakes it up. Turn it off in **Settings → General**, from its right-click menu or with `TARS_SEM_MASCOTE=1`. [See its moods](docs/img/16-mascot.gif) |
-| 🖥️ **A modern terminal** | `opentars` in a terminal opens a chat styled like today's AI command-line tools: the logo, a welcome panel with the Ollama status and the model in use, each step as `●` with its result under `⎿`, a spinner while it works (`ctrl+c` stops it), the `❯` prompt and a clear `/help`. See [Terminal](#terminal) |
-| 🔤 **Fonts included** | IBM Plex (OFL license) ships inside the package |
-| 🛟 **Without Qt, everything still works** | If PySide6 is missing (or with `--tk`), the 4.6 window opens as before. `TARS_SEM_ASSISTENTE=1` skips the first-run assistant. With `--tk` the quick bar is the 4.6 one |
-| 📦 **Package: .deb only** | 5.0 ships as a **.deb** (Ubuntu, Zorin, Mint, Debian, Pop!_OS). The AppImage was built and tested (~60 MB) but **left out of the delivery**; the recipe stays in `empacotamento/appimage/` for anyone who wants to build it (`sudo bash empacotamento/appimage/build.sh`) |
-| 🔍 **Full code audit** | About 50 fixes across the core, the window, routines and the updater: atomic writes for every settings file (with `.corrompido` backups of broken ones), `rm` with wildcards, `find -exec rm`, `curl \| sh` and `ssh` now ask first, typing a dangerous command into a terminal asks too, the cloud key no longer leaks to child processes, a command that starts a background app no longer hangs the turn, an Ollama stream that ends without `done` is an error instead of a half answer, a routine never runs twice for the same slot, and more |
+- **A new window in Qt (PySide6)** with the history by day, a model pill (Automatic, local or cloud), a **Stop** button, a **Steps** card on long tasks and approval cards (**Allow** / **Deny**) before risky actions. If PySide6 is missing (or with `--tk`) the 4.6 Tk window opens as before.
+- **First run in 5 steps:** language, Ollama (installed if missing), optional cloud, the Gargantua download with a pausable progress bar, and a quick test.
+- **Voice**, all local (faster-whisper + Kokoro): hold to talk, continuous, or the wake word "TARS". English and Portuguese.
+- **Attachments** (paperclip or drag and drop): text, and images for models that can see.
+- **Visible memory:** Settings → Memory & privacy lists what TARS remembers and lets you forget items, export chats or erase everything.
+- **Cloud only if you want it:** Ollama Cloud, Groq, Cerebras or any OpenAI-compatible address with your own key, stored only on this computer.
+- **Scheduled routines** ("every day at 8, open the newspaper"), each in its own chat. A routine can only delete, send or install if you allowed it when creating it.
+- **Quick bar** (`Ctrl+Alt+Space`), **KIPP** (the pixel-art monolith that shows what the AI is doing) and a **terminal** styled like today's AI command-line tools.
+- **Automatic update detection:** upload a new `opentars_all.deb` and every installed copy notices it. See [Updates](#updates).
+- About 50 fixes from a full code audit, including atomic writes for every settings file. Packaged as a **.deb** only.
 
 <p align="center"><img src="docs/img/16-mascot.gif" width="760" alt="KIPP's moods: idle, thinking, working, needs you, oops, done and napping"></p>
-
-**Not in 5.0 yet:** Cooper improvement (needs GPU training, which cannot be done in the development environment; Cooper is still the 4.6 one), validation on a clean virtual machine and on Wayland, voice with a real microphone, and an end-to-end test of the update flow against the real GitHub repository.
-
-### Settings
 
 <table>
 <tr>
 <td width="50%"><img src="docs/img/05-settings-general.png" alt="Settings: General"></td>
-<td width="50%"><img src="docs/img/06-settings-voice.png" alt="Settings: Voice"></td>
-</tr>
-<tr>
-<td width="50%"><img src="docs/img/07-settings-memory.png" alt="Settings: Memory and privacy"></td>
-<td width="50%"><img src="docs/img/08-settings-routines.png" alt="Settings: Routines"></td>
-</tr>
-<tr>
 <td width="50%"><img src="docs/img/09-settings-cloud.png" alt="Settings: Cloud"></td>
-<td width="50%"><img src="docs/img/10-settings-updates.png" alt="Settings: Updates"></td>
 </tr>
-</table>
-
-### Voice, quick bar and first run
-
-<table>
 <tr>
 <td width="50%"><img src="docs/img/12-voice.png" alt="Voice screen listening"></td>
 <td width="50%"><img src="docs/img/13-quick-bar.png" alt="Quick bar with an answer"></td>
 </tr>
-<tr>
-<td width="33%"><img src="docs/img/14-first-run-language.png" alt="First run: language"></td>
-<td width="33%"><img src="docs/img/15-first-run-model.png" alt="First run: downloading Gargantua"></td>
-</tr>
 </table>
-
-## Earlier releases
-
-<details>
-<summary><b>4.6 Endurance</b>: removed what was heavy and what Gargantua did not use</summary>
-
-| | |
-|---|---|
-| ✂️ **Ollama only** | External servers (`--servidor`, `api:<name>`: vLLM, LM Studio, llama.cpp...) and `.gguf` import from other programs are gone. Models come from Ollama |
-| 👁️ **Only one model looks at the screen** | OCR (`tesseract`), the zoom grid and the fallback vision model are gone. Clicking an icon without text: accessibility → the vision model (Cooper then; Gargantua 2 since October 18). If it fails or is not installed, the screen shows why instead of trying another path |
-| 🧹 **Less dead code** | Unused functions and duplicated Portuguese/English command-line options were removed |
-| 🧪 **Murph phrases out of the package** | `tars_exemplos*.py` (only used to train Murph) moved to `murph/` in the source |
-
-Voice, attachments and scheduled routines were removed in 4.6 and came back in 5.0.
 </details>
 
 <details>
-<summary><b>4.5 Endurance</b>: Cooper, WSL, no-GUI mode, attachments</summary>
+<summary><b>4.0 to 4.6 Endurance</b>: Gargantua, Murph, WSL, no-GUI mode</summary>
 
-| | |
-|---|---|
-| 👁️ **Cooper, the model that looks at the screen** | A SmolVLM2 500M fine-tuned by the openTARS team (0.6 GB) to answer about a screenshot: **where** a button is, **what** a field says, which windows are open. Positions come in thousandths of the image (0 to 1000) and become pixels automatically. [Details](#cooper-the-model-that-looks-at-the-screen) |
-| 🪟 **WSL** | Runs on WSL 1 and 2. With **WSLg** (Windows 11) the window opens normally; without it, it goes to the terminal. It finds the **Ollama running on Windows** by itself and opens links in the Windows browser |
-| 🖥️ **Linux without a GUI** | Server, SSH, container: with no `DISPLAY`, openTARS becomes a terminal assistant. **`opentars --chat`** talks to the AI, runs commands and edits files. `TARS_SEM_INTERFACE=1` forces this mode |
-| 🌱 **Everything on demand** | Nothing is loaded when openTARS opens. Cooper leaves memory 2 min after its last use and the chat model after 5 min |
-| ✂️ **Lighter: 28 → 19 tools** | Trash, undo and clipboard modules are gone; `double_click` and `hotkey` were merged into `click_mouse` and `press_key`. `rm` really deletes (dangerous commands still ask); to trash, the AI uses `gio trash` |
-| 🛠️ **General review** | 40+ fixes: **Stop** works while the model loads, real **right click**, unknown keys are errors, `close_application` no longer kills processes that only have the name in the path, and more |
-</details>
-
-<details>
-<summary><b>4.0 Endurance / Neo</b>: Gargantua, Murph, update notice</summary>
-
-| | |
-|---|---|
-| 🌀 **Gargantua, the official AI** | A Qwen3 4B trained to use openTARS. The installer downloads it (`ProjectOpenTARS/Gargantua`, ~2.5 GB) and AUTO mode uses it first for actions and searches |
-| 🪪 **It knows its own name** | Ask "who are you?" and it answers that it is Gargantua, the AI of openTARS |
-| 🧭 **Longer tasks** | A request with a plan starts with more steps and, while the AI makes real progress, it gets extra room (up to 120 steps). Old results are summarized so the AI's memory does not overflow mid-task |
-| ⚡ **Short format** | Gargantua receives a small prompt, summarized tools and no "reasoning": it answers faster and leaves memory free on the card |
-| 🧪 **Open training kit** | `gargantua/gargantua.py` collects examples on a virtual screen, trains on a 6 GB card and exports the GGUF. [Step-by-step tutorial](gargantua/TUTORIAL.md) |
-| 📁 **Knows your folders** | The AI gets the real names of Desktop, Documents and Downloads (read from `user-dirs.dirs`) |
-| 🪶 **Lighter (Neo)** | The embedding model, the old Naive Bayes classifier and the `qwen2.5:0.5b` helper are gone: **Murph**, keywords, context, format and your apps decide the request type |
+- **4.6:** Ollama only (external servers and `.gguf` import from other programs were removed), OCR and the fallback vision model removed, less dead code.
+- **4.5:** Cooper (a separate vision model, discontinued on October 18, 2026), **WSL 1 and 2** (finds the Ollama running on Windows), **Linux without a GUI** (`opentars --chat`), everything loaded on demand, 28 → 19 tools, about 40 fixes.
+- **4.0:** **Gargantua**, the official AI (a Qwen3 4B back then), a short prompt format, longer tasks, the [open training kit](gargantua/TUTORIAL.md), and **Murph**, which replaced the embedding model and the helper model.
 </details>
 
 ## Looking at the screen (Cooper was discontinued)
