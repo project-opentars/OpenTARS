@@ -151,7 +151,7 @@ openTARS asks Gargantua 2 the same questions Cooper answered, in the format it w
 
 How well it does it, on screens it never saw in training (synthetic ones, drawn by us with the exact answer): reading a field 15 of 15, checking a statement 14 of 15, locating a control 9 of 15 (34 of 40 when openTARS asks the way it does when clicking), describing the windows 44%. Real screens are messier, so openTARS still checks the result of every click.
 
-`--diagnostico` shows which model looks at the screen. `TARS_COOPER=0` turns the use of the vision step off. If a Cooper is still installed it is used only when there is no Gargantua 2, and `ollama rm cooper` frees its 0.6 GB. The vision step always uses the model of the conversation: it is already in memory, so it costs no extra graphics-card memory and no model swap.
+`--diagnostico` shows which model looks at the screen. `TARS_VISAO=0` turns the use of the vision step off (the old name, `TARS_COOPER=0`, still works). If a Cooper is still installed it is used only when there is no Gargantua 2, and `ollama rm cooper` frees its 0.6 GB. The vision step always uses the model of the conversation: it is already in memory, so it costs no extra graphics-card memory and no model swap.
 
 ## Installation
 
@@ -619,7 +619,7 @@ nucleo/                 the core in parts (registro, ollama, hardware, aplicacoe
                         utilidades, gargantua, voz, terminal), all in the same namespace:
                         tars.<name> remains valid for everything
 nucleo/rotinas.py       5.0: schedule_task / list_tasks / delete_task (only offered on routine requests)
-nucleo/cooper.py        the vision step (was Cooper): icon clicking and screen description with Gargantua 2
+nucleo/visao.py         the vision step (was Cooper): icon clicking and screen description with Gargantua 2
 nucleo/gargantua.py     4.0: Gargantua's short format (identical to training) and its AUTO preference
 gargantua/              Gargantua training kit (virtual-screen collection, QLoRA, GGUF, proof);
                         start with gargantua/TUTORIAL.md
@@ -640,7 +640,7 @@ murph/                  Murph training (not in the package): generated phrases, 
 tars_mouse.py           precise mouse: drag, screen places, snap to button, checks the screen changed
 tars_memoria.py         preference memory
 tars_ambiente.py        4.5: WSL, no GUI, Windows paths, Windows Ollama (pure)
-tars_cooper.py          the vision step: questions in the training format, answer parsing, thousandths -> pixels (pure)
+tars_visao.py           the vision step: questions in the training format, answer parsing, thousandths -> pixels (pure)
 tars_wayland.py         mouse and keyboard through ydotool on Wayland
 tars_atalho.py          global shortcut (GNOME, Cinnamon, MATE, XFCE)
 tars_instancia.py       single instance (the bar opens instantly)
