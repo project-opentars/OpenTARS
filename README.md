@@ -18,7 +18,7 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 [![Languages](https://img.shields.io/badge/languages-EN%20%C2%B7%20PT--BR-1A2446?style=flat-square)](#languages)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[What's new](#whats-new-in-51-tesseract) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [Train your own](gargantua/TUTORIAL.md) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
+[What's new](#whats-new-in-51-tesseract) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
 
 <br>
 
@@ -133,7 +133,7 @@ Full history: the [changelog](https://project-opentars.github.io/OpenTARS/change
 
 - **4.6:** Ollama only (external servers and `.gguf` import from other programs were removed), OCR and the fallback vision model removed, less dead code.
 - **4.5:** Cooper (a separate vision model, discontinued on October 18, 2026), **WSL 1 and 2** (finds the Ollama running on Windows), **Linux without a GUI** (`opentars --chat`), everything loaded on demand, 28 → 19 tools, about 40 fixes.
-- **4.0:** **Gargantua**, the official AI (a Qwen3 4B back then), a short prompt format, longer tasks, the [open training kit](gargantua/TUTORIAL.md), and **Murph**, which replaced the embedding model and the helper model.
+- **4.0:** **Gargantua**, the official AI (a Qwen3 4B back then), a short prompt format, longer tasks, the open training kit, and **Murph**, which replaced the embedding model and the helper model.
 </details>
 
 ## Looking at the screen (Cooper was discontinued)
@@ -242,7 +242,7 @@ The installer already does this. In our own test of 84 everyday tasks (requests 
 | Reasoning before acting | not needed | turns on for hard requests |
 | Learned openTARS's tools | yes, with checked examples | no, only reads the instructions |
 
-**Want to train your own?** The kit (`gargantua/gargantua.py`) collects examples on a virtual screen, trains with Unsloth on a 6 GB card and exports the GGUF, all on your PC. Any model with "gargantua" in its name is treated as it. See the **[training kit tutorial](gargantua/TUTORIAL.md)**.
+**Want to train your own?** The kit (`gargantua/gargantua.py`) collects examples on a virtual screen, trains with Unsloth on a 6 GB card and exports the GGUF, all on your PC. Any model with "gargantua" in its name is treated as it.
 
 ## How it works
 
@@ -621,8 +621,7 @@ nucleo/                 the core in parts (registro, ollama, hardware, aplicacoe
 nucleo/rotinas.py       5.0: schedule_task / list_tasks / delete_task (only offered on routine requests)
 nucleo/visao.py         the vision step (was Cooper): icon clicking and screen description with Gargantua 2
 nucleo/gargantua.py     4.0: Gargantua's short format (identical to training) and its AUTO preference
-gargantua/              Gargantua training kit (virtual-screen collection, QLoRA, GGUF, proof);
-                        start with gargantua/TUTORIAL.md
+gargantua/              Gargantua training kit (virtual-screen collection, QLoRA, GGUF, proof)
 tars_qt/                5.0: the Qt window (principal, conversa, configuracoes, barra_rapida, tela_voz, primeiro_uso, tema, ponte)
 tars_gui.py             the 4.6 window (Tkinter, `--tk`), uses tars.py underneath
 tars_historico.py       5.0: chat history (by day, search, export)
