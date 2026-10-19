@@ -614,7 +614,7 @@ Ollama, the downloaded models and your data (`~/.tars_sessoes.json`, `~/.tars_lo
 
 ```
 tars.py                 start of the core: graphical session, configuration, and loads the parts of nucleo/
-nucleo/                 the core in parts (registro, ollama, hardware, aplicacoes, controle, janelas, cooper,
+nucleo/                 the core in parts (registro, ollama, hardware, aplicacoes, controle, janelas, visao,
                         elementos, ferramentas, rotinas, selecao, prompt, chat, nuvem, anexos, memoria,
                         utilidades, gargantua, voz, terminal), all in the same namespace:
                         tars.<name> remains valid for everything
