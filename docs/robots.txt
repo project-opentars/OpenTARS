@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://project-opentars.github.io/openTars-lightweight-local-addon/sitemap.xml
+Sitemap: https://project-opentars.github.io/OpenTARS/sitemap.xml

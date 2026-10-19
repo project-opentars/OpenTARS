@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>openTARS: the local AI assistant for Linux</title>
 <meta name="description" content="openTARS is a local AI assistant for Linux. Ask in your own words and it opens programs, clicks buttons by name, runs commands and looks at the screen, on your own machine through Ollama.">
-<link rel="canonical" href="https://project-opentars.github.io/openTars-lightweight-local-addon/">
+<link rel="canonical" href="https://project-opentars.github.io/OpenTARS/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="openTARS">
-<meta property="og:url" content="https://project-opentars.github.io/openTars-lightweight-local-addon/">
+<meta property="og:url" content="https://project-opentars.github.io/OpenTARS/">
 <meta property="og:title" content="openTARS: the local AI assistant for Linux">
 <meta property="og:description" content="Tell your Linux desktop what to do. Open source. Runs locally with Ollama by default, with optional cloud models and web search.">
-<meta property="og:image" content="https://project-opentars.github.io/openTars-lightweight-local-addon/img/og-card.png">
+<meta property="og:image" content="https://project-opentars.github.io/OpenTARS/img/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="openTARS, the local AI assistant for Linux, with a screenshot of its window">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="openTARS: the local AI assistant for Linux">
 <meta name="twitter:description" content="Tell your Linux desktop what to do. Open source, local by default, with optional external services.">
-<meta name="twitter:image" content="https://project-opentars.github.io/openTars-lightweight-local-addon/img/og-card.png">
+<meta name="twitter:image" content="https://project-opentars.github.io/OpenTARS/img/og-card.png">
 <meta name="theme-color" content="#141C38">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="icon" href="img/icon-32.png" sizes="32x32" type="image/png">
@@ -29,8 +29,8 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
  "operatingSystem": "Linux (Debian, Ubuntu, Linux Mint, Zorin OS, Pop!_OS)", "softwareVersion": "5.1",
- "license": "https://opensource.org/licenses/MIT", "url": "https://project-opentars.github.io/openTars-lightweight-local-addon/",
- "downloadUrl": "https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb",
+ "license": "https://opensource.org/licenses/MIT", "url": "https://project-opentars.github.io/OpenTARS/",
+ "downloadUrl": "https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb",
  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
  "description": "A local AI assistant for Linux that opens programs, clicks buttons by name, types and runs commands, on your own machine through Ollama."}
 </script>
@@ -45,7 +45,7 @@
       <a class="hide-s" href="#window">Screenshots</a>
       <a class="hide-s" href="#models">Models</a>
       <a href="#install">Install</a>
-      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+      <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
     </nav>
   </div>
 </header>
@@ -57,7 +57,7 @@
         <h1 class="display">Tell your Linux desktop what to do.</h1>
         <p class="lede">openTARS is an AI assistant that does the work on your computer. It opens programs, presses buttons by their name, types, runs commands and looks at the screen. With a local Ollama model, processing stays on your machine; cloud models and web search are optional.</p>
         <div class="actions">
-          <a class="btn" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb">Download the .deb</a>
+          <a class="btn" href="https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb">Download the .deb</a>
           <a class="link" href="#install">Or install with one command</a>
         </div>
         <p class="facts">Version 5.1 Tesseract. Free and open source under the MIT license, for Ubuntu, Debian, Mint, Zorin and Pop!_OS.</p>
@@ -255,7 +255,7 @@
       </div>
       <div class="get">
         <div class="get-main">
-          <a class="btn big" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb">Download opentars_all.deb</a>
+          <a class="btn big" href="https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb">Download opentars_all.deb</a>
           <dl class="pacote">
             <div><dt>Version</dt><dd>5.1 Tesseract</dd></div>
             <div><dt>Size</dt><dd>1.2 MB</dd></div>
@@ -265,7 +265,7 @@
           <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved. To check the download first: <code>sha256sum opentars_all.deb</code> must print the SHA-256 above.</p>
           <h3 class="or">Or paste one line in a terminal</h3>
           <div class="cmd">
-            <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
+            <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
             <button type="button" data-copy="cmd">Copy</button>
           </div>
           <p class="quiet">Then open openTARS from your app menu. The first run checks Ollama, downloads Gargantua 2 with a progress bar you can pause, and tests it with a quick sum. Updating later keeps your chats and settings.</p>
@@ -283,9 +283,9 @@
         <div class="legacy-body">
           <p>4.6 is the release before the new window: the simpler Tk window, Ollama only, without voice or attachments. Use it only if 5.1 does not run on your computer.</p>
           <p class="aviso">It does not get the security fixes from 5.0 and it will not tell you when a new version comes out. Commands like <code>rm</code> with wildcards and <code>curl | sh</code> are not confirmed the way 5.0 does it.</p>
-          <a class="btn2" href="https://github.com/project-opentars/openTars-lightweight-local-addon/raw/5a9ea9f/opentars_all.deb">Download 4.6 Endurance (.deb, 0.7 MB)</a>
+          <a class="btn2" href="https://github.com/project-opentars/OpenTARS/raw/5a9ea9f/opentars_all.deb">Download 4.6 Endurance (.deb, 0.7 MB)</a>
           <div class="cmd">
-            <pre id="cmd46">wget -O /tmp/opentars-4.6.deb https://github.com/project-opentars/openTars-lightweight-local-addon/raw/5a9ea9f/opentars_all.deb &amp;&amp; sudo apt install -y --allow-downgrades /tmp/opentars-4.6.deb</pre>
+            <pre id="cmd46">wget -O /tmp/opentars-4.6.deb https://github.com/project-opentars/OpenTARS/raw/5a9ea9f/opentars_all.deb &amp;&amp; sudo apt install -y --allow-downgrades /tmp/opentars-4.6.deb</pre>
             <button type="button" data-copy="cmd46">Copy</button>
           </div>
           <p class="quiet">To go back to the current version, run the install command above again.</p>
@@ -338,9 +338,9 @@
     <nav aria-label="Footer">
       <a href="changelog.html">Changelog</a>
       <a href="privacy.html">Privacy &amp; security</a>
-      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon">GitHub</a>
+      <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
       <a href="https://www.instagram.com/open.tars/">Instagram</a>
-      <a href="https://github.com/project-opentars/openTars-lightweight-local-addon/blob/main/LICENSE">MIT License</a>
+      <a href="https://github.com/project-opentars/OpenTARS/blob/main/LICENSE">MIT License</a>
     </nav>
   </div>
 </footer>
