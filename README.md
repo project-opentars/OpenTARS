@@ -138,7 +138,7 @@ Full history: the [changelog](https://project-opentars.github.io/OpenTARS/change
 
 ## Looking at the screen (Cooper was discontinued)
 
-Until 5.1 a separate model, **Cooper**, looked at the screen. **On October 18, 2026 it was discontinued**: Gargantua 2 sees images itself, so there is no second download and no second model taking memory. Nothing else changes for you.
+Until 5.1 a separate model, **Cooper**, looked at the screen. **On October 18, 2026 it was discontinued and its repository on ollama.com was removed**: Gargantua 2 sees images itself, so there is no second download and no second model taking memory. Nothing else changes for you.
 
 ```bash
 ollama pull ProjectOpenTARS/Gargantua-2   # 1.6 GB, with vision; this is what the app and the installer download
