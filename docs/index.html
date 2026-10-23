@@ -179,12 +179,13 @@
         <article class="model">
           <p class="role">Thinks and sees</p>
           <h3>Gargantua 2</h3>
-          <p>The main AI. A Qwen3.5 2B model trained on thousands of real openTARS requests, each one checked, so it already knows every tool it can use: opening apps, clicking, typing, running commands. It also reads the screen: it finds a button, reads a field and tells whether a box is checked, so openTARS needs no second model for that.</p>
+          <p>The main AI. A Qwen3.5 2B model trained on thousands of real openTARS requests, each one checked, so it already knows every tool it can use: opening apps, clicking, typing, running commands. It also reads the screen: it finds a button, reads a field and tells whether a box is checked, so openTARS needs no second model for that. Since October 23 it is also trained to say when it does not know, to chat about everyday things and to work on text you select.</p>
           <dl>
-            <dt>Test</dt><dd>72 of 84 everyday tasks done right, no dangerous command run</dd>
+            <dt>Test</dt><dd>73 of 80 everyday tasks done right, no dangerous command run</dd>
             <dt>Size</dt><dd>about 1.6 GB, with vision (the first Gargantua was 2.5 GB)</dd>
-            <dt>Runs on</dt><dd>a graphics card with ~3 GB free (0.7 s a request), or the processor alone (about 4 s a request on a 16-thread CPU)</dd>
-            <dt>Weakest at</dt><dd>the text editor (2 of 4) and looking at an image file (1 of 4)</dd>
+            <dt>Runs on</dt><dd>a graphics card with ~3 GB free (0.6 s a request), or the processor alone (about 5 s a request on a 16-thread CPU)</dd>
+            <dt>Honesty</dt><dd>says it does not know in 16 of 16 questions about people and things that do not exist; corrects a false premise only 2 of 6 times</dd>
+            <dt>Weakest at</dt><dd>looking at an image file (0 of 4) and counting the files in a folder</dd>
             <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua-2</code></dd>
           </dl>
         </article>
@@ -221,10 +222,12 @@
         <article class="model">
           <p class="role">Runs anywhere</p>
           <h3>Gargantua Lite</h3>
-          <p>The everyday Gargantua in an even smaller model that also sees images, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it runs fine on the processor alone. It makes more mistakes than Gargantua 2, most of all when it has to look at a picture, and it finds a button on the screen less often than Gargantua 2 (72% against 85% of our tries). Computers without a graphics card and with little memory get it on their own; anywhere else, pick it in the model picker.</p>
+          <p>The everyday Gargantua in an even smaller model that also sees images, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it runs fine on the processor alone. It makes more mistakes than Gargantua 2, most of all when it has to look at a picture or use the calculator, which it sometimes swaps for a web search. Retrained on October 23 with the same new examples as Gargantua 2, it now finds a button on the screen almost as often (9 against 10 of 15 tries in our screen test). Computers without a graphics card and with little memory get it on their own; anywhere else, pick it in the model picker.</p>
           <dl>
-            <dt>Test</dt><dd>68 of 84 everyday tasks done right</dd>
+            <dt>Test</dt><dd>68 of 80 everyday tasks done right, no dangerous command run</dd>
             <dt>Size</dt><dd>about 0.6 GB with vision, optional</dd>
+            <dt>Runs on</dt><dd>the processor alone (about 2.6 s a request on a 16-thread CPU), or a graphics card (0.3 s)</dd>
+            <dt>Honesty</dt><dd>says it does not know in 15 of 16 questions about people and things that do not exist</dd>
             <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua-2:lite</code></dd>
           </dl>
         </article>
