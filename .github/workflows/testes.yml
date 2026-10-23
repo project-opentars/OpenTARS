@@ -1,0 +1,58 @@
+# openTARS: os testes do app (pasta app/) no Linux e, sem tela, no Windows e no macOS.
+name: testes
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    defaults: {run: {working-directory: app}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Dependências do sistema
+        run: sudo apt-get update && sudo apt-get install -y xvfb xclip libnotify-bin libglib2.0-bin python3-gi gir1.2-atspi-2.0 libegl1 libxkbcommon-x11-0 libxcb-cursor0
+      - name: Dependências Python
+        run: pip install requests psutil pyautogui pillow PySide6-Essentials
+      - name: Suíte inteira
+        run: cd tests && xvfb-run -a python -u run_all.py
+
+  portateis:
+    # O que já deve funcionar fora do Linux. Cresce a cada fase (F5 Windows, F6 macOS).
+    strategy:
+      fail-fast: false
+      matrix: {os: [windows-latest, macos-latest]}
+    runs-on: ${{ matrix.os }}
+    defaults: {run: {working-directory: app}}
+    env: {QT_QPA_PLATFORM: offscreen, PYTHONUTF8: "1"}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests psutil pillow PySide6-Essentials
+      - name: Camada de plataforma
+        run: python tests/test_plataforma.py
+      - name: Prova portátil (sem modelo)
+        run: python tests/test_prova_portatil.py
+      - name: Módulos que não dependem do Linux importam
+        run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
+
+  app_importa:
+    # Mostra o que ainda impede o app inteiro de carregar no Windows e no macOS (fcntl, AT-SPI, X...).
+    # Pode falhar até as fases F5/F6: serve de lista de tarefas, não de trava.
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix: {os: [windows-latest, macos-latest]}
+    runs-on: ${{ matrix.os }}
+    defaults: {run: {working-directory: app}}
+    env: {QT_QPA_PLATFORM: offscreen, PYTHONUTF8: "1", TARS_SEM_ASSISTENTE: "1"}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests psutil pyautogui pillow PySide6-Essentials
+      - run: python -c "import tars"

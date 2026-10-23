@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=openTARS
+Comment=Control your computer by talking to it
+Comment[pt_BR]=Controle seu computador conversando
+Exec=AppRun
+Icon=opentars
+Categories=Utility;
+Terminal=false
+StartupNotify=true
+StartupWMClass=opentars

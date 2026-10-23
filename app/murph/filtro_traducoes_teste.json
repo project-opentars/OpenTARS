@@ -1,0 +1,776 @@
+[
+ {
+  "original": "o que está escrito nesse pop-up que abriu",
+  "rotulo": "visao",
+  "pt_BR": "o que está escrito nesse pop-up que abriu",
+  "en": "what does this pop-up that opened say",
+  "es": "¿qué dice esta ventana emergente que se abrió?",
+  "fr": "qu'est-ce qui est écrit dans cette fenêtre pop-up qui s'est ouverte",
+  "de": "was steht in diesem Pop-up, das aufgegangen ist"
+ },
+ {
+  "original": "clica no x vermelho pra fechar esse aviso",
+  "rotulo": "visao",
+  "pt_BR": "clica no x vermelho pra fechar esse aviso",
+  "en": "click the red x to close this notice",
+  "es": "haz clic en la x roja para cerrar este aviso",
+  "fr": "clique sur le x rouge pour fermer cet avertissement",
+  "de": "klick auf das rote X, um diesen Hinweis zu schließen"
+ },
+ {
+  "original": "me diz de que cor é o botão de enviar",
+  "rotulo": "visao",
+  "pt_BR": "me diz de que cor é o botão de enviar",
+  "en": "tell me what color the send button is",
+  "es": "dime de qué color es el botón de enviar",
+  "fr": "dis-moi de quelle couleur est le bouton envoyer",
+  "de": "sag mir, welche Farbe der Senden-Button hat"
+ },
+ {
+  "original": "tem alguma mensagem de erro aparecendo aí?",
+  "rotulo": "visao",
+  "pt_BR": "tem alguma mensagem de erro aparecendo aí?",
+  "en": "is there any error message showing?",
+  "es": "¿aparece algún mensaje de error ahí?",
+  "fr": "il y a un message d'erreur qui s'affiche ?",
+  "de": "wird da irgendeine Fehlermeldung angezeigt?"
+ },
+ {
+  "original": "aperta o botão de play do vídeo",
+  "rotulo": "visao",
+  "pt_BR": "aperta o botão de play do vídeo",
+  "en": "press the video's play button",
+  "es": "pulsa el botón de reproducir del vídeo",
+  "fr": "appuie sur le bouton lecture de la vidéo",
+  "de": "drück den Play-Button des Videos"
+ },
+ {
+  "original": "que programa é esse aberto na frente",
+  "rotulo": "visao",
+  "pt_BR": "que programa é esse aberto na frente",
+  "en": "what program is that open in front",
+  "es": "¿qué programa es ese que está abierto delante?",
+  "fr": "quel est ce programme ouvert au premier plan",
+  "de": "was ist das für ein Programm, das vorne offen ist"
+ },
+ {
+  "original": "move o mouse pro canto de baixo da tela",
+  "rotulo": "visao",
+  "pt_BR": "move o mouse pro canto de baixo da tela",
+  "en": "move the mouse to the bottom corner of the screen",
+  "es": "mueve el ratón a la esquina inferior de la pantalla",
+  "fr": "déplace la souris dans le coin inférieur de l'écran",
+  "de": "beweg die Maus in die untere Ecke des Bildschirms"
+ },
+ {
+  "original": "what's showing in the notification area",
+  "rotulo": "visao",
+  "pt_BR": "o que está aparecendo na área de notificações",
+  "en": "what's showing in the notification area",
+  "es": "¿qué aparece en el área de notificaciones?",
+  "fr": "qu'est-ce qui s'affiche dans la zone de notification",
+  "de": "was wird im Benachrichtigungsbereich angezeigt"
+ },
+ {
+  "original": "hit the blue button on the left side",
+  "rotulo": "visao",
+  "pt_BR": "aperta o botão azul do lado esquerdo",
+  "en": "hit the blue button on the left side",
+  "es": "pulsa el botón azul del lado izquierdo",
+  "fr": "appuie sur le bouton bleu à gauche",
+  "de": "drück den blauen Knopf auf der linken Seite"
+ },
+ {
+  "original": "can you see what this dialog wants from me",
+  "rotulo": "visao",
+  "pt_BR": "você consegue ver o que essa caixa de diálogo quer de mim",
+  "en": "can you see what this dialog wants from me",
+  "es": "¿puedes ver qué quiere de mí este cuadro de diálogo?",
+  "fr": "tu peux voir ce que cette boîte de dialogue attend de moi",
+  "de": "kannst du sehen, was dieser Dialog von mir will"
+ },
+ {
+  "original": "¿qué dice el mensaje que aparece en la pantalla?",
+  "rotulo": "visao",
+  "pt_BR": "o que diz a mensagem que aparece na tela?",
+  "en": "what does the message on the screen say?",
+  "es": "¿qué dice el mensaje que aparece en la pantalla?",
+  "fr": "que dit le message qui apparaît à l'écran ?",
+  "de": "was steht in der Meldung, die auf dem Bildschirm erscheint?"
+ },
+ {
+  "original": "clique sur l'icône de la roue dentée",
+  "rotulo": "visao",
+  "pt_BR": "clica no ícone da engrenagem",
+  "en": "click the gear icon",
+  "es": "haz clic en el icono del engranaje",
+  "fr": "clique sur l'icône de la roue dentée",
+  "de": "klick auf das Zahnrad-Symbol"
+ },
+ {
+  "original": "faz uma função em python que calcula fatorial",
+  "rotulo": "codigo",
+  "pt_BR": "faz uma função em python que calcula fatorial",
+  "en": "write a python function that calculates factorial",
+  "es": "haz una función en python que calcule el factorial",
+  "fr": "écris une fonction en python qui calcule la factorielle",
+  "de": "schreib eine Funktion in Python, die die Fakultät berechnet"
+ },
+ {
+  "original": "meu javascript dá undefined quando chamo a função",
+  "rotulo": "codigo",
+  "pt_BR": "meu javascript dá undefined quando chamo a função",
+  "en": "my javascript returns undefined when I call the function",
+  "es": "mi javascript da undefined cuando llamo a la función",
+  "fr": "mon javascript renvoie undefined quand j'appelle la fonction",
+  "de": "mein JavaScript gibt undefined zurück, wenn ich die Funktion aufrufe"
+ },
+ {
+  "original": "como declaro uma lista em kotlin",
+  "rotulo": "codigo",
+  "pt_BR": "como declaro uma lista em kotlin",
+  "en": "how do I declare a list in kotlin",
+  "es": "¿cómo declaro una lista en kotlin?",
+  "fr": "comment déclarer une liste en kotlin",
+  "de": "wie deklariere ich eine Liste in Kotlin"
+ },
+ {
+  "original": "escreve um código que baixa uma página e salva o html",
+  "rotulo": "codigo",
+  "pt_BR": "escreve um código que baixa uma página e salva o html",
+  "en": "write code that downloads a page and saves the html",
+  "es": "escribe un código que descargue una página y guarde el html",
+  "fr": "écris un code qui télécharge une page et enregistre le html",
+  "de": "schreib Code, der eine Seite herunterlädt und das HTML speichert"
+ },
+ {
+  "original": "o que é recursão em programação",
+  "rotulo": "codigo",
+  "pt_BR": "o que é recursão em programação",
+  "en": "what is recursion in programming",
+  "es": "¿qué es la recursión en programación?",
+  "fr": "qu'est-ce que la récursivité en programmation",
+  "de": "was ist Rekursion in der Programmierung"
+ },
+ {
+  "original": "my rust program panics with index out of bounds",
+  "rotulo": "codigo",
+  "pt_BR": "meu programa em rust dá panic com index out of bounds",
+  "en": "my rust program panics with index out of bounds",
+  "es": "mi programa en rust hace panic con index out of bounds",
+  "fr": "mon programme rust panique avec index out of bounds",
+  "de": "mein Rust-Programm panict mit index out of bounds"
+ },
+ {
+  "original": "write a sql query that counts orders per customer",
+  "rotulo": "codigo",
+  "pt_BR": "escreve uma consulta sql que conta os pedidos por cliente",
+  "en": "write a sql query that counts orders per customer",
+  "es": "escribe una consulta sql que cuente los pedidos por cliente",
+  "fr": "écris une requête sql qui compte les commandes par client",
+  "de": "schreib eine SQL-Abfrage, die die Bestellungen pro Kunde zählt"
+ },
+ {
+  "original": "how do I reverse a linked list in c",
+  "rotulo": "codigo",
+  "pt_BR": "como inverto uma lista ligada em c",
+  "en": "how do I reverse a linked list in c",
+  "es": "¿cómo invierto una lista enlazada en c?",
+  "fr": "comment inverser une liste chaînée en c",
+  "de": "wie kehre ich eine verkettete Liste in C um"
+ },
+ {
+  "original": "mi función en javascript devuelve nan",
+  "rotulo": "codigo",
+  "pt_BR": "minha função em javascript retorna nan",
+  "en": "my javascript function returns nan",
+  "es": "mi función en javascript devuelve nan",
+  "fr": "ma fonction javascript renvoie nan",
+  "de": "meine JavaScript-Funktion gibt NaN zurück"
+ },
+ {
+  "original": "wie schreibe ich eine schleife in python",
+  "rotulo": "codigo",
+  "pt_BR": "como escrevo um loop em python",
+  "en": "how do I write a loop in python",
+  "es": "¿cómo escribo un bucle en python?",
+  "fr": "comment écrire une boucle en python",
+  "de": "wie schreibe ich eine Schleife in Python"
+ },
+ {
+  "original": "o apt dá erro de dependência quebrada",
+  "rotulo": "tecnico",
+  "pt_BR": "o apt dá erro de dependência quebrada",
+  "en": "apt gives a broken dependency error",
+  "es": "apt da un error de dependencia rota",
+  "fr": "apt affiche une erreur de dépendance cassée",
+  "de": "apt meldet einen Fehler wegen defekter Abhängigkeiten"
+ },
+ {
+  "original": "como atualizo o kernel no zorin",
+  "rotulo": "tecnico",
+  "pt_BR": "como atualizo o kernel no zorin",
+  "en": "how do I update the kernel on zorin",
+  "es": "¿cómo actualizo el kernel en zorin?",
+  "fr": "comment mettre à jour le noyau sur zorin",
+  "de": "wie aktualisiere ich den Kernel unter Zorin"
+ },
+ {
+  "original": "minha placa de vídeo não aparece no linux",
+  "rotulo": "tecnico",
+  "pt_BR": "minha placa de vídeo não aparece no linux",
+  "en": "my graphics card doesn't show up on linux",
+  "es": "mi tarjeta gráfica no aparece en linux",
+  "fr": "ma carte graphique n'apparaît pas sous linux",
+  "de": "meine Grafikkarte wird unter Linux nicht angezeigt"
+ },
+ {
+  "original": "como descubro qual versão do ubuntu eu tenho",
+  "rotulo": "tecnico",
+  "pt_BR": "como descubro qual versão do ubuntu eu tenho",
+  "en": "how do I find out which version of ubuntu I have",
+  "es": "¿cómo sé qué versión de ubuntu tengo?",
+  "fr": "comment savoir quelle version d'ubuntu j'ai",
+  "de": "wie finde ich heraus, welche Ubuntu-Version ich habe"
+ },
+ {
+  "original": "o bluetooth do meu notebook não funciona no linux",
+  "rotulo": "tecnico",
+  "pt_BR": "o bluetooth do meu notebook não funciona no linux",
+  "en": "my laptop's bluetooth doesn't work on linux",
+  "es": "el bluetooth de mi portátil no funciona en linux",
+  "fr": "le bluetooth de mon portable ne fonctionne pas sous linux",
+  "de": "das Bluetooth meines Laptops funktioniert unter Linux nicht"
+ },
+ {
+  "original": "como faço o ollama usar a gpu",
+  "rotulo": "tecnico",
+  "pt_BR": "como faço o ollama usar a gpu",
+  "en": "how do I make ollama use the gpu",
+  "es": "¿cómo hago que ollama use la gpu?",
+  "fr": "comment faire pour qu'ollama utilise le gpu",
+  "de": "wie bringe ich Ollama dazu, die GPU zu nutzen"
+ },
+ {
+  "original": "how do I free up space on my root partition",
+  "rotulo": "tecnico",
+  "pt_BR": "como libero espaço na minha partição raiz",
+  "en": "how do I free up space on my root partition",
+  "es": "¿cómo libero espacio en mi partición raíz?",
+  "fr": "comment libérer de l'espace sur ma partition racine",
+  "de": "wie mache ich Platz auf meiner Root-Partition frei"
+ },
+ {
+  "original": "my fans are always at full speed on ubuntu",
+  "rotulo": "tecnico",
+  "pt_BR": "minhas ventoinhas estão sempre no máximo no ubuntu",
+  "en": "my fans are always at full speed on ubuntu",
+  "es": "mis ventiladores siempre están a toda velocidad en ubuntu",
+  "fr": "mes ventilateurs tournent toujours à fond sous ubuntu",
+  "de": "meine Lüfter laufen unter Ubuntu immer auf voller Drehzahl"
+ },
+ {
+  "original": "what is swap and do I need it",
+  "rotulo": "tecnico",
+  "pt_BR": "o que é swap e eu preciso dela",
+  "en": "what is swap and do I need it",
+  "es": "¿qué es el swap y lo necesito?",
+  "fr": "qu'est-ce que le swap et est-ce que j'en ai besoin",
+  "de": "was ist Swap und brauche ich das"
+ },
+ {
+  "original": "cómo cambio los permisos de una carpeta en linux",
+  "rotulo": "tecnico",
+  "pt_BR": "como mudo as permissões de uma pasta no linux",
+  "en": "how do I change a folder's permissions in linux",
+  "es": "¿cómo cambio los permisos de una carpeta en linux?",
+  "fr": "comment changer les permissions d'un dossier sous linux",
+  "de": "wie ändere ich die Berechtigungen eines Ordners unter Linux"
+ },
+ {
+  "original": "mon ordinateur ne démarre plus après la mise à jour",
+  "rotulo": "tecnico",
+  "pt_BR": "meu computador não liga mais depois da atualização",
+  "en": "my computer won't boot anymore after the update",
+  "es": "mi ordenador ya no arranca después de la actualización",
+  "fr": "mon ordinateur ne démarre plus après la mise à jour",
+  "de": "mein Computer startet nach dem Update nicht mehr"
+ },
+ {
+  "original": "coloca o volume no máximo",
+  "rotulo": "acao",
+  "pt_BR": "coloca o volume no máximo",
+  "en": "turn the volume all the way up",
+  "es": "pon el volumen al máximo",
+  "fr": "mets le volume au maximum",
+  "de": "stell die Lautstärke auf Maximum"
+ },
+ {
+  "original": "desativa o wifi por favor",
+  "rotulo": "acao",
+  "pt_BR": "desativa o wifi por favor",
+  "en": "turn off the wifi please",
+  "es": "desactiva el wifi por favor",
+  "fr": "désactive le wifi s'il te plaît",
+  "de": "schalte bitte das WLAN aus"
+ },
+ {
+  "original": "apaga a pasta teste da área de trabalho",
+  "rotulo": "acao",
+  "pt_BR": "apaga a pasta teste da área de trabalho",
+  "en": "delete the teste folder from the desktop",
+  "es": "borra la carpeta teste del escritorio",
+  "fr": "supprime le dossier teste du bureau",
+  "de": "lösch den Ordner teste vom Desktop"
+ },
+ {
+  "original": "aumenta o brilho da tela",
+  "rotulo": "acao",
+  "pt_BR": "aumenta o brilho da tela",
+  "en": "increase the screen brightness",
+  "es": "sube el brillo de la pantalla",
+  "fr": "augmente la luminosité de l'écran",
+  "de": "erhöhe die Bildschirmhelligkeit"
+ },
+ {
+  "original": "minimiza todas as janelas",
+  "rotulo": "acao",
+  "pt_BR": "minimiza todas as janelas",
+  "en": "minimize all windows",
+  "es": "minimiza todas las ventanas",
+  "fr": "réduis toutes les fenêtres",
+  "de": "minimiere alle Fenster"
+ },
+ {
+  "original": "cria um arquivo notas.txt nos documentos",
+  "rotulo": "acao",
+  "pt_BR": "cria um arquivo notas.txt nos documentos",
+  "en": "create a notas.txt file in documents",
+  "es": "crea un archivo notas.txt en documentos",
+  "fr": "crée un fichier notas.txt dans les documents",
+  "de": "erstelle eine Datei notas.txt in Dokumente"
+ },
+ {
+  "original": "pausa a música",
+  "rotulo": "acao",
+  "pt_BR": "pausa a música",
+  "en": "pause the music",
+  "es": "pausa la música",
+  "fr": "mets la musique en pause",
+  "de": "pausiere die Musik"
+ },
+ {
+  "original": "copia as fotos do pendrive pra pasta imagens",
+  "rotulo": "acao",
+  "pt_BR": "copia as fotos do pendrive pra pasta imagens",
+  "en": "copy the photos from the usb drive to the pictures folder",
+  "es": "copia las fotos del pendrive a la carpeta imágenes",
+  "fr": "copie les photos de la clé usb dans le dossier images",
+  "de": "kopiere die Fotos vom USB-Stick in den Bilder-Ordner"
+ },
+ {
+  "original": "abre o vs code e cria um arquivo novo",
+  "rotulo": "acao",
+  "pt_BR": "abre o vs code e cria um arquivo novo",
+  "en": "open vs code and create a new file",
+  "es": "abre vs code y crea un archivo nuevo",
+  "fr": "ouvre vs code et crée un nouveau fichier",
+  "de": "öffne VS Code und erstelle eine neue Datei"
+ },
+ {
+  "original": "switch off the wifi",
+  "rotulo": "acao",
+  "pt_BR": "desliga o wifi",
+  "en": "switch off the wifi",
+  "es": "apaga el wifi",
+  "fr": "éteins le wifi",
+  "de": "schalte das WLAN aus"
+ },
+ {
+  "original": "delete the old logs in my downloads folder",
+  "rotulo": "acao",
+  "pt_BR": "apaga os logs antigos da minha pasta de downloads",
+  "en": "delete the old logs in my downloads folder",
+  "es": "borra los logs antiguos de mi carpeta de descargas",
+  "fr": "supprime les anciens logs de mon dossier téléchargements",
+  "de": "lösch die alten Logs in meinem Downloads-Ordner"
+ },
+ {
+  "original": "make the screen dimmer",
+  "rotulo": "acao",
+  "pt_BR": "deixa a tela mais escura",
+  "en": "make the screen dimmer",
+  "es": "pon la pantalla más oscura",
+  "fr": "rends l'écran plus sombre",
+  "de": "mach den Bildschirm dunkler"
+ },
+ {
+  "original": "skip to the next song",
+  "rotulo": "acao",
+  "pt_BR": "pula pra próxima música",
+  "en": "skip to the next song",
+  "es": "pasa a la siguiente canción",
+  "fr": "passe à la chanson suivante",
+  "de": "spring zum nächsten Lied"
+ },
+ {
+  "original": "baja el brillo de la pantalla",
+  "rotulo": "acao",
+  "pt_BR": "abaixa o brilho da tela",
+  "en": "lower the screen brightness",
+  "es": "baja el brillo de la pantalla",
+  "fr": "baisse la luminosité de l'écran",
+  "de": "verringere die Bildschirmhelligkeit"
+ },
+ {
+  "original": "coupe le son",
+  "rotulo": "acao",
+  "pt_BR": "tira o som",
+  "en": "mute the sound",
+  "es": "quita el sonido",
+  "fr": "coupe le son",
+  "de": "schalte den Ton aus"
+ },
+ {
+  "original": "schalte das wlan ein",
+  "rotulo": "acao",
+  "pt_BR": "liga o wifi",
+  "en": "turn on the wifi",
+  "es": "enciende el wifi",
+  "fr": "allume le wifi",
+  "de": "schalte das WLAN ein"
+ },
+ {
+  "original": "quanto custa um ryzen 7 hoje",
+  "rotulo": "busca",
+  "pt_BR": "quanto custa um ryzen 7 hoje",
+  "en": "how much does a ryzen 7 cost today",
+  "es": "¿cuánto cuesta un ryzen 7 hoy?",
+  "fr": "combien coûte un ryzen 7 aujourd'hui",
+  "de": "was kostet ein Ryzen 7 heute"
+ },
+ {
+  "original": "pesquisa receitas de bolo de cenoura",
+  "rotulo": "busca",
+  "pt_BR": "pesquisa receitas de bolo de cenoura",
+  "en": "search for carrot cake recipes",
+  "es": "busca recetas de pastel de zanahoria",
+  "fr": "cherche des recettes de gâteau aux carottes",
+  "de": "such nach Rezepten für Karottenkuchen"
+ },
+ {
+  "original": "quem ganhou o jogo do palmeiras ontem",
+  "rotulo": "busca",
+  "pt_BR": "quem ganhou o jogo do palmeiras ontem",
+  "en": "who won the palmeiras game yesterday",
+  "es": "¿quién ganó el partido del palmeiras ayer?",
+  "fr": "qui a gagné le match de palmeiras hier",
+  "de": "wer hat gestern das Spiel von Palmeiras gewonnen"
+ },
+ {
+  "original": "me acha um vídeo de como trocar o pneu da bike",
+  "rotulo": "busca",
+  "pt_BR": "me acha um vídeo de como trocar o pneu da bike",
+  "en": "find me a video on how to change a bike tire",
+  "es": "búscame un vídeo de cómo cambiar la rueda de la bici",
+  "fr": "trouve-moi une vidéo sur comment changer le pneu du vélo",
+  "de": "find mir ein Video, wie man den Fahrradreifen wechselt"
+ },
+ {
+  "original": "quais as notícias de hoje sobre o brasil",
+  "rotulo": "busca",
+  "pt_BR": "quais as notícias de hoje sobre o brasil",
+  "en": "what's today's news about brazil",
+  "es": "¿cuáles son las noticias de hoy sobre brasil?",
+  "fr": "quelles sont les nouvelles d'aujourd'hui sur le brésil",
+  "de": "was gibt es heute für Nachrichten über Brasilien"
+ },
+ {
+  "original": "qual o placar do jogo do grêmio",
+  "rotulo": "busca",
+  "pt_BR": "qual o placar do jogo do grêmio",
+  "en": "what's the score of the grêmio game",
+  "es": "¿cuál es el marcador del partido del grêmio?",
+  "fr": "quel est le score du match du grêmio",
+  "de": "wie steht es im Spiel von Grêmio"
+ },
+ {
+  "original": "vai sair gta 6 quando",
+  "rotulo": "busca",
+  "pt_BR": "quando vai sair gta 6",
+  "en": "when is gta 6 coming out",
+  "es": "¿cuándo sale gta 6?",
+  "fr": "quand est-ce que gta 6 va sortir",
+  "de": "wann erscheint GTA 6"
+ },
+ {
+  "original": "what's the price of a ps5 right now",
+  "rotulo": "busca",
+  "pt_BR": "quanto custa um ps5 agora",
+  "en": "what's the price of a ps5 right now",
+  "es": "¿cuánto cuesta una ps5 ahora mismo?",
+  "fr": "quel est le prix d'une ps5 en ce moment",
+  "de": "was kostet eine PS5 gerade"
+ },
+ {
+  "original": "look for reviews of the framework laptop",
+  "rotulo": "busca",
+  "pt_BR": "procura avaliações do notebook framework",
+  "en": "look for reviews of the framework laptop",
+  "es": "busca reseñas del portátil framework",
+  "fr": "cherche des avis sur le portable framework",
+  "de": "such nach Testberichten zum Framework-Laptop"
+ },
+ {
+  "original": "find me a video tutorial on soldering",
+  "rotulo": "busca",
+  "pt_BR": "me acha um tutorial em vídeo sobre solda",
+  "en": "find me a video tutorial on soldering",
+  "es": "búscame un tutorial en vídeo sobre soldadura",
+  "fr": "trouve-moi un tutoriel vidéo sur la soudure",
+  "de": "find mir ein Video-Tutorial zum Löten"
+ },
+ {
+  "original": "who won the champions league final",
+  "rotulo": "busca",
+  "pt_BR": "quem ganhou a final da champions league",
+  "en": "who won the champions league final",
+  "es": "¿quién ganó la final de la champions league?",
+  "fr": "qui a gagné la finale de la ligue des champions",
+  "de": "wer hat das Champions-League-Finale gewonnen"
+ },
+ {
+  "original": "busca el horario del partido del madrid",
+  "rotulo": "busca",
+  "pt_BR": "busca o horário do jogo do madrid",
+  "en": "look up the time of the madrid game",
+  "es": "busca el horario del partido del madrid",
+  "fr": "cherche l'horaire du match du madrid",
+  "de": "such die Anstoßzeit des Madrid-Spiels"
+ },
+ {
+  "original": "quel temps fera-t-il à lyon ce week-end",
+  "rotulo": "busca",
+  "pt_BR": "como vai estar o tempo em lyon neste fim de semana",
+  "en": "what will the weather be like in lyon this weekend",
+  "es": "¿qué tiempo hará en lyon este fin de semana?",
+  "fr": "quel temps fera-t-il à lyon ce week-end",
+  "de": "wie wird das Wetter in Lyon am Wochenende"
+ },
+ {
+  "original": "e aí, blz?",
+  "rotulo": "simples",
+  "pt_BR": "e aí, blz?",
+  "en": "hey, how's it going?",
+  "es": "¿qué tal, todo bien?",
+  "fr": "salut, ça va ?",
+  "de": "hey, alles klar?"
+ },
+ {
+  "original": "muito obrigado mesmo",
+  "rotulo": "simples",
+  "pt_BR": "muito obrigado mesmo",
+  "en": "thank you so much",
+  "es": "muchísimas gracias",
+  "fr": "merci beaucoup vraiment",
+  "de": "vielen, vielen Dank"
+ },
+ {
+  "original": "boa noite tars",
+  "rotulo": "simples",
+  "pt_BR": "boa noite tars",
+  "en": "good night tars",
+  "es": "buenas noches tars",
+  "fr": "bonne nuit tars",
+  "de": "gute Nacht tars"
+ },
+ {
+  "original": "abre o whatsapp web",
+  "rotulo": "simples",
+  "pt_BR": "abre o whatsapp web",
+  "en": "open whatsapp web",
+  "es": "abre whatsapp web",
+  "fr": "ouvre whatsapp web",
+  "de": "öffne WhatsApp Web"
+ },
+ {
+  "original": "entra no github",
+  "rotulo": "simples",
+  "pt_BR": "entra no github",
+  "en": "go to github",
+  "es": "entra en github",
+  "fr": "va sur github",
+  "de": "geh auf GitHub"
+ },
+ {
+  "original": "valeu!",
+  "rotulo": "simples",
+  "pt_BR": "valeu!",
+  "en": "thanks!",
+  "es": "¡gracias!",
+  "fr": "merci !",
+  "de": "danke!"
+ },
+ {
+  "original": "hi, what's up",
+  "rotulo": "simples",
+  "pt_BR": "oi, e aí",
+  "en": "hi, what's up",
+  "es": "hola, ¿qué tal?",
+  "fr": "salut, quoi de neuf",
+  "de": "hi, was geht"
+ },
+ {
+  "original": "thanks mate",
+  "rotulo": "simples",
+  "pt_BR": "valeu, cara",
+  "en": "thanks mate",
+  "es": "gracias, tío",
+  "fr": "merci mon pote",
+  "de": "danke, Kumpel"
+ },
+ {
+  "original": "open reddit",
+  "rotulo": "simples",
+  "pt_BR": "abre o reddit",
+  "en": "open reddit",
+  "es": "abre reddit",
+  "fr": "ouvre reddit",
+  "de": "öffne Reddit"
+ },
+ {
+  "original": "buenas tardes",
+  "rotulo": "simples",
+  "pt_BR": "boa tarde",
+  "en": "good afternoon",
+  "es": "buenas tardes",
+  "fr": "bon après-midi",
+  "de": "guten Tag"
+ },
+ {
+  "original": "bonjour",
+  "rotulo": "simples",
+  "pt_BR": "bom dia",
+  "en": "hello",
+  "es": "buenos días",
+  "fr": "bonjour",
+  "de": "guten Morgen"
+ },
+ {
+  "original": "quem descobriu o brasil",
+  "rotulo": "geral",
+  "pt_BR": "quem descobriu o brasil",
+  "en": "who discovered brazil",
+  "es": "¿quién descubrió brasil?",
+  "fr": "qui a découvert le brésil",
+  "de": "wer hat Brasilien entdeckt"
+ },
+ {
+  "original": "me explica como funciona a inflação",
+  "rotulo": "geral",
+  "pt_BR": "me explica como funciona a inflação",
+  "en": "explain to me how inflation works",
+  "es": "explícame cómo funciona la inflación",
+  "fr": "explique-moi comment fonctionne l'inflation",
+  "de": "erklär mir, wie Inflation funktioniert"
+ },
+ {
+  "original": "escreve uma legenda pra uma foto de praia",
+  "rotulo": "geral",
+  "pt_BR": "escreve uma legenda pra uma foto de praia",
+  "en": "write a caption for a beach photo",
+  "es": "escribe un pie de foto para una foto de playa",
+  "fr": "écris une légende pour une photo de plage",
+  "de": "schreib eine Bildunterschrift für ein Strandfoto"
+ },
+ {
+  "original": "me dá uma receita de pão de queijo",
+  "rotulo": "geral",
+  "pt_BR": "me dá uma receita de pão de queijo",
+  "en": "give me a recipe for pão de queijo",
+  "es": "dame una receta de pão de queijo",
+  "fr": "donne-moi une recette de pão de queijo",
+  "de": "gib mir ein Rezept für Pão de Queijo"
+ },
+ {
+  "original": "quanto é 15% de 240",
+  "rotulo": "geral",
+  "pt_BR": "quanto é 15% de 240",
+  "en": "what is 15% of 240",
+  "es": "¿cuánto es el 15% de 240?",
+  "fr": "combien font 15 % de 240",
+  "de": "wie viel sind 15 % von 240"
+ },
+ {
+  "original": "me sugere nomes pra um gato",
+  "rotulo": "geral",
+  "pt_BR": "me sugere nomes pra um gato",
+  "en": "suggest some names for a cat",
+  "es": "sugiéreme nombres para un gato",
+  "fr": "suggère-moi des noms pour un chat",
+  "de": "schlag mir Namen für eine Katze vor"
+ },
+ {
+  "original": "resume o livro dom casmurro",
+  "rotulo": "geral",
+  "pt_BR": "resume o livro dom casmurro",
+  "en": "summarize the book dom casmurro",
+  "es": "resume el libro dom casmurro",
+  "fr": "résume le livre dom casmurro",
+  "de": "fasse das Buch Dom Casmurro zusammen"
+ },
+ {
+  "original": "what causes the seasons on earth",
+  "rotulo": "geral",
+  "pt_BR": "o que causa as estações do ano na terra",
+  "en": "what causes the seasons on earth",
+  "es": "¿qué causa las estaciones en la tierra?",
+  "fr": "qu'est-ce qui cause les saisons sur terre",
+  "de": "was verursacht die Jahreszeiten auf der Erde"
+ },
+ {
+  "original": "write a thank you note for my teacher",
+  "rotulo": "geral",
+  "pt_BR": "escreve um bilhete de agradecimento pro meu professor",
+  "en": "write a thank you note for my teacher",
+  "es": "escribe una nota de agradecimiento para mi profesor",
+  "fr": "écris un mot de remerciement pour mon professeur",
+  "de": "schreib eine Dankeskarte für meinen Lehrer"
+ },
+ {
+  "original": "tell me a joke",
+  "rotulo": "geral",
+  "pt_BR": "me conta uma piada",
+  "en": "tell me a joke",
+  "es": "cuéntame un chiste",
+  "fr": "raconte-moi une blague",
+  "de": "erzähl mir einen Witz"
+ },
+ {
+  "original": "¿quién pintó la mona lisa?",
+  "rotulo": "geral",
+  "pt_BR": "quem pintou a mona lisa?",
+  "en": "who painted the mona lisa?",
+  "es": "¿quién pintó la mona lisa?",
+  "fr": "qui a peint la joconde ?",
+  "de": "wer hat die Mona Lisa gemalt?"
+ },
+ {
+  "original": "écris un petit poème sur la pluie",
+  "rotulo": "geral",
+  "pt_BR": "escreve um poeminha sobre a chuva",
+  "en": "write a short poem about the rain",
+  "es": "escribe un poema corto sobre la lluvia",
+  "fr": "écris un petit poème sur la pluie",
+  "de": "schreib ein kleines Gedicht über den Regen"
+ },
+ {
+  "original": "was ist der unterschied zwischen wetter und klima",
+  "rotulo": "geral",
+  "pt_BR": "qual a diferença entre tempo e clima",
+  "en": "what's the difference between weather and climate",
+  "es": "¿cuál es la diferencia entre tiempo y clima?",
+  "fr": "quelle est la différence entre la météo et le climat",
+  "de": "was ist der Unterschied zwischen Wetter und Klima"
+ }
+]

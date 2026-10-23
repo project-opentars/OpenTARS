@@ -1,0 +1,54 @@
+opentars (5.1) unstable; urgency=medium
+
+  5.1 Tesseract
+  * Três modos na janela: Lite (conversa, microfone e anexos), Base (mais histórico, escolha
+    de modelo, memória, rotinas, Probes e nuvem) e Pro (mais Ajustes avançados e Diagnóstico).
+    Escolha no primeiro uso (passo 2) e em Configurações > Geral. Quem atualiza da 5.0 fica no
+    Pro. Ajustes avançados: temperatura, contexto, instruções extras e ferramentas desligadas
+    (recusadas na execução; a lista do Gargantua continua a do treino).
+  * Probes: vigias em segundo plano que só leem e avisam. Vigiam pastas, páginas da web,
+    notícias e lançamentos (RSS, canal do YouTube, versões no GitHub), o computador (bateria,
+    temperatura, processador, internet, atualizações), programas (fechou, abriu, memória) e
+    projetos git. Criar é um passo a passo: escolher o que vigiar, preencher e conferir a
+    frase do que ele vai fazer; "Criar e ligar" já liga o Probe e o serviço. Os do passo a
+    passo usam uma regra fixa, sem IA; "com as minhas palavras" vira um plano pelo Gargantua.
+    Páginas e feeds só de endereços públicos, no máximo a cada 15 minutos.
+  * Avisos: um ícone de sino perto do relógio (o serviço opentars --probes, também com a
+    janela fechada) com o número de avisos e um painel ao clicar; dentro da janela, o mesmo
+    sino no topo e uma faixa quando chega um aviso. Pedidos de lixeira se aprovam no painel.
+    Desligado por padrão; chaves, senhas e dados do navegador ficam de fora. Ações escolhidas
+    pela pessoa: mover para uma pasta, ou mandar para a lixeira com aprovação a cada vez (sem
+    resposta em 30 minutos, negado).
+  * Gargantua Lite (1,1 GB) no primeiro uso e no instalador em máquina fraca (sem placa de
+    vídeo com 4 GB e com até 6 GB de RAM ou menos de 4 threads). TARS_GARGANTUA=lite|completo.
+  * Terminal no nível das CLIs de IA: opentars -p "pedido" (--output-format json, --model,
+    stdin), --new, --resume, /compactar, /contexto, /modo perguntar|plano|automatico
+    (--plan, --auto), "sempre nesta sessão" só para envio e instalação, ferramentas de código
+    para modelos que não são o Gargantua (ler, procurar, editar e criar arquivo, com diff e
+    confirmação), /desfazer, AGENTS.md, /init, !comando e linha de status.
+  * Nuvem pela conta do Ollama (sem chave de API), em Configurações > Nuvem e no primeiro uso.
+    O rodapé passa a avisar também quando o modelo escolhido é da nuvem do Ollama.
+  * Pesquisa na web pelo SearXNG, desligada por padrão (opentars --searxng prepara um local
+    com Docker): web_search e read_page, só quando o pedido fala de pesquisar, nunca para o
+    Gargantua; só endereços públicos; o que vem da web é dado.
+  * Depois de uma falha, a troca automática de modelo nunca desce para um modelo bem menor.
+  * Pedido único (-p e --chat "pedido") não sobrescreve mais a conversa salva.
+  * Gargantua Lite novo (Qwen3.5 0,8B, treinado com QAT, Q4_0): 0,6 GB com visão (o anterior,
+    Qwen3 1,7B, tinha 1,1 GB e não enxergava), 65 de 84 tarefas na prova do Lab (o anterior, 63),
+    roda só na CPU. Máquina fraca baixa ProjectOpenTARS/Gargantua:2.0-lite. O app manda
+    think=false aos modelos da família Qwen3.5 e nunca cola o "/no_think" do Qwen3 no pedido.
+  * Conversa: o app não manda mais a IA "fazer de verdade" quando só palpitou o tipo do pedido e
+    ele continua uma resposta de texto (fechou o Claude numa conversa sobre lavar o carro).
+  * Ollama antigo demais para um modelo: a mensagem diz como atualizar, em vez do erro cru.
+  * Cooper 1.2 (SmolVLM2 500M, 0,6 GB): o instalador e o primeiro uso passam a baixar o
+    ProjectOpenTARS/cooper:1.2 em vez do Cooper antigo de 2,7 GB; quem já tem o antigo continua
+    com ele, e o 1.2 passa na frente quando os dois estão instalados.
+  * Correções: a janela não cai mais com um cache de fontes corrompido (usa um cache próprio
+    em ~/.cache/opentars; antes um caractere raro derrubava o Qt, até no modo seguro); a
+    página dos Probes não usa mais um caractere que a fonte não tem; programas de tela cheia
+    (htop, vim, less...) abrem numa janela de terminal em vez de falhar; com ~/Documents e
+    ~/Documentos, o caminho de um arquivo é achado na outra pasta; o serviço dos Probes abre
+    pelo X, como a janela.
+
+ -- openTARS <projectopentars@gmail.com>  Fri, 16 Oct 2026 18:00:00 -0300
+

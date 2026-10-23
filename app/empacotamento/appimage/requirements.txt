@@ -1,0 +1,7 @@
+# Dependências do openTARS dentro do AppImage (o Python vem junto, 3.12).
+requests
+psutil
+pyautogui
+pillow
+python-xlib
+PySide6-Essentials

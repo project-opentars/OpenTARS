@@ -645,6 +645,8 @@ Ollama, the downloaded models and your data (`~/.tars_sessoes.json`, `~/.tars_lo
 
 ## For developers
 
+The source of the app is in [`app/`](app/): it is the development version (what will become 5.2: Windows, macOS and other Linux, and the assistant with text actions), while `opentars_all.deb` at the top of this repository is the current release. The tests run on every change on Linux, Windows and macOS through GitHub Actions ([`.github/workflows/testes.yml`](.github/workflows/testes.yml)). Gargantua's training kit is not in this repository.
+
 ```
 tars.py                 start of the core: graphical session, configuration, and loads the parts of nucleo/
 nucleo/                 the core in parts (registro, ollama, hardware, aplicacoes, controle, janelas, visao,
@@ -654,7 +656,6 @@ nucleo/                 the core in parts (registro, ollama, hardware, aplicacoe
 nucleo/rotinas.py       5.0: schedule_task / list_tasks / delete_task (only offered on routine requests)
 nucleo/visao.py         the vision step (was Cooper): icon clicking and screen description with Gargantua 2
 nucleo/gargantua.py     4.0: Gargantua's short format (identical to training) and its AUTO preference
-gargantua/              Gargantua training kit (virtual-screen collection, QLoRA, GGUF, proof)
 tars_qt/                5.0: the Qt window (principal, conversa, configuracoes, barra_rapida, tela_voz, primeiro_uso, tema, ponte)
 tars_gui.py             the 4.6 window (Tkinter, `--tk`), uses tars.py underneath
 tars_historico.py       5.0: chat history (by day, search, export)
@@ -677,6 +678,12 @@ tars_wayland.py         mouse and keyboard through ydotool on Wayland
 tars_atalho.py          global shortcut (GNOME, Cinnamon, MATE, XFCE)
 tars_instancia.py       single instance (the bar opens instantly)
 tars_autoteste.py       --diagnostico and --autoteste
+tars_plataforma/        5.2: the only door to what changes between systems (linux.py, windows.py, macos.py)
+tars_shell.py           5.2: the bash commands Gargantua learned, run in Python where there is no bash (Windows)
+tars_prova.py           5.2: opentars --prova, a portable test of 48 everyday tasks in a temporary folder
+tars_acoes_texto.py     5.2: text actions (rewrite, summarize, translate, ask) in the trained format
+tars_assistente.py      5.2: the resident assistant (model kept in memory, start with the system)
+tars_confianca.py       warns when the model was not confident about a fact (log-probabilities)
 idiomas/                one file per language: all texts
 tests/                  tests (window and accessibility ones really run on an Xvfb, with the GNOME calculator)
 tests/gerar_capturas.py regenerates docs/img/*.png from the real window (offscreen)
@@ -686,6 +693,7 @@ logo.svg                the logo
 ```
 
 ```bash
+cd app
 python3 tars.py                 # diagnosis and command-line options (needs requests, psutil, pyautogui, pillow, python3-tk and python3-gi)
 python3 -m tars_qt              # Qt window (5.0)
 python3 tars_gui.py             # 4.6 window (Tkinter)

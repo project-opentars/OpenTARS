@@ -1,0 +1,16 @@
+#!/bin/bash
+# openTARS (AppImage). Sem argumento: abre a janela. "cli ...": a linha de comando (opentars --help).
+AQUI="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+export APPDIR="${APPDIR:-$AQUI}"
+export TARS_EMPACOTADO=appimage
+export PYTHONPATH="$AQUI/opentars${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONNOUSERSITE=1
+# Acessibilidade (clicar pelo nome): os typelibs (Atspi etc.) vêm junto
+export GI_TYPELIB_PATH="$AQUI/lib/girepository-1.0${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
+# O pyautogui aborta se não houver cookie do X; /dev/null só evita o crash (mesma lógica do .deb)
+if [ -z "${XAUTHORITY:-}" ] && [ ! -f "$HOME/.Xauthority" ]; then export XAUTHORITY=/dev/null; fi
+if [ "${1:-}" = "cli" ]; then
+    shift
+    exec "$AQUI/python/bin/python3" "$AQUI/opentars/tars.py" "$@"
+fi
+exec "$AQUI/python/bin/python3" -m tars_qt "$@"

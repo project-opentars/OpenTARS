@@ -1,0 +1,30 @@
+Package: opentars
+Version: @VERSAO@
+Section: utils
+Priority: optional
+Architecture: all
+Depends: python3 (>= 3.8), python3-venv, python3-pip, python3-requests, python3-psutil, python3-pil, curl, ca-certificates, zstd, pciutils
+Recommends: libxcb-cursor0, libxkbcommon-x11-0, libxcb-icccm4, libxcb-image0, libxcb-keysyms1, libxcb-render-util0, libxcb-xinerama0, libegl1, libgl1, python3-tk, python3-pil.imagetk, python3-xlib, python3-gi, gir1.2-atspi-2.0, at-spi2-core, xclip, gnome-screenshot | kde-spectacle | grim, wl-clipboard, libgtk-3-bin, libglib2.0-bin, libnotify-bin, xdg-utils, poppler-utils, alsa-utils | pulseaudio-utils
+Suggests: ydotool
+Conflicts: tars
+Replaces: tars
+Provides: tars
+Installed-Size: @TAMANHO@
+Maintainer: Enzo <enzorcasao@gmail.com>
+Homepage: https://github.com/project-opentars/OpenTARS
+Description: 100% local AI assistant for the Linux desktop
+ openTARS is an AI assistant that runs entirely on your machine (through
+ Ollama), with no cloud. It understands requests in Portuguese and English
+ and controls the desktop: opens and closes
+ apps, clicks buttons by name, types, searches the web, looks at the screen
+ and runs terminal commands.
+ .
+ Its official AI is Gargantua (ollama pull ProjectOpenTARS/Gargantua), a
+ small model trained to use openTARS tools, which the installer downloads.
+ It also adapts to whatever AI models you already have in Ollama, picking
+ the best one for each kind of task. Comes with a window ("opentars-gui"), a
+ quick bar opened by a global shortcut ("opentars-gui --rapido") and a
+ terminal mode ("opentars --chat") that also works on WSL and on Linux
+ without a graphical session. Files (images, text, PDF...) can be attached
+ to a request. The optional Cooper model (ollama pull ProjectOpenTARS/cooper)
+ helps it look at the screen.

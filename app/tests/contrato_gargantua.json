@@ -1,0 +1,443 @@
+{
+ "sistema": "You are Gargantua, a local AI assistant that controls this Linux computer with tools, inside the openTARS app.\n- Your name is Gargantua. openTARS is the app you run in, not your name.\n- When the user asks you to DO something on the computer, do it with the tools, step by step, and check the result.\n- When it is just a question or small talk, answer directly, without tools.\n- Never say something worked unless a tool result confirmed it.\n- Destructive actions (deleting many files, formatting, rm -rf) need the user's explicit confirmation.\n- Answer short, in the user's language.\n",
+ "descricoes_curtas": {
+  "open_application": "Open an installed app by the name the user said.",
+  "close_application": "Close an open app by the name the user said.",
+  "open_website": "Open a website by name or URL in the browser.",
+  "search_web": "Search the web (or a service like youtube) and open the results.",
+  "click_element": "Click a button/menu/link in a window by its visible text.",
+  "list_elements": "List clickable elements and texts of a window.",
+  "type_in_element": "Type text into a named field of a window.",
+  "execute_terminal": "Run a shell command (non-interactive).",
+  "click_mouse": "Click at x/y or on a described target (clicks=2 for a double click).",
+  "drag_mouse": "Drag with the mouse from one point/target to another.",
+  "scroll_mouse": "Scroll the page or window.",
+  "type_text": "Type text into the focused place.",
+  "press_key": "Press a key or a combination (enter, esc, ctrl+s...).",
+  "take_screenshot": "Take a screenshot to see the screen.",
+  "list_windows": "List open windows.",
+  "move_window": "Move, snap, maximize or resize a window.",
+  "focus_window": "Bring a window to the front.",
+  "remember": "Save a fact about the user for future conversations.",
+  "forget": "Forget saved facts containing these words."
+ },
+ "ferramentas": [
+  {
+   "type": "function",
+   "function": {
+    "name": "open_application",
+    "description": "Open an installed app by the name the user said.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "app": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "app"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "close_application",
+    "description": "Close an open app by the name the user said.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "app": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "app"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "open_website",
+    "description": "Open a website by name or URL in the browser.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "site": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "site"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "search_web",
+    "description": "Search the web (or a service like youtube) and open the results.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "query": {
+       "type": "string"
+      },
+      "service": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "query"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "click_element",
+    "description": "Click a button/menu/link in a window by its visible text.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": "string"
+      },
+      "window": {
+       "type": "string"
+      },
+      "role": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "name"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "list_elements",
+    "description": "List clickable elements and texts of a window.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "window": {
+       "type": "string"
+      },
+      "filter": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "type_in_element",
+    "description": "Type text into a named field of a window.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "text": {
+       "type": "string"
+      },
+      "name": {
+       "type": "string"
+      },
+      "window": {
+       "type": "string"
+      },
+      "submit": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "text"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "execute_terminal",
+    "description": "Run a shell command (non-interactive).",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "command": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "command"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "click_mouse",
+    "description": "Click at x/y or on a described target (clicks=2 for a double click).",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "button": {
+       "type": "string",
+       "enum": [
+        "left",
+        "right",
+        "middle"
+       ]
+      },
+      "x": {
+       "type": "integer"
+      },
+      "y": {
+       "type": "integer"
+      },
+      "target": {
+       "type": "string"
+      },
+      "window": {
+       "type": "string"
+      },
+      "clicks": {
+       "type": "integer"
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "drag_mouse",
+    "description": "Drag with the mouse from one point/target to another.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "from_element": {
+       "type": "string"
+      },
+      "from_x": {
+       "type": "integer"
+      },
+      "from_y": {
+       "type": "integer"
+      },
+      "to": {
+       "type": "string"
+      },
+      "to_element": {
+       "type": "string"
+      },
+      "to_x": {
+       "type": "integer"
+      },
+      "to_y": {
+       "type": "integer"
+      },
+      "window": {
+       "type": "string"
+      },
+      "button": {
+       "type": "string",
+       "enum": [
+        "left",
+        "right",
+        "middle"
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "scroll_mouse",
+    "description": "Scroll the page or window.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "amount": {
+       "type": "integer"
+      },
+      "x": {
+       "type": "integer"
+      },
+      "y": {
+       "type": "integer"
+      }
+     },
+     "required": [
+      "amount"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "type_text",
+    "description": "Type text into the focused place.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "text": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "text"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "press_key",
+    "description": "Press a key or a combination (enter, esc, ctrl+s...).",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "key": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "key"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "take_screenshot",
+    "description": "Take a screenshot to see the screen.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "window": {
+       "type": "string"
+      },
+      "file": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "list_windows",
+    "description": "List open windows.",
+    "parameters": {
+     "type": "object",
+     "properties": {}
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "move_window",
+    "description": "Move, snap, maximize or resize a window.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "window": {
+       "type": "string"
+      },
+      "to": {
+       "type": "string"
+      },
+      "x": {
+       "type": "integer"
+      },
+      "y": {
+       "type": "integer"
+      },
+      "width": {
+       "type": "integer"
+      },
+      "height": {
+       "type": "integer"
+      }
+     },
+     "required": [
+      "window"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "focus_window",
+    "description": "Bring a window to the front.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "window": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "window"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "remember",
+    "description": "Save a fact about the user for future conversations.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "fact": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "fact"
+     ]
+    }
+   }
+  },
+  {
+   "type": "function",
+   "function": {
+    "name": "forget",
+    "description": "Forget saved facts containing these words.",
+    "parameters": {
+     "type": "object",
+     "properties": {
+      "fact": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "fact"
+     ]
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,87 @@
+#!/bin/bash
+# Lançador da interface gráfica do openTARS. Também atende por "tars-gui".
+#   opentars-gui            abre a janela
+#   opentars-gui --rapido   abre a barra rápida (é o que o atalho global chama)
+#   opentars-gui --acoes    abre o painel das ações de texto com o texto selecionado (5.2)
+#   opentars-gui --residente   sobe escondido, só com o ícone (início com o sistema do assistente, 5.2)
+#   (sem sessão gráfica: abre a conversa no terminal, "opentars --chat")
+
+set -euo pipefail
+
+DIR_OPENTARS="/usr/share/opentars"
+PYTHON="$DIR_OPENTARS/venv/bin/python3"
+[ -x "$PYTHON" ] || PYTHON=python3
+
+# O pyautogui (via python-xlib) aborta na importação se não houver
+# arquivo de autorização do X. Em sessões sem ~/.Xauthority e sem
+# $XAUTHORITY definido não existe cookie nenhum mesmo, então apontar
+# pra um arquivo vazio só evita o crash, sem mudar a permissão de acesso.
+if [ -z "${XAUTHORITY:-}" ] && [ ! -f "$HOME/.Xauthority" ]; then
+    export XAUTHORITY=/dev/null
+fi
+
+# 4.5: sem sessão gráfica (servidor, SSH, WSL sem WSLg) a janela não tem onde abrir:
+# vai pra conversa no terminal.
+if { [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; } || [ "${TARS_SEM_INTERFACE:-}" = "1" ]; then
+    case "${LANG:-}${TARS_IDIOMA:-}" in
+        pt*) echo "[openTARS] Sem sessão gráfica: abrindo a conversa no terminal (opentars --chat)." >&2 ;;
+        *)   echo "[openTARS] No graphical session: opening the terminal chat (opentars --chat)." >&2 ;;
+    esac
+    exec /usr/bin/opentars --chat
+fi
+
+# Já está aberto? Só manda o recado pra ele (mostrar a janela ou a barra)
+# e sai: só biblioteca padrão, responde na hora — sem carregar o openTARS
+# inteiro de novo.
+comando=mostrar
+for arg in "$@"; do
+    case "$arg" in --rapido|--quick) comando=rapido ;; --acoes|--actions) comando=acoes ;; --residente) comando=residente ;; esac
+done
+if "$PYTHON" -c 'import sys; sys.path.insert(0, sys.argv[1]); import tars_instancia as i; sys.exit(0 if i.enviar(sys.argv[2], sys.argv[3] or None) else 1)' \
+        "$DIR_OPENTARS" "$comando" "${DESKTOP_STARTUP_ID:-}" 2>/dev/null; then
+    exit 0
+fi
+
+# 5.0: com PySide6 abre a janela em Qt (o assistente de primeiro uso, se ainda não foi feito,
+# e depois a janela principal) e a barra rápida (--rapido) também é em Qt. Só --tk, TARS_SEM_QT=1
+# e a falta de PySide6 seguem na janela da 4.6 (Tkinter).
+usar_qt=1
+for arg in "$@"; do
+    case "$arg" in --tk) usar_qt=0 ;; esac
+done
+if [ "$usar_qt" = "1" ] && [ "${TARS_SEM_QT:-}" != "1" ] \
+   && "$PYTHON" -c 'import PySide6.QtWidgets, PySide6.QtSvgWidgets' 2>/dev/null; then
+    # O openTARS controla a tela pelo X (pyautogui, xdotool; no Wayland, pelo XWayland): abrir a janela também pelo X
+    # (xcb) evita o plugin Wayland do PySide6, que derruba o programa (segfault) em várias máquinas.
+    # QT_QPA_PLATFORM=wayland (ou outro valor) continua valendo se você definir.
+    if [ -z "${QT_QPA_PLATFORM:-}" ] && [ -n "${DISPLAY:-}" ]; then
+        export QT_QPA_PLATFORM=xcb
+    fi
+    # Se o Qt cair (queda nativa: código 128+sinal de erro), não deixa a pessoa sem nada: tenta uma vez em modo
+    # seguro (sem substituição de fontes, o caminho que derruba o fontconfig de algumas máquinas) e, se cair de novo
+    # logo na abertura, abre a janela da 4.6 (Tkinter). O motivo da queda fica em ~/.tars_log/qt.log.
+    inicio=$SECONDS
+    codigo=0
+    PYTHONPATH="$DIR_OPENTARS" "$PYTHON" -m tars_qt "$@" || codigo=$?
+    case "$codigo" in 132|134|135|136|139)
+        case "${LANG:-}${TARS_IDIOMA:-}" in
+            pt*) echo "[openTARS] A janela Qt caiu (código $codigo). Tentando de novo em modo seguro. Detalhes: ~/.tars_log/qt.log" >&2 ;;
+            *)   echo "[openTARS] The Qt window crashed (code $codigo). Retrying in safe mode. Details: ~/.tars_log/qt.log" >&2 ;;
+        esac
+        inicio=$SECONDS
+        codigo=0
+        TARS_FONTES_SEM_SUBSTITUIR=1 PYTHONPATH="$DIR_OPENTARS" "$PYTHON" -m tars_qt "$@" || codigo=$?
+        case "$codigo" in 132|134|135|136|139)
+            if [ $((SECONDS - inicio)) -lt 15 ]; then
+                case "${LANG:-}${TARS_IDIOMA:-}" in
+                    pt*) echo "[openTARS] Caiu de novo. Abrindo a janela simples." >&2 ;;
+                    *)   echo "[openTARS] Crashed again. Opening the simple window." >&2 ;;
+                esac
+                exec "$PYTHON" "$DIR_OPENTARS/tars_gui.py" --tk "$@"
+            fi ;;
+        esac ;;
+    esac
+    exit "$codigo"
+fi
+
+exec "$PYTHON" "$DIR_OPENTARS/tars_gui.py" "$@"

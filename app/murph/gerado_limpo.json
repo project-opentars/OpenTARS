@@ -1,0 +1,9777 @@
+[
+[
+"was siehst du auf meinem Bildschirm",
+"visao",
+"de"
+],
+[
+"kannst du mir sagen, was in dem Terminalfenster links steht",
+"visao",
+"de"
+],
+[
+"lies bitte die Überschrift der Seite vor",
+"visao",
+"de"
+],
+[
+"was ist das für ein Symbol unten in der Taskleiste, das so blinkt",
+"visao",
+"de"
+],
+[
+"zieh das Bild da oben links in den Ordner daneben",
+"visao",
+"de"
+],
+[
+"klick doppelt auf die gelbe Ordnerkachel auf dem Desktop",
+"visao",
+"de"
+],
+[
+"steht da irgendwo ein Knopf zum Weiter?",
+"visao",
+"de"
+],
+[
+"schau nach, ob der Fortschrittsbalken schon voll ist",
+"visao",
+"de"
+],
+[
+"was bedeutet das orange Warndreieck da im Fenster",
+"visao",
+"de"
+],
+[
+"mach einen Rechtsklick auf das Icon ganz rechts in der Leiste",
+"visao",
+"de"
+],
+[
+"wie viele ungelesene Mails zeigt mein Postfach an",
+"visao",
+"de"
+],
+[
+"lies mir die Zahlen in der Tabelle da vor",
+"visao",
+"de"
+],
+[
+"guck mal auf den Screen und sag mir ob da ein Fehler ist",
+"visao",
+"de"
+],
+[
+"klick auf den Link, der unterstrichen ist, ganz unten",
+"visao",
+"de"
+],
+[
+"welche Uhrzeit steht oben in der Ecke",
+"visao",
+"de"
+],
+[
+"was fuer ein Dialog ist das, der da aufgepoppt ist",
+"visao",
+"de"
+],
+[
+"Sie sehen doch das Fenster, was soll ich da anklicken?",
+"visao",
+"de"
+],
+[
+"drueck auf das Häkchen im grünen Kreis",
+"visao",
+"de"
+],
+[
+"welches Lied wird im Player gerade angezeigt",
+"visao",
+"de"
+],
+[
+"fass mal zusammen, was in dem geöffneten PDF auf dieser Seite steht",
+"visao",
+"de"
+],
+[
+"klick das Kontrollkästchen neben 'Ich stimme zu' an",
+"visao",
+"de"
+],
+[
+"wo ist hier der Speichern-Knopf, ich finde ihn nicht",
+"visao",
+"de"
+],
+[
+"was zeigt die Grafik auf dem Bildschirm eigentlich",
+"visao",
+"de"
+],
+[
+"schieb den Regler da rechts ganz nach oben",
+"visao",
+"de"
+],
+[
+"lies das Kleingedruckte unter dem Formular",
+"visao",
+"de"
+],
+[
+"ist in dem Chatfenster eine neue Nachricht zu sehen?",
+"visao",
+"de"
+],
+[
+"tipp auf den Pfeil nach unten neben dem Namen",
+"visao",
+"de"
+],
+[
+"was ist das für eine Benachrichtigung, die unten rechts kurz kam",
+"visao",
+"de"
+],
+[
+"klick auf das dritte Bild in der Reihe",
+"visao",
+"de"
+],
+[
+"sag mir, welche Programme gerade auf dem Bildschirm offen sind",
+"visao",
+"de"
+],
+[
+"was steht auf dem Button unten links",
+"visao",
+"de"
+],
+[
+"klick auf die Lupe oben",
+"visao",
+"de"
+],
+[
+"wie heißt die Datei, die im Editor offen ist? steht oben im Titel",
+"visao",
+"de"
+],
+[
+"welcher Wert steht in der Zelle, die gerade markiert ist",
+"visao",
+"de"
+],
+[
+"zieh das Fenster mal in die linke Bildschirmhälfte, das mit dem grauen Rand",
+"visao",
+"de"
+],
+[
+"erkennst du, was auf dem Diagramm dargestellt ist?",
+"visao",
+"de"
+],
+[
+"schliess das Fenster mit dem roten Balken oben",
+"visao",
+"de"
+],
+[
+"welche Option ist in dem Dropdown gerade ausgewählt",
+"visao",
+"de"
+],
+[
+"was fuer ein Icon ist das mit der Wolke drauf",
+"visao",
+"de"
+],
+[
+"bitte klicken Sie auf das Symbol mit dem Stift",
+"visao",
+"de"
+],
+[
+"lies mir die Beschreibung unter dem Video vor",
+"visao",
+"de"
+],
+[
+"steht im Captcha irgendwas lesbares?",
+"visao",
+"de"
+],
+[
+"guck ob da irgendwo 'Download abgeschlossen' steht",
+"visao",
+"de"
+],
+[
+"klick auf den grauen Knopf direkt unter dem Textfeld",
+"visao",
+"de"
+],
+[
+"auf welcher Seite der Doku bin ich gerade",
+"visao",
+"de"
+],
+[
+"wie viel Prozent zeigt der Akku oben an",
+"visao",
+"de"
+],
+[
+"da ist so ein komisches Symbol neben dem WLAN-Zeichen, was ist das",
+"visao",
+"de"
+],
+[
+"klick in das leere Feld oben und dann auf den Pfeil",
+"visao",
+"de"
+],
+[
+"welche Sprache ist der Text auf dem Bildschirm",
+"visao",
+"de"
+],
+[
+"übersetz mir den Text, der in dem Fenster da steht",
+"visao",
+"de"
+],
+[
+"such auf dem Bildschirm das Menü mit den drei Punkten und klick drauf",
+"visao",
+"de"
+],
+[
+"welcher Nutzer ist in dem Programm da oben angemeldet",
+"visao",
+"de"
+],
+[
+"ist der Schalter da im Fenster an oder aus?",
+"visao",
+"de"
+],
+[
+"klick den vierten Eintrag in der Liste an",
+"visao",
+"de"
+],
+[
+"was sagt die Statuszeile ganz unten im Fenster",
+"visao",
+"de"
+],
+[
+"da blinkt was in der Ecke, schau mal was das ist",
+"visao",
+"de"
+],
+[
+"lies vor, was im Terminal als letzte Zeile ausgegeben wurde",
+"visao",
+"de"
+],
+[
+"schreib mir ein Python-Skript, das alle CSV-Dateien in einem Ordner zusammenführt",
+"codigo",
+"de"
+],
+[
+"was macht dieser reguläre Ausdruck: ^\\d{3}-\\w+$",
+"codigo",
+"de"
+],
+[
+"mein JavaScript wirft 'undefined is not a function', woran liegt das",
+"codigo",
+"de"
+],
+[
+"wie funktioniert async await in JavaScript?",
+"codigo",
+"de"
+],
+[
+"schreib eine Klasse in C#, die ein Bankkonto darstellt",
+"codigo",
+"de"
+],
+[
+"TypeError: 'NoneType' object is not subscriptable, was hab ich falsch gemacht",
+"codigo",
+"de"
+],
+[
+"mach aus dieser for-Schleife eine List Comprehension",
+"codigo",
+"de"
+],
+[
+"kannst du meine Rust-Funktion optimieren, sie ist zu langsam",
+"codigo",
+"de"
+],
+[
+"bau mir eine kleine REST API mit Flask",
+"codigo",
+"de"
+],
+[
+"wie verbinde ich mich in Python mit einer SQLite-Datenbank",
+"codigo",
+"de"
+],
+[
+"erklär mal Closures in Python",
+"codigo",
+"de"
+],
+[
+"was ist ein Pointer in C und wofür braucht man den",
+"codigo",
+"de"
+],
+[
+"programmier ein Tic-Tac-Toe in Python für die Konsole",
+"codigo",
+"de"
+],
+[
+"wie mach ich in React einen useEffect, der nur einmal läuft",
+"codigo",
+"de"
+],
+[
+"mein Go-Programm hat ein Deadlock, alle goroutines schlafen",
+"codigo",
+"de"
+],
+[
+"schreib eine Funktion, die prüft, ob ein String ein Palindrom ist",
+"codigo",
+"de"
+],
+[
+"IndexError: list index out of range – wie behebe ich das",
+"codigo",
+"de"
+],
+[
+"was bedeutet 'static' in Java",
+"codigo",
+"de"
+],
+[
+"konvertier dieses JavaScript nach TypeScript",
+"codigo",
+"de"
+],
+[
+"wie parse ich JSON in Rust mit serde",
+"codigo",
+"de"
+],
+[
+"schreib mir ein Regex für E-Mail-Adressen",
+"codigo",
+"de"
+],
+[
+"erklär mir bitte Big-O-Notation mit Codebeispielen",
+"codigo",
+"de"
+],
+[
+"der Kotlin Compiler sagt 'unresolved reference', was heisst das",
+"codigo",
+"de"
+],
+[
+"wie lese ich Kommandozeilenargumente in Python ein",
+"codigo",
+"de"
+],
+[
+"kannst du den Code kommentieren, damit ich ihn verstehe",
+"codigo",
+"de"
+],
+[
+"schreib ein Programm in C, das die Fibonacci-Zahlen ausgibt",
+"codigo",
+"de"
+],
+[
+"was sind Generics in TypeScript",
+"codigo",
+"de"
+],
+[
+"meine Django-Migration schlägt fehl mit IntegrityError",
+"codigo",
+"de"
+],
+[
+"wie funktioniert Vererbung in Python, zeig mal ein Beispiel",
+"codigo",
+"de"
+],
+[
+"mein CSS Flexbox zentriert das div nicht, hier ist der code",
+"codigo",
+"de"
+],
+[
+"schreib einen Web-Scraper mit BeautifulSoup",
+"codigo",
+"de"
+],
+[
+"was ist der Unterschied zwischen einer abstrakten Klasse und einem Interface",
+"codigo",
+"de"
+],
+[
+"refaktorier diese Funktion, sie ist viel zu lang",
+"codigo",
+"de"
+],
+[
+"warum bekomme ich 'borrowed value does not live long enough' in Rust",
+"codigo",
+"de"
+],
+[
+"wie mache ich einen HTTP POST mit fetch",
+"codigo",
+"de"
+],
+[
+"schreib eine Lua-Funktion, die eine Tabelle sortiert",
+"codigo",
+"de"
+],
+[
+"meine Schleife in PHP läuft endlos",
+"codigo",
+"de"
+],
+[
+"was macht der yield-Befehl in Python",
+"codigo",
+"de"
+],
+[
+"NullPointerException in Zeile 42, woran kann das liegen",
+"codigo",
+"de"
+],
+[
+"schreib ein Node.js Skript, das eine Datei zeilenweise liest",
+"codigo",
+"de"
+],
+[
+"binäre Suche in Java implementieren bitte",
+"codigo",
+"de"
+],
+[
+"wie funktionieren Decorators in python",
+"codigo",
+"de"
+],
+[
+"mein pandas DataFrame gibt SettingWithCopyWarning aus",
+"codigo",
+"de"
+],
+[
+"schreib eine GDScript Funktion für Spielerbewegung in Godot",
+"codigo",
+"de"
+],
+[
+"was ist Dependency Injection, erklärt mit Code",
+"codigo",
+"de"
+],
+[
+"hilf mir, den Memory Leak in meinem C++ Code zu finden",
+"codigo",
+"de"
+],
+[
+"wie schreib ich eine Shell-Funktion, die prüft ob eine Datei existiert",
+"codigo",
+"de"
+],
+[
+"Sie könnten mir bitte eine Quicksort-Implementierung in Haskell zeigen",
+"codigo",
+"de"
+],
+[
+"mein Vue-Component rendert nicht neu, wenn sich die Daten ändern",
+"codigo",
+"de"
+],
+[
+"wie kann ich in Python Threads benutzen",
+"codigo",
+"de"
+],
+[
+"was bedeutet der Fehler 'cannot find symbol' in java",
+"codigo",
+"de"
+],
+[
+"erklär mir den Unterschied zwischen let, const und var",
+"codigo",
+"de"
+],
+[
+"schreib ein Tkinter-Fenster mit einem Button und einem Label",
+"codigo",
+"de"
+],
+[
+"wie lese ich Umgebungsvariablen in Go aus",
+"codigo",
+"de"
+],
+[
+"ich hab nen off-by-one fehler in meiner schleife, kannst du drüberschauen",
+"codigo",
+"de"
+],
+[
+"was ist ein Race Condition und wie verhindere ich sie im Code",
+"codigo",
+"de"
+],
+[
+"seit dem letzten Update bootet mein Ubuntu nur noch in einen schwarzen Bildschirm",
+"tecnico",
+"de"
+],
+[
+"wie installiere ich die Nvidia Treiber unter Fedora",
+"tecnico",
+"de"
+],
+[
+"was macht der Befehl chmod 755 genau",
+"tecnico",
+"de"
+],
+[
+"mein Ton geht unter Linux Mint nicht mehr, was kann ich tun",
+"tecnico",
+"de"
+],
+[
+"wie installiere ich Steam auf Arch",
+"tecnico",
+"de"
+],
+[
+"apt sagt 'Could not get lock /var/lib/dpkg/lock', was jetzt",
+"tecnico",
+"de"
+],
+[
+"erklär mir, was systemd eigentlich ist",
+"tecnico",
+"de"
+],
+[
+"Bluetooth-Kopfhörer werden unter Pop!_OS nicht erkannt",
+"tecnico",
+"de"
+],
+[
+"wie mounte ich eine externe Festplatte automatisch beim Start",
+"tecnico",
+"de"
+],
+[
+"wie richte ich einen Cronjob ein",
+"tecnico",
+"de"
+],
+[
+"der Drucker wird von CUPS nicht gefunden",
+"tecnico",
+"de"
+],
+[
+"warum ist mein Laptop unter Linux so viel lauter als unter Windows",
+"tecnico",
+"de"
+],
+[
+"Grub zeigt Windows nicht mehr an nach der Linux-Installation",
+"tecnico",
+"de"
+],
+[
+"das WLAN bricht unter Manjaro ständig ab",
+"tecnico",
+"de"
+],
+[
+"wie kann ich Programme beim Systemstart automatisch starten lassen",
+"tecnico",
+"de"
+],
+[
+"erklär mir die Ordnerstruktur von Linux, also /etc, /var, /usr usw",
+"tecnico",
+"de"
+],
+[
+"wie installiere ich eine .deb Datei",
+"tecnico",
+"de"
+],
+[
+"mein Bildschirm flackert unter Wayland, unter X11 nicht",
+"tecnico",
+"de"
+],
+[
+"wie mache ich unter Linux eine Swap-Datei größer",
+"tecnico",
+"de"
+],
+[
+"was ist sudo und warum muss ich mein Passwort eingeben",
+"tecnico",
+"de"
+],
+[
+"wie kann ich sehen, wie warm meine CPU unter Linux ist",
+"tecnico",
+"de"
+],
+[
+"der Dateimanager stürzt jedes mal ab, wenn ich einen Ordner öffne",
+"tecnico",
+"de"
+],
+[
+"wie richte ich SSH ein, damit ich mich ohne Passwort einloggen kann",
+"tecnico",
+"de"
+],
+[
+"welches Kommando zeigt mir den freien Speicherplatz an",
+"tecnico",
+"de"
+],
+[
+"meine zweite Bildschirm wird nicht erkannt unter KDE",
+"tecnico",
+"de"
+],
+[
+"wie installier ich Docker auf Ubuntu 24.04",
+"tecnico",
+"de"
+],
+[
+"Maus-Scrollen ist unter GNOME viel zu schnell, wie stell ich das dauerhaft ein",
+"tecnico",
+"de"
+],
+[
+"wie deinstalliere ich ein Programm komplett samt Konfigdateien",
+"tecnico",
+"de"
+],
+[
+"wie lese ich die Systemlogs mit journalctl",
+"tecnico",
+"de"
+],
+[
+"Wine-Programme starten bei mir nicht, woran liegt das",
+"tecnico",
+"de"
+],
+[
+"wie verschlüssele ich einen USB-Stick unter Linux",
+"tecnico",
+"de"
+],
+[
+"erklär mir, was eine Paketquelle bzw. ein Repository ist",
+"tecnico",
+"de"
+],
+[
+"nach dem Suspend geht das Touchpad nicht mehr",
+"tecnico",
+"de"
+],
+[
+"kann ich unter Linux Windows-Spiele spielen und wie richte ich Proton ein",
+"tecnico",
+"de"
+],
+[
+"mein Rechner wird nach ein paar Stunden super langsam, RAM voll",
+"tecnico",
+"de"
+],
+[
+"wie mache ich ein Backup von meinem ganzen System mit Timeshift",
+"tecnico",
+"de"
+],
+[
+"was machen die Befehle grep und awk",
+"tecnico",
+"de"
+],
+[
+"flatpak apps sehen nicht aus wie mein restliches Theme, wie fix ich das",
+"tecnico",
+"de"
+],
+[
+"wie installiere ich Python 3.12 neben der Systemversion",
+"tecnico",
+"de"
+],
+[
+"die Webcam funktioniert in keinem Programm unter linux",
+"tecnico",
+"de"
+],
+[
+"Sie wissen nicht zufällig, warum mein Fedora keine Updates mehr ziehen kann?",
+"tecnico",
+"de"
+],
+[
+"wie installiere ich Schriftarten unter Linux",
+"tecnico",
+"de"
+],
+[
+"mein Mikrofon wird in PipeWire angezeigt aber nimmt nichts auf",
+"tecnico",
+"de"
+],
+[
+"wie richte ich eine Firewall mit ufw ein",
+"tecnico",
+"de"
+],
+[
+"wie kann ich Umgebungsvariablen dauerhaft setzen",
+"tecnico",
+"de"
+],
+[
+"wie tausche ich unter linux mint den Desktop von Cinnamon auf XFCE",
+"tecnico",
+"de"
+],
+[
+"mein Rechner erkennt die NVMe SSD bei der Installation nicht",
+"tecnico",
+"de"
+],
+[
+"wie funktioniert das mit Rechten und Gruppen unter Linux",
+"tecnico",
+"de"
+],
+[
+"wie aktiviere ich Hibernate unter Ubuntu",
+"tecnico",
+"de"
+],
+[
+"wie installiere ich ein AppImage richtig, sodass es im Menü auftaucht",
+"tecnico",
+"de"
+],
+[
+"was macht rm -rf und warum soll man damit vorsichtig sein",
+"tecnico",
+"de"
+],
+[
+"wie kann ich die Bildschirmauflösung per xrandr einstellen, erklär mal",
+"tecnico",
+"de"
+],
+[
+"mach den Rechner aus",
+"acao",
+"de"
+],
+[
+"sperr bitte sofort die Sitzung",
+"acao",
+"de"
+],
+[
+"mach einen Screenshot",
+"acao",
+"de"
+],
+[
+"verschieb alle PDFs aus Downloads in den Ordner Dokumente",
+"acao",
+"de"
+],
+[
+"schließ Thunderbird",
+"acao",
+"de"
+],
+[
+"starte VS Code",
+"acao",
+"de"
+],
+[
+"schreib in Telegram an Max: bin in 10 Minuten da",
+"acao",
+"de"
+],
+[
+"aktivier den Nachtmodus",
+"acao",
+"de"
+],
+[
+"mach Bluetooth an bitte",
+"acao",
+"de"
+],
+[
+"öffne das Terminal",
+"acao",
+"de"
+],
+[
+"stumm schalten",
+"acao",
+"de"
+],
+[
+"starte den Computer neu",
+"acao",
+"de"
+],
+[
+"öffne den Taschenrechner",
+"acao",
+"de"
+],
+[
+"schick Anna auf WhatsApp 'Alles Gute zum Geburtstag!'",
+"acao",
+"de"
+],
+[
+"mach den Ton wieder an",
+"acao",
+"de"
+],
+[
+"kopier die Datei notizen.md in meinen Home-Ordner",
+"acao",
+"de"
+],
+[
+"öffne GIMP und dann die Datei logo.png",
+"acao",
+"de"
+],
+[
+"verbinde dich mit dem WLAN Fritzbox 7590",
+"acao",
+"de"
+],
+[
+"öffne die Systemeinstellungen",
+"acao",
+"de"
+],
+[
+"mach den Rechner in den Ruhezustand",
+"acao",
+"de"
+],
+[
+"starte Discord",
+"acao",
+"de"
+],
+[
+"entpack die zip datei in Downloads",
+"acao",
+"de"
+],
+[
+"tipp im Texteditor 'Einkaufsliste: Milch, Brot, Eier'",
+"acao",
+"de"
+],
+[
+"koppel meine Kopfhörer Sony WH-1000XM5",
+"acao",
+"de"
+],
+[
+"lauter",
+"acao",
+"de"
+],
+[
+"leiser bitte",
+"acao",
+"de"
+],
+[
+"öffne LibreOffice Writer",
+"acao",
+"de"
+],
+[
+"schalt den Flugmodus ein",
+"acao",
+"de"
+],
+[
+"benenn den Ordner neu in Projekte",
+"acao",
+"de"
+],
+[
+"mach Steam zu",
+"acao",
+"de"
+],
+[
+"nimm einen Screenshot vom aktiven Fenster auf",
+"acao",
+"de"
+],
+[
+"deaktiviere Bluetooth",
+"acao",
+"de"
+],
+[
+"starte OBS Studio",
+"acao",
+"de"
+],
+[
+"melde mich ab",
+"acao",
+"de"
+],
+[
+"schreib eine Mail an chef@firma.de mit Betreff Urlaubsantrag",
+"acao",
+"de"
+],
+[
+"öffnen Sie bitte den Dateimanager im Ordner Musik",
+"acao",
+"de"
+],
+[
+"mach die Musik aus",
+"acao",
+"de"
+],
+[
+"spiel das nächste Lied in Spotify ab",
+"acao",
+"de"
+],
+[
+"pausier die Wiedergabe",
+"acao",
+"de"
+],
+[
+"stell die Helligkeit auf maximal",
+"acao",
+"de"
+],
+[
+"schalt die Tastaturbeleuchtung aus",
+"acao",
+"de"
+],
+[
+"öffne Blender",
+"acao",
+"de"
+],
+[
+"fahr den Laptop in 20 Minuten runter",
+"acao",
+"de"
+],
+[
+"stell den Wecker auf 7 Uhr",
+"acao",
+"de"
+],
+[
+"aendere das Hintergrundbild auf strand.jpg aus meinen Bildern",
+"acao",
+"de"
+],
+[
+"start mal kurz den Systemmonitor",
+"acao",
+"de"
+],
+[
+"verschieb die Datei rechnung.pdf in den Ordner Steuer",
+"acao",
+"de"
+],
+[
+"aktiviere Nicht stören für eine Stunde",
+"acao",
+"de"
+],
+[
+"öffne Nautilus",
+"acao",
+"de"
+],
+[
+"komprimier den Ordner Fotos zu einer zip",
+"acao",
+"de"
+],
+[
+"schließ das Programm Kalender",
+"acao",
+"de"
+],
+[
+"mach das WLAN wieder an",
+"acao",
+"de"
+],
+[
+"wie ist das Wetter morgen in Berlin",
+"busca",
+"de"
+],
+[
+"aktuelle Nachrichten aus Deutschland",
+"busca",
+"de"
+],
+[
+"Bitcoin Kurs jetzt",
+"busca",
+"de"
+],
+[
+"Bundesliga Tabelle aktuell",
+"busca",
+"de"
+],
+[
+"gibt es heute Stau auf der A7?",
+"busca",
+"de"
+],
+[
+"was sind die neuesten Features in Ubuntu 26.10",
+"busca",
+"de"
+],
+[
+"wann fährt der nächste ICE von Hamburg nach München",
+"busca",
+"de"
+],
+[
+"Benzinpreise in meiner Nähe",
+"busca",
+"de"
+],
+[
+"was läuft heute Abend im Cinemaxx Dresden",
+"busca",
+"de"
+],
+[
+"was ist heute in der Welt passiert",
+"busca",
+"de"
+],
+[
+"wie viel kostet ein Flug nach Lissabon im Oktober",
+"busca",
+"de"
+],
+[
+"wer hat die Formel 1 am Sonntag gewonnen",
+"busca",
+"de"
+],
+[
+"Euro Dollar Wechselkurs heute",
+"busca",
+"de"
+],
+[
+"regnet es heute Abend in Köln?",
+"busca",
+"de"
+],
+[
+"gibt es schon Benchmarks zum neuen Ryzen",
+"busca",
+"de"
+],
+[
+"neueste Version von Blender und was ist neu",
+"busca",
+"de"
+],
+[
+"such mir Videos, wie man einen Zauberwürfel löst",
+"busca",
+"de"
+],
+[
+"wer führt gerade bei der Bundestagswahl-Umfrage",
+"busca",
+"de"
+],
+[
+"wann spielt Deutschland das nächste Mal",
+"busca",
+"de"
+],
+[
+"such im Internet nach günstigen 4K Monitoren",
+"busca",
+"de"
+],
+[
+"Öffnungszeiten vom Baumarkt in Freiburg am Samstag",
+"busca",
+"de"
+],
+[
+"was sagen die Leute zu dem neuen Zelda-Spiel",
+"busca",
+"de"
+],
+[
+"wie hoch ist die Inflation momentan",
+"busca",
+"de"
+],
+[
+"Aktienkurs von Nvidia",
+"busca",
+"de"
+],
+[
+"gibt's Neuigkeiten zum Linux Kernel 7",
+"busca",
+"de"
+],
+[
+"Ergebnisse der Champions League gestern Abend",
+"busca",
+"de"
+],
+[
+"wo kann ich die neue Staffel von Dark streamen",
+"busca",
+"de"
+],
+[
+"was kostet ein Steam Deck OLED gerade im Angebot",
+"busca",
+"de"
+],
+[
+"finde ein Tutorial für Arch Linux Installation auf YouTube",
+"busca",
+"de"
+],
+[
+"wann ist das nächste Apple Event",
+"busca",
+"de"
+],
+[
+"suche Konzerte in Leipzig im November",
+"busca",
+"de"
+],
+[
+"welche Spiele sind diese Woche bei Epic kostenlos",
+"busca",
+"de"
+],
+[
+"wie ist der aktuelle Goldpreis",
+"busca",
+"de"
+],
+[
+"such mal nach Erfahrungen mit der Tuxedo InfinityBook",
+"busca",
+"de"
+],
+[
+"wer ist gerade Trainer beim FC Barcelona",
+"busca",
+"de"
+],
+[
+"gibt es eine Unwetterwarnung für Bayern",
+"busca",
+"de"
+],
+[
+"Release Date von Hollow Knight Silksong",
+"busca",
+"de"
+],
+[
+"was sind gerade die Top Hits in den Charts",
+"busca",
+"de"
+],
+[
+"Preisvergleich für das Samsung Galaxy S26",
+"busca",
+"de"
+],
+[
+"such nach Nachrichten über die Bahnstreiks",
+"busca",
+"de"
+],
+[
+"welche Temperatur hat es gerade in Zürich",
+"busca",
+"de"
+],
+[
+"wer hat den letzten Tatort gesehen, wie waren die Kritiken?",
+"busca",
+"de"
+],
+[
+"zeig mir Anleitungen, wie man Sauerteigbrot backt, am besten Videos",
+"busca",
+"de"
+],
+[
+"Sie könnten mir die aktuellen Börsennachrichten raussuchen",
+"busca",
+"de"
+],
+[
+"hat Mediamarkt die PS5 Pro gerade reduziert",
+"busca",
+"de"
+],
+[
+"Spielplan der NBA heute Nacht",
+"busca",
+"de"
+],
+[
+"welche neuen Distros sind diesen Monat erschienen",
+"busca",
+"de"
+],
+[
+"such eine Bewertung von dem Restaurant Zur Linde in Stuttgart",
+"busca",
+"de"
+],
+[
+"was ist beim Tennis in Wimbledon rausgekommen",
+"busca",
+"de"
+],
+[
+"Pollenflug heute",
+"busca",
+"de"
+],
+[
+"wie viele Einwohner hat Berlin laut neuesten Zahlen 2026",
+"busca",
+"de"
+],
+[
+"such nach aktuellen Jobangeboten als Linux Admin in München",
+"busca",
+"de"
+],
+[
+"wie spät ist es gerade in Tokio und wie ist das wetter dort",
+"busca",
+"de"
+],
+[
+"lohnt sich die neue Nintendo Switch laut Tests",
+"busca",
+"de"
+],
+[
+"welche Serien kommen im Oktober auf Netflix",
+"busca",
+"de"
+],
+[
+"such mal auf YouTube nach dem neuesten Video von Linus Tech Tips",
+"busca",
+"de"
+],
+[
+"Kurs der Tesla Aktie heute morgen",
+"busca",
+"de"
+],
+[
+"wer hat den Eurovision Song Contest dieses Jahr gewonnen",
+"busca",
+"de"
+],
+[
+"gibt es ein Update fuer KSP 2 oder wurde das eingestellt",
+"busca",
+"de"
+],
+[
+"was kostet Strom im Moment pro kWh im Schnitt",
+"busca",
+"de"
+],
+[
+"such mir die Patch Notes vom letzten Minecraft Update",
+"busca",
+"de"
+],
+[
+"wie war das Ergebnis vom DFB-Pokal Spiel am Mittwoch",
+"busca",
+"de"
+],
+[
+"hallo",
+"simples",
+"de"
+],
+[
+"hi tars",
+"simples",
+"de"
+],
+[
+"tschüssi, bis bald",
+"simples",
+"de"
+],
+[
+"bis später",
+"simples",
+"de"
+],
+[
+"na, alles gut bei dir?",
+"simples",
+"de"
+],
+[
+"servus beinand",
+"simples",
+"de"
+],
+[
+"moin moin",
+"simples",
+"de"
+],
+[
+"lieben dank!",
+"simples",
+"de"
+],
+[
+"wie läuft's so?",
+"simples",
+"de"
+],
+[
+"hey",
+"simples",
+"de"
+],
+[
+"öffne google",
+"simples",
+"de"
+],
+[
+"mach mal wikipedia auf",
+"simples",
+"de"
+],
+[
+"öffne netflix",
+"simples",
+"de"
+],
+[
+"öffne gmail",
+"simples",
+"de"
+],
+[
+"bring mich zu amazon.de",
+"simples",
+"de"
+],
+[
+"öffne twitch",
+"simples",
+"de"
+],
+[
+"öffne die Seite von twitter",
+"simples",
+"de"
+],
+[
+"ciao",
+"simples",
+"de"
+],
+[
+"grüß dich",
+"simples",
+"de"
+],
+[
+"hallo, bist du da?",
+"simples",
+"de"
+],
+[
+"danke, du bist der beste",
+"simples",
+"de"
+],
+[
+"top, passt so",
+"simples",
+"de"
+],
+[
+"ok cool",
+"simples",
+"de"
+],
+[
+"auf wiedersehen",
+"simples",
+"de"
+],
+[
+"hallo zusammen",
+"simples",
+"de"
+],
+[
+"öffne ebay",
+"simples",
+"de"
+],
+[
+"öffne instagram",
+"simples",
+"de"
+],
+[
+"ruf chatgpt.com auf",
+"simples",
+"de"
+],
+[
+"öffne deepl.com",
+"simples",
+"de"
+],
+[
+"öffne linkedin",
+"simples",
+"de"
+],
+[
+"mach google maps auf",
+"simples",
+"de"
+],
+[
+"öffne die tagesschau website",
+"simples",
+"de"
+],
+[
+"öffne outlook.com",
+"simples",
+"de"
+],
+[
+"huhu",
+"simples",
+"de"
+],
+[
+"na du",
+"simples",
+"de"
+],
+[
+"ich wünsche dir einen schönen Tag",
+"simples",
+"de"
+],
+[
+"hab einen schönen Abend",
+"simples",
+"de"
+],
+[
+"gut gemacht, danke",
+"simples",
+"de"
+],
+[
+"dankeschön für die Hilfe",
+"simples",
+"de"
+],
+[
+"hallöchen",
+"simples",
+"de"
+],
+[
+"bin wieder da",
+"simples",
+"de"
+],
+[
+"mahlzeit",
+"simples",
+"de"
+],
+[
+"gute arbeit",
+"simples",
+"de"
+],
+[
+"hey, wie geht's dir so",
+"simples",
+"de"
+],
+[
+"öffne duckduckgo",
+"simples",
+"de"
+],
+[
+"öffne facebook",
+"simples",
+"de"
+],
+[
+"öffne die seite von der bahn",
+"simples",
+"de"
+],
+[
+"öffne spotify im browser, also open.spotify.com",
+"simples",
+"de"
+],
+[
+"tschau, bis dann",
+"simples",
+"de"
+],
+[
+"hallo tars, schön dich zu sehen",
+"simples",
+"de"
+],
+[
+"danke, das reicht erstmal",
+"simples",
+"de"
+],
+[
+"grüezi",
+"simples",
+"de"
+],
+[
+"öffne pinterest",
+"simples",
+"de"
+],
+[
+"wie wandeln Pflanzen Sonnenlicht in Energie um?",
+"geral",
+"de"
+],
+[
+"übersetze 'Wo ist der Bahnhof?' ins Spanische",
+"geral",
+"de"
+],
+[
+"was ist 17 mal 23",
+"geral",
+"de"
+],
+[
+"fass den folgenden Text in drei Sätzen zusammen",
+"geral",
+"de"
+],
+[
+"gib mir fünf Ideen für ein Geburtstagsgeschenk für meine Mutter",
+"geral",
+"de"
+],
+[
+"wer hat die Relativitätstheorie entwickelt",
+"geral",
+"de"
+],
+[
+"wie viele Kontinente gibt es",
+"geral",
+"de"
+],
+[
+"schreib eine kurze Geschichte über einen Roboter, der Angst im Dunkeln hat",
+"geral",
+"de"
+],
+[
+"was heißt 'serendipity' auf Deutsch",
+"geral",
+"de"
+],
+[
+"hilf mir, mich auf ein Vorstellungsgespräch vorzubereiten",
+"geral",
+"de"
+],
+[
+"wie rechne ich Prozent aus",
+"geral",
+"de"
+],
+[
+"was ist die Hauptstadt von Australien",
+"geral",
+"de"
+],
+[
+"formulier diesen Satz bitte freundlicher: Das ist falsch, mach es nochmal",
+"geral",
+"de"
+],
+[
+"gib mir Tipps, wie ich besser schlafen kann",
+"geral",
+"de"
+],
+[
+"schreib einen Limerick über Katzen",
+"geral",
+"de"
+],
+[
+"löse die Gleichung 3x + 7 = 22",
+"geral",
+"de"
+],
+[
+"schreib mir ein Anschreiben für eine Bewerbung als Grafikdesigner",
+"geral",
+"de"
+],
+[
+"erklär den Unterschied zwischen Dativ und Akkusativ",
+"geral",
+"de"
+],
+[
+"was war die Ursache des Ersten Weltkriegs",
+"geral",
+"de"
+],
+[
+"welche Vorteile hat Meditation",
+"geral",
+"de"
+],
+[
+"was ergibt die Kubikwurzel aus 343",
+"geral",
+"de"
+],
+[
+"erklär mir die Evolutionstheorie",
+"geral",
+"de"
+],
+[
+"korrigier die Rechtschreibung in diesem Text",
+"geral",
+"de"
+],
+[
+"was bedeutet das Sprichwort 'Der Apfel fällt nicht weit vom Stamm'",
+"geral",
+"de"
+],
+[
+"warum ist der Himmel blau",
+"geral",
+"de"
+],
+[
+"schreib eine Absage für eine Einladung zur Hochzeit, aber nett",
+"geral",
+"de"
+],
+[
+"wie viele Tage hat ein Schaltjahr",
+"geral",
+"de"
+],
+[
+"erkläre mir den Satz des Pythagoras",
+"geral",
+"de"
+],
+[
+"schreib einen Songtext über Freundschaft",
+"geral",
+"de"
+],
+[
+"wie kann ich meine Zeit besser organisieren",
+"geral",
+"de"
+],
+[
+"was ist Demokratie, kurz erklärt",
+"geral",
+"de"
+],
+[
+"übersetze 'thank you very much' ins Japanische",
+"geral",
+"de"
+],
+[
+"schreib mir eine Glückwunschkarte zur Rente",
+"geral",
+"de"
+],
+[
+"wie viele Knochen hat ein erwachsener Mensch",
+"geral",
+"de"
+],
+[
+"erklär mir, was eine Aktie ist",
+"geral",
+"de"
+],
+[
+"gib mir ein paar Argumente für und gegen ein Tempolimit",
+"geral",
+"de"
+],
+[
+"schreib eine Produktbeschreibung für einen handgemachten Holzlöffel",
+"geral",
+"de"
+],
+[
+"was hat Goethe geschrieben, nenn mal ein paar Werke",
+"geral",
+"de"
+],
+[
+"wie entsteht ein Regenbogen",
+"geral",
+"de"
+],
+[
+"denk dir ein Rätsel für Kinder aus",
+"geral",
+"de"
+],
+[
+"erklär mal den Unterschied zwischen Kilowatt und Kilowattstunde",
+"geral",
+"de"
+],
+[
+"was ist die Lichtgeschwindigkeit",
+"geral",
+"de"
+],
+[
+"hilf mir, einen Trainingsplan zum Joggen für Anfänger zu machen",
+"geral",
+"de"
+],
+[
+"wandle 100 Grad Fahrenheit in Celsius um",
+"geral",
+"de"
+],
+[
+"wer war Napoleon",
+"geral",
+"de"
+],
+[
+"schreib einen kurzen Text für meine Abwesenheitsnotiz",
+"geral",
+"de"
+],
+[
+"Sie könnten mir bitte erklären, wie Impfungen funktionieren",
+"geral",
+"de"
+],
+[
+"gib mir 10 Vokabeln auf Französisch zum Thema Essen",
+"geral",
+"de"
+],
+[
+"welche Planeten gibt es in unserem Sonnensystem",
+"geral",
+"de"
+],
+[
+"gib mir Tipps für ein gutes Referat",
+"geral",
+"de"
+],
+[
+"erklär mir kurz, was Quantenphysik ist",
+"geral",
+"de"
+],
+[
+"schreib einen Tweet, der mein neues Blog-Projekt ankündigt",
+"geral",
+"de"
+],
+[
+"what's that red dot on the top bar",
+"visao",
+"en"
+],
+[
+"click the button that says Continue",
+"visao",
+"en"
+],
+[
+"read me the error message on screen",
+"visao",
+"en"
+],
+[
+"which app is that purple icon in the dock",
+"visao",
+"en"
+],
+[
+"hit the checkbox next to 'I agree'",
+"visao",
+"en"
+],
+[
+"can u tell me what this window is showing",
+"visao",
+"en"
+],
+[
+"close the popup in the bottom right corner",
+"visao",
+"en"
+],
+[
+"there's a yellow warning triangle somewhere, what does it mean",
+"visao",
+"en"
+],
+[
+"click on the second thumbnail in the grid",
+"visao",
+"en"
+],
+[
+"what's the file name highlighted in the file manager right now",
+"visao",
+"en"
+],
+[
+"describe this chart for me",
+"visao",
+"en"
+],
+[
+"drag the image on the left into the folder on the right",
+"visao",
+"en"
+],
+[
+"is there a login field on this page",
+"visao",
+"en"
+],
+[
+"click the hamburger menu in the top left",
+"visao",
+"en"
+],
+[
+"what language is the text on my screen in",
+"visao",
+"en"
+],
+[
+"read the subtitles out loud",
+"visao",
+"en"
+],
+[
+"find the download button on this page and click it",
+"visao",
+"en"
+],
+[
+"what's the price shown in that product listing",
+"visao",
+"en"
+],
+[
+"press the play symbol in the middle of the video",
+"visao",
+"en"
+],
+[
+"which of these tabs has the red badge",
+"visao",
+"en"
+],
+[
+"tell me the version number written in the about box",
+"visao",
+"en"
+],
+[
+"move the slider on screen all the way to the right",
+"visao",
+"en"
+],
+[
+"click where it says 'forgot password'",
+"visao",
+"en"
+],
+[
+"what's the big number in the top corner of the dashboard",
+"visao",
+"en"
+],
+[
+"pls look at this and tell me if the form is filled correctly",
+"visao",
+"en"
+],
+[
+"click the grey X on the ad covering the page",
+"visao",
+"en"
+],
+[
+"what does the tooltip say when u hover over that",
+"visao",
+"en"
+],
+[
+"select the text in the first paragraph",
+"visao",
+"en"
+],
+[
+"is that button greyed out or can i click it",
+"visao",
+"en"
+],
+[
+"what's written in the terminal window right now",
+"visao",
+"en"
+],
+[
+"right click on the green file icon",
+"visao",
+"en"
+],
+[
+"how many unread messages does the chat window show",
+"visao",
+"en"
+],
+[
+"press ok on the dialog box",
+"visao",
+"en"
+],
+[
+"which song is in the spotify window at the moment, just read it",
+"visao",
+"en"
+],
+[
+"click the star next to the repo name",
+"visao",
+"en"
+],
+[
+"what are the column headers in this spreadsheet",
+"visao",
+"en"
+],
+[
+"look at the screen, did the upload finish?",
+"visao",
+"en"
+],
+[
+"tick all the boxes in that list",
+"visao",
+"en"
+],
+[
+"click the avatar picture in the upper right",
+"visao",
+"en"
+],
+[
+"what's the temperature displayed on the widget",
+"visao",
+"en"
+],
+[
+"can you read the captcha text",
+"visao",
+"en"
+],
+[
+"hover over the chart and tell me the highest value",
+"visao",
+"en"
+],
+[
+"click the link at the very bottom of the page",
+"visao",
+"en"
+],
+[
+"whats this blue banner at the top about",
+"visao",
+"en"
+],
+[
+"expand the dropdown under the search box",
+"visao",
+"en"
+],
+[
+"which button do i press to save here? just click it",
+"visao",
+"en"
+],
+[
+"what does the red text under the password field say",
+"visao",
+"en"
+],
+[
+"summarize what's on this web page i'm looking at",
+"visao",
+"en"
+],
+[
+"tap the arrow pointing down next to 'Sort by'",
+"visao",
+"en"
+],
+[
+"what's the time in the corner of the screen",
+"visao",
+"en"
+],
+[
+"click on the orange folder",
+"visao",
+"en"
+],
+[
+"double-click the icon shaped like a camera",
+"visao",
+"en"
+],
+[
+"is my face visible in the webcam preview window",
+"visao",
+"en"
+],
+[
+"close the third tab from the left",
+"visao",
+"en"
+],
+[
+"click the toggle switch that's currently off",
+"visao",
+"en"
+],
+[
+"describe the photo that's being displayed",
+"visao",
+"en"
+],
+[
+"click the button under the image",
+"visao",
+"en"
+],
+[
+"what's the error code on that blue screen thing",
+"visao",
+"en"
+],
+[
+"scroll until you see the comments section and read the top one",
+"visao",
+"en"
+],
+[
+"which option is selected in that radio group",
+"visao",
+"en"
+],
+[
+"drag the scrollbar halfway down",
+"visao",
+"en"
+],
+[
+"there's a message in the lower left corner, what is it",
+"visao",
+"en"
+],
+[
+"point at the menu item that says Preferences and click it",
+"visao",
+"en"
+],
+[
+"what does the graph on my screen show about sales",
+"visao",
+"en"
+],
+[
+"write a python function to check if a number is prime",
+"codigo",
+"en"
+],
+[
+"my rust code says borrowed value does not live long enough, help",
+"codigo",
+"en"
+],
+[
+"why do i get NameError: name 'df' is not defined",
+"codigo",
+"en"
+],
+[
+"refactor this function so it's less nested",
+"codigo",
+"en"
+],
+[
+"make a flask endpoint that returns json",
+"codigo",
+"en"
+],
+[
+"my kotlin app crashes with NullPointerException on startup",
+"codigo",
+"en"
+],
+[
+"how do promises work in javascript",
+"codigo",
+"en"
+],
+[
+"convert this for loop to use map",
+"codigo",
+"en"
+],
+[
+"write unit tests for my calculator class with pytest",
+"codigo",
+"en"
+],
+[
+"what is big O notation",
+"codigo",
+"en"
+],
+[
+"my css flexbox items won't center vertically",
+"codigo",
+"en"
+],
+[
+"write a regex that matches email addresses",
+"codigo",
+"en"
+],
+[
+"how do i handle exceptions in c#",
+"codigo",
+"en"
+],
+[
+"explain what async await does",
+"codigo",
+"en"
+],
+[
+"my django migration fails with 'no such column'",
+"codigo",
+"en"
+],
+[
+"implement binary search in go",
+"codigo",
+"en"
+],
+[
+"how do i use useEffect without it running in a loop",
+"codigo",
+"en"
+],
+[
+"what's a pointer in c, explain like i'm new",
+"codigo",
+"en"
+],
+[
+"why does 0.1 + 0.2 not equal 0.3 in my program",
+"codigo",
+"en"
+],
+[
+"generate a dockerfile for a node express app",
+"codigo",
+"en"
+],
+[
+"add type hints to this python function",
+"codigo",
+"en"
+],
+[
+"write a function that flattens a nested list",
+"codigo",
+"en"
+],
+[
+"how do i connect to postgres from python",
+"codigo",
+"en"
+],
+[
+"explain dependency injection",
+"codigo",
+"en"
+],
+[
+"my git merge conflict markers are in the code, how do i resolve them in the file",
+"codigo",
+"en"
+],
+[
+"write a simple snake game in pygame",
+"codigo",
+"en"
+],
+[
+"how do i read json from an api in javascript",
+"codigo",
+"en"
+],
+[
+"what does 'undefined is not a function' mean",
+"codigo",
+"en"
+],
+[
+"write a lua script for a roblox door that opens on touch",
+"codigo",
+"en"
+],
+[
+"optimize this query, it takes 10 seconds",
+"codigo",
+"en"
+],
+[
+"what's the difference between an interface and an abstract class",
+"codigo",
+"en"
+],
+[
+"make a python script that sends an email with smtplib",
+"codigo",
+"en"
+],
+[
+"my for loop in php only runs once",
+"codigo",
+"en"
+],
+[
+"how to memoize a function in python",
+"codigo",
+"en"
+],
+[
+"write a hello world in assembly",
+"codigo",
+"en"
+],
+[
+"why is my react state not updating right away",
+"codigo",
+"en"
+],
+[
+"explain what a hash map is and when to use it",
+"codigo",
+"en"
+],
+[
+"convert this python 2 code to python 3",
+"codigo",
+"en"
+],
+[
+"write a class for a bank account with deposit and withdraw",
+"codigo",
+"en"
+],
+[
+"my arduino sketch doesnt compile, 'expected ; before }'",
+"codigo",
+"en"
+],
+[
+"how do i split a string by comma in c++",
+"codigo",
+"en"
+],
+[
+"write a quick script to download all images from a list of urls",
+"codigo",
+"en"
+],
+[
+"explain the observer pattern with code",
+"codigo",
+"en"
+],
+[
+"my java stream collect returns null, why",
+"codigo",
+"en"
+],
+[
+"write a vue component with a counter button",
+"codigo",
+"en"
+],
+[
+"what does the yield keyword do in python",
+"codigo",
+"en"
+],
+[
+"write a function to validate a brazilian cpf number",
+"codigo",
+"en"
+],
+[
+"how do i write a makefile for two c files",
+"codigo",
+"en"
+],
+[
+"turn this callback code into async/await",
+"codigo",
+"en"
+],
+[
+"what are generics in typescript",
+"codigo",
+"en"
+],
+[
+"my unity c# script can't find the component",
+"codigo",
+"en"
+],
+[
+"why does my websocket server close the connection immediately",
+"codigo",
+"en"
+],
+[
+"write a godot gdscript for player movement",
+"codigo",
+"en"
+],
+[
+"explain the difference between == and === in js",
+"codigo",
+"en"
+],
+[
+"write a minimal rest api in fastapi with one GET route",
+"codigo",
+"en"
+],
+[
+"how can I debounce an input handler",
+"codigo",
+"en"
+],
+[
+"explain how a mutex prevents race conditions in code",
+"codigo",
+"en"
+],
+[
+"write a python script to parse a log file and count errors",
+"codigo",
+"en"
+],
+[
+"fix the indentation error in this snippet",
+"codigo",
+"en"
+],
+[
+"wifi won't connect since the last update on pop os",
+"tecnico",
+"en"
+],
+[
+"how do i install steam on arch",
+"tecnico",
+"en"
+],
+[
+"my second monitor isn't detected on ubuntu",
+"tecnico",
+"en"
+],
+[
+"what does sudo actually do",
+"tecnico",
+"en"
+],
+[
+"how can i see how much ram is being used from the terminal",
+"tecnico",
+"en"
+],
+[
+"bluetooth headset connects but no sound on fedora",
+"tecnico",
+"en"
+],
+[
+"apt says unable to locate package, why",
+"tecnico",
+"en"
+],
+[
+"how do i uninstall a snap",
+"tecnico",
+"en"
+],
+[
+"how do i make a program start automatically at login on kde",
+"tecnico",
+"en"
+],
+[
+"dpkg was interrupted, you must manually run dpkg --configure -a what does that mean",
+"tecnico",
+"en"
+],
+[
+"how to update everything on manjaro",
+"tecnico",
+"en"
+],
+[
+"my keyboard layout keeps resetting to us after reboot",
+"tecnico",
+"en"
+],
+[
+"what is the /etc/fstab file for",
+"tecnico",
+"en"
+],
+[
+"how do i check if my gpu drivers are installed",
+"tecnico",
+"en"
+],
+[
+"pacman keeps failing with invalid signature",
+"tecnico",
+"en"
+],
+[
+"how do i find large files eating my disk",
+"tecnico",
+"en"
+],
+[
+"explain what a linux distro is",
+"tecnico",
+"en"
+],
+[
+"my usb stick shows as read only on linux",
+"tecnico",
+"en"
+],
+[
+"how do i add a user to the sudo group",
+"tecnico",
+"en"
+],
+[
+"can't hear anything through hdmi on debian",
+"tecnico",
+"en"
+],
+[
+"how to enable ssh server on ubuntu",
+"tecnico",
+"en"
+],
+[
+"my printer isn't showing up in linux",
+"tecnico",
+"en"
+],
+[
+"how do i change the hostname permanently",
+"tecnico",
+"en"
+],
+[
+"brightness keys don't work on my laptop with linux",
+"tecnico",
+"en"
+],
+[
+"what does 'permission denied' mean when i run a script",
+"tecnico",
+"en"
+],
+[
+"how do i install a .deb file",
+"tecnico",
+"en"
+],
+[
+"cron job isn't running, how do i debug it",
+"tecnico",
+"en"
+],
+[
+"the clock is wrong after dual booting with windows",
+"tecnico",
+"en"
+],
+[
+"how do i kill a frozen program from the terminal",
+"tecnico",
+"en"
+],
+[
+"how to install ollama on linux",
+"tecnico",
+"en"
+],
+[
+"how do i list all installed packages on fedora",
+"tecnico",
+"en"
+],
+[
+"what does the tilde ~ mean in a path",
+"tecnico",
+"en"
+],
+[
+"my webcam isn't recognized by linux",
+"tecnico",
+"en"
+],
+[
+"how can i make a bootable usb from the terminal with dd",
+"tecnico",
+"en"
+],
+[
+"why is my linux boot so slow, it takes 2 minutes",
+"tecnico",
+"en"
+],
+[
+"how do i roll back to the previous kernel",
+"tecnico",
+"en"
+],
+[
+"gnome extensions stopped working after upgrade",
+"tecnico",
+"en"
+],
+[
+"how to set environment variables permanently in bash",
+"tecnico",
+"en"
+],
+[
+"my mic is way too quiet on linux",
+"tecnico",
+"en"
+],
+[
+"what's the difference between root and my normal user",
+"tecnico",
+"en"
+],
+[
+"journalctl shows a lot of errors, how do i read it",
+"tecnico",
+"en"
+],
+[
+"how do I install an appimage properly",
+"tecnico",
+"en"
+],
+[
+"i accidentally deleted my panel in xfce, how do i get it back",
+"tecnico",
+"en"
+],
+[
+"what is swap and how much should i have",
+"tecnico",
+"en"
+],
+[
+"how do i open ports in ufw",
+"tecnico",
+"en"
+],
+[
+"my laptop battery drains fast on linux, any fix",
+"tecnico",
+"en"
+],
+[
+"how do i see what's connected to my network from terminal",
+"tecnico",
+"en"
+],
+[
+"how do i update the bios firmware with fwupd",
+"tecnico",
+"en"
+],
+[
+"sound crackles when playing games on linux",
+"tecnico",
+"en"
+],
+[
+"how to install java on ubuntu 24.04",
+"tecnico",
+"en"
+],
+[
+"after the upgrade, my external drive won't mount, says wrong fs type",
+"tecnico",
+"en"
+],
+[
+"how do I switch from wayland to xorg at login",
+"tecnico",
+"en"
+],
+[
+"explain what systemctl enable does",
+"tecnico",
+"en"
+],
+[
+"why does my wifi adapter not show up at all",
+"tecnico",
+"en"
+],
+[
+"how do i change the default app for pdfs in linux",
+"tecnico",
+"en"
+],
+[
+"hibernate option is missing in the power menu",
+"tecnico",
+"en"
+],
+[
+"how do i reinstall the desktop environment without losing files",
+"tecnico",
+"en"
+],
+[
+"what is a package manager",
+"tecnico",
+"en"
+],
+[
+"how do i check cpu temperature on linux",
+"tecnico",
+"en"
+],
+[
+"steam games won't launch, proton error",
+"tecnico",
+"en"
+],
+[
+"my touchscreen is inverted on linux, how to recalibrate",
+"tecnico",
+"en"
+],
+[
+"set the volume to 50",
+"acao",
+"en"
+],
+[
+"close telegram",
+"acao",
+"en"
+],
+[
+"take a screenshot",
+"acao",
+"en"
+],
+[
+"move report.pdf to the documents folder",
+"acao",
+"en"
+],
+[
+"launch vs code",
+"acao",
+"en"
+],
+[
+"shut down the computer",
+"acao",
+"en"
+],
+[
+"open the terminal",
+"acao",
+"en"
+],
+[
+"send 'running late, be there in 10' to john on telegram",
+"acao",
+"en"
+],
+[
+"create a folder called projects in my home",
+"acao",
+"en"
+],
+[
+"open discord and go to the general channel",
+"acao",
+"en"
+],
+[
+"put the computer to sleep",
+"acao",
+"en"
+],
+[
+"open libreoffice writer",
+"acao",
+"en"
+],
+[
+"type 'hello world' in the text editor",
+"acao",
+"en"
+],
+[
+"start obs",
+"acao",
+"en"
+],
+[
+"log me out",
+"acao",
+"en"
+],
+[
+"reboot now",
+"acao",
+"en"
+],
+[
+"open steam",
+"acao",
+"en"
+],
+[
+"disable notifications",
+"acao",
+"en"
+],
+[
+"turn on do not disturb",
+"acao",
+"en"
+],
+[
+"copy budget.xlsx to the usb stick",
+"acao",
+"en"
+],
+[
+"move all mp3s from downloads to music",
+"acao",
+"en"
+],
+[
+"open thunderbird and write an email to maria",
+"acao",
+"en"
+],
+[
+"set brightness to 100%",
+"acao",
+"en"
+],
+[
+"open gimp",
+"acao",
+"en"
+],
+[
+"launch blender pls",
+"acao",
+"en"
+],
+[
+"take a screenshot of just the current window",
+"acao",
+"en"
+],
+[
+"open settings",
+"acao",
+"en"
+],
+[
+"unmute",
+"acao",
+"en"
+],
+[
+"create a text file named todo.txt on the desktop",
+"acao",
+"en"
+],
+[
+"close vlc",
+"acao",
+"en"
+],
+[
+"open the photos app",
+"acao",
+"en"
+],
+[
+"open keepassxc",
+"acao",
+"en"
+],
+[
+"extract archive.tar.gz in downloads",
+"acao",
+"en"
+],
+[
+"turn on the night light",
+"acao",
+"en"
+],
+[
+"connect to the wifi called HomeNet",
+"acao",
+"en"
+],
+[
+"pause the video in vlc",
+"acao",
+"en"
+],
+[
+"open a new terminal tab",
+"acao",
+"en"
+],
+[
+"schedule a shutdown for 11pm",
+"acao",
+"en"
+],
+[
+"switch to workspace 2",
+"acao",
+"en"
+],
+[
+"open nautilus in the pictures folder",
+"acao",
+"en"
+],
+[
+"open obsidian",
+"acao",
+"en"
+],
+[
+"close the calculator",
+"acao",
+"en"
+],
+[
+"put my headset as the default audio output",
+"acao",
+"en"
+],
+[
+"start a screen recording",
+"acao",
+"en"
+],
+[
+"open krita",
+"acao",
+"en"
+],
+[
+"type my email address in the focused field: joe@mail.com",
+"acao",
+"en"
+],
+[
+"quit slack",
+"acao",
+"en"
+],
+[
+"hey open the system monitor",
+"acao",
+"en"
+],
+[
+"bitcoin price now",
+"busca",
+"en"
+],
+[
+"latest news on the linux kernel 7.0",
+"busca",
+"en"
+],
+[
+"how much is an rtx 5090 right now",
+"busca",
+"en"
+],
+[
+"find me a tutorial on installing arch linux",
+"busca",
+"en"
+],
+[
+"what's trending on twitter today",
+"busca",
+"en"
+],
+[
+"dollar to real exchange rate today",
+"busca",
+"en"
+],
+[
+"search youtube for lofi hip hop",
+"busca",
+"en"
+],
+[
+"show me the latest spacex launch results",
+"busca",
+"en"
+],
+[
+"what time is the f1 race on sunday",
+"busca",
+"en"
+],
+[
+"best budget mechanical keyboards 2026",
+"busca",
+"en"
+],
+[
+"new episodes of the bear release date",
+"busca",
+"en"
+],
+[
+"any news about the ps6",
+"busca",
+"en"
+],
+[
+"who won the election in germany",
+"busca",
+"en"
+],
+[
+"current price of a 2tb nvme ssd",
+"busca",
+"en"
+],
+[
+"what's the latest version of blender",
+"busca",
+"en"
+],
+[
+"nba standings",
+"busca",
+"en"
+],
+[
+"search for restaurants open now near me",
+"busca",
+"en"
+],
+[
+"what did apple announce at the last event",
+"busca",
+"en"
+],
+[
+"is discord down right now",
+"busca",
+"en"
+],
+[
+"find reviews for the new kindle",
+"busca",
+"en"
+],
+[
+"latest version of python released",
+"busca",
+"en"
+],
+[
+"what's the ethereum price",
+"busca",
+"en"
+],
+[
+"search the web for fedora 45 release notes",
+"busca",
+"en"
+],
+[
+"is there a new ubuntu lts out",
+"busca",
+"en"
+],
+[
+"hotel prices in florianópolis for next weekend",
+"busca",
+"en"
+],
+[
+"who is leading the tour de france",
+"busca",
+"en"
+],
+[
+"what's the air quality in beijing today",
+"busca",
+"en"
+],
+[
+"what movies come out next month",
+"busca",
+"en"
+],
+[
+"find a good guide to setting up hyprland",
+"busca",
+"en"
+],
+[
+"stock price of nvidia",
+"busca",
+"en"
+],
+[
+"what happened in the news this morning",
+"busca",
+"en"
+],
+[
+"has the new zelda been announced yet",
+"busca",
+"en"
+],
+[
+"weather forecast for the next 7 days in francisco beltrão",
+"busca",
+"en"
+],
+[
+"find the steam summer sale dates",
+"busca",
+"en"
+],
+[
+"what's the latest on the mars mission",
+"busca",
+"en"
+],
+[
+"prices for a used ps5 on mercado livre",
+"busca",
+"en"
+],
+[
+"find me benchmarks for the ryzen 9 9950x3d",
+"busca",
+"en"
+],
+[
+"look up opening hours for the city library",
+"busca",
+"en"
+],
+[
+"any new ksp 2 updates",
+"busca",
+"en"
+],
+[
+"latest openai model announcement",
+"busca",
+"en"
+],
+[
+"top 10 songs on spotify this week",
+"busca",
+"en"
+],
+[
+"how's the stock market doing today",
+"busca",
+"en"
+],
+[
+"find tutorials for learning godot",
+"busca",
+"en"
+],
+[
+"who won the oscar for best picture this year",
+"busca",
+"en"
+],
+[
+"check the ufc results from saturday",
+"busca",
+"en"
+],
+[
+"search google for cheap monitors 144hz",
+"busca",
+"en"
+],
+[
+"find the changelog for the latest firefox",
+"busca",
+"en"
+],
+[
+"what's the traffic like on br-277 now",
+"busca",
+"en"
+],
+[
+"current mortgage interest rates",
+"busca",
+"en"
+],
+[
+"is the new macbook pro worth it, find reviews",
+"busca",
+"en"
+],
+[
+"look for tickets to the coldplay concert",
+"busca",
+"en"
+],
+[
+"find out if the store has the 4070 super in stock",
+"busca",
+"en"
+],
+[
+"hi claude, you there",
+"simples",
+"en"
+],
+[
+"bye",
+"simples",
+"en"
+],
+[
+"see ya later",
+"simples",
+"en"
+],
+[
+"heyyy tars",
+"simples",
+"en"
+],
+[
+"open youtube",
+"simples",
+"en"
+],
+[
+"yo whats up",
+"simples",
+"en"
+],
+[
+"how r u",
+"simples",
+"en"
+],
+[
+"open wikipedia",
+"simples",
+"en"
+],
+[
+"open amazon",
+"simples",
+"en"
+],
+[
+"open facebook",
+"simples",
+"en"
+],
+[
+"thx",
+"simples",
+"en"
+],
+[
+"hello, anyone there?",
+"simples",
+"en"
+],
+[
+"open google",
+"simples",
+"en"
+],
+[
+"catch you later",
+"simples",
+"en"
+],
+[
+"awesome thank you",
+"simples",
+"en"
+],
+[
+"hey hey",
+"simples",
+"en"
+],
+[
+"open linkedin",
+"simples",
+"en"
+],
+[
+"you're the best",
+"simples",
+"en"
+],
+[
+"open twitch",
+"simples",
+"en"
+],
+[
+"sup",
+"simples",
+"en"
+],
+[
+"have a nice day",
+"simples",
+"en"
+],
+[
+"open spotify website",
+"simples",
+"en"
+],
+[
+"howdy",
+"simples",
+"en"
+],
+[
+"open outlook.com",
+"simples",
+"en"
+],
+[
+"great job, thanks",
+"simples",
+"en"
+],
+[
+"talk to you tomorrow",
+"simples",
+"en"
+],
+[
+"open duckduckgo",
+"simples",
+"en"
+],
+[
+"hiya",
+"simples",
+"en"
+],
+[
+"perfect, that's all",
+"simples",
+"en"
+],
+[
+"open pinterest",
+"simples",
+"en"
+],
+[
+"morning tars",
+"simples",
+"en"
+],
+[
+"ty",
+"simples",
+"en"
+],
+[
+"open tiktok",
+"simples",
+"en"
+],
+[
+"take care",
+"simples",
+"en"
+],
+[
+"open chatgpt website",
+"simples",
+"en"
+],
+[
+"open the youtube site pls",
+"simples",
+"en"
+],
+[
+"open mercado livre",
+"simples",
+"en"
+],
+[
+"nvm, bye",
+"simples",
+"en"
+],
+[
+"open google maps",
+"simples",
+"en"
+],
+[
+"what's new with you",
+"simples",
+"en"
+],
+[
+"open stack overflow",
+"simples",
+"en"
+],
+[
+"cool beans",
+"simples",
+"en"
+],
+[
+"open imdb",
+"simples",
+"en"
+],
+[
+"goodbye tars",
+"simples",
+"en"
+],
+[
+"hello again, it's me",
+"simples",
+"en"
+],
+[
+"open the bbc website",
+"simples",
+"en"
+],
+[
+"open google drive",
+"simples",
+"en"
+],
+[
+"hi, nice to meet you",
+"simples",
+"en"
+],
+[
+"open tradingview",
+"simples",
+"en"
+],
+[
+"lol ok",
+"simples",
+"en"
+],
+[
+"open google translate",
+"simples",
+"en"
+],
+[
+"explain photosynthesis simply",
+"geral",
+"en"
+],
+[
+"what's 17 times 23",
+"geral",
+"en"
+],
+[
+"give me themes for a kid's birthday party",
+"geral",
+"en"
+],
+[
+"write an email asking my boss for a day off",
+"geral",
+"en"
+],
+[
+"summarize the story of the odyssey",
+"geral",
+"en"
+],
+[
+"what is the theory of relativity",
+"geral",
+"en"
+],
+[
+"what's the capital of australia",
+"geral",
+"en"
+],
+[
+"tips for sleeping better",
+"geral",
+"en"
+],
+[
+"how many bones are in the human body",
+"geral",
+"en"
+],
+[
+"help me write a cover letter for a barista job",
+"geral",
+"en"
+],
+[
+"convert 5 miles to kilometers",
+"geral",
+"en"
+],
+[
+"what does 'carpe diem' mean",
+"geral",
+"en"
+],
+[
+"give me a workout plan for beginners",
+"geral",
+"en"
+],
+[
+"who wrote pride and prejudice",
+"geral",
+"en"
+],
+[
+"how do airplanes stay in the air",
+"geral",
+"en"
+],
+[
+"what's a good way to learn a new language",
+"geral",
+"en"
+],
+[
+"translate this to portuguese: see you next week",
+"geral",
+"en"
+],
+[
+"solve 2x + 5 = 17",
+"geral",
+"en"
+],
+[
+"why is the sky blue",
+"geral",
+"en"
+],
+[
+"what are the rules of chess castling",
+"geral",
+"en"
+],
+[
+"what caused world war 1",
+"geral",
+"en"
+],
+[
+"ideas for a sci-fi novel plot",
+"geral",
+"en"
+],
+[
+"how do i make a good first impression at an interview",
+"geral",
+"en"
+],
+[
+"explain what dna is",
+"geral",
+"en"
+],
+[
+"what's the plural of cactus",
+"geral",
+"en"
+],
+[
+"write a limerick about a lazy dog",
+"geral",
+"en"
+],
+[
+"what's the boiling point of water in fahrenheit",
+"geral",
+"en"
+],
+[
+"how does compound interest work",
+"geral",
+"en"
+],
+[
+"give me 5 fun facts about octopuses",
+"geral",
+"en"
+],
+[
+"proofread this: their going to the store tomorow",
+"geral",
+"en"
+],
+[
+"write a toast for my brother's wedding",
+"geral",
+"en"
+],
+[
+"explain the water cycle",
+"geral",
+"en"
+],
+[
+"what's a synonym for happy",
+"geral",
+"en"
+],
+[
+"how do i politely decline an invitation",
+"geral",
+"en"
+],
+[
+"what's the area of a circle with radius 4",
+"geral",
+"en"
+],
+[
+"explain supply and demand",
+"geral",
+"en"
+],
+[
+"write a product description for handmade candles",
+"geral",
+"en"
+],
+[
+"what's stoicism about",
+"geral",
+"en"
+],
+[
+"help me plan a weekly budget",
+"geral",
+"en"
+],
+[
+"how do vaccines work",
+"geral",
+"en"
+],
+[
+"what's the tallest mountain in the world",
+"geral",
+"en"
+],
+[
+"rewrite this sentence to sound more formal: gimme the report asap",
+"geral",
+"en"
+],
+[
+"give me conversation starters for a first date",
+"geral",
+"en"
+],
+[
+"how many minutes are in a week",
+"geral",
+"en"
+],
+[
+"explain how a neural network learns, conceptually",
+"geral",
+"en"
+],
+[
+"what's the meaning of the idiom 'break the ice'",
+"geral",
+"en"
+],
+[
+"write lyrics for a funny song about mondays",
+"geral",
+"en"
+],
+[
+"what's the largest ocean",
+"geral",
+"en"
+],
+[
+"how should i study for a math exam",
+"geral",
+"en"
+],
+[
+"summarize the main ideas of the prince by machiavelli",
+"geral",
+"en"
+],
+[
+"translate 'thank you very much' into japanese",
+"geral",
+"en"
+],
+[
+"give me a list of classic books everyone should read",
+"geral",
+"en"
+],
+[
+"why do cats knead blankets",
+"geral",
+"en"
+],
+[
+"write a motivational message for my team",
+"geral",
+"en"
+],
+[
+"is a tomato a fruit or a vegetable",
+"geral",
+"en"
+],
+[
+"pulsa el botón verde que sale abajo a la derecha",
+"visao",
+"es"
+],
+[
+"¿qué pone en la notificación que acaba de salir?",
+"visao",
+"es"
+],
+[
+"lee lo que hay escrito en esta ventana",
+"visao",
+"es"
+],
+[
+"cierra esa ventanita que me salió en medio de la pantalla",
+"visao",
+"es"
+],
+[
+"arrastra ese archivo amarillo a la carpeta de al lado",
+"visao",
+"es"
+],
+[
+"clickea en el enlace azul subrayado",
+"visao",
+"es"
+],
+[
+"cuántas pestañas tengo abiertas en el navegador, míralas",
+"visao",
+"es"
+],
+[
+"qué hay en la esquina superior izquierda",
+"visao",
+"es"
+],
+[
+"pincha en la tercera foto de la fila",
+"visao",
+"es"
+],
+[
+"toca el botón que parece una lupa",
+"visao",
+"es"
+],
+[
+"dime qué gráfico se ve en la hoja de cálculo",
+"visao",
+"es"
+],
+[
+"qué número sale en la celda resaltada",
+"visao",
+"es"
+],
+[
+"¿me lees el subtítulo que está en el vídeo?",
+"visao",
+"es"
+],
+[
+"presiona el botón de play que se ve en el centro",
+"visao",
+"es"
+],
+[
+"selecciona la palabra que está en negrita en el documento",
+"visao",
+"es"
+],
+[
+"qué app es la del icono morado en el dock",
+"visao",
+"es"
+],
+[
+"¿qué hora marca el reloj de la pantalla?",
+"visao",
+"es"
+],
+[
+"dale clic al boton ese de continuar que esta abajo",
+"visao",
+"es"
+],
+[
+"revisa la pantalla y dime si terminó la descarga",
+"visao",
+"es"
+],
+[
+"lee el captcha que me sale por favor",
+"visao",
+"es"
+],
+[
+"mueve la ventana de la izquierda hacia la derecha",
+"visao",
+"es"
+],
+[
+"haz doble clic en la carpeta con el nombre en rojo",
+"visao",
+"es"
+],
+[
+"mira este formulario y dime qué campos me faltan",
+"visao",
+"es"
+],
+[
+"¿qué tiene de raro esta página que estoy viendo?",
+"visao",
+"es"
+],
+[
+"aprieta el iconito de la campana arriba",
+"visao",
+"es"
+],
+[
+"cuál es el precio que sale en esta página de la tienda",
+"visao",
+"es"
+],
+[
+"¿qué error marca el terminal en rojo?",
+"visao",
+"es"
+],
+[
+"describe lo que está pasando en el video pausado",
+"visao",
+"es"
+],
+[
+"mira el mapa en pantalla y dime en qué calle está el punto",
+"visao",
+"es"
+],
+[
+"dale al tercer botón de la barra de herramientas",
+"visao",
+"es"
+],
+[
+"toca la flechita que apunta hacia abajo",
+"visao",
+"es"
+],
+[
+"lee en voz alta el párrafo seleccionado",
+"visao",
+"es"
+],
+[
+"qué hay detrás de esta ventana, echa un vistazo",
+"visao",
+"es"
+],
+[
+"marca la casilla que está vacía",
+"visao",
+"es"
+],
+[
+"hazle click al banner de arriba para cerrarlo",
+"visao",
+"es"
+],
+[
+"¿qué porcentaje de batería muestra el indicador?",
+"visao",
+"es"
+],
+[
+"elige la opción que está en gris",
+"visao",
+"es"
+],
+[
+"dime qué dice el cartelito amarillo",
+"visao",
+"es"
+],
+[
+"¿se ve bien alineado el texto de mi presentación?",
+"visao",
+"es"
+],
+[
+"arrastra el deslizador rojo hasta la mitad",
+"visao",
+"es"
+],
+[
+"pulsa en el avatar redondo de la esquina",
+"visao",
+"es"
+],
+[
+"q pone en la ventana esa",
+"visao",
+"es"
+],
+[
+"mira la pantalla y ayudame a encontrar el botón de guardar",
+"visao",
+"es"
+],
+[
+"¿cuál de los iconos del escritorio es el más grande?",
+"visao",
+"es"
+],
+[
+"haz scroll hasta donde aparece la tabla y léemela",
+"visao",
+"es"
+],
+[
+"pincha el botón naranja que dice algo de suscribirse",
+"visao",
+"es"
+],
+[
+"cuenta cuántos archivos hay en la carpeta que estoy viendo",
+"visao",
+"es"
+],
+[
+"dale al menú de las tres rayitas",
+"visao",
+"es"
+],
+[
+"mira qué canal está puesto en la tele del stream",
+"visao",
+"es"
+],
+[
+"cierra el popup de cookies que tapa la página",
+"visao",
+"es"
+],
+[
+"¿qué emoji me mandaron en el último mensaje visible?",
+"visao",
+"es"
+],
+[
+"toca el cuadrado de abajo del todo",
+"visao",
+"es"
+],
+[
+"haz click donde dice aceptar términos",
+"visao",
+"es"
+],
+[
+"mira la ventana del juego y dime cuánta vida me queda",
+"visao",
+"es"
+],
+[
+"señálame dónde está el cursor ahora",
+"visao",
+"es"
+],
+[
+"pulsa el símbolo de más que está al lado del nombre",
+"visao",
+"es"
+],
+[
+"escríbeme una función en python que invierta una cadena",
+"codigo",
+"es"
+],
+[
+"por qué me da NullPointerException este método en java",
+"codigo",
+"es"
+],
+[
+"arregla este script de bash que no lee bien los argumentos",
+"codigo",
+"es"
+],
+[
+"qué diferencia hay entre let y const en JS",
+"codigo",
+"es"
+],
+[
+"mi código en rust no compila por el borrow checker, ayuda",
+"codigo",
+"es"
+],
+[
+"explícame qué es la recursividad con un ejemplo en código",
+"codigo",
+"es"
+],
+[
+"cómo leo un archivo CSV con pandas",
+"codigo",
+"es"
+],
+[
+"escribe una clase Persona en TypeScript con nombre y edad",
+"codigo",
+"es"
+],
+[
+"tengo un segfault en mi programa de C++, qué puede ser",
+"codigo",
+"es"
+],
+[
+"cómo hago una petición HTTP con requests en python",
+"codigo",
+"es"
+],
+[
+"qué significa el error \"undefined is not a function\"",
+"codigo",
+"es"
+],
+[
+"dame un ejemplo de async await en javascript",
+"codigo",
+"es"
+],
+[
+"crea una API REST sencilla con Flask",
+"codigo",
+"es"
+],
+[
+"cómo ordeno una lista de diccionarios por una clave en python",
+"codigo",
+"es"
+],
+[
+"optimiza esta consulta SQL que tarda mucho",
+"codigo",
+"es"
+],
+[
+"por que mi useEffect se ejecuta infinitas veces en react",
+"codigo",
+"es"
+],
+[
+"escribe un regex que valide emails",
+"codigo",
+"es"
+],
+[
+"qué es un puntero en C, explícamelo fácil",
+"codigo",
+"es"
+],
+[
+"convierte este código de python a go",
+"codigo",
+"es"
+],
+[
+"cómo se usa git rebase en mi repo sin romper nada",
+"codigo",
+"es"
+],
+[
+"escribe tests unitarios con pytest para esta función",
+"codigo",
+"es"
+],
+[
+"qué patrón de diseño uso para un sistema de plugins",
+"codigo",
+"es"
+],
+[
+"error IndentationError: unexpected indent, qué hago",
+"codigo",
+"es"
+],
+[
+"cómo declaro un diccionario en C#",
+"codigo",
+"es"
+],
+[
+"programa un juego de piedra papel o tijera en python",
+"codigo",
+"es"
+],
+[
+"qué hace el operador ternario en php",
+"codigo",
+"es"
+],
+[
+"cómo evito inyección sql en mi código de node",
+"codigo",
+"es"
+],
+[
+"refactoriza esta función que tiene demasiados if",
+"codigo",
+"es"
+],
+[
+"explícame las list comprehension de python",
+"codigo",
+"es"
+],
+[
+"hazme un componente de React que muestre un contador",
+"codigo",
+"es"
+],
+[
+"por qué mi variable sale como NaN en js",
+"codigo",
+"es"
+],
+[
+"cómo conecto mi app de python a una base de datos postgres",
+"codigo",
+"es"
+],
+[
+"escribe una función que diga si un número es primo",
+"codigo",
+"es"
+],
+[
+"que es la complejidad O(n log n) en algoritmos",
+"codigo",
+"es"
+],
+[
+"mi programa en kotlin se cierra al girar la pantalla",
+"codigo",
+"es"
+],
+[
+"cómo hago un scraper con BeautifulSoup",
+"codigo",
+"es"
+],
+[
+"dame el código para dibujar un círculo con pygame",
+"codigo",
+"es"
+],
+[
+"qué es un closure en javascript",
+"codigo",
+"es"
+],
+[
+"ayúdame con este error de TypeError: 'int' object is not iterable",
+"codigo",
+"es"
+],
+[
+"crea un Dockerfile para mi aplicación de node",
+"codigo",
+"es"
+],
+[
+"implementa una pila en java",
+"codigo",
+"es"
+],
+[
+"por qué mi CSS no centra el div",
+"codigo",
+"es"
+],
+[
+"escribe una función lambda que sume dos números",
+"codigo",
+"es"
+],
+[
+"qué diferencia hay entre una lista y una tupla en python",
+"codigo",
+"es"
+],
+[
+"mi bucle while no termina nunca, mira el código",
+"codigo",
+"es"
+],
+[
+"cómo manejo excepciones en java con try catch",
+"codigo",
+"es"
+],
+[
+"hazme un script en python que mande un correo con smtplib",
+"codigo",
+"es"
+],
+[
+"que significa el warning unused variable en mi compilador",
+"codigo",
+"es"
+],
+[
+"genera un JSON schema para este objeto",
+"codigo",
+"es"
+],
+[
+"explica qué hace este fragmento de código de haskell",
+"codigo",
+"es"
+],
+[
+"cómo hago herencia en python",
+"codigo",
+"es"
+],
+[
+"mi app de flutter no muestra la imagen del asset",
+"codigo",
+"es"
+],
+[
+"escribe un makefile para compilar estos tres archivos .c",
+"codigo",
+"es"
+],
+[
+"por qué git me dice merge conflict en mi archivo main.py",
+"codigo",
+"es"
+],
+[
+"cómo uso map filter y reduce en js",
+"codigo",
+"es"
+],
+[
+"arregla el off-by-one de mi bucle",
+"codigo",
+"es"
+],
+[
+"cómo lanzo hilos en python con threading",
+"codigo",
+"es"
+],
+[
+"hazme un script de lua para mi mod que spawnee un objeto",
+"codigo",
+"es"
+],
+[
+"qué hace el decorador @property",
+"codigo",
+"es"
+],
+[
+"mi programa en go da deadlock con los canales",
+"codigo",
+"es"
+],
+[
+"escribe un programa que lea números del usuario y saque la media",
+"codigo",
+"es"
+],
+[
+"como se hace un hola mundo en ensamblador",
+"codigo",
+"es"
+],
+[
+"el wifi dejó de funcionar después de actualizar ubuntu",
+"tecnico",
+"es"
+],
+[
+"cómo instalo steam en fedora",
+"tecnico",
+"es"
+],
+[
+"qué hace el comando chmod 755",
+"tecnico",
+"es"
+],
+[
+"mi portátil no suspende bien en arch, qué hago",
+"tecnico",
+"es"
+],
+[
+"cómo añado un repositorio ppa",
+"tecnico",
+"es"
+],
+[
+"el sonido no sale por los auriculares en pop os",
+"tecnico",
+"es"
+],
+[
+"qué diferencia hay entre apt y snap",
+"tecnico",
+"es"
+],
+[
+"cómo veo cuánto espacio libre queda en el disco desde la terminal",
+"tecnico",
+"es"
+],
+[
+"me sale \"dpkg was interrupted\" al instalar algo",
+"tecnico",
+"es"
+],
+[
+"por qué tarda tanto en arrancar mi debian",
+"tecnico",
+"es"
+],
+[
+"cómo configuro grub para que arranque windows por defecto",
+"tecnico",
+"es"
+],
+[
+"no puedo montar mi disco ntfs externo",
+"tecnico",
+"es"
+],
+[
+"qué es el archivo /etc/fstab y para qué sirve",
+"tecnico",
+"es"
+],
+[
+"cómo instalo los drivers propietarios de nvidia",
+"tecnico",
+"es"
+],
+[
+"explícame qué hace sudo",
+"tecnico",
+"es"
+],
+[
+"cómo creo un usuario nuevo desde la consola",
+"tecnico",
+"es"
+],
+[
+"la pantalla parpadea en wayland, cómo lo arreglo",
+"tecnico",
+"es"
+],
+[
+"cómo hago que un programa arranque solo al iniciar sesión en kde",
+"tecnico",
+"es"
+],
+[
+"qué significa el error \"permission denied\" al ejecutar un .sh",
+"tecnico",
+"es"
+],
+[
+"se me congela el escritorio gnome cada rato",
+"tecnico",
+"es"
+],
+[
+"mi impresora hp no aparece en linux",
+"tecnico",
+"es"
+],
+[
+"no tengo internet por cable en opensuse",
+"tecnico",
+"es"
+],
+[
+"cómo cambio el shell por defecto a zsh",
+"tecnico",
+"es"
+],
+[
+"el touchpad no funciona después de instalar linux",
+"tecnico",
+"es"
+],
+[
+"cómo reviso los logs del sistema con journalctl",
+"tecnico",
+"es"
+],
+[
+"qué hace el comando grep y cómo lo uso",
+"tecnico",
+"es"
+],
+[
+"me dice que no hay espacio en /boot al actualizar",
+"tecnico",
+"es"
+],
+[
+"cómo instalo flatpak y añado flathub",
+"tecnico",
+"es"
+],
+[
+"la resolución de la pantalla está mal y no me deja cambiarla",
+"tecnico",
+"es"
+],
+[
+"cómo configuro una ip fija en networkmanager",
+"tecnico",
+"es"
+],
+[
+"qué es systemctl y cómo reinicio un servicio",
+"tecnico",
+"es"
+],
+[
+"se me rompió el gestor de paquetes pacman, keyring error",
+"tecnico",
+"es"
+],
+[
+"como pongo el teclado en español latinoamericano en xfce",
+"tecnico",
+"es"
+],
+[
+"por qué el ventilador va a tope todo el rato en mi linux",
+"tecnico",
+"es"
+],
+[
+"cómo desinstalo completamente un programa con apt",
+"tecnico",
+"es"
+],
+[
+"qué son los permisos de lectura escritura y ejecución",
+"tecnico",
+"es"
+],
+[
+"cómo hago una copia de seguridad del sistema con timeshift",
+"tecnico",
+"es"
+],
+[
+"me sale kernel panic al encender",
+"tecnico",
+"es"
+],
+[
+"el micrófono no lo detecta discord en linux",
+"tecnico",
+"es"
+],
+[
+"cómo comparto una carpeta con samba en mi red",
+"tecnico",
+"es"
+],
+[
+"qué diferencia hay entre xorg y wayland",
+"tecnico",
+"es"
+],
+[
+"cómo instalo wine para correr programas de windows",
+"tecnico",
+"es"
+],
+[
+"el disco duro hace ruidos, cómo veo su estado smart",
+"tecnico",
+"es"
+],
+[
+"cómo cambio el hostname de mi máquina",
+"tecnico",
+"es"
+],
+[
+"no se ven los iconos de algunas apps en el panel",
+"tecnico",
+"es"
+],
+[
+"cómo doy permisos de ejecución a un appimage",
+"tecnico",
+"es"
+],
+[
+"la hora del sistema está desfasada tras el dual boot",
+"tecnico",
+"es"
+],
+[
+"cómo configuro el firewall ufw",
+"tecnico",
+"es"
+],
+[
+"por qué no puedo hacer sudo, dice que no estoy en sudoers",
+"tecnico",
+"es"
+],
+[
+"cómo instalo docker en ubuntu 24.04",
+"tecnico",
+"es"
+],
+[
+"qué hace el comando rm -rf y por qué es peligroso",
+"tecnico",
+"es"
+],
+[
+"el steam no abre en mi linux, se queda cargando",
+"tecnico",
+"es"
+],
+[
+"cómo cambio los dns del sistema",
+"tecnico",
+"es"
+],
+[
+"mi usb no aparece al conectarlo",
+"tecnico",
+"es"
+],
+[
+"cómo hago downgrade de un paquete en arch",
+"tecnico",
+"es"
+],
+[
+"la batería se gasta rapidísimo en linux, cómo la optimizo",
+"tecnico",
+"es"
+],
+[
+"cómo hago un pendrive booteable desde la terminal con dd",
+"tecnico",
+"es"
+],
+[
+"el comando apt update da error de firma GPG",
+"tecnico",
+"es"
+],
+[
+"cómo configuro dos monitores con distinta escala",
+"tecnico",
+"es"
+],
+[
+"qué es un cron y cómo programo tareas con crontab",
+"tecnico",
+"es"
+],
+[
+"me pide contraseña del keyring cada vez que inicio sesión",
+"tecnico",
+"es"
+],
+[
+"como instalo la ultima version de python sin romper la del sistema",
+"tecnico",
+"es"
+],
+[
+"pon el brillo al 50 por ciento",
+"acao",
+"es"
+],
+[
+"cierra el firefox",
+"acao",
+"es"
+],
+[
+"bloquea el equipo ya",
+"acao",
+"es"
+],
+[
+"haz una captura de pantalla",
+"acao",
+"es"
+],
+[
+"mueve el archivo informe.pdf a la carpeta Documentos",
+"acao",
+"es"
+],
+[
+"abre la terminal por favor",
+"acao",
+"es"
+],
+[
+"silencia el sonido",
+"acao",
+"es"
+],
+[
+"reinicia el equipo en cinco minutos",
+"acao",
+"es"
+],
+[
+"abre visual studio code",
+"acao",
+"es"
+],
+[
+"crea una carpeta llamada proyectos en el escritorio",
+"acao",
+"es"
+],
+[
+"manda un mensaje por telegram a mamá que llego tarde",
+"acao",
+"es"
+],
+[
+"abre el gestor de archivos en descargas",
+"acao",
+"es"
+],
+[
+"conecta los auriculares bluetooth",
+"acao",
+"es"
+],
+[
+"abre libreoffice writer",
+"acao",
+"es"
+],
+[
+"escribe hola mundo en el editor de texto",
+"acao",
+"es"
+],
+[
+"pon el no molestar hasta mañana",
+"acao",
+"es"
+],
+[
+"suspende el portátil",
+"acao",
+"es"
+],
+[
+"abre la calculadora y suma 245 más 390",
+"acao",
+"es"
+],
+[
+"abre gimp",
+"acao",
+"es"
+],
+[
+"vacia la papelera de reciclaje ahora",
+"acao",
+"es"
+],
+[
+"abre thunderbird y redacta un correo a juan",
+"acao",
+"es"
+],
+[
+"cierra sesión",
+"acao",
+"es"
+],
+[
+"comprime la carpeta fotos en un zip",
+"acao",
+"es"
+],
+[
+"abre la configuración de pantalla",
+"acao",
+"es"
+],
+[
+"descomprime el archivo juegos.zip en descargas",
+"acao",
+"es"
+],
+[
+"abre obs y empieza a grabar",
+"acao",
+"es"
+],
+[
+"pon el portátil en modo ahorro de energía",
+"acao",
+"es"
+],
+[
+"elimina los archivos .tmp de mi carpeta personal",
+"acao",
+"es"
+],
+[
+"abre vlc con la película que está en videos",
+"acao",
+"es"
+],
+[
+"maximiza el navegador",
+"acao",
+"es"
+],
+[
+"cambia el idioma del teclado a inglés",
+"acao",
+"es"
+],
+[
+"abre steam",
+"acao",
+"es"
+],
+[
+"envía por whatsapp a carlos \"ya voy\"",
+"acao",
+"es"
+],
+[
+"graba la pantalla durante un minuto",
+"acao",
+"es"
+],
+[
+"desconecta la vpn",
+"acao",
+"es"
+],
+[
+"abrir el reproductor de musica",
+"acao",
+"es"
+],
+[
+"apaga la pantalla",
+"acao",
+"es"
+],
+[
+"pega el texto copiado en el documento de writer",
+"acao",
+"es"
+],
+[
+"conéctate a la red wifi de casa",
+"acao",
+"es"
+],
+[
+"activa la rotación automática",
+"acao",
+"es"
+],
+[
+"abre el monitor del sistema",
+"acao",
+"es"
+],
+[
+"duplica el archivo presupuesto.ods",
+"acao",
+"es"
+],
+[
+"abre krita porfa",
+"acao",
+"es"
+],
+[
+"programa el apagado a las 11 de la noche",
+"acao",
+"es"
+],
+[
+"cambia a la ventana de telegram",
+"acao",
+"es"
+],
+[
+"abre una nueva ventana de terminal en la carpeta proyectos",
+"acao",
+"es"
+],
+[
+"ponle volumen 30",
+"acao",
+"es"
+],
+[
+"precio del dólar hoy en argentina",
+"busca",
+"es"
+],
+[
+"quién ganó el clásico anoche",
+"busca",
+"es"
+],
+[
+"qué tiempo va a hacer mañana en madrid",
+"busca",
+"es"
+],
+[
+"busca un tutorial de blender para principiantes",
+"busca",
+"es"
+],
+[
+"resultados de la liga mx de este fin de semana",
+"busca",
+"es"
+],
+[
+"va a llover hoy en bogotá",
+"busca",
+"es"
+],
+[
+"a qué hora juega el barça",
+"busca",
+"es"
+],
+[
+"cotización del euro en pesos mexicanos",
+"busca",
+"es"
+],
+[
+"qué película está arrasando en taquilla esta semana",
+"busca",
+"es"
+],
+[
+"busca vídeos de cómo hacer pan casero",
+"busca",
+"es"
+],
+[
+"cuál es la última versión de ubuntu que salió",
+"busca",
+"es"
+],
+[
+"noticias de la bolsa hoy",
+"busca",
+"es"
+],
+[
+"quien va primero en la clasificación de la fórmula 1",
+"busca",
+"es"
+],
+[
+"dónde puedo comprar entradas para el concierto de bad bunny",
+"busca",
+"es"
+],
+[
+"qué pasó hoy en las elecciones",
+"busca",
+"es"
+],
+[
+"cómo quedó el partido de la selección",
+"busca",
+"es"
+],
+[
+"buscame ofertas de portátiles en amazon",
+"busca",
+"es"
+],
+[
+"qué dicen las reviews del nuevo zelda",
+"busca",
+"es"
+],
+[
+"hay alerta de tormenta en valencia",
+"busca",
+"es"
+],
+[
+"cuánto está el litro de gasolina en chile",
+"busca",
+"es"
+],
+[
+"busca información actualizada sobre la huelga de transporte",
+"busca",
+"es"
+],
+[
+"qué tal está el tráfico para ir al centro",
+"busca",
+"es"
+],
+[
+"último video de ibai",
+"busca",
+"es"
+],
+[
+"lanzamientos de anime de esta temporada",
+"busca",
+"es"
+],
+[
+"quién es el actual presidente de perú",
+"busca",
+"es"
+],
+[
+"temperatura ahora en ciudad de méxico",
+"busca",
+"es"
+],
+[
+"busca un curso gratis de excel en internet",
+"busca",
+"es"
+],
+[
+"qué se sabe del terremoto de hoy",
+"busca",
+"es"
+],
+[
+"comparativa de precios de ssd de 2tb",
+"busca",
+"es"
+],
+[
+"cuándo es el próximo eclipse visible desde españa",
+"busca",
+"es"
+],
+[
+"resultados de la nba de anoche",
+"busca",
+"es"
+],
+[
+"noticias de linux de esta semana",
+"busca",
+"es"
+],
+[
+"hay descuentos en steam ahora",
+"busca",
+"es"
+],
+[
+"busca la letra de la canción nueva de rosalía",
+"busca",
+"es"
+],
+[
+"cuál es el ranking atp actualizado",
+"busca",
+"es"
+],
+[
+"busca en internet qué opinan del kernel 6.18",
+"busca",
+"es"
+],
+[
+"cuánto vale un pasaje a cancún en diciembre",
+"busca",
+"es"
+],
+[
+"qué horario tiene hoy la farmacia de la esquina",
+"busca",
+"es"
+],
+[
+"buscá quién ganó el oscar a mejor película este año",
+"busca",
+"es"
+],
+[
+"cómo va la champions",
+"busca",
+"es"
+],
+[
+"precio de la playstation 6",
+"busca",
+"es"
+],
+[
+"novedades de la última versión de python",
+"busca",
+"es"
+],
+[
+"tipo de cambio del real brasileño hoy",
+"busca",
+"es"
+],
+[
+"qué series nuevas hay en netflix este mes",
+"busca",
+"es"
+],
+[
+"cuándo juega colombia el próximo partido",
+"busca",
+"es"
+],
+[
+"busca la reseña de la película que estrenaron el viernes",
+"busca",
+"es"
+],
+[
+"cual es el precio del oro hoy",
+"busca",
+"es"
+],
+[
+"hay retrasos en los vuelos de barajas",
+"busca",
+"es"
+],
+[
+"qué tendencias hay hoy en twitter",
+"busca",
+"es"
+],
+[
+"búscame hoteles baratos en buenos aires para el finde",
+"busca",
+"es"
+],
+[
+"calendario de la copa libertadores",
+"busca",
+"es"
+],
+[
+"qué está pasando en la guerra comercial esta semana",
+"busca",
+"es"
+],
+[
+"cuánto cobra un programador junior en méxico según ofertas actuales",
+"busca",
+"es"
+],
+[
+"busca el horario de misas de la catedral este domingo",
+"busca",
+"es"
+],
+[
+"qué ha dicho hoy el banco central sobre los tipos de interés",
+"busca",
+"es"
+],
+[
+"buen día!",
+"simples",
+"es"
+],
+[
+"graciass",
+"simples",
+"es"
+],
+[
+"adiós",
+"simples",
+"es"
+],
+[
+"hasta lueguito",
+"simples",
+"es"
+],
+[
+"qué onda",
+"simples",
+"es"
+],
+[
+"chao",
+"simples",
+"es"
+],
+[
+"nos vemos mañana",
+"simples",
+"es"
+],
+[
+"abre google",
+"simples",
+"es"
+],
+[
+"abre facebook",
+"simples",
+"es"
+],
+[
+"abre twitter",
+"simples",
+"es"
+],
+[
+"abre wikipedia",
+"simples",
+"es"
+],
+[
+"abre netflix",
+"simples",
+"es"
+],
+[
+"entra en amazon",
+"simples",
+"es"
+],
+[
+"abre twitch",
+"simples",
+"es"
+],
+[
+"abre linkedin",
+"simples",
+"es"
+],
+[
+"abre tiktok",
+"simples",
+"es"
+],
+[
+"abre mercado libre",
+"simples",
+"es"
+],
+[
+"abre outlook.com",
+"simples",
+"es"
+],
+[
+"ok",
+"simples",
+"es"
+],
+[
+"perfecto",
+"simples",
+"es"
+],
+[
+"qué tal tu día",
+"simples",
+"es"
+],
+[
+"hola tars",
+"simples",
+"es"
+],
+[
+"oye",
+"simples",
+"es"
+],
+[
+"eres un genio",
+"simples",
+"es"
+],
+[
+"hasta la próxima",
+"simples",
+"es"
+],
+[
+"saludos",
+"simples",
+"es"
+],
+[
+"holaaa",
+"simples",
+"es"
+],
+[
+"me voy a dormir, hasta mañana",
+"simples",
+"es"
+],
+[
+"cuídate",
+"simples",
+"es"
+],
+[
+"de nada",
+"simples",
+"es"
+],
+[
+"jaja qué bueno",
+"simples",
+"es"
+],
+[
+"abre youtube music",
+"simples",
+"es"
+],
+[
+"entra a instagram",
+"simples",
+"es"
+],
+[
+"abre pinterest",
+"simples",
+"es"
+],
+[
+"abre la página de la wikipedia",
+"simples",
+"es"
+],
+[
+"abre chatgpt",
+"simples",
+"es"
+],
+[
+"abre el diario el país",
+"simples",
+"es"
+],
+[
+"abre duolingo",
+"simples",
+"es"
+],
+[
+"abre stack overflow",
+"simples",
+"es"
+],
+[
+"abre google maps",
+"simples",
+"es"
+],
+[
+"pon la página de google translate",
+"simples",
+"es"
+],
+[
+"hola, ¿me oyes?",
+"simples",
+"es"
+],
+[
+"bueno, adiós",
+"simples",
+"es"
+],
+[
+"listo",
+"simples",
+"es"
+],
+[
+"muy amable",
+"simples",
+"es"
+],
+[
+"hola de nuevo",
+"simples",
+"es"
+],
+[
+"cómo va",
+"simples",
+"es"
+],
+[
+"feliz navidad",
+"simples",
+"es"
+],
+[
+"buen provecho",
+"simples",
+"es"
+],
+[
+"explica la fotosíntesis",
+"geral",
+"es"
+],
+[
+"dame ideas para un regalo de cumpleaños",
+"geral",
+"es"
+],
+[
+"resume la historia de la revolución francesa",
+"geral",
+"es"
+],
+[
+"escribe un correo formal pidiendo vacaciones a mi jefe",
+"geral",
+"es"
+],
+[
+"qué es la teoría de la relatividad",
+"geral",
+"es"
+],
+[
+"cómo puedo organizar mejor mi tiempo",
+"geral",
+"es"
+],
+[
+"cuál es la capital de australia",
+"geral",
+"es"
+],
+[
+"redacta una carta de presentación para un trabajo de camarero",
+"geral",
+"es"
+],
+[
+"traduce este párrafo al portugués",
+"geral",
+"es"
+],
+[
+"dame consejos para dormir mejor",
+"geral",
+"es"
+],
+[
+"cuántos planetas tiene el sistema solar",
+"geral",
+"es"
+],
+[
+"qué significa la palabra \"efímero\"",
+"geral",
+"es"
+],
+[
+"ayúdame a resolver esta ecuación: 2x + 5 = 17",
+"geral",
+"es"
+],
+[
+"quién escribió don quijote",
+"geral",
+"es"
+],
+[
+"escribe un mensaje de felicitación para una boda",
+"geral",
+"es"
+],
+[
+"qué es el teorema de pitágoras",
+"geral",
+"es"
+],
+[
+"resume este texto en tres frases",
+"geral",
+"es"
+],
+[
+"cómo le pido perdón a un amigo",
+"geral",
+"es"
+],
+[
+"cuánto es 7 elevado a 3",
+"geral",
+"es"
+],
+[
+"dame un plan de estudio para aprender inglés",
+"geral",
+"es"
+],
+[
+"por qué el cielo es azul",
+"geral",
+"es"
+],
+[
+"escribe una canción de rap sobre el lunes",
+"geral",
+"es"
+],
+[
+"tips para una entrevista de trabajo",
+"geral",
+"es"
+],
+[
+"traduce \"I love you\" al japonés",
+"geral",
+"es"
+],
+[
+"cuánto es el 20 por ciento de 350",
+"geral",
+"es"
+],
+[
+"quién fue simón bolívar",
+"geral",
+"es"
+],
+[
+"hazme una lista de la compra para una semana saludable",
+"geral",
+"es"
+],
+[
+"explícame la diferencia entre ser y estar",
+"geral",
+"es"
+],
+[
+"escribe un soneto sobre la amistad",
+"geral",
+"es"
+],
+[
+"qué es la democracia directa",
+"geral",
+"es"
+],
+[
+"cómo calculo el área de un círculo",
+"geral",
+"es"
+],
+[
+"propón un nombre para mi canal de videojuegos",
+"geral",
+"es"
+],
+[
+"qué es el ADN",
+"geral",
+"es"
+],
+[
+"dame argumentos a favor y en contra de trabajar desde casa",
+"geral",
+"es"
+],
+[
+"cómo se dice mariposa en francés",
+"geral",
+"es"
+],
+[
+"corrígeme la ortografía de este texto",
+"geral",
+"es"
+],
+[
+"dame 5 ideas de cena rápida",
+"geral",
+"es"
+],
+[
+"cuánto son 3 horas en segundos",
+"geral",
+"es"
+],
+[
+"explica qué es la mitosis",
+"geral",
+"es"
+],
+[
+"qué significa carpe diem",
+"geral",
+"es"
+],
+[
+"cómo motivarme para hacer ejercicio",
+"geral",
+"es"
+],
+[
+"convierte 100 grados fahrenheit a celsius",
+"geral",
+"es"
+],
+[
+"qué es la economía circular",
+"geral",
+"es"
+],
+[
+"cuál es el río más largo del mundo",
+"geral",
+"es"
+],
+[
+"reescribe esta frase de forma más formal",
+"geral",
+"es"
+],
+[
+"qué consejos me das para hablar en público",
+"geral",
+"es"
+],
+[
+"explícame el ciclo del agua",
+"geral",
+"es"
+],
+[
+"inventa un acertijo difícil",
+"geral",
+"es"
+],
+[
+"cuántos huesos tiene el cuerpo humano",
+"geral",
+"es"
+],
+[
+"qué es un número primo",
+"geral",
+"es"
+],
+[
+"escribe una disculpa por llegar tarde a clase",
+"geral",
+"es"
+],
+[
+"qué libros clásicos me recomiendas leer",
+"geral",
+"es"
+],
+[
+"qué significa la expresión \"estar en las nubes\"",
+"geral",
+"es"
+],
+[
+"pesquisa no google o horário do mercado",
+"busca",
+"extra"
+],
+[
+"pesquisa preço de ssd nvme no google",
+"busca",
+"extra"
+],
+[
+"procure no google como está o trânsito na br 277",
+"busca",
+"extra"
+],
+[
+"procura no google a previsão do tempo pra amanhã",
+"busca",
+"extra"
+],
+[
+"busque no google notícias sobre a copa",
+"busca",
+"extra"
+],
+[
+"pesquisa no duckduckgo o lançamento do novo ubuntu",
+"busca",
+"extra"
+],
+[
+"dá um google em quem é o novo técnico da seleção",
+"busca",
+"extra"
+],
+[
+"googla o preço do dólar hoje",
+"busca",
+"extra"
+],
+[
+"pesquise tutoriais de kdenlive no youtube",
+"busca",
+"extra"
+],
+[
+"pesquise raspberry pi 5 no google",
+"busca",
+"extra"
+],
+[
+"agora pesquise placas de vídeo baratas no google",
+"busca",
+"extra"
+],
+[
+"pesquise sobre o festival de inverno no google",
+"busca",
+"extra"
+],
+[
+"search mechanical keyboards on google",
+"busca",
+"extra"
+],
+[
+"google the opening hours of the library",
+"busca",
+"extra"
+],
+[
+"look up rust 2026 roadmap on google",
+"busca",
+"extra"
+],
+[
+"busca teclados mecánicos en google",
+"busca",
+"extra"
+],
+[
+"ahora busca noticias de la fórmula 1 en google",
+"busca",
+"extra"
+],
+[
+"cherche les horaires du cinéma sur google",
+"busca",
+"extra"
+],
+[
+"cherche sur google le prix d'une ps5",
+"busca",
+"extra"
+],
+[
+"such bei google nach günstigen Grafikkarten",
+"busca",
+"extra"
+],
+[
+"google mal die Öffnungszeiten vom Baumarkt",
+"busca",
+"extra"
+],
+[
+"such jetzt auf google nach dem Wetter in Hamburg",
+"busca",
+"extra"
+],
+[
+"abre o google",
+"simples",
+"extra"
+],
+[
+"abre o bing",
+"simples",
+"extra"
+],
+[
+"abre o duckduckgo",
+"simples",
+"extra"
+],
+[
+"open google please",
+"simples",
+"extra"
+],
+[
+"go to bing",
+"simples",
+"extra"
+],
+[
+"abre duckduckgo",
+"simples",
+"extra"
+],
+[
+"ouvre google",
+"simples",
+"extra"
+],
+[
+"öffne bing",
+"simples",
+"extra"
+],
+[
+"outra vez",
+"simples",
+"extra"
+],
+[
+"faz outra vez",
+"simples",
+"extra"
+],
+[
+"mais uma vez por favor",
+"simples",
+"extra"
+],
+[
+"e agora?",
+"simples",
+"extra"
+],
+[
+"e depois?",
+"simples",
+"extra"
+],
+[
+"okay",
+"simples",
+"extra"
+],
+[
+"certo",
+"simples",
+"extra"
+],
+[
+"beleza então",
+"simples",
+"extra"
+],
+[
+"pode ser",
+"simples",
+"extra"
+],
+[
+"sim",
+"simples",
+"extra"
+],
+[
+"não",
+"simples",
+"extra"
+],
+[
+"hmm",
+"simples",
+"extra"
+],
+[
+"ah tá",
+"simples",
+"extra"
+],
+[
+"entendi",
+"simples",
+"extra"
+],
+[
+"one more time",
+"simples",
+"extra"
+],
+[
+"do it again",
+"simples",
+"extra"
+],
+[
+"and now?",
+"simples",
+"extra"
+],
+[
+"sure",
+"simples",
+"extra"
+],
+[
+"yes",
+"simples",
+"extra"
+],
+[
+"no",
+"simples",
+"extra"
+],
+[
+"got it",
+"simples",
+"extra"
+],
+[
+"hmm ok",
+"simples",
+"extra"
+],
+[
+"otra vez",
+"simples",
+"extra"
+],
+[
+"hazlo otra vez",
+"simples",
+"extra"
+],
+[
+"y ahora?",
+"simples",
+"extra"
+],
+[
+"vale",
+"simples",
+"extra"
+],
+[
+"sí",
+"simples",
+"extra"
+],
+[
+"entendido",
+"simples",
+"extra"
+],
+[
+"encore une fois",
+"simples",
+"extra"
+],
+[
+"refais-le",
+"simples",
+"extra"
+],
+[
+"et maintenant ?",
+"simples",
+"extra"
+],
+[
+"d'accord",
+"simples",
+"extra"
+],
+[
+"oui",
+"simples",
+"extra"
+],
+[
+"compris",
+"simples",
+"extra"
+],
+[
+"noch einmal",
+"simples",
+"extra"
+],
+[
+"mach das nochmal",
+"simples",
+"extra"
+],
+[
+"und jetzt?",
+"simples",
+"extra"
+],
+[
+"ja",
+"simples",
+"extra"
+],
+[
+"verstanden",
+"simples",
+"extra"
+],
+[
+"clique sur l'icône verte en bas à droite",
+"visao",
+"fr"
+],
+[
+"c'est quoi ce message rouge qui vient d'apparaître ?",
+"visao",
+"fr"
+],
+[
+"lis-moi le texte affiché au milieu de l'écran",
+"visao",
+"fr"
+],
+[
+"tu peux me dire ce qu'il y a dans cette fenetre stp",
+"visao",
+"fr"
+],
+[
+"clique sur la petite croix grise dans le coin",
+"visao",
+"fr"
+],
+[
+"qu'est ce que dit la notification en haut a droite",
+"visao",
+"fr"
+],
+[
+"regarde l'écran et dis-moi s'il y a une erreur",
+"visao",
+"fr"
+],
+[
+"clique sur le troisième lien de la liste",
+"visao",
+"fr"
+],
+[
+"quel est le titre de l'onglet actif là ?",
+"visao",
+"fr"
+],
+[
+"lis le chiffre qui s'affiche dans le coin supérieur gauche",
+"visao",
+"fr"
+],
+[
+"clique sur l'image du chat au centre",
+"visao",
+"fr"
+],
+[
+"c'est quoi cette icône en forme d'engrenage dans la barre ?",
+"visao",
+"fr"
+],
+[
+"peux-tu cliquer sur la case à cocher juste en dessous du champ mot de passe",
+"visao",
+"fr"
+],
+[
+"déplace la fenêtre de gauche un peu plus vers la droite",
+"visao",
+"fr"
+],
+[
+"clique sur le bouton qui ressemble à une flèche vers le bas",
+"visao",
+"fr"
+],
+[
+"qu'est-ce qui est surligné en jaune dans ce document ?",
+"visao",
+"fr"
+],
+[
+"lis les sous-titres qui sont à l'écran en ce moment",
+"visao",
+"fr"
+],
+[
+"appuie sur le truc rouge clignotant",
+"visao",
+"fr"
+],
+[
+"y a un popup bizarre, clique sur annuler dedans",
+"visao",
+"fr"
+],
+[
+"dis moi combien d'onglets sont ouverts dans le navigateur que je regarde",
+"visao",
+"fr"
+],
+[
+"clique sur le deuxième résultat de recherche affiché",
+"visao",
+"fr"
+],
+[
+"quelle heure est affichée sur l'horloge de l'écran ?",
+"visao",
+"fr"
+],
+[
+"sélectionne le texte en gras en haut de la page",
+"visao",
+"fr"
+],
+[
+"décrivez-moi l'image qui est affichée en plein écran s'il vous plaît",
+"visao",
+"fr"
+],
+[
+"clique sur l'avatar rond tout en haut",
+"visao",
+"fr"
+],
+[
+"regarde le tableau et dis-moi quelle ligne est en rouge",
+"visao",
+"fr"
+],
+[
+"clique là où il y a marqué suivant",
+"visao",
+"fr"
+],
+[
+"qu'est-ce que ce voyant orange signifie dans la barre des tâches ?",
+"visao",
+"fr"
+],
+[
+"double-clique sur le dossier bleu du bureau",
+"visao",
+"fr"
+],
+[
+"lis l'adresse mail qui est affichée dans la fenêtre de gauche",
+"visao",
+"fr"
+],
+[
+"ferme la fenêtre qui est devant, celle avec le fond noir",
+"visao",
+"fr"
+],
+[
+"appuie sur le bouton en forme de cœur sous la photo",
+"visao",
+"fr"
+],
+[
+"clique sur l'icone du milieu dans le dock",
+"visao",
+"fr"
+],
+[
+"j'arrive pas a lire ce texte trop petit, tu peux me le lire",
+"visao",
+"fr"
+],
+[
+"trouve le bouton télécharger sur cette page et clique dessus",
+"visao",
+"fr"
+],
+[
+"tu vois le menu déroulant ? choisis la dernière option",
+"visao",
+"fr"
+],
+[
+"qu'est ce que c'est que ce logo en haut de la page",
+"visao",
+"fr"
+],
+[
+"clique sur le petit point d'interrogation à côté du champ",
+"visao",
+"fr"
+],
+[
+"la fenêtre du fond, qu'est-ce qu'elle affiche ?",
+"visao",
+"fr"
+],
+[
+"clique sur la vignette de la vidéo en haut à gauche",
+"visao",
+"fr"
+],
+[
+"c'est quoi le prix affiché sur cette page produit",
+"visao",
+"fr"
+],
+[
+"clique sur le bouton gris qui dit accepter",
+"visao",
+"fr"
+],
+[
+"regarde l'écran, j'ai coché la bonne case ?",
+"visao",
+"fr"
+],
+[
+"coche la case vide en face de la deuxième ligne",
+"visao",
+"fr"
+],
+[
+"clique sur l'icône qui ressemble à une loupe",
+"visao",
+"fr"
+],
+[
+"dis-moi ce qui est entouré en rouge sur l'image",
+"visao",
+"fr"
+],
+[
+"il y a quoi comme applis dans la barre en bas ?",
+"visao",
+"fr"
+],
+[
+"clic droit sur l'icône en forme de nuage",
+"visao",
+"fr"
+],
+[
+"clique sur le lien souligné en bleu dans ce paragraphe",
+"visao",
+"fr"
+],
+[
+"résume ce qui est affiché dans la fenêtre du navigateur",
+"visao",
+"fr"
+],
+[
+"appuie sur la flèche retour en haut a gauche de la fenetre",
+"visao",
+"fr"
+],
+[
+"l'élément qui clignote en bas, c'est quoi ?",
+"visao",
+"fr"
+],
+[
+"vérifie à l'écran si le téléchargement est terminé",
+"visao",
+"fr"
+],
+[
+"clique sur le bouton juste sous le logo",
+"visao",
+"fr"
+],
+[
+"pourquoi j'ai un IndexError: list index out of range dans mon script",
+"codigo",
+"fr"
+],
+[
+"explique-moi ce que fait une closure en javascript",
+"codigo",
+"fr"
+],
+[
+"fais moi un script bash qui renomme tous les .jpeg en .jpg dans un dossier",
+"codigo",
+"fr"
+],
+[
+"corrige ce code : for i in range(10) print(i)",
+"codigo",
+"fr"
+],
+[
+"c'est quoi la différence entre let et var en JS",
+"codigo",
+"fr"
+],
+[
+"écris une classe Java pour représenter un compte bancaire",
+"codigo",
+"fr"
+],
+[
+"mon programme rust compile pas, erreur borrowed value does not live long enough",
+"codigo",
+"fr"
+],
+[
+"transforme cette boucle for en list comprehension",
+"codigo",
+"fr"
+],
+[
+"j'ai un segfault dans mon code C++, comment le trouver ?",
+"codigo",
+"fr"
+],
+[
+"écris un petit serveur web en node avec express",
+"codigo",
+"fr"
+],
+[
+"fais une regex qui valide une adresse email",
+"codigo",
+"fr"
+],
+[
+"comment lire un fichier CSV en python avec pandas",
+"codigo",
+"fr"
+],
+[
+"mon useEffect en React se lance en boucle, pourquoi ?",
+"codigo",
+"fr"
+],
+[
+"écrivez une fonction qui calcule la suite de Fibonacci en Go",
+"codigo",
+"fr"
+],
+[
+"explique la complexité O(n log n) du tri fusion",
+"codigo",
+"fr"
+],
+[
+"TypeError: 'NoneType' object is not subscriptable c'est quoi ce bug",
+"codigo",
+"fr"
+],
+[
+"code un jeu du pendu en python dans le terminal",
+"codigo",
+"fr"
+],
+[
+"c'est quoi une API REST, et comment en coder une en Flask ?",
+"codigo",
+"fr"
+],
+[
+"refactorise ce code pour qu'il soit plus lisible",
+"codigo",
+"fr"
+],
+[
+"comment faire un async await en typescript",
+"codigo",
+"fr"
+],
+[
+"écris des tests unitaires pytest pour ma fonction add",
+"codigo",
+"fr"
+],
+[
+"ma variable est undefined dans ma fonction callback js",
+"codigo",
+"fr"
+],
+[
+"quelle est la différence entre une liste et un tuple en python",
+"codigo",
+"fr"
+],
+[
+"fait une fonction qui trie un dictionnaire par valeur",
+"codigo",
+"fr"
+],
+[
+"explique moi le pattern singleton",
+"codigo",
+"fr"
+],
+[
+"mon script python dit ModuleNotFoundError: No module named requests dans mon venv, comment corriger le code d'import",
+"codigo",
+"fr"
+],
+[
+"écris un makefile pour compiler mon projet C avec deux fichiers",
+"codigo",
+"fr"
+],
+[
+"comment centrer une div en CSS",
+"codigo",
+"fr"
+],
+[
+"convertis ce code python en javascript",
+"codigo",
+"fr"
+],
+[
+"pourquoi mon == ne marche pas pour comparer deux strings en Java",
+"codigo",
+"fr"
+],
+[
+"crée une fonction lua pour un mod qui fait apparaître un objet",
+"codigo",
+"fr"
+],
+[
+"optimise cette requête SQL qui est trop lente",
+"codigo",
+"fr"
+],
+[
+"écris un décorateur python qui mesure le temps d'exécution",
+"codigo",
+"fr"
+],
+[
+"comment gérer les erreurs en Go avec if err != nil",
+"codigo",
+"fr"
+],
+[
+"génère un fichier JSON à partir d'une liste d'objets en C#",
+"codigo",
+"fr"
+],
+[
+"mon code kotlin plante avec NullPointerException",
+"codigo",
+"fr"
+],
+[
+"explique ce que fait ce bout de code : x = [i**2 for i in range(5) if i%2]",
+"codigo",
+"fr"
+],
+[
+"écris un algorithme de recherche binaire",
+"codigo",
+"fr"
+],
+[
+"fais un script python qui envoie une notification toutes les heures",
+"codigo",
+"fr"
+],
+[
+"c'est quoi un générateur en python et quand l'utiliser",
+"codigo",
+"fr"
+],
+[
+"corrige mon indentation, j'ai IndentationError: unexpected indent",
+"codigo",
+"fr"
+],
+[
+"crée un composant React pour un bouton qui compte les clics",
+"codigo",
+"fr"
+],
+[
+"comment on fait un fork et un exec en C",
+"codigo",
+"fr"
+],
+[
+"écris une fonction qui vérifie si un nombre est premier en haskell",
+"codigo",
+"fr"
+],
+[
+"mon code php affiche une page blanche sans erreur",
+"codigo",
+"fr"
+],
+[
+"explique moi git rebase vs merge pour mon projet de code",
+"codigo",
+"fr"
+],
+[
+"écris un script qui parse des logs et sort les lignes avec ERROR",
+"codigo",
+"fr"
+],
+[
+"quelle est la syntaxe d'un switch en swift",
+"codigo",
+"fr"
+],
+[
+"implémente un tri à bulles en assembleur x86",
+"codigo",
+"fr"
+],
+[
+"pourquoi ma boucle while ne s'arrête jamais",
+"codigo",
+"fr"
+],
+[
+"écris une fonction qui fusionne deux listes triées",
+"codigo",
+"fr"
+],
+[
+"comment utiliser les threads en python sans race condition",
+"codigo",
+"fr"
+],
+[
+"fais-moi un programme qui convertit des celsius en fahrenheit en C",
+"codigo",
+"fr"
+],
+[
+"c quoi un hashmap et comment ca marche en interne",
+"codigo",
+"fr"
+],
+[
+"ajoute des commentaires à ce code pour l'expliquer",
+"codigo",
+"fr"
+],
+[
+"écris une commande awk dans mon script pour sommer la 3e colonne",
+"codigo",
+"fr"
+],
+[
+"comment faire un appel fetch POST avec du JSON en JS",
+"codigo",
+"fr"
+],
+[
+"mon script python a une fuite mémoire, comment la trouver",
+"codigo",
+"fr"
+],
+[
+"génère une interface graphique simple avec tkinter",
+"codigo",
+"fr"
+],
+[
+"écris un Dockerfile pour mon appli flask",
+"codigo",
+"fr"
+],
+[
+"qu'est-ce que le typage statique vs dynamique",
+"codigo",
+"fr"
+],
+[
+"comment installer steam sur ubuntu ?",
+"tecnico",
+"fr"
+],
+[
+"mon son ne marche plus sur fedora, aucune sortie détectée",
+"tecnico",
+"fr"
+],
+[
+"c'est quoi la commande pour voir l'espace disque restant",
+"tecnico",
+"fr"
+],
+[
+"comment installer les pilotes nvidia sur linux mint",
+"tecnico",
+"fr"
+],
+[
+"apt me dit unable to lock the administration directory, que faire",
+"tecnico",
+"fr"
+],
+[
+"mon écran reste noir après le démarrage de ma debian",
+"tecnico",
+"fr"
+],
+[
+"comment ajouter un utilisateur au groupe sudo",
+"tecnico",
+"fr"
+],
+[
+"c'est quoi systemd exactement ?",
+"tecnico",
+"fr"
+],
+[
+"comment monter un disque dur externe en ligne de commande",
+"tecnico",
+"fr"
+],
+[
+"pourquoi mon pc linux est si lent au démarrage",
+"tecnico",
+"fr"
+],
+[
+"expliquez-moi à quoi sert le fichier /etc/fstab",
+"tecnico",
+"fr"
+],
+[
+"flatpak ou snap, lequel utiliser pour installer des applis ?",
+"tecnico",
+"fr"
+],
+[
+"grub ne s'affiche plus après avoir installé windows à côté",
+"tecnico",
+"fr"
+],
+[
+"ma webcam n'est pas reconnue sur pop os",
+"tecnico",
+"fr"
+],
+[
+"j'ai une erreur dpkg was interrupted, comment réparer",
+"tecnico",
+"fr"
+],
+[
+"comment configurer une adresse IP fixe sur ubuntu server",
+"tecnico",
+"fr"
+],
+[
+"la veille ne fonctionne pas bien, le pc se réveille tout seul",
+"tecnico",
+"fr"
+],
+[
+"comment installer un fichier .deb",
+"tecnico",
+"fr"
+],
+[
+"mon clavier est en qwerty au lieu d'azerty dans le terminal tty",
+"tecnico",
+"fr"
+],
+[
+"c'est quoi la différence entre wayland et x11",
+"tecnico",
+"fr"
+],
+[
+"comment désinstaller complètement un paquet avec ses dépendances",
+"tecnico",
+"fr"
+],
+[
+"mon imprimante hp n'imprime plus depuis que j'ai changé de distro",
+"tecnico",
+"fr"
+],
+[
+"comment créer un service systemd qui se lance au démarrage",
+"tecnico",
+"fr"
+],
+[
+"que veut dire kernel panic et comment l'éviter",
+"tecnico",
+"fr"
+],
+[
+"comment installer docker sur debian 12",
+"tecnico",
+"fr"
+],
+[
+"comment activer le pare-feu ufw et autoriser ssh",
+"tecnico",
+"fr"
+],
+[
+"les polices sont floues dans certaines applis sur kde",
+"tecnico",
+"fr"
+],
+[
+"comment passer à un kernel plus récent sur ubuntu",
+"tecnico",
+"fr"
+],
+[
+"pourquoi j'ai pas le son en hdmi sur mon linux",
+"tecnico",
+"fr"
+],
+[
+"comment voir les logs du système avec journalctl",
+"tecnico",
+"fr"
+],
+[
+"le gestionnaire de mise a jour plante a chaque fois",
+"tecnico",
+"fr"
+],
+[
+"comment installer une appimage et l'ajouter au menu",
+"tecnico",
+"fr"
+],
+[
+"j'ai perdu le mot de passe root de mon linux, comment le réinitialiser",
+"tecnico",
+"fr"
+],
+[
+"mon deuxième écran n'est pas détecté sous gnome",
+"tecnico",
+"fr"
+],
+[
+"comment compiler un programme depuis les sources avec make install",
+"tecnico",
+"fr"
+],
+[
+"pipewire ou pulseaudio, c'est quoi la différence",
+"tecnico",
+"fr"
+],
+[
+"le ventilateur tourne à fond tout le temps sur mon laptop linux",
+"tecnico",
+"fr"
+],
+[
+"comment faire un dualboot propre avec windows 11",
+"tecnico",
+"fr"
+],
+[
+"les jeux proton plantent au lancement sur steam deck mode bureau",
+"tecnico",
+"fr"
+],
+[
+"comment chiffrer une clé usb sous linux",
+"tecnico",
+"fr"
+],
+[
+"le réseau ethernet affiche connecté mais pas d'internet",
+"tecnico",
+"fr"
+],
+[
+"a quoi sert la commande grep et comment l'utiliser",
+"tecnico",
+"fr"
+],
+[
+"comment faire une sauvegarde complète de mon système linux",
+"tecnico",
+"fr"
+],
+[
+"cups ne trouve pas mon imprimante réseau",
+"tecnico",
+"fr"
+],
+[
+"comment changer le shell par défaut en zsh",
+"tecnico",
+"fr"
+],
+[
+"pourquoi sudo me demande pas mon mot de passe",
+"tecnico",
+"fr"
+],
+[
+"comment installer ollama sur ma machine linux",
+"tecnico",
+"fr"
+],
+[
+"comment planifier une tâche avec cron",
+"tecnico",
+"fr"
+],
+[
+"comment connaître la température du processeur en ligne de commande",
+"tecnico",
+"fr"
+],
+[
+"j'arrive pas à installer vscode sur fedora",
+"tecnico",
+"fr"
+],
+[
+"c'est quoi le dossier /var et je peux le vider ?",
+"tecnico",
+"fr"
+],
+[
+"le micro capte rien dans discord sous linux, les réglages système le voient pas",
+"tecnico",
+"fr"
+],
+[
+"comment créer un lien symbolique avec ln",
+"tecnico",
+"fr"
+],
+[
+"quelle commande pour lister les périphériques usb branchés",
+"tecnico",
+"fr"
+],
+[
+"active le wifi",
+"acao",
+"fr"
+],
+[
+"coupe le bluetooth s'il te plaît",
+"acao",
+"fr"
+],
+[
+"ferme firefox",
+"acao",
+"fr"
+],
+[
+"lance vlc",
+"acao",
+"fr"
+],
+[
+"prends une capture d'écran",
+"acao",
+"fr"
+],
+[
+"renomme le fichier rapport.pdf en rapport_final.pdf",
+"acao",
+"fr"
+],
+[
+"envoie bonjour à Marie sur telegram",
+"acao",
+"fr"
+],
+[
+"écris 'je serai en retard' dans le chat discord",
+"acao",
+"fr"
+],
+[
+"redémarre le pc",
+"acao",
+"fr"
+],
+[
+"lance thunderbird et ouvre un nouveau mail",
+"acao",
+"fr"
+],
+[
+"passe en mode clair",
+"acao",
+"fr"
+],
+[
+"ouvrez libreoffice writer s'il vous plaît",
+"acao",
+"fr"
+],
+[
+"mets la luminosité au max",
+"acao",
+"fr"
+],
+[
+"lance gimp",
+"acao",
+"fr"
+],
+[
+"ouvre les paramètres système",
+"acao",
+"fr"
+],
+[
+"connecte-toi au réseau wifi Maison",
+"acao",
+"fr"
+],
+[
+"active le partage de connexion",
+"acao",
+"fr"
+],
+[
+"change le fond d'écran avec l'image plage.jpg",
+"acao",
+"fr"
+],
+[
+"mets l'ordi en veille",
+"acao",
+"fr"
+],
+[
+"ouvre un terminal",
+"acao",
+"fr"
+],
+[
+"lance obs et commence l'enregistrement",
+"acao",
+"fr"
+],
+[
+"compresse le dossier Vacances en zip",
+"acao",
+"fr"
+],
+[
+"ferme steam",
+"acao",
+"fr"
+],
+[
+"déconnecte le casque bluetooth",
+"acao",
+"fr"
+],
+[
+"appaire mes écouteurs bluetooth",
+"acao",
+"fr"
+],
+[
+"ouvre le fichier budget.ods",
+"acao",
+"fr"
+],
+[
+"tape mon adresse dans le champ de texte actif",
+"acao",
+"fr"
+],
+[
+"envoie le fichier cv.pdf à Paul sur signal",
+"acao",
+"fr"
+],
+[
+"active le filtre de lumière bleue",
+"acao",
+"fr"
+],
+[
+"ouvre calculatrice",
+"acao",
+"fr"
+],
+[
+"lance discord stp",
+"acao",
+"fr"
+],
+[
+"fermes vscode sans sauvegarder",
+"acao",
+"fr"
+],
+[
+"déconnecte-moi de la session",
+"acao",
+"fr"
+],
+[
+"mets le son a 50",
+"acao",
+"fr"
+],
+[
+"ouvre blender",
+"acao",
+"fr"
+],
+[
+"change la langue du clavier en anglais",
+"acao",
+"fr"
+],
+[
+"fais une capture de la fenêtre active seulement",
+"acao",
+"fr"
+],
+[
+"crée un fichier texte vide nommé idées.txt",
+"acao",
+"fr"
+],
+[
+"passe l'écran en 1920x1080",
+"acao",
+"fr"
+],
+[
+"ouvre kate avec le fichier config.ini",
+"acao",
+"fr"
+],
+[
+"mets le micro en sourdine",
+"acao",
+"fr"
+],
+[
+"lance le jeu minecraft",
+"acao",
+"fr"
+],
+[
+"démonte la clé usb",
+"acao",
+"fr"
+],
+[
+"ajoute un rappel dans le calendrier demain à 9h pour le dentiste",
+"acao",
+"fr"
+],
+[
+"envoie un mail à mon chef avec thunderbird pour dire que je suis malade",
+"acao",
+"fr"
+],
+[
+"quel est le prix du bitcoin maintenant",
+"busca",
+"fr"
+],
+[
+"combien coûte un iphone 17 en ce moment",
+"busca",
+"fr"
+],
+[
+"le taux de change euro dollar aujourd'hui",
+"busca",
+"fr"
+],
+[
+"il va pleuvoir ce week-end à Bordeaux ?",
+"busca",
+"fr"
+],
+[
+"quels films sortent au cinéma cette semaine",
+"busca",
+"fr"
+],
+[
+"qui est le premier ministre actuel",
+"busca",
+"fr"
+],
+[
+"classement de la formule 1 après le dernier grand prix",
+"busca",
+"fr"
+],
+[
+"trouve des vidéos youtube sur l'astronomie pour débutants",
+"busca",
+"fr"
+],
+[
+"quel est le cours de l'action nvidia",
+"busca",
+"fr"
+],
+[
+"y a-t-il des grèves de train demain en france ?",
+"busca",
+"fr"
+],
+[
+"les meilleures distros linux en 2026 selon les tests",
+"busca",
+"fr"
+],
+[
+"quand est le prochain concert de Stromae",
+"busca",
+"fr"
+],
+[
+"cherche les horaires d'ouverture de la mairie de Nantes",
+"busca",
+"fr"
+],
+[
+"actu tech du jour",
+"busca",
+"fr"
+],
+[
+"comparatif des aspirateurs robots récents",
+"busca",
+"fr"
+],
+[
+"est-ce que la nouvelle mise à jour de ubuntu est sortie ?",
+"busca",
+"fr"
+],
+[
+"prix de l'essence aujourd'hui",
+"busca",
+"fr"
+],
+[
+"quelles sont les tendances sur twitter en ce moment",
+"busca",
+"fr"
+],
+[
+"trouve un hôtel pas cher à Marseille pour ce weekend",
+"busca",
+"fr"
+],
+[
+"qui a remporté le ballon d'or cette année",
+"busca",
+"fr"
+],
+[
+"température actuelle à Montréal",
+"busca",
+"fr"
+],
+[
+"combien de followers a MrBeast aujourd'hui",
+"busca",
+"fr"
+],
+[
+"quelles sont les nouveautés de python 3.14",
+"busca",
+"fr"
+],
+[
+"le vol AF123 est-il à l'heure ?",
+"busca",
+"fr"
+],
+[
+"quand sort la saison 2 de cette série netflix dont tout le monde parle",
+"busca",
+"fr"
+],
+[
+"quels sont les jeux gratuits sur epic games cette semaine",
+"busca",
+"fr"
+],
+[
+"trouve un tuto pour installer des mods sur skyrim",
+"busca",
+"fr"
+],
+[
+"combien coûte une ps5 d'occasion en ce moment",
+"busca",
+"fr"
+],
+[
+"qui joue ce soir en NBA",
+"busca",
+"fr"
+],
+[
+"y a des soldes sur steam en ce moment ?",
+"busca",
+"fr"
+],
+[
+"cherche les résultats du bac 2026",
+"busca",
+"fr"
+],
+[
+"prévisions météo pour la semaine à Paris",
+"busca",
+"fr"
+],
+[
+"les nouvelles du jour en Belgique",
+"busca",
+"fr"
+],
+[
+"quel est le prix de l'or aujourd'hui",
+"busca",
+"fr"
+],
+[
+"trouve moi des avis sur le restaurant Le Petit Bistro à Lille",
+"busca",
+"fr"
+],
+[
+"est ce que chatgpt est en panne là maintenant",
+"busca",
+"fr"
+],
+[
+"combien de médailles la france a gagné aux derniers jeux",
+"busca",
+"fr"
+],
+[
+"cherchez des tutoriels sur le crochet pour débutants",
+"busca",
+"fr"
+],
+[
+"quel temps fait-il à Tokyo en ce moment",
+"busca",
+"fr"
+],
+[
+"date de sortie du prochain iphone",
+"busca",
+"fr"
+],
+[
+"les derniers transferts du mercato",
+"busca",
+"fr"
+],
+[
+"cherche une vidéo qui explique comment faire un noeud de cravate",
+"busca",
+"fr"
+],
+[
+"quelle est la population actuelle du monde en temps réel",
+"busca",
+"fr"
+],
+[
+"meilleur smartphone à moins de 300 euros cette année",
+"busca",
+"fr"
+],
+[
+"nouveautés annoncées à la dernière keynote apple",
+"busca",
+"fr"
+],
+[
+"qui a gagné l'eurovision cette année",
+"busca",
+"fr"
+],
+[
+"où en est le tour de france aujourd'hui",
+"busca",
+"fr"
+],
+[
+"trouve des infos récentes sur la mission artemis",
+"busca",
+"fr"
+],
+[
+"combien vaut l'ethereum actuellement",
+"busca",
+"fr"
+],
+[
+"le trafic sur le périphérique est comment maintenant",
+"busca",
+"fr"
+],
+[
+"cherche des tests du dernier casque steam vr",
+"busca",
+"fr"
+],
+[
+"quand est la prochaine éclipse visible en france",
+"busca",
+"fr"
+],
+[
+"le dernier épisode de one piece est sorti ?",
+"busca",
+"fr"
+],
+[
+"recherche des offres d'emploi développeur à Toulouse",
+"busca",
+"fr"
+],
+[
+"quels sont les résultats du top 14 ce week-end",
+"busca",
+"fr"
+],
+[
+"cherche des vidéos de speedrun de mario 64 récentes",
+"busca",
+"fr"
+],
+[
+"salut !",
+"simples",
+"fr"
+],
+[
+"au revoir",
+"simples",
+"fr"
+],
+[
+"coucou toi",
+"simples",
+"fr"
+],
+[
+"ouvre dailymotion",
+"simples",
+"fr"
+],
+[
+"merci c'est parfait",
+"simples",
+"fr"
+],
+[
+"t'es là ?",
+"simples",
+"fr"
+],
+[
+"à plus",
+"simples",
+"fr"
+],
+[
+"ouvre gmail",
+"simples",
+"fr"
+],
+[
+"ouvre wikipedia",
+"simples",
+"fr"
+],
+[
+"lance netflix dans le navigateur",
+"simples",
+"fr"
+],
+[
+"bonne journée à toi",
+"simples",
+"fr"
+],
+[
+"slt",
+"simples",
+"fr"
+],
+[
+"yo",
+"simples",
+"fr"
+],
+[
+"merci pour ton aide",
+"simples",
+"fr"
+],
+[
+"ouvre facebook",
+"simples",
+"fr"
+],
+[
+"à demain !",
+"simples",
+"fr"
+],
+[
+"ouvre le site d'amazon",
+"simples",
+"fr"
+],
+[
+"parfait, merci bien",
+"simples",
+"fr"
+],
+[
+"tchao",
+"simples",
+"fr"
+],
+[
+"bonjour, tu vas bien ?",
+"simples",
+"fr"
+],
+[
+"ouvre instagram",
+"simples",
+"fr"
+],
+[
+"bisous à plus",
+"simples",
+"fr"
+],
+[
+"re",
+"simples",
+"fr"
+],
+[
+"bonne soirée",
+"simples",
+"fr"
+],
+[
+"ouvre le site de la bbc",
+"simples",
+"fr"
+],
+[
+"ouvre linkedin",
+"simples",
+"fr"
+],
+[
+"allô ?",
+"simples",
+"fr"
+],
+[
+"ouvre github.com",
+"simples",
+"fr"
+],
+[
+"va sur wikipédia s'il te plaît",
+"simples",
+"fr"
+],
+[
+"tu vas bien ?",
+"simples",
+"fr"
+],
+[
+"ouvre le site de netflix",
+"simples",
+"fr"
+],
+[
+"à la prochaine",
+"simples",
+"fr"
+],
+[
+"ouvre tiktok",
+"simples",
+"fr"
+],
+[
+"ouvrez google maps",
+"simples",
+"fr"
+],
+[
+"salut, je suis de retour",
+"simples",
+"fr"
+],
+[
+"ouvre deezer dans le navigateur",
+"simples",
+"fr"
+],
+[
+"hey salut",
+"simples",
+"fr"
+],
+[
+"merci, t'es le meilleur",
+"simples",
+"fr"
+],
+[
+"adieu",
+"simples",
+"fr"
+],
+[
+"ouvre le site de youtube stp",
+"simples",
+"fr"
+],
+[
+"bonjour tars, belle journée hein",
+"simples",
+"fr"
+],
+[
+"explique la photosynthèse",
+"geral",
+"fr"
+],
+[
+"résume l'histoire de la révolution française",
+"geral",
+"fr"
+],
+[
+"écris un mail pour demander un congé à mon patron",
+"geral",
+"fr"
+],
+[
+"quelle est la capitale de l'Australie",
+"geral",
+"fr"
+],
+[
+"donne moi des conseils pour mieux dormir",
+"geral",
+"fr"
+],
+[
+"explique la théorie de la relativité simplement",
+"geral",
+"fr"
+],
+[
+"écris une histoire courte pour enfants avec un dragon",
+"geral",
+"fr"
+],
+[
+"comment on dit merci en japonais",
+"geral",
+"fr"
+],
+[
+"qui a écrit les misérables",
+"geral",
+"fr"
+],
+[
+"trouve un nom pour mon chat roux",
+"geral",
+"fr"
+],
+[
+"reformule cette phrase de façon plus polie : envoie moi ça vite",
+"geral",
+"fr"
+],
+[
+"quels sont les avantages du télétravail",
+"geral",
+"fr"
+],
+[
+"combien y a-t-il de planètes dans le système solaire",
+"geral",
+"fr"
+],
+[
+"résume le livre le petit prince",
+"geral",
+"fr"
+],
+[
+"écris un discours pour le mariage de mon frère",
+"geral",
+"fr"
+],
+[
+"comment fonctionne la démocratie athénienne",
+"geral",
+"fr"
+],
+[
+"traduis ce paragraphe en anglais : je suis heureux de vous rencontrer",
+"geral",
+"fr"
+],
+[
+"propose-moi un programme de musculation pour débutant",
+"geral",
+"fr"
+],
+[
+"explique la loi de l'offre et de la demande",
+"geral",
+"fr"
+],
+[
+"résous l'équation 2x + 5 = 17",
+"geral",
+"fr"
+],
+[
+"donne moi 5 idées d'activités pour un dimanche pluvieux",
+"geral",
+"fr"
+],
+[
+"qui était Napoléon Bonaparte",
+"geral",
+"fr"
+],
+[
+"comment rester motivé quand on étudie",
+"geral",
+"fr"
+],
+[
+"quelle est la plus haute montagne du monde",
+"geral",
+"fr"
+],
+[
+"corrige les fautes de cette phrase : je suis aller au magazin hier",
+"geral",
+"fr"
+],
+[
+"écris une description pour mon profil de rencontre",
+"geral",
+"fr"
+],
+[
+"pourquoi le ciel est bleu ?",
+"geral",
+"fr"
+],
+[
+"conseille-moi un livre de science-fiction classique",
+"geral",
+"fr"
+],
+[
+"écris un slogan pour une boulangerie",
+"geral",
+"fr"
+],
+[
+"explique la différence entre ADN et ARN",
+"geral",
+"fr"
+],
+[
+"comment faire une bonne première impression en entretien",
+"geral",
+"fr"
+],
+[
+"convertis 5 miles en kilomètres",
+"geral",
+"fr"
+],
+[
+"écris une chanson d'anniversaire pour ma sœur Julie",
+"geral",
+"fr"
+],
+[
+"quelles sont les règles des échecs pour le roque",
+"geral",
+"fr"
+],
+[
+"donne-moi un plan pour une dissertation sur la liberté",
+"geral",
+"fr"
+],
+[
+"c koi la différence entre un crocodile et un alligator",
+"geral",
+"fr"
+],
+[
+"écris un message de condoléances",
+"geral",
+"fr"
+],
+[
+"comment gérer son stress avant un examen",
+"geral",
+"fr"
+],
+[
+"explique ce qu'est un nombre premier",
+"geral",
+"fr"
+],
+[
+"traduis 'je t'aime' en italien et en allemand",
+"geral",
+"fr"
+],
+[
+"invente une devinette",
+"geral",
+"fr"
+],
+[
+"quel est le rôle des globules rouges",
+"geral",
+"fr"
+],
+[
+"aide-moi à trouver un titre pour mon roman policier",
+"geral",
+"fr"
+],
+[
+"combien de secondes dans une journée",
+"geral",
+"fr"
+],
+[
+"quels sont les signes du zodiaque",
+"geral",
+"fr"
+],
+[
+"écris une excuse polie pour annuler un rendez-vous",
+"geral",
+"fr"
+],
+[
+"donne moi des idées de repas végétariens pour la semaine",
+"geral",
+"fr"
+],
+[
+"c'est quoi le théorème de pythagore",
+"geral",
+"fr"
+],
+[
+"écrivez un petit texte pour présenter mon entreprise de jardinage",
+"geral",
+"fr"
+],
+[
+"que signifie l'expression 'poser un lapin'",
+"geral",
+"fr"
+],
+[
+"quelle est la dérivée de x au carré",
+"geral",
+"fr"
+],
+[
+"propose des questions pour un quiz entre amis sur la géographie",
+"geral",
+"fr"
+],
+[
+"clica naquele quadradinho vermelho no topo",
+"visao",
+"pt_BR"
+],
+[
+"aperta aquele botão cinza que diz continuar",
+"visao",
+"pt_BR"
+],
+[
+"arrasta aquele ícone amarelo pra lixeira",
+"visao",
+"pt_BR"
+],
+[
+"qual o preço que aparece nesse site aberto aí",
+"visao",
+"pt_BR"
+],
+[
+"clica no terceiro item da lista",
+"visao",
+"pt_BR"
+],
+[
+"aquele pop-up laranja, fecha ele pra mim",
+"visao",
+"pt_BR"
+],
+[
+"onde tá o campo de senha nessa página? clica nele",
+"visao",
+"pt_BR"
+],
+[
+"le em voz alta o email que tá aberto",
+"visao",
+"pt_BR"
+],
+[
+"o que significa esse ícone piscando na barra de cima",
+"visao",
+"pt_BR"
+],
+[
+"clica no botão com um lápis desenhado",
+"visao",
+"pt_BR"
+],
+[
+"marca a caixinha que fica embaixo do texto",
+"visao",
+"pt_BR"
+],
+[
+"confere se tem alguma notificação vermelha no canto",
+"visao",
+"pt_BR"
+],
+[
+"clica no menu de três pontinhos no canto direito",
+"visao",
+"pt_BR"
+],
+[
+"qual é o nome do contato que aparece nessa conversa",
+"visao",
+"pt_BR"
+],
+[
+"o que é essa bolinha verde do lado do meu nome",
+"visao",
+"pt_BR"
+],
+[
+"clica ali no x da janela de trás",
+"visao",
+"pt_BR"
+],
+[
+"arrasta o controle deslizante até a metade",
+"visao",
+"pt_BR"
+],
+[
+"qual horário tá mostrando no canto da tela",
+"visao",
+"pt_BR"
+],
+[
+"me ajuda a achar o botão de aceitar os cookies nessa pagina",
+"visao",
+"pt_BR"
+],
+[
+"o que esse aviso amarelo tá dizendo",
+"visao",
+"pt_BR"
+],
+[
+"seleciona aquela foto da esquerda",
+"visao",
+"pt_BR"
+],
+[
+"lê pra mim o que tá no terminal agora",
+"visao",
+"pt_BR"
+],
+[
+"tem algum erro vermelho no editor de código aberto?",
+"visao",
+"pt_BR"
+],
+[
+"clica na palavra sublinhada em azul",
+"visao",
+"pt_BR"
+],
+[
+"por favor, olha a tela e me diz se o instalador terminou",
+"visao",
+"pt_BR"
+],
+[
+"aperta a lupa lá em cima",
+"visao",
+"pt_BR"
+],
+[
+"qual janela tá em primeiro plano agora",
+"visao",
+"pt_BR"
+],
+[
+"clica no botão grandão verde de download da página",
+"visao",
+"pt_BR"
+],
+[
+"tem um captcha aí? me diz o que ele pede",
+"visao",
+"pt_BR"
+],
+[
+"arrasta esse arquivo da janela da esquerda pra da direita",
+"visao",
+"pt_BR"
+],
+[
+"clica onde tá escrito proximo",
+"visao",
+"pt_BR"
+],
+[
+"olha essa planilha e me diz qual célula tá destacada",
+"visao",
+"pt_BR"
+],
+[
+"que foto é essa de fundo na minha área de trabalho",
+"visao",
+"pt_BR"
+],
+[
+"clica no avatar redondo lá no alto",
+"visao",
+"pt_BR"
+],
+[
+"le os comentarios que aparecem embaixo do video",
+"visao",
+"pt_BR"
+],
+[
+"aperta aquele ícone de sininho",
+"visao",
+"pt_BR"
+],
+[
+"clica no segundo link azul da pesquisa",
+"visao",
+"pt_BR"
+],
+[
+"ve ai o que ta travando, tem alguma janela pedindo algo?",
+"visao",
+"pt_BR"
+],
+[
+"me fala as cores que aparecem nesse logo aberto",
+"visao",
+"pt_BR"
+],
+[
+"clica na aba que tá mais à direita",
+"visao",
+"pt_BR"
+],
+[
+"qual o nome do arquivo que tá aberto no editor",
+"visao",
+"pt_BR"
+],
+[
+"clica no botão que fica logo abaixo da imagem",
+"visao",
+"pt_BR"
+],
+[
+"tem alguma coisa escrita em inglês nessa tela? traduz o que aparece",
+"visao",
+"pt_BR"
+],
+[
+"passa o cursor por cima do ícone da bateria e me fala o que mostra",
+"visao",
+"pt_BR"
+],
+[
+"dá uma espiada na tela e me diz se o jogo já carregou",
+"visao",
+"pt_BR"
+],
+[
+"clica no símbolo de mais no canto da página",
+"visao",
+"pt_BR"
+],
+[
+"aperta no botão vermelho de gravar",
+"visao",
+"pt_BR"
+],
+[
+"olha o mapa aberto e me diz qual rua tá marcada",
+"visao",
+"pt_BR"
+],
+[
+"clica em cima daquele banner que apareceu",
+"visao",
+"pt_BR"
+],
+[
+"qual a porcentagem na barra de progresso",
+"visao",
+"pt_BR"
+],
+[
+"me diz o que tem escrito naquele post-it da tela",
+"visao",
+"pt_BR"
+],
+[
+"clica no botão desabilitado? não, no que tá ativo do lado dele",
+"visao",
+"pt_BR"
+],
+[
+"que programa é esse com ícone roxo na dock",
+"visao",
+"pt_BR"
+],
+[
+"confere visualmente se a janela do zoom tá com o microfone mutado",
+"visao",
+"pt_BR"
+],
+[
+"escreve uma função em python que inverte uma string",
+"codigo",
+"pt_BR"
+],
+[
+"tenho um IndexError: list index out of range no meu codigo, o que pode ser",
+"codigo",
+"pt_BR"
+],
+[
+"faz uma classe em java pra representar uma conta bancária",
+"codigo",
+"pt_BR"
+],
+[
+"meu código em rust não compila, fala de borrow checker, me ajuda",
+"codigo",
+"pt_BR"
+],
+[
+"escreve uma regex que valida email",
+"codigo",
+"pt_BR"
+],
+[
+"converte esse loop em list comprehension: for x in lista: if x>0: novos.append(x)",
+"codigo",
+"pt_BR"
+],
+[
+"como ler um arquivo csv com pandas",
+"codigo",
+"pt_BR"
+],
+[
+"explica o que é uma closure",
+"codigo",
+"pt_BR"
+],
+[
+"meu useEffect no react tá rodando infinito, por que?",
+"codigo",
+"pt_BR"
+],
+[
+"o que significa esse erro: TypeError: 'NoneType' object is not subscriptable",
+"codigo",
+"pt_BR"
+],
+[
+"como funciona async await em python",
+"codigo",
+"pt_BR"
+],
+[
+"cria uma função que verifica se um número é primo",
+"codigo",
+"pt_BR"
+],
+[
+"me ajuda a otimizar essa query sql que tá lenta com join",
+"codigo",
+"pt_BR"
+],
+[
+"escreve testes unitários com pytest pra uma função soma",
+"codigo",
+"pt_BR"
+],
+[
+"como declaro um ponteiro em c e pra que serve",
+"codigo",
+"pt_BR"
+],
+[
+"faz um jogo da velha no terminal em python",
+"codigo",
+"pt_BR"
+],
+[
+"meu programa em go dá deadlock, all goroutines are asleep",
+"codigo",
+"pt_BR"
+],
+[
+"explica o padrão singleton",
+"codigo",
+"pt_BR"
+],
+[
+"como tratar exceção em kotlin",
+"codigo",
+"pt_BR"
+],
+[
+"cria um componente react de botão com contador",
+"codigo",
+"pt_BR"
+],
+[
+"o que é big O notation, com exemplos de código",
+"codigo",
+"pt_BR"
+],
+[
+"gera um dockerfile pra uma aplicação node",
+"codigo",
+"pt_BR"
+],
+[
+"por que meu print não aparece dentro da função, esqueci algo?",
+"codigo",
+"pt_BR"
+],
+[
+"implementa uma busca binária em javascript",
+"codigo",
+"pt_BR"
+],
+[
+"escreve uma função lua pra um mod que spawna um item",
+"codigo",
+"pt_BR"
+],
+[
+"como faço um POST com fetch passando json",
+"codigo",
+"pt_BR"
+],
+[
+"explica o que o git rebase faz com os commits",
+"codigo",
+"pt_BR"
+],
+[
+"tenho um NullPointerException no android studio, o que é",
+"codigo",
+"pt_BR"
+],
+[
+"faz um algoritmo de ordenação bubble sort comentado",
+"codigo",
+"pt_BR"
+],
+[
+"como uso o map e filter em js",
+"codigo",
+"pt_BR"
+],
+[
+"cria um bot de discord em python que responde ping",
+"codigo",
+"pt_BR"
+],
+[
+"escreve um código que lê a temperatura de um sensor no arduino",
+"codigo",
+"pt_BR"
+],
+[
+"meu css não centraliza a div, como resolvo",
+"codigo",
+"pt_BR"
+],
+[
+"transforma essa função em typescript com tipos",
+"codigo",
+"pt_BR"
+],
+[
+"explica o que é um decorator em python",
+"codigo",
+"pt_BR"
+],
+[
+"cria uma função recursiva de fibonacci com memoização",
+"codigo",
+"pt_BR"
+],
+[
+"como conectar num banco postgres usando python",
+"codigo",
+"pt_BR"
+],
+[
+"me explica herança e polimorfismo com exemplo",
+"codigo",
+"pt_BR"
+],
+[
+"faz uma calculadora com tkinter",
+"codigo",
+"pt_BR"
+],
+[
+"o compilador reclama de undefined reference to main, o que é isso",
+"codigo",
+"pt_BR"
+],
+[
+"como faço um dicionário ordenado por valor em python",
+"codigo",
+"pt_BR"
+],
+[
+"escreve uma função em php que conecta no mysql",
+"codigo",
+"pt_BR"
+],
+[
+"refatora esse código pra ficar mais legível",
+"codigo",
+"pt_BR"
+],
+[
+"cria um endpoint que recebe upload de arquivo em fastapi",
+"codigo",
+"pt_BR"
+],
+[
+"como fazer um script python rodar em paralelo com multiprocessing",
+"codigo",
+"pt_BR"
+],
+[
+"escreve um makefile pra compilar dois arquivos .c",
+"codigo",
+"pt_BR"
+],
+[
+"meu loop while nunca termina, o que tem de errado nesse trecho",
+"codigo",
+"pt_BR"
+],
+[
+"gera uma função que converte celsius pra fahrenheit em java",
+"codigo",
+"pt_BR"
+],
+[
+"explica o que é orientação a objetos pra iniciante",
+"codigo",
+"pt_BR"
+],
+[
+"como faço parsing de json em c#",
+"codigo",
+"pt_BR"
+],
+[
+"cria um script que monitora uma pasta e avisa quando chega arquivo novo usando watchdog",
+"codigo",
+"pt_BR"
+],
+[
+"qual a melhor forma de concatenar strings em java dentro de loop",
+"codigo",
+"pt_BR"
+],
+[
+"por que o node dá 'cannot find module express'",
+"codigo",
+"pt_BR"
+],
+[
+"escreve um hook customizado em react pra buscar dados",
+"codigo",
+"pt_BR"
+],
+[
+"comenta cada linha desse codigo em python pra eu entender",
+"codigo",
+"pt_BR"
+],
+[
+"meu wifi para de funcionar depois que o notebook suspende",
+"tecnico",
+"pt_BR"
+],
+[
+"como instalo o steam no fedora",
+"tecnico",
+"pt_BR"
+],
+[
+"o que faz o comando chmod 755",
+"tecnico",
+"pt_BR"
+],
+[
+"o som sumiu depois da atualização do ubuntu, como resolvo",
+"tecnico",
+"pt_BR"
+],
+[
+"como vejo quanto espaço livre tem no disco pelo terminal",
+"tecnico",
+"pt_BR"
+],
+[
+"driver da nvidia não carrega, fica tela preta no boot",
+"tecnico",
+"pt_BR"
+],
+[
+"meu bluetooth não acha os fones no mint",
+"tecnico",
+"pt_BR"
+],
+[
+"o que é o systemd e pra que serve",
+"tecnico",
+"pt_BR"
+],
+[
+"como faço pra um programa iniciar junto com o sistema no linux",
+"tecnico",
+"pt_BR"
+],
+[
+"como mudo a senha do root",
+"tecnico",
+"pt_BR"
+],
+[
+"o que significa kernel panic",
+"tecnico",
+"pt_BR"
+],
+[
+"meu pc com arch não inicia depois do pacman -Syu",
+"tecnico",
+"pt_BR"
+],
+[
+"como monto um pendrive pelo terminal",
+"tecnico",
+"pt_BR"
+],
+[
+"touchpad parou de funcionar no pop os, ajuda",
+"tecnico",
+"pt_BR"
+],
+[
+"como instalo o flatpak do discord",
+"tecnico",
+"pt_BR"
+],
+[
+"o grub sumiu depois que instalei o windows, como recupero",
+"tecnico",
+"pt_BR"
+],
+[
+"tela piscando no wayland, como troco pra xorg",
+"tecnico",
+"pt_BR"
+],
+[
+"o que faz o sudo exatamente",
+"tecnico",
+"pt_BR"
+],
+[
+"como verifico quais processos tão comendo memória",
+"tecnico",
+"pt_BR"
+],
+[
+"minha impressora hp não é reconhecida no ubuntu",
+"tecnico",
+"pt_BR"
+],
+[
+"como crio um usuário novo pelo terminal",
+"tecnico",
+"pt_BR"
+],
+[
+"o que é o /etc/fstab",
+"tecnico",
+"pt_BR"
+],
+[
+"microfone não funciona no pipewire",
+"tecnico",
+"pt_BR"
+],
+[
+"como desinstalo completamente um programa com apt",
+"tecnico",
+"pt_BR"
+],
+[
+"o sistema tá muito lento no boot, como vejo o que demora",
+"tecnico",
+"pt_BR"
+],
+[
+"como configuro ip fixo no linux",
+"tecnico",
+"pt_BR"
+],
+[
+"o que é um arquivo .deb e como instalo",
+"tecnico",
+"pt_BR"
+],
+[
+"erro 'permission denied' ao rodar um executável que baixei",
+"tecnico",
+"pt_BR"
+],
+[
+"como instalo drivers de wifi realtek no linux",
+"tecnico",
+"pt_BR"
+],
+[
+"monitor externo não é detectado no kubuntu",
+"tecnico",
+"pt_BR"
+],
+[
+"como agendo uma tarefa com cron",
+"tecnico",
+"pt_BR"
+],
+[
+"como vejo os logs do sistema com journalctl",
+"tecnico",
+"pt_BR"
+],
+[
+"o ollama não usa minha gpu, só a cpu",
+"tecnico",
+"pt_BR"
+],
+[
+"como formato um hd pelo gparted",
+"tecnico",
+"pt_BR"
+],
+[
+"meu teclado tá com layout errado, ç não funciona",
+"tecnico",
+"pt_BR"
+],
+[
+"o que é um ambiente gráfico tipo gnome ou kde",
+"tecnico",
+"pt_BR"
+],
+[
+"como instalo o java no ubuntu",
+"tecnico",
+"pt_BR"
+],
+[
+"depois de atualizar, o docker não inicia mais",
+"tecnico",
+"pt_BR"
+],
+[
+"como faço dual boot com linux e windows",
+"tecnico",
+"pt_BR"
+],
+[
+"o que significa 'no space left on device' se o disco tá vazio",
+"tecnico",
+"pt_BR"
+],
+[
+"como uso o comando grep pra achar texto em arquivos",
+"tecnico",
+"pt_BR"
+],
+[
+"como volto uma versão do pacote que quebrou",
+"tecnico",
+"pt_BR"
+],
+[
+"tela preta depois do login no gnome",
+"tecnico",
+"pt_BR"
+],
+[
+"explica o que são runlevels ou targets",
+"tecnico",
+"pt_BR"
+],
+[
+"como compartilhar pasta entre linux e windows na rede com samba",
+"tecnico",
+"pt_BR"
+],
+[
+"o firefox fica sem aceleração de hardware, como ativo",
+"tecnico",
+"pt_BR"
+],
+[
+"como instalo programas .appimage",
+"tecnico",
+"pt_BR"
+],
+[
+"meu notebook esquenta muito no linux, tem como melhorar a bateria e temperatura?",
+"tecnico",
+"pt_BR"
+],
+[
+"como vejo a versão da minha distro",
+"tecnico",
+"pt_BR"
+],
+[
+"o que é o PATH e como adiciono uma pasta nele",
+"tecnico",
+"pt_BR"
+],
+[
+"fone usb não aparece nas saídas de áudio",
+"tecnico",
+"pt_BR"
+],
+[
+"como configuro o firewall ufw",
+"tecnico",
+"pt_BR"
+],
+[
+"erro de gpg key ao dar apt update",
+"tecnico",
+"pt_BR"
+],
+[
+"o que o comando dd faz e por que é perigoso",
+"tecnico",
+"pt_BR"
+],
+[
+"steam não abre jogos com proton, fica carregando",
+"tecnico",
+"pt_BR"
+],
+[
+"como descubro a temperatura da cpu no terminal",
+"tecnico",
+"pt_BR"
+],
+[
+"lixeira não esvazia, diz que não tenho permissão",
+"tecnico",
+"pt_BR"
+],
+[
+"como reinstalo o gnome sem perder meus arquivos",
+"tecnico",
+"pt_BR"
+],
+[
+"por que meu hd externo aparece só como leitura",
+"tecnico",
+"pt_BR"
+],
+[
+"como faço o nvidia-smi funcionar",
+"tecnico",
+"pt_BR"
+],
+[
+"fecha o firefox",
+"acao",
+"pt_BR"
+],
+[
+"tira um print da tela inteira",
+"acao",
+"pt_BR"
+],
+[
+"renomeia o arquivo relatorio.pdf pra relatorio_final.pdf",
+"acao",
+"pt_BR"
+],
+[
+"bloqueia o computador",
+"acao",
+"pt_BR"
+],
+[
+"desliga o pc daqui a 30 minutos",
+"acao",
+"pt_BR"
+],
+[
+"abre o terminal por favor",
+"acao",
+"pt_BR"
+],
+[
+"muta o som",
+"acao",
+"pt_BR"
+],
+[
+"conecta no wifi de casa",
+"acao",
+"pt_BR"
+],
+[
+"abre o vscode na pasta do projeto",
+"acao",
+"pt_BR"
+],
+[
+"manda 'chego em 10 min' pro João no telegram",
+"acao",
+"pt_BR"
+],
+[
+"cria uma pasta chamada faculdade nos documentos",
+"acao",
+"pt_BR"
+],
+[
+"reinicia o computador",
+"acao",
+"pt_BR"
+],
+[
+"abre a calculadora",
+"acao",
+"pt_BR"
+],
+[
+"suspende o notebook",
+"acao",
+"pt_BR"
+],
+[
+"abre o libreoffice writer",
+"acao",
+"pt_BR"
+],
+[
+"copia o arquivo notas.odt pro pendrive",
+"acao",
+"pt_BR"
+],
+[
+"esvazia a lixeira",
+"acao",
+"pt_BR"
+],
+[
+"troca o papel de parede pela foto praia.jpg",
+"acao",
+"pt_BR"
+],
+[
+"abre o steam",
+"acao",
+"pt_BR"
+],
+[
+"liga a luz noturna",
+"acao",
+"pt_BR"
+],
+[
+"compacta a pasta projetos em zip",
+"acao",
+"pt_BR"
+],
+[
+"abre o obs",
+"acao",
+"pt_BR"
+],
+[
+"escreve um lembrete no gedit dizendo comprar pão",
+"acao",
+"pt_BR"
+],
+[
+"desliga o microfone",
+"acao",
+"pt_BR"
+],
+[
+"abre as configurações de som",
+"acao",
+"pt_BR"
+],
+[
+"modo avião ligado",
+"acao",
+"pt_BR"
+],
+[
+"abre o thunderbird e cria um email novo pro chefe",
+"acao",
+"pt_BR"
+],
+[
+"exclui a pasta temp dentro de Downloads",
+"acao",
+"pt_BR"
+],
+[
+"abre o gimp com a imagem logo.png",
+"acao",
+"pt_BR"
+],
+[
+"tira uma captura só da janela ativa",
+"acao",
+"pt_BR"
+],
+[
+"abre o vlc e toca o filme.mp4",
+"acao",
+"pt_BR"
+],
+[
+"muda o idioma do teclado pra inglês",
+"acao",
+"pt_BR"
+],
+[
+"encerra a sessão",
+"acao",
+"pt_BR"
+],
+[
+"volume no mínimo",
+"acao",
+"pt_BR"
+],
+[
+"abre o blender",
+"acao",
+"pt_BR"
+],
+[
+"cola o texto copiado no bloco de notas",
+"acao",
+"pt_BR"
+],
+[
+"manda um whatsapp pra minha mãe dizendo que já saí",
+"acao",
+"pt_BR"
+],
+[
+"coloca o computador pra hibernar",
+"acao",
+"pt_BR"
+],
+[
+"ativa o tema claro",
+"acao",
+"pt_BR"
+],
+[
+"abre o gnome-system-monitor",
+"acao",
+"pt_BR"
+],
+[
+"desconecta os fones bluetooth",
+"acao",
+"pt_BR"
+],
+[
+"abre o ollama no terminal e roda o qwen",
+"acao",
+"pt_BR"
+],
+[
+"liga o compartilhamento de tela no zoom",
+"acao",
+"pt_BR"
+],
+[
+"fecha o jogo que tá aberto, o minecraft",
+"acao",
+"pt_BR"
+],
+[
+"abre o kerbal space program",
+"acao",
+"pt_BR"
+],
+[
+"grava a tela por 1 minuto",
+"acao",
+"pt_BR"
+],
+[
+"desliga o som do sistema e abre o rhythmbox",
+"acao",
+"pt_BR"
+],
+[
+"previsão do tempo pra francisco beltrão amanhã",
+"busca",
+"pt_BR"
+],
+[
+"qual o preço da rtx 5070 no brasil",
+"busca",
+"pt_BR"
+],
+[
+"últimas notícias sobre a eleição",
+"busca",
+"pt_BR"
+],
+[
+"procura um tutorial de como fazer pão caseiro no youtube",
+"busca",
+"pt_BR"
+],
+[
+"review do fedora 45 vale a pena?",
+"busca",
+"pt_BR"
+],
+[
+"quanto custa uma passagem de curitiba pra são paulo semana que vem",
+"busca",
+"pt_BR"
+],
+[
+"vai chover hoje à tarde?",
+"busca",
+"pt_BR"
+],
+[
+"resultado da mega sena de sábado",
+"busca",
+"pt_BR"
+],
+[
+"qual a cotação do bitcoin agora",
+"busca",
+"pt_BR"
+],
+[
+"o que aconteceu no mundo hoje",
+"busca",
+"pt_BR"
+],
+[
+"tem atualização nova do kerbal space program 2?",
+"busca",
+"pt_BR"
+],
+[
+"melhor notebook custo benefício 2026",
+"busca",
+"pt_BR"
+],
+[
+"procura vídeos de gameplay do novo zelda",
+"busca",
+"pt_BR"
+],
+[
+"quem é o atual presidente da argentina",
+"busca",
+"pt_BR"
+],
+[
+"horário do jogo do athletico hoje",
+"busca",
+"pt_BR"
+],
+[
+"qual a versão mais recente do ubuntu",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa preço do ssd nvme 2tb no mercado livre",
+"busca",
+"pt_BR"
+],
+[
+"notícias de tecnologia dessa semana",
+"busca",
+"pt_BR"
+],
+[
+"quando sai a próxima temporada de the last of us",
+"busca",
+"pt_BR"
+],
+[
+"como tá o trânsito na br-277 agora",
+"busca",
+"pt_BR"
+],
+[
+"quanto tá o litro da gasolina no paraná",
+"busca",
+"pt_BR"
+],
+[
+"quais os lançamentos de jogos de outubro",
+"busca",
+"pt_BR"
+],
+[
+"procura um tutorial em vídeo de configurar o flybywire a380",
+"busca",
+"pt_BR"
+],
+[
+"quem ganhou o oscar de melhor filme esse ano",
+"busca",
+"pt_BR"
+],
+[
+"temperatura agora em curitiba",
+"busca",
+"pt_BR"
+],
+[
+"qual o preço do ryzen 9 9950x hoje",
+"busca",
+"pt_BR"
+],
+[
+"tem show de alguma banda boa em cascavel esse mês?",
+"busca",
+"pt_BR"
+],
+[
+"o que as pessoas tão falando do novo iphone",
+"busca",
+"pt_BR"
+],
+[
+"cotação do euro",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa reviews do fone sony wh-1000xm6",
+"busca",
+"pt_BR"
+],
+[
+"qual o resultado da fórmula 1 no domingo",
+"busca",
+"pt_BR"
+],
+[
+"acha pra mim o site oficial pra baixar o linux mint mais recente",
+"busca",
+"pt_BR"
+],
+[
+"qual a taxa selic atual",
+"busca",
+"pt_BR"
+],
+[
+"quem tá liderando a champions",
+"busca",
+"pt_BR"
+],
+[
+"me mostra as notícias sobre o ollama lançado recentemente",
+"busca",
+"pt_BR"
+],
+[
+"qual o modelo de ia local mais novo da qwen",
+"busca",
+"pt_BR"
+],
+[
+"busca onde comprar placa mãe am5 barata",
+"busca",
+"pt_BR"
+],
+[
+"vai ter feriado prolongado esse mês?",
+"busca",
+"pt_BR"
+],
+[
+"tutorial de mod de minecraft fabric 1.21 atualizado",
+"busca",
+"pt_BR"
+],
+[
+"quantos inscritos o canal do alanzoka tem agora",
+"busca",
+"pt_BR"
+],
+[
+"o que saiu de novo no kernel linux recentemente",
+"busca",
+"pt_BR"
+],
+[
+"quando é o próximo jogo da seleção",
+"busca",
+"pt_BR"
+],
+[
+"preço da ps5 pro hoje",
+"busca",
+"pt_BR"
+],
+[
+"procura um guia de build pra ssto no ksp",
+"busca",
+"pt_BR"
+],
+[
+"aconteceu algum terremoto hoje?",
+"busca",
+"pt_BR"
+],
+[
+"tem promoção na steam agora?",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa como tá o preço da memória ddr5 32gb",
+"busca",
+"pt_BR"
+],
+[
+"quem foi eliminado no bbb ontem",
+"busca",
+"pt_BR"
+],
+[
+"horário de funcionamento do mercado aqui perto",
+"busca",
+"pt_BR"
+],
+[
+"qual o preço da ação da petrobras",
+"busca",
+"pt_BR"
+],
+[
+"busca vagas de emprego de programador em curitiba",
+"busca",
+"pt_BR"
+],
+[
+"quais as novidades do gnome 49",
+"busca",
+"pt_BR"
+],
+[
+"me acha um vídeo ensinando a tocar wonderwall no violão",
+"busca",
+"pt_BR"
+],
+[
+"o dólar subiu ou caiu essa semana",
+"busca",
+"pt_BR"
+],
+[
+"compara preços de monitor 144hz de 27 polegadas",
+"busca",
+"pt_BR"
+],
+[
+"qual o status dos servidores da steam agora",
+"busca",
+"pt_BR"
+],
+[
+"novidades sobre o msfs 2024 na última atualização",
+"busca",
+"pt_BR"
+],
+[
+"lista de mods populares do ksp esse ano",
+"busca",
+"pt_BR"
+],
+[
+"quanto tá a arroba do boi hoje",
+"busca",
+"pt_BR"
+],
+[
+"procura notícias da enchente no rio grande do sul",
+"busca",
+"pt_BR"
+],
+[
+"e aí, beleza?",
+"simples",
+"pt_BR"
+],
+[
+"tchau",
+"simples",
+"pt_BR"
+],
+[
+"tudo bem com você?",
+"simples",
+"pt_BR"
+],
+[
+"abre o youtube",
+"simples",
+"pt_BR"
+],
+[
+"entra no google",
+"simples",
+"pt_BR"
+],
+[
+"vai no facebook",
+"simples",
+"pt_BR"
+],
+[
+"abre o twitter",
+"simples",
+"pt_BR"
+],
+[
+"opa",
+"simples",
+"pt_BR"
+],
+[
+"brigadão, salvou minha vida",
+"simples",
+"pt_BR"
+],
+[
+"abre a netflix",
+"simples",
+"pt_BR"
+],
+[
+"falou",
+"simples",
+"pt_BR"
+],
+[
+"entra no instagram",
+"simples",
+"pt_BR"
+],
+[
+"abre o chatgpt",
+"simples",
+"pt_BR"
+],
+[
+"e ai tars",
+"simples",
+"pt_BR"
+],
+[
+"abre a twitch",
+"simples",
+"pt_BR"
+],
+[
+"tamo junto",
+"simples",
+"pt_BR"
+],
+[
+"abre o linkedin",
+"simples",
+"pt_BR"
+],
+[
+"fui, até amanhã",
+"simples",
+"pt_BR"
+],
+[
+"oii",
+"simples",
+"pt_BR"
+],
+[
+"abre o mercado livre",
+"simples",
+"pt_BR"
+],
+[
+"abre a wikipédia",
+"simples",
+"pt_BR"
+],
+[
+"salve",
+"simples",
+"pt_BR"
+],
+[
+"eai como vai",
+"simples",
+"pt_BR"
+],
+[
+"entra na amazon",
+"simples",
+"pt_BR"
+],
+[
+"tudo tranquilo?",
+"simples",
+"pt_BR"
+],
+[
+"obrigada",
+"simples",
+"pt_BR"
+],
+[
+"beleza, era só isso",
+"simples",
+"pt_BR"
+],
+[
+"abre o site da globo",
+"simples",
+"pt_BR"
+],
+[
+"até logo",
+"simples",
+"pt_BR"
+],
+[
+"abre o duolingo",
+"simples",
+"pt_BR"
+],
+[
+"entra no tiktok",
+"simples",
+"pt_BR"
+],
+[
+"nossa obrigado",
+"simples",
+"pt_BR"
+],
+[
+"abre o outlook",
+"simples",
+"pt_BR"
+],
+[
+"abre o pinterest",
+"simples",
+"pt_BR"
+],
+[
+"abre o google maps",
+"simples",
+"pt_BR"
+],
+[
+"entra no uol",
+"simples",
+"pt_BR"
+],
+[
+"obg",
+"simples",
+"pt_BR"
+],
+[
+"boa madrugada kkk",
+"simples",
+"pt_BR"
+],
+[
+"ok, obrigado",
+"simples",
+"pt_BR"
+],
+[
+"abre o gov.br",
+"simples",
+"pt_BR"
+],
+[
+"flw",
+"simples",
+"pt_BR"
+],
+[
+"abre o stack overflow",
+"simples",
+"pt_BR"
+],
+[
+"agradeço",
+"simples",
+"pt_BR"
+],
+[
+"abre o prime video",
+"simples",
+"pt_BR"
+],
+[
+"explica o que é fotossíntese",
+"geral",
+"pt_BR"
+],
+[
+"traduz 'where is the library' pro português",
+"geral",
+"pt_BR"
+],
+[
+"resume a história da revolução francesa",
+"geral",
+"pt_BR"
+],
+[
+"escreve um email pedindo férias pro meu chefe",
+"geral",
+"pt_BR"
+],
+[
+"escreve uma mensagem de aniversário pra minha avó",
+"geral",
+"pt_BR"
+],
+[
+"explica a teoria da relatividade de forma simples",
+"geral",
+"pt_BR"
+],
+[
+"me dá dicas pra dormir melhor",
+"geral",
+"pt_BR"
+],
+[
+"traduz esse texto pro inglês: estou muito feliz em conhecer vocês",
+"geral",
+"pt_BR"
+],
+[
+"como se calcula a área de um círculo",
+"geral",
+"pt_BR"
+],
+[
+"escreve uma história curta de ficção científica",
+"geral",
+"pt_BR"
+],
+[
+"me ajuda a montar um treino de corrida pra iniciante",
+"geral",
+"pt_BR"
+],
+[
+"o que foi a guerra fria",
+"geral",
+"pt_BR"
+],
+[
+"cria um roteiro de estudos pra aprender xadrez",
+"geral",
+"pt_BR"
+],
+[
+"escreve uma carta de apresentação pra vaga de estágio",
+"geral",
+"pt_BR"
+],
+[
+"qual o plural de cidadão",
+"geral",
+"pt_BR"
+],
+[
+"dá sugestões de presente pro dia dos pais",
+"geral",
+"pt_BR"
+],
+[
+"resolve essa equação: 2x + 5 = 17",
+"geral",
+"pt_BR"
+],
+[
+"como fazer um bom discurso de formatura",
+"geral",
+"pt_BR"
+],
+[
+"inventa um nome pra minha banda de rock",
+"geral",
+"pt_BR"
+],
+[
+"como cuidar de uma suculenta",
+"geral",
+"pt_BR"
+],
+[
+"o que é a órbita de hohmann",
+"geral",
+"pt_BR"
+],
+[
+"converte 5 milhas pra quilômetros",
+"geral",
+"pt_BR"
+],
+[
+"qual a origem da expressão 'pagar o pato'",
+"geral",
+"pt_BR"
+],
+[
+"explica o que é inteligência artificial pra uma criança",
+"geral",
+"pt_BR"
+],
+[
+"escreve um texto pra divulgar minha loja no instagram",
+"geral",
+"pt_BR"
+],
+[
+"quais são os planetas do sistema solar",
+"geral",
+"pt_BR"
+],
+[
+"como melhorar minha redação do enem",
+"geral",
+"pt_BR"
+],
+[
+"me ajuda a decidir entre fazer engenharia ou medicina",
+"geral",
+"pt_BR"
+],
+[
+"escreve uma desculpa educada pra recusar um convite",
+"geral",
+"pt_BR"
+],
+[
+"o que é um número primo",
+"geral",
+"pt_BR"
+],
+[
+"traduz 'saudade' pro espanhol",
+"geral",
+"pt_BR"
+],
+[
+"qual a fórmula da água",
+"geral",
+"pt_BR"
+],
+[
+"explica a abertura siciliana no xadrez",
+"geral",
+"pt_BR"
+],
+[
+"cria um cardápio saudável pra semana",
+"geral",
+"pt_BR"
+],
+[
+"o que significa carpe diem",
+"geral",
+"pt_BR"
+],
+[
+"escreve uma música sobre amizade",
+"geral",
+"pt_BR"
+],
+[
+"qual o maior oceano do mundo",
+"geral",
+"pt_BR"
+],
+[
+"me dá dicas pra falar em público",
+"geral",
+"pt_BR"
+],
+[
+"reescreve essa frase de um jeito mais formal: a gente vai atrasar o projeto",
+"geral",
+"pt_BR"
+],
+[
+"como se faz uma regra de três",
+"geral",
+"pt_BR"
+],
+[
+"explica o que é o efeito estufa",
+"geral",
+"pt_BR"
+],
+[
+"cria perguntas pra um quiz sobre história do brasil",
+"geral",
+"pt_BR"
+],
+[
+"escreve um parágrafo de introdução sobre sustentabilidade",
+"geral",
+"pt_BR"
+],
+[
+"me dá conselhos pra lidar com um colega de trabalho difícil",
+"geral",
+"pt_BR"
+],
+[
+"explica como funcionam os juros compostos",
+"geral",
+"pt_BR"
+]
+]

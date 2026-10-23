@@ -1,0 +1,428 @@
+{
+ "es": [
+  [
+   "describe lo que aparece en mi monitor ahora",
+   "visao"
+  ],
+  [
+   "pulsa ese ícono rojo en la esquina de arriba",
+   "visao"
+  ],
+  [
+   "léeme lo que dice ese cuadro de aviso",
+   "visao"
+  ],
+  [
+   "qué pestaña del navegador está abierta ahora",
+   "visao"
+  ],
+  [
+   "arrastra ese archivo a la papelera con el cursor",
+   "visao"
+  ],
+  [
+   "por qué mi programa en c da segmentation fault",
+   "codigo"
+  ],
+  [
+   "cómo hago un bucle que recorra una lista en java",
+   "codigo"
+  ],
+  [
+   "escribe un script que renombre fotos por fecha",
+   "codigo"
+  ],
+  [
+   "apt está bloqueado diciendo que otro proceso usa el lock",
+   "tecnico"
+  ],
+  [
+   "cuál es la diferencia entre ext4 y btrfs",
+   "tecnico"
+  ],
+  [
+   "cómo comprimo una carpeta en tar.gz desde la línea de comandos",
+   "tecnico"
+  ],
+  [
+   "mi tarjeta de video no aparece en nvidia-smi",
+   "tecnico"
+  ],
+  [
+   "apaga el bluetooth",
+   "acao"
+  ],
+  [
+   "sube un poco el volumen del sonido",
+   "acao"
+  ],
+  [
+   "mueve las capturas del escritorio a la carpeta imágenes",
+   "acao"
+  ],
+  [
+   "cierra spotify y después abre discord",
+   "acao"
+  ],
+  [
+   "renombra el archivo informe.txt a final.txt",
+   "acao"
+  ],
+  [
+   "activa el modo oscuro del sistema",
+   "acao"
+  ],
+  [
+   "cuánto cuesta la rtx 5060 hoy en las tiendas",
+   "busca"
+  ],
+  [
+   "encuentra un tutorial para cambiar la pasta térmica",
+   "busca"
+  ],
+  [
+   "quiero ver videos de recetas de lasaña",
+   "busca"
+  ],
+  [
+   "averigua cuándo se estrena la próxima película de marvel",
+   "busca"
+  ],
+  [
+   "muéstrame noticias de hoy sobre inteligencia artificial",
+   "busca"
+  ],
+  [
+   "muchas gracias, de verdad",
+   "simples"
+  ],
+  [
+   "buenas noches, ¿todo bien?",
+   "simples"
+  ],
+  [
+   "entra a gmail por mí",
+   "simples"
+  ],
+  [
+   "buenos días, openTARS",
+   "simples"
+  ],
+  [
+   "hola, ¿cómo estás hoy?",
+   "simples"
+  ],
+  [
+   "explícame cómo funciona un agujero negro",
+   "geral"
+  ],
+  [
+   "escribe un poema corto sobre el mar",
+   "geral"
+  ],
+  [
+   "dame ideas de nombres para un perro",
+   "geral"
+  ],
+  [
+   "resume la segunda guerra mundial en pocas líneas",
+   "geral"
+  ],
+  [
+   "cuál es la diferencia entre virus y bacteria",
+   "geral"
+  ],
+  [
+   "ayúdame a planear un viaje de tres días a madrid",
+   "geral"
+  ],
+  [
+   "traduce al inglés: me gusta el café",
+   "geral"
+  ]
+ ],
+ "fr": [
+  [
+   "décris ce qui apparaît sur mon moniteur maintenant",
+   "visao"
+  ],
+  [
+   "appuie sur cette icône rouge dans le coin en haut",
+   "visao"
+  ],
+  [
+   "lis-moi ce qui est écrit dans cette boîte d'avertissement",
+   "visao"
+  ],
+  [
+   "quel onglet du navigateur est ouvert maintenant",
+   "visao"
+  ],
+  [
+   "fais glisser ce fichier vers la corbeille avec le curseur",
+   "visao"
+  ],
+  [
+   "pourquoi mon programme en c fait une segmentation fault",
+   "codigo"
+  ],
+  [
+   "comment faire une boucle qui parcourt une liste en java",
+   "codigo"
+  ],
+  [
+   "écris un script qui renomme des photos par date",
+   "codigo"
+  ],
+  [
+   "apt est bloqué et dit qu'un autre processus utilise le verrou",
+   "tecnico"
+  ],
+  [
+   "quelle est la différence entre ext4 et btrfs",
+   "tecnico"
+  ],
+  [
+   "comment compresser un dossier en tar.gz en ligne de commande",
+   "tecnico"
+  ],
+  [
+   "ma carte graphique n'apparaît pas dans nvidia-smi",
+   "tecnico"
+  ],
+  [
+   "désactive le bluetooth",
+   "acao"
+  ],
+  [
+   "monte un peu le volume du son",
+   "acao"
+  ],
+  [
+   "déplace les captures du bureau vers le dossier images",
+   "acao"
+  ],
+  [
+   "ferme spotify puis ouvre discord",
+   "acao"
+  ],
+  [
+   "renomme le fichier rapport.txt en final.txt",
+   "acao"
+  ],
+  [
+   "active le mode sombre du système",
+   "acao"
+  ],
+  [
+   "combien coûte la rtx 5060 aujourd'hui en magasin",
+   "busca"
+  ],
+  [
+   "trouve un tutoriel pour changer la pâte thermique",
+   "busca"
+  ],
+  [
+   "je veux voir des vidéos de recettes de lasagnes",
+   "busca"
+  ],
+  [
+   "découvre quand sort le prochain film marvel",
+   "busca"
+  ],
+  [
+   "montre-moi les actualités du jour sur l'intelligence artificielle",
+   "busca"
+  ],
+  [
+   "merci beaucoup, vraiment",
+   "simples"
+  ],
+  [
+   "bonsoir, tout va bien ?",
+   "simples"
+  ],
+  [
+   "va sur gmail pour moi",
+   "simples"
+  ],
+  [
+   "bonjour, openTARS",
+   "simples"
+  ],
+  [
+   "salut, comment tu vas aujourd'hui ?",
+   "simples"
+  ],
+  [
+   "explique-moi comment fonctionne un trou noir",
+   "geral"
+  ],
+  [
+   "écris un petit poème sur la mer",
+   "geral"
+  ],
+  [
+   "donne-moi des idées de noms pour un chien",
+   "geral"
+  ],
+  [
+   "résume la seconde guerre mondiale en quelques lignes",
+   "geral"
+  ],
+  [
+   "quelle est la différence entre un virus et une bactérie",
+   "geral"
+  ],
+  [
+   "aide-moi à organiser un voyage de trois jours à lyon",
+   "geral"
+  ],
+  [
+   "traduis en anglais : j'aime le café",
+   "geral"
+  ]
+ ],
+ "de": [
+  [
+   "beschreib, was gerade auf meinem monitor zu sehen ist",
+   "visao"
+  ],
+  [
+   "drück auf das rote symbol oben in der ecke",
+   "visao"
+  ],
+  [
+   "lies mir vor, was in dem warnfenster steht",
+   "visao"
+  ],
+  [
+   "welcher browser-tab ist gerade offen",
+   "visao"
+  ],
+  [
+   "zieh diese datei mit dem cursor in den papierkorb",
+   "visao"
+  ],
+  [
+   "warum gibt mein c-programm einen segmentation fault",
+   "codigo"
+  ],
+  [
+   "wie schreibe ich eine schleife über eine liste in java",
+   "codigo"
+  ],
+  [
+   "schreib ein skript, das fotos nach datum umbenennt",
+   "codigo"
+  ],
+  [
+   "apt hängt und sagt, dass ein anderer prozess die sperre hält",
+   "tecnico"
+  ],
+  [
+   "was ist der unterschied zwischen ext4 und btrfs",
+   "tecnico"
+  ],
+  [
+   "wie packe ich einen ordner auf der kommandozeile als tar.gz",
+   "tecnico"
+  ],
+  [
+   "meine grafikkarte erscheint nicht in nvidia-smi",
+   "tecnico"
+  ],
+  [
+   "schalte bluetooth aus",
+   "acao"
+  ],
+  [
+   "mach die lautstärke ein bisschen lauter",
+   "acao"
+  ],
+  [
+   "verschieb die screenshots vom desktop in den ordner bilder",
+   "acao"
+  ],
+  [
+   "schließ spotify und öffne dann discord",
+   "acao"
+  ],
+  [
+   "benenne die datei bericht.txt in final.txt um",
+   "acao"
+  ],
+  [
+   "aktiviere den dunklen modus des systems",
+   "acao"
+  ],
+  [
+   "was kostet die rtx 5060 heute im laden",
+   "busca"
+  ],
+  [
+   "finde eine anleitung zum wechseln der wärmeleitpaste",
+   "busca"
+  ],
+  [
+   "ich will videos mit lasagne-rezepten sehen",
+   "busca"
+  ],
+  [
+   "finde heraus, wann der nächste marvel-film startet",
+   "busca"
+  ],
+  [
+   "zeig mir die heutigen nachrichten über künstliche intelligenz",
+   "busca"
+  ],
+  [
+   "vielen dank, wirklich",
+   "simples"
+  ],
+  [
+   "guten abend, alles gut?",
+   "simples"
+  ],
+  [
+   "geh für mich auf gmail",
+   "simples"
+  ],
+  [
+   "guten morgen, openTARS",
+   "simples"
+  ],
+  [
+   "hallo, wie geht es dir heute?",
+   "simples"
+  ],
+  [
+   "erklär mir, wie ein schwarzes loch funktioniert",
+   "geral"
+  ],
+  [
+   "schreib ein kurzes gedicht über das meer",
+   "geral"
+  ],
+  [
+   "gib mir namensideen für einen hund",
+   "geral"
+  ],
+  [
+   "fass den zweiten weltkrieg in wenigen zeilen zusammen",
+   "geral"
+  ],
+  [
+   "was ist der unterschied zwischen viren und bakterien",
+   "geral"
+  ],
+  [
+   "hilf mir, eine dreitägige reise nach berlin zu planen",
+   "geral"
+  ],
+  [
+   "übersetze ins englische: ich mag kaffee",
+   "geral"
+  ]
+ ]
+}
