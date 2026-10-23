@@ -30,11 +30,13 @@ Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. **One command ins
 wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
 ```
 
-Then open **openTARS** from the application menu, or run:
+Then open **openTARS** from the application menu (the first time, a short "first steps" window checks Ollama and the model). From a terminal, the same window opens with:
 
 ```bash
-opentars
+opentars-gui
 ```
+
+(`opentars` alone is the terminal version: it shows a diagnosis and the command-line options.)
 
 | Want to... | Command |
 |---|---|
@@ -42,6 +44,7 @@ opentars
 | Install a file you downloaded | `sudo apt install -y --reinstall ./opentars_all.deb` |
 | Update | run the install command again (or use the notice inside the app) |
 | Check the installation | `opentars --autoteste` |
+| Open the first steps window again | `opentars-gui --primeiro-uso` |
 | Set up web search (needs Docker) | `opentars --searxng` |
 | Download the small model by hand | `ollama pull ProjectOpenTARS/Gargantua-2:lite` |
 | Uninstall | `sudo apt remove opentars` |
