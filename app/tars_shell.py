@@ -61,7 +61,8 @@ def pasta_do_usuario(chave):
     casa = plataforma.pastas()["casa"]
     if plataforma.sistema() == "linux":
         try:
-            texto = (casa / ".config" / "user-dirs.dirs").read_text(encoding="utf-8")
+            config = Path(os.environ.get("XDG_CONFIG_HOME") or casa / ".config")
+            texto = (config / "user-dirs.dirs").read_text(encoding="utf-8")
             m = re.search(rf'^XDG_{chave}_DIR="(.+)"', texto, re.M)
             if m:
                 return Path(m.group(1).replace("$HOME", str(casa)))

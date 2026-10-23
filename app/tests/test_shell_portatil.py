@@ -66,10 +66,10 @@ for modelo in (COMANDOS if COMPARAR else []):
     resultados = []
     for casa, lado in ((bash_casa, "bash"), (py_casa, "py")):
         comando = modelo.replace("{casa}", str(casa))
-        os.environ["HOME"] = str(casa)
+        os.environ.update(HOME=str(casa), USERPROFILE=str(casa), XDG_CONFIG_HOME=str(casa / ".config"))
         if lado == "bash":
             r = subprocess.run(["bash", "-c", comando], cwd=casa, capture_output=True, text=True,
-                               env=dict(os.environ, HOME=str(casa), LC_ALL="C.UTF-8"))
+                               env=dict(os.environ, LC_ALL="C.UTF-8"))
             resultados.append((r.returncode, r.stdout.replace(str(casa), "CASA"), r.stderr.replace(str(casa), "CASA")))
         else:
             assert sh.suportado(comando), comando
@@ -100,7 +100,7 @@ assert not sh.suportado("python3 -c 'print(1)'") and sh.suportado("gio trash -- 
 print("OK: o que não está aqui não é suportado (o núcleo explica em vez de rodar pela metade)")
 # no núcleo: fora do Linux o execute_terminal usa o mini-shell, e as regras de comando perigoso continuam antes dele
 casa = nova_casa()
-os.environ["HOME"] = str(casa)
+os.environ.update(HOME=str(casa), USERPROFILE=str(casa), XDG_CONFIG_HOME=str(casa / ".config"))   # no Windows a casa é o USERPROFILE
 from _util import RAIZ  # noqa: E402,F401
 import tars  # noqa: E402
 original = tars.plataforma.sistema

@@ -10,7 +10,7 @@ import importlib.util
 spec = importlib.util.spec_from_file_location("tars_trecho", str(Path(__file__).resolve().parent.parent / "tars.py"))
 fonte = (Path(__file__).resolve().parent.parent / "tars.py").read_text(encoding="utf-8")
 ini = fonte.index("def achar_autorizacao_x")
-fim = fonte.index("if not os.environ.get(\"XAUTHORITY\")")
+fim = fonte.rindex("\nif ", ini, fonte.index('os.environ.get("XAUTHORITY")', ini))   # a linha que decide usar a função
 ns = {"os": os, "Path": Path}
 exec(fonte[ini:fim], ns)
 achar = ns["achar_autorizacao_x"]
