@@ -10,9 +10,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import tars_shell as sh  # noqa: E402
 
-if not shutil.which("bash"):
-    print("test_shell_portatil: PULADO (sem bash para comparar)")
-    sys.exit(0)
+# a referência é o bash com o coreutils do GNU: no macOS o ls e o wc são outros, no Windows o bash é o do Git
+COMPARAR = sys.platform.startswith("linux") and bool(shutil.which("bash"))
 
 COMANDOS = [
     "mkdir -p ~/Documents/Trabalho",
@@ -28,7 +27,8 @@ COMANDOS = [
     "wc -l ~/Desktop/list.txt",
     "cat ~/Desktop/list.txt",
     "touch ~/Documents/a.txt && ls -1 ~/Documents",
-    'mkdir -p "$(xdg-user-dir DOCUMENTS)/Proyectos" && echo "x" > "$(xdg-user-dir DOCUMENTS)/Proyectos/a.txt"',
+    *(['mkdir -p "$(xdg-user-dir DOCUMENTS)/Proyectos" && echo "x" > "$(xdg-user-dir DOCUMENTS)/Proyectos/a.txt"']
+      if shutil.which("xdg-user-dir") else []),     # sem o programa (o runner do GitHub) o bash não serve de referência
     "ls -1 /caminho/que/nao/existe",
     "mkdir ~/Desktop",
     "mkdir ~/Desktop || echo falhou",
@@ -42,7 +42,7 @@ COMANDOS = [
     "wc -l ~/Desktop/list.txt ~/q.txt",
     "head -n 1 ~/Desktop/list.txt",
     "mv ~/Downloads/ideas.txt ~/Documents/ && ls -1 ~/Documents",
-    "rm -rf ~/Documents/Jogos ~/Documents/Proyectos",
+    "rm -rf ~/Documents/Jogos ~/Documents/Proyectos ~/Documentos/Proyectos",
 ]
 
 
@@ -62,7 +62,7 @@ def nova_casa():
 
 bash_casa, py_casa = nova_casa(), nova_casa()
 diferencas = []
-for modelo in COMANDOS:
+for modelo in (COMANDOS if COMPARAR else []):
     resultados = []
     for casa, lado in ((bash_casa, "bash"), (py_casa, "py")):
         comando = modelo.replace("{casa}", str(casa))
@@ -86,7 +86,8 @@ for modelo in COMANDOS:
 for modelo, b, p in diferencas:
     print(f"DIFERENTE: {modelo}\n   bash: {b}\n   py:   {p}")
 assert not diferencas, f"{len(diferencas)} comando(s) com resultado diferente do bash"
-print(f"OK: {len(COMANDOS)} comandos das formas do treino dão o mesmo que o bash (saída, código e arquivos)")
+print(f"OK: {len(COMANDOS)} comandos das formas do treino dão o mesmo que o bash (saída, código e arquivos)" if COMPARAR
+      else "(fora do Linux: sem comparar com o bash)")
 
 r = sh.executar("free -h")
 linhas = r["stdout"].splitlines()

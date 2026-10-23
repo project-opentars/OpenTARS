@@ -1,4 +1,6 @@
-# openTARS: os testes do app (pasta app/) no Linux e, sem tela, no Windows e no macOS.
+# openTARS 5.2: testes sem tela nos três sistemas (GitHub Actions).
+# Vai em .github/workflows/testes.yml de um repositório que tenha a pasta app/ (= fonte/app) na raiz.
+# Ainda NÃO está em nenhum repositório: onde o código vai é decisão do Enzo (PLANO_5.2.md, F1.4).
 name: testes
 on:
   push:
@@ -16,7 +18,7 @@ jobs:
       - name: Dependências do sistema
         run: sudo apt-get update && sudo apt-get install -y xvfb xclip libnotify-bin libglib2.0-bin python3-gi gir1.2-atspi-2.0 libegl1 libxkbcommon-x11-0 libxcb-cursor0
       - name: Dependências Python
-        run: pip install requests psutil pyautogui pillow PySide6-Essentials
+        run: pip install requests psutil pyautogui pillow PySide6-Essentials numpy
       - name: Suíte inteira
         run: cd tests && xvfb-run -a python -u run_all.py
 
@@ -37,6 +39,10 @@ jobs:
         run: python tests/test_plataforma.py
       - name: Prova portátil (sem modelo)
         run: python tests/test_prova_portatil.py
+      - name: Instância única (no Windows, TCP local com segredo)
+        run: python tests/test_instancia_windows.py
+      - name: Mini-shell dos comandos de bash do treino
+        run: python tests/test_shell_portatil.py
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
 

@@ -113,7 +113,7 @@ def achar_autorizacao_x():
     return None
 
 
-if not os.environ.get("XAUTHORITY") and not (Path.home() / ".Xauthority").exists():
+if plataforma.sistema() == "linux" and not os.environ.get("XAUTHORITY") and not (Path.home() / ".Xauthority").exists():
     os.environ["XAUTHORITY"] = achar_autorizacao_x() or "/dev/null"
 
 try:
