@@ -20,6 +20,36 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 
 [What's new](#whats-new-in-51-tesseract) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
 
+</div>
+
+## Download and install
+
+Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
+
+```bash
+wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
+```
+
+Then open **openTARS** from the application menu, or run:
+
+```bash
+opentars
+```
+
+| Want to... | Command |
+|---|---|
+| Download the file only | `wget https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb` |
+| Install a file you downloaded | `sudo apt install -y --reinstall ./opentars_all.deb` |
+| Update | run the install command again (or use the notice inside the app) |
+| Check the installation | `opentars --autoteste` |
+| Set up web search (needs Docker) | `opentars --searxng` |
+| Download the small model by hand | `ollama pull ProjectOpenTARS/Gargantua-2:lite` |
+| Uninstall | `sudo apt remove opentars` |
+
+Details, environment variables and WSL are in [Installation](#installation). Your history and settings are kept on updates.
+
+<div align="center">
+
 <br>
 
 <img src="docs/img/02-conversation.png" width="860" alt="The openTARS window: history sidebar, the request, the steps card, tool calls with timings and the answer with a code block">
@@ -93,8 +123,11 @@ With a local model and web search off, your conversation and screen stay on your
 | 🔎 **Web search through SearXNG** | Off by default. `opentars --searxng` sets up a SearXNG that only answers on this computer (Docker), or point **Settings → Cloud** at your own. The AI can then search and read pages (`web_search`, `read_page`; pages come in as data, public addresses only). Gargantua uses it through its own `search_web`: with search on, "search X" only asks SearXNG and the answer comes from the first results; nothing opens on your computer unless you ask for it or search YouTube |
 | 🧠 **Gargantua uses its tools reliably** | openTARS asked Ollama to turn reasoning off in a way that made Gargantua think it should answer right away, so sometimes it replied without doing the task. Fixed: in our tests Gargantua went from 15 to 18 of 18 tries, and Gargantua Lite from 34 to 63 of 84 tasks |
 | 🔁 **Smarter fallback** | When a model fails in the middle of a request, the automatic switch goes to a model of the same size or bigger, never down to a much smaller one (before, the 0.6B model could end up answering) |
+| 📦 **More models and Manage models** | **Settings → More models** lists 58 models in six groups (Bonsai 2, image, general use, vision, code and large models) with sizes, and downloads the one you click through Ollama with a progress bar. **Settings → Manage models** shows what Ollama already has, how much disk it uses, and lets you update or delete each one (asking first). Models that only generate images are never picked for chat |
+| 🖼️ **Images in the chat** | When the AI answers with a local picture, the window shows it. Only files on your computer are loaded (never web addresses) |
+| ⚠️ **A warning when the AI is unsure** | For plain factual questions, openTARS reads how confident the model was while writing. If it was not, it searches the web first (when search is on) or warns you under the answer. It is a moderate signal, not a lie detector; `TARS_CONFIANCA=0` turns it off |
 
-**Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and hooks, MCP and sub-agents in the terminal, are planned for 5.2. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
+**Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and MCP and sub-agents in the terminal, are planned for a later version. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
 
 ## Earlier releases
 
