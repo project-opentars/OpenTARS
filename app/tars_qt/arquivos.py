@@ -235,7 +235,7 @@ class PainelArquivos(QFrame):
         self.caixa.addWidget(self.entendido)
         self.operacoes = []
         n = len(self.arquivos)
-        self.botao_aplicar.setText(t("foto.salvar", nome=fotos.nome_da_copia(self.arquivos[0], []).name) if n == 1
+        self.botao_aplicar.setText(t("foto.salvar", nome=fotos.nome_da_copia(self.arquivos[0], [], t("foto.sufixo")).name) if n == 1
                                    else t("foto.salvar_n", n=n))
         self.botao_aplicar.setEnabled(False)
         self.aviso.setText(t("foto.aviso"))
@@ -279,7 +279,7 @@ class PainelArquivos(QFrame):
         self.leg_depois.setText(t("foto.depois", w=tam_depois[0], h=tam_depois[1]))
         self.botao_aplicar.setEnabled(bool(self.operacoes))
         if len(self.arquivos) == 1:
-            self.botao_aplicar.setText(t("foto.salvar", nome=fotos.nome_da_copia(self.arquivos[0], self.operacoes).name))
+            self.botao_aplicar.setText(t("foto.salvar", nome=fotos.nome_da_copia(self.arquivos[0], self.operacoes, t("foto.sufixo")).name))
         self._encaixar()
 
     # -- o modelo -------------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ class PainelArquivos(QFrame):
             salvas, erros = [], []
             for caminho in self.arquivos:
                 try:
-                    salvas.append(fotos.salvar_copia(caminho, self.operacoes).name)
+                    salvas.append(fotos.salvar_copia(caminho, self.operacoes, t("foto.sufixo")).name)
                 except Exception as e:  # noqa: BLE001  (formato que o Pillow não grava, disco cheio)
                     erros.append(f"{Path(caminho).name}: {e}")
             self.aviso.setText(t("foto.salvas", nomes=", ".join(salvas)) + (" " + "; ".join(erros) if erros else ""))

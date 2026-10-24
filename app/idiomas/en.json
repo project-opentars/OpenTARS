@@ -1624,6 +1624,7 @@
  "arq.previa.foto": "How it would look (the original does not change)",
  "arq.sem_modelo": "no model: instant",
  "foto.dica": "What to do with the photo? E.g.: crop it square and make it brighter",
+ "foto.sufixo": "edited",
  "foto.chip.quadrado": "Square",
  "foto.chip.clara": "Brighter",
  "foto.chip.girar": "Rotate",

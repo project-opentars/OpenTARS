@@ -46,6 +46,8 @@ def esperar(cond, segundos=15, o_que=""):
         if cond():
             return
         QTest.qWait(20)
+    import faulthandler
+    faulthandler.dump_traceback(all_threads=True)     # onde cada thread parou (no CI do Windows e do macOS, a única pista)
     raise AssertionError(f"tempo esgotado: {o_que}")
 
 

@@ -1,3 +1,30 @@
+opentars (5.2) unstable; urgency=medium
+
+  5.2 Ranger
+  * Windows, macOS e outros Linux (Fedora, Arch, openSUSE): instaladores de um comando, sem
+    administrador (uv, Python 3.12 e o Ollama do usuário), com opentars --desinstalar. Testados
+    no GitHub Actions (Windows, macOS, Ubuntu) e em contêineres; o Windows passou pelo primeiro
+    teste numa máquina de verdade em 24/10 (dois defeitos no primeiro uso, corrigidos). O macOS
+    ainda não rodou num Mac de verdade. Sem assinatura paga: o site ensina o "Executar assim
+    mesmo" do Windows e o app do macOS é montado e assinado ad-hoc na própria máquina.
+  * Assistente do sistema: a barra rápida vazia vira um lançador (fazer uma tarefa, perguntar
+    sobre a tela, pesquisar na web, lembrete, buscar arquivos); ações de texto em qualquer
+    programa (Ctrl+Alt+R: corrigir, resumir, traduzir pt/en e perguntar sobre o trecho, sem
+    ferramentas; o trecho é dado, nunca ordem); ações em arquivos selecionados (resumir,
+    renomear pelo conteúdo com prévia, mover, lixeira, desfazer); editar uma foto por frase
+    (cortar, girar, clarear, reduzir, trocar o formato; sempre uma cópia, sem os metadados);
+    sugestão pelo programa em uso (desligada por padrão); assistente residente com ícone,
+    desligado por padrão.
+  * Gargantua 2 retreinado com os dados da 5.2 (ações de texto, dizer que não sabe, citar a
+    fonte da busca, outros sistemas): 2B 73/80 e Lite 68/80 na prova de 80 tarefas; ações de
+    texto 71/76 e 64/76. O app avisa quando o Gargantua instalado não é o publicado.
+  * Pouca confiança: numa pergunta de fato, o app mede a confiança da resposta (logprobs) e,
+    com a pesquisa ligada, confere pela busca; sem ela, avisa embaixo da resposta.
+  * opentars --prova (48 tarefas, relatório JSON) e opentars --diagnostico nos três sistemas.
+  * Já publicados nas revisões de 21/10: Mais modelos, Gerenciar modelos e imagem local no chat.
+
+ -- openTARS <projectopentars@gmail.com>  Sat, 24 Oct 2026 20:20:00 -0300
+
 opentars (5.1) unstable; urgency=medium
 
   5.1 Tesseract

@@ -134,20 +134,21 @@ def aplicar(imagem, operacoes):
     return imagem
 
 
-def nome_da_copia(caminho, operacoes):
-    """IMG_2041.jpg -> IMG_2041-editada.jpg (ou -editada-2...), com a extensão do formato pedido. Nunca um que exista."""
+def nome_da_copia(caminho, operacoes, sufixo="editada"):
+    """IMG_2041.jpg -> IMG_2041-editada.jpg (ou -editada-2...; "edited" em inglês), com a extensão do formato pedido.
+    Nunca um que exista."""
     caminho = Path(caminho)
     formato = next((op[1] for op in operacoes if op[0] == "formato"), None)
     ext = FORMATOS[formato][1] if formato else caminho.suffix
-    destino, n = caminho.with_name(f"{caminho.stem}-editada{ext}"), 2
+    destino, n = caminho.with_name(f"{caminho.stem}-{sufixo}{ext}"), 2
     while destino.exists():
-        destino, n = caminho.with_name(f"{caminho.stem}-editada-{n}{ext}"), n + 1
+        destino, n = caminho.with_name(f"{caminho.stem}-{sufixo}-{n}{ext}"), n + 1
     return destino
 
 
-def salvar_copia(caminho, operacoes):
+def salvar_copia(caminho, operacoes, sufixo="editada"):
     """Aplica e salva a cópia ao lado da original. Devolve o caminho da cópia. A original não é tocada."""
-    destino = nome_da_copia(caminho, operacoes)
+    destino = nome_da_copia(caminho, operacoes, sufixo)
     with Image.open(caminho) as original:
         resultado = aplicar(original, operacoes)
     formato = Image.registered_extensions().get(destino.suffix.lower(), "PNG")

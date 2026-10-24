@@ -160,7 +160,7 @@ if SESSAO_GRAFICA == "wayland" and os.environ.get("TARS_YDOTOOL", "1") not in ("
 # CONFIGURAÇÃO
 # ============================================================
 
-VERSAO = "5.1"
+VERSAO = "5.2"
 # 3.0 Miller: o classificador Murph e o modo AUTO.
 # 4.0 Endurance: o Gargantua (IA oficial); Endurance Neo: aviso de versão nova, tarefas longas.
 # 4.5 Endurance: o Cooper (visão da tela), WSL e Linux sem interface gráfica.
@@ -169,11 +169,13 @@ VERSAO = "5.1"
 # 5.0 Tesseract: janela nova em Qt (PySide6), igual ao mockup; começa pelo assistente de primeiro uso.
 # 5.1 Tesseract: modos Lite/Base/Pro, Probes, terminal no nível das CLIs de IA, Gargantua Lite no setup, nuvem pela
 #     conta do Ollama e pesquisa web pelo SearXNG.
-CODINOME = "Tesseract"
+# 5.2 Ranger: Windows, macOS e outros Linux; o assistente do sistema (lançador, ações de texto, arquivos e fotos);
+#     Gargantua 2 retreinado com os dados da 5.2.
+CODINOME = "Ranger"
 VERSAO_EXIBIDA = f"{VERSAO} {CODINOME}"
 # Endurance Neo: sobe a cada pacote publicado (AAAAMMDDNN). O aviso de versão
 # nova compara com a REVISAO do tars.py do GitHub (tars_atualizacao.py).
-REVISAO = 2026102103
+REVISAO = 2026102401
 
 # Endereço do servidor Ollama — respeita a variável de ambiente padrão
 # do próprio Ollama (OLLAMA_HOST), pra funcionar sem editar o código

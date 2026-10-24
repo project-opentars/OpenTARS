@@ -104,6 +104,8 @@ def esperar(cond, segundos=15, o_que=""):
         if cond():
             return
         QTest.qWait(20)
+    import faulthandler
+    faulthandler.dump_traceback(all_threads=True)     # onde cada thread parou (no CI do Windows e do macOS, a única pista)
     raise AssertionError(f"tempo esgotado: {o_que}")
 
 
@@ -286,7 +288,7 @@ pn.chave.setText("SEGREDO-123")
 pn._salvar()
 d = pu.carregar_nuvem()
 assert d["ativa"] and d["provedor"] == "groq" and d["chave"] == "SEGREDO-123"
-assert stat.S_IMODE(os.stat(pu.arquivo_nuvem()).st_mode) == 0o600
+assert os.name == "nt" or stat.S_IMODE(os.stat(pu.arquivo_nuvem()).st_mode) == 0o600
 assert pn.chave.text() == "" and not any("SEGREDO" in x for x in textos(pn))
 j.abrir_config("nuvem")
 assert "SEGREDO" not in pn.chave.placeholderText()

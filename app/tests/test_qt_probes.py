@@ -11,7 +11,7 @@ from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 CASA = tempfile.mkdtemp(prefix="opentars-probes-qt-")
-os.environ["HOME"] = CASA
+os.environ["HOME"] = os.environ["USERPROFILE"] = CASA     # no Windows o ~ vem do USERPROFILE
 os.environ["XDG_CONFIG_HOME"] = os.path.join(CASA, ".config")
 os.environ["TARS_ARQUIVO_SESSOES"] = os.path.join(CASA, "sessoes.json")
 os.environ["TARS_ARQUIVO_PRIMEIRO_USO"] = os.path.join(CASA, "primeiro_uso.json")

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Imagem que o modelo manda no Markdown (`![](caminho)`): só arquivo local vira figura; o resto nunca é carregado."""
 import os, sys, tempfile
+from pathlib import Path
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 try:
@@ -33,7 +34,7 @@ print("OK: só arquivo local de imagem existente passa")
 # 2. partir em blocos
 p = conversa.partir_em_blocos(f"Olha:\n![minha foto]({pequena})\nE pronto.")
 assert [x[0] for x in p] == ["texto", "imagem", "texto"], p
-assert str(p[1][1]) == pequena and p[1][2] == "minha foto"
+assert p[1][1] == Path(pequena).resolve() and p[1][2] == "minha foto"
 p = conversa.partir_em_blocos(f"```\n![nao]({pequena})\n```\n![a]({pequena}) e ![b]({grande} \"título\")")
 assert [x[0] for x in p] == ["codigo", "imagem", "texto", "imagem"], [x[0] for x in p]
 assert "![nao]" in p[0][1], "dentro de cerca de código não vira figura"

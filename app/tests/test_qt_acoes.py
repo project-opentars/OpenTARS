@@ -70,6 +70,7 @@ print("OK: traduzir escolhe o sentido pelo idioma do trecho")
 servidor.resposta = "Em até 30 dias."
 painel.escolher_aba("perguntar")
 assert not painel.botao_substituir.isVisible() and painel.linha_pergunta.isVisible()
+QTest.qWait(500)       # numa máquina lenta (o macOS do CI) pedidos anteriores ainda chegam: espera parar
 antes = len(servidor.pedidos)
 painel.rodar()
 QTest.qWait(200)
@@ -126,7 +127,8 @@ assert ultimo_chat()["keep_alive"] == -1
 assistente.ligar(False, url, PRINCIPAL)
 assert [c for m, p, c in servidor.pedidos if p == "/api/generate"][-1]["keep_alive"] == 0 and not assistente.ligado()
 assert assistente.iniciar_com_sistema(True) and "--residente" in assistente.comando_residente()
-assert "--residente" in plataforma.arquivo_autostart(assistente.NOME_AUTOSTART).read_text() and assistente.inicia_com_sistema()
+inicio = plataforma.arquivo_autostart(assistente.NOME_AUTOSTART).read_bytes()      # no Windows é um .lnk (UTF-16)
+assert (b"--residente" in inicio or "--residente".encode("utf-16-le") in inicio) and assistente.inicia_com_sistema()
 assert not assistente.iniciar_com_sistema(False) and not assistente.inicia_com_sistema()
 print("OK: assistente ligado mantém o modelo na memória; início com o sistema sobe com --residente")
 servidor.shutdown()

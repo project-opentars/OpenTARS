@@ -28,9 +28,9 @@ PASTA = Path(tempfile.mkdtemp(prefix="opentars-anexos-"))
 # ------------------------------------------------------------
 # 1. Versão
 # ------------------------------------------------------------
-assert tars.VERSAO == "5.1" and tars.CODINOME == "Tesseract" and tars.VERSAO_EXIBIDA == "5.1 Tesseract"
+assert tars.VERSAO == "5.2" and tars.CODINOME == "Ranger" and tars.VERSAO_EXIBIDA == "5.2 Ranger"
 assert tars.REVISAO >= 2026100401
-print("OK: versão 5.1 Tesseract")
+print("OK: versão 5.2 Ranger")
 
 # ------------------------------------------------------------
 # 2. Ambiente: WSL, sem interface, caminhos do Windows
