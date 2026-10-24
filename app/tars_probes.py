@@ -1272,11 +1272,17 @@ def servico(host, instalados_de, parar=None, intervalo=INTERVALO_SERVICO, t=lamb
     caminho = arquivo_pid()
     caminho.parent.mkdir(parents=True, exist_ok=True)
     fd = os.open(str(caminho), os.O_RDWR | os.O_CREAT, 0o600)
-    try:
-        _travar(fd)
-    except OSError:
-        os.close(fd)
-        return 3                               # já há um serviço rodando
+    for tentativa in range(20):
+        try:
+            _travar(fd)
+            break
+        except OSError:
+            # quem só confere (servico_rodando, a página dos Probes) segura a trava por um instante: tenta de novo por até
+            # 1 s antes de concluir que há outro serviço (achado no CI: o serviço saía com 3 sem ninguém rodando)
+            if tentativa == 19:
+                os.close(fd)
+                return 3                       # já há um serviço rodando
+            time.sleep(0.05)
     pid = str(os.getpid()).encode()
     os.lseek(fd, 0, os.SEEK_SET)
     os.write(fd, pid)

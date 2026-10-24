@@ -14,7 +14,7 @@ import tars_probes as tp  # noqa: E402
 parar = {"ja": False}
 fio = threading.Thread(target=lambda: tp.servico("http://127.0.0.1:9", lambda: [], parar=lambda: parar["ja"], intervalo=1))
 fio.start()
-fim = time.time() + 5
+fim = time.time() + 15         # contêiner de CI ocupado demora a subir a thread do serviço
 while time.time() < fim and tp.servico_rodando() is None:
     time.sleep(0.1)
 try:
@@ -25,6 +25,24 @@ finally:
     fio.join(5)
 assert not fio.is_alive() and tp.servico_rodando() is None
 print("OK: o serviço é instância única, o PID fica legível e a trava some quando ele para")
+
+# quem só confere (servico_rodando) segura a trava por um instante: o serviço que sobe nessa hora espera, não desiste
+fd_conferindo = os.open(str(tp.arquivo_pid()), os.O_RDONLY)
+tp._travar(fd_conferindo, exclusiva=False)
+threading.Timer(0.3, lambda: (tp._destravar(fd_conferindo), os.close(fd_conferindo))).start()
+parar2 = {"ja": False}
+codigo = {}
+fio2 = threading.Thread(target=lambda: codigo.update(r=tp.servico("http://127.0.0.1:9", lambda: [], parar=lambda: parar2["ja"],
+                                                                  intervalo=1)))
+fio2.start()
+fim = time.time() + 15
+while time.time() < fim and tp.servico_rodando() is None:
+    time.sleep(0.1)
+assert tp.servico_rodando() == os.getpid() and "r" not in codigo, codigo
+parar2["ja"] = True
+fio2.join(5)
+assert codigo.get("r") == 0, codigo
+print("OK: o serviço que sobe enquanto alguém confere o estado espera a trava, em vez de sair achando que há outro")
 
 comando = tp.comando_do_servico()
 assert comando[-1] == "--probes", comando
