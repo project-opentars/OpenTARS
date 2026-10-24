@@ -116,7 +116,7 @@ fi
 [ -f "$ORIGEM/tars.py" ] || { echo "tars.py not found in $ORIGEM" >&2; exit 1; }
 rm -rf "$APP"
 cp -R "$ORIGEM" "$APP"
-touch "$APP/.instalado-pelo-script"      # o app não oferece o .deb como atualização (tars_atualizacao.py)
+touch "$APP/.instalado-pelo-script"      # a hora da instalação; o app avisa do lançamento seguinte com o comando, não com o .deb
 
 # 3. O ambiente Python, com o Python do sistema (--system-site-packages: o PyGObject e o tkinter vêm da distribuição)
 if ! "$VENV/bin/python3" -c "import sys" >/dev/null 2>&1; then

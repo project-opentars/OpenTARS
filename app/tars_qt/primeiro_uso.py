@@ -12,16 +12,19 @@ import os
 import threading
 from pathlib import Path
 
-from PySide6.QtCore import QObject, Qt, Signal
+from PySide6.QtCore import QObject, Qt, QTimer, Signal
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QApplication, QCheckBox, QFrame, QHBoxLayout, QLineEdit, QMainWindow, QProgressBar, QPushButton,
     QStackedWidget, QVBoxLayout, QWidget, QButtonGroup, QLabel,
 )
 
+import tars_assistente
+import tars_atalho
 import tars_atualizacao
 import tars_i18n
 import tars_modos as modos
+import tars_plataforma as plataforma
 import tars_primeiro_uso as pu
 from tars_i18n import t
 
@@ -30,11 +33,14 @@ from .login_ollama import LoginOllama
 from .tema import CORES, Marcador, aplicar_papel, rotulo
 
 LARGURA = 620          # largura do conteúdo, como no mockup
-TOTAL_PASSOS = len(pu.PASSOS)
+# 5.2 (F3.5): no Windows e no macOS há um passo a mais, com as permissões (Mac) ou o atalho e o início (Windows)
+PASSOS = pu.PASSOS + (("sistema",) if plataforma.sistema() in ("windows", "macos") else ())
+TOTAL_PASSOS = len(PASSOS)
 
 # nome da tela -> índice do passo na barra lateral (a tela da chave é parte do passo da nuvem)
-PASSO_DA_TELA = {"idioma": 0, "modo": 1, "ollama": 2, "nuvem": 3, "chave": 3, "gargantua": 4, "teste": 5,
+PASSO_DA_TELA = {"idioma": 0, "modo": 1, "ollama": 2, "nuvem": 3, "chave": 3, "gargantua": 4, "teste": 5, "sistema": 6,
                  "pronto": TOTAL_PASSOS}
+DEPOIS_DO_TESTE = "sistema" if "sistema" in PASSOS else "pronto"
 
 
 def limitar(filho, largura=LARGURA):
@@ -641,8 +647,8 @@ class PaginaTeste(Pagina):
         self.corpo.addWidget(self.linha)
         self.corpo.addWidget(self.resposta)
         self.b_tentar = botao(t("pu.tentar_de_novo"), "contorno", self.testar)
-        self.b_pular = botao(t("pu.teste.pular"), "contorno", lambda: self.jan.ir("pronto"))
-        self.b_continuar = botao(t("pu.continuar"), "primario", lambda: self.jan.ir("pronto"))
+        self.b_pular = botao(t("pu.teste.pular"), "contorno", lambda: self.jan.ir(DEPOIS_DO_TESTE))
+        self.b_continuar = botao(t("pu.continuar"), "primario", lambda: self.jan.ir(DEPOIS_DO_TESTE))
         self.nav.addWidget(self.b_tentar)
         self.nav.addWidget(self.b_pular)
         self.nav.addStretch(1)
@@ -680,6 +686,85 @@ class PaginaTeste(Pagina):
             self.estado_visual("erro")
 
 
+class LinhaSistema(QFrame):
+    """Um cartão do passo do sistema: título, explicação e, à direita, o estado ou o botão."""
+
+    def __init__(self, titulo, descricao, direita=None):
+        super().__init__()
+        self.setObjectName("cartao")
+        lay = QHBoxLayout(self)
+        lay.setContentsMargins(22, 16, 22, 16)
+        lay.setSpacing(16)
+        coluna = QVBoxLayout()
+        coluna.setSpacing(4)
+        coluna.addWidget(rotulo(titulo, "titulo-cartao", quebra=True))
+        coluna.addWidget(rotulo(descricao, "desc-cartao", quebra=True))
+        lay.addLayout(coluna, 1)
+        if direita is not None:
+            lay.addWidget(direita, 0, Qt.AlignVCenter)
+
+
+class PaginaSistema(Pagina):
+    """5.2 (F3.5): macOS = Acessibilidade e Gravação de Tela, com o estado de cada uma (a lista se atualiza sozinha);
+    Windows = atalho das ações de texto e iniciar com o sistema, e o limite das janelas de administrador."""
+    nome = "sistema"
+
+    def __init__(self, jan):
+        mac = plataforma.sistema() == "macos"
+        super().__init__(jan, t("pu.sist.mac.titulo" if mac else "pu.sist.win.titulo"),
+                         t("pu.sist.mac.texto" if mac else "pu.sist.win.texto"))
+
+    def construir(self):
+        self.pedidos = {}
+        if plataforma.sistema() == "macos":
+            for qual in ("acessibilidade", "tela"):
+                b = botao(t("pu.sist.abrir_ajustes"), "primario", lambda _=False, q=qual: plataforma.pedir_permissao(q))
+                self.pedidos[qual] = b
+                self.corpo.addWidget(LinhaSistema(t(f"pu.sist.{qual}"), t(f"pu.sist.{qual}_desc"), b))
+            self.corpo.addWidget(rotulo(t("pu.sist.mac.nota"), "nota", quebra=True))
+            self.relogio = QTimer(self)
+            self.relogio.timeout.connect(self.atualizar)
+        else:
+            self.b_atalho = botao(t("pu.sist.ligar"), "contorno", self.ligar_atalho)
+            self.b_inicio = botao("", "contorno", self.alternar_inicio)
+            self.corpo.addWidget(LinhaSistema(t("pu.sist.atalho"), t("pu.sist.atalho_desc"), self.b_atalho))
+            self.corpo.addWidget(LinhaSistema(t("pu.sist.inicio"), t("pu.sist.inicio_desc"), self.b_inicio))
+            self.corpo.addWidget(LinhaSistema(t("pu.sist.admin"), t("pu.sist.admin_desc")))
+        self.nav.addStretch(1)
+        self.nav.addWidget(botao(t("pu.continuar"), "primario", lambda: self.jan.ir("pronto")))
+
+    def ao_entrar(self):
+        if plataforma.sistema() == "macos":
+            self.atualizar()
+            self.relogio.start(2000)      # a pessoa concede em Ajustes e volta: a lista acompanha
+        else:
+            self.b_inicio.setText(t("pu.sist.ligado" if tars_assistente.inicia_com_sistema() else "pu.sist.desligado"))
+            if tars_i18n.ler_config().get("atalho_acoes_registrado"):
+                self.b_atalho.setText(t("pu.sist.ligado"))
+
+    def atualizar(self):
+        try:
+            estado = plataforma.permissoes()
+        except Exception:  # noqa: BLE001  (sem o pyobjc: os botões continuam, a pessoa vê nos Ajustes)
+            return
+        for qual, b in self.pedidos.items():
+            b.setText(t("pu.sist.concedida") if estado.get(qual) else t("pu.sist.abrir_ajustes"))
+            b.setEnabled(not estado.get(qual))
+
+    def ligar_atalho(self):
+        ok, _mensagem = tars_atalho.registrar_acoes()
+        self.b_atalho.setText(t("pu.sist.ligado") if ok else t("pu.sist.ligar"))
+
+    def alternar_inicio(self):
+        ligado = tars_assistente.iniciar_com_sistema(not tars_assistente.inicia_com_sistema())
+        self.b_inicio.setText(t("pu.sist.ligado" if ligado else "pu.sist.desligado"))
+
+    def hideEvent(self, evento):
+        if getattr(self, "relogio", None):
+            self.relogio.stop()
+        super().hideEvent(evento)
+
+
 class PaginaPronto(Pagina):
     nome = "pronto"
 
@@ -711,7 +796,8 @@ class PaginaPronto(Pagina):
 class JanelaPrimeiroUso(QMainWindow):
     concluido = Signal()
 
-    ORDEM = (PaginaIdioma, PaginaModo, PaginaOllama, PaginaNuvem, PaginaChave, PaginaGargantua, PaginaTeste, PaginaPronto)
+    ORDEM = (PaginaIdioma, PaginaModo, PaginaOllama, PaginaNuvem, PaginaChave, PaginaGargantua, PaginaTeste) + \
+        ((PaginaSistema,) if "sistema" in PASSOS else ()) + (PaginaPronto,)
 
     def __init__(self):
         super().__init__()
@@ -777,7 +863,7 @@ class JanelaPrimeiroUso(QMainWindow):
         v.addWidget(rotulo(t("pu.slogan"), "slogan", quebra=True))
         v.addSpacing(44)
         self.marcadores, self.nomes_passos = [], []
-        for nome in pu.PASSOS:
+        for nome in PASSOS:
             linha = QHBoxLayout()
             linha.setContentsMargins(0, 10, 0, 10)
             linha.setSpacing(14)

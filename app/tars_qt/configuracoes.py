@@ -20,6 +20,7 @@ import tars_acoes_texto as acoes_lib
 import tars_assistente as assistente
 import tars_atalho
 import tars_atualizacao
+import tars_contexto
 import tars_gerenciar_modelos as gm
 import tars_i18n
 import tars_mais_modelos as mm
@@ -642,6 +643,13 @@ class PAssistente(Pagina):
         v.addWidget(rotulo(t("cfg.assist.sistema_nota"), "nota", quebra=True))
         self.adicionar(s)
 
+        s, v = _secao(t("cfg.assist.ctx_titulo"))
+        self.contexto = QCheckBox(t("cfg.assist.ctx"))
+        self.contexto.toggled.connect(self._sugestoes)
+        v.addWidget(self.contexto)
+        v.addWidget(rotulo(t("ctx.nota_config"), "nota", quebra=True))
+        self.adicionar(s)
+
         s, v = _secao(t("cfg.assist.acoes_titulo"), t("cfg.assist.acoes_sub"))
         self.modelo_acoes = rotulo("", "nota", quebra=True)
         v.addWidget(self.modelo_acoes)
@@ -659,7 +667,8 @@ class PAssistente(Pagina):
 
     def ao_abrir(self):
         modelo = self._modelo()
-        for caixa, valor in ((self.ligado, assistente.ligado()), (self.sistema, assistente.inicia_com_sistema())):
+        for caixa, valor in ((self.ligado, assistente.ligado()), (self.sistema, assistente.inicia_com_sistema()),
+                             (self.contexto, tars_contexto.ligado())):
             caixa.blockSignals(True)
             caixa.setChecked(valor)
             caixa.blockSignals(False)
@@ -694,6 +703,10 @@ class PAssistente(Pagina):
         tars_atalho.remover_acoes()
         self.ao_abrir()
         self.cfg.assistente_mudou.emit()
+
+    def _sugestoes(self, ativo):
+        tars_contexto.ligar(ativo)
+        self.cfg.assistente_mudou.emit()      # a janela principal liga ou desliga a olhada no programa em uso
 
     def _iniciar_com_sistema(self, ativo):
         try:
@@ -2226,7 +2239,8 @@ class PAtualizacoes(Pagina):
             if isinstance(r, Exception) or r is None:
                 self.msg.setText(t("cfg.atual.em_dia"))
             else:
-                self.msg.setText(t("cfg.atual.nova", versao=r["versao"]))
+                self.msg.setText(t("jp.comando_atualizar", comando=r["comando"]) if r.get("comando")
+                                 else t("cfg.atual.nova", versao=r["versao"]))
 
         self.cfg.em_segundo_plano(lambda: tars_atualizacao.procurar_atualizacao(self.cfg.nucleo.VERSAO), pronto)
 

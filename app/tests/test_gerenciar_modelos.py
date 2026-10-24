@@ -137,4 +137,48 @@ servidor2, url2 = fake_ollama.subir(modelos=[])
 pg3 = cfgmod.PGerenciar(Cfg(url2)); pg3.ao_abrir()
 assert pg3.cartoes == {} and ("Add some" in pg3.resumo.text() or "Adicione" in pg3.resumo.text())
 servidor2.shutdown()
+# 5.2 (F9.5): avisar quando o Gargantua instalado não é o publicado (compara a camada de pesos, sem baixar nada)
+import io, json  # noqa: E402,E401
+
+
+class Resposta(io.BytesIO):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+LOCAL = {"ProjectOpenTARS/Gargantua-2:latest": "a" * 64, "ProjectOpenTARS/Gargantua-2:lite": "c" * 64, "qwen3:4b": "d" * 64}
+PUBLICADO = {"latest": "a" * 64, "lite": "b" * 64}
+
+
+def ollama_falso(pedido, timeout=None):
+    if pedido.full_url.endswith("/api/tags"):
+        return Resposta(json.dumps({"models": [{"name": n, "size": 1} for n in LOCAL]}).encode())
+    nome = json.loads(pedido.data)["model"]
+    return Resposta(json.dumps({"modelfile": f"FROM /m/blobs/sha256-{LOCAL[nome]}\nPARAMETER temperature 0.4"}).encode())
+
+
+def registro_falso(pedido, timeout=None):
+    assert "registry.ollama.ai/v2/projectopentars/gargantua-2/manifests/" in pedido.full_url, pedido.full_url
+    tag = pedido.full_url.rsplit("/", 1)[-1]
+    return Resposta(json.dumps({"layers": [{"mediaType": "application/vnd.ollama.image.model", "digest": "sha256:" + PUBLICADO[tag]},
+                                           {"mediaType": "application/vnd.ollama.image.params", "digest": "sha256:" + "e" * 64}]}).encode())
+
+
+antes = os.environ.pop("TARS_SEM_AVISO_VERSAO", None)
+try:
+    assert gm.desatualizados("http://x", ollama_falso, registro_falso) == ["ProjectOpenTARS/Gargantua-2:lite"]
+
+    def sem_internet(pedido, timeout=None):
+        raise OSError("sem rede")
+    assert gm.desatualizados("http://x", ollama_falso, sem_internet) == []
+    os.environ["TARS_SEM_AVISO_VERSAO"] = "1"
+    assert gm.desatualizados("http://x", ollama_falso, registro_falso) == []
+finally:
+    os.environ.pop("TARS_SEM_AVISO_VERSAO", None)
+    if antes is not None:
+        os.environ["TARS_SEM_AVISO_VERSAO"] = antes
+print("OK: só o modelo oficial cuja camada mudou no ollama.com é avisado; sem internet ou com o aviso desligado, nada")
 print("test_gerenciar_modelos: TUDO OK.")

@@ -195,3 +195,16 @@ def _repo3(u):
 r = at.procurar_atualizacao("5.0", obter_json=_repo3, compilado=antes, ultima="")
 assert r["arquivos"]["deb"]["nome"] == "opentars_all.deb" and r["arquivos"]["deb"]["url"].endswith("/HEAD/dist/opentars_all.deb"), r
 print("deb em subpasta: OK")
+
+# 5.2: instalado pelo script (Windows, macOS, outros Linux): o mesmo sinal (o .deb novo no GitHub), comparado com a hora da
+# instalação, e em vez do .deb o comando de instalação, que a pessoa roda de novo
+original_sistema = at.plataforma.sistema
+try:
+    for so, trecho in (("windows", "instalar.ps1 | iex"), ("macos", "macos/instalar.sh | bash")):
+        at.plataforma.sistema = lambda so=so: so
+        r = at.procurar_atualizacao("5.0", obter_json=_repo, compilado=antes, ultima=blob)
+        assert r and r["arquivos"] == {} and r["comando"].endswith(trecho), r
+        assert at.procurar_atualizacao("5.0", obter_json=_repo, compilado=depois) is None, "instalado depois do lançamento"
+finally:
+    at.plataforma.sistema = original_sistema
+print("instalado pelo script: avisa com o comando de instalação, só para lançamento posterior: OK")

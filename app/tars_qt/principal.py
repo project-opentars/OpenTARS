@@ -15,6 +15,8 @@ from PySide6.QtWidgets import (QApplication, QButtonGroup, QFileDialog, QFrame, 
 
 import tars_atalho
 import tars_atualizacao
+import tars_contexto
+import tars_gerenciar_modelos
 import tars_historico
 import tars_i18n
 import tars_acoes_texto as acoes_lib
@@ -342,10 +344,10 @@ class Faixa(QFrame):
         h.addWidget(b)
         self.hide()
 
-    def mostrar(self, texto, botao=None):
+    def mostrar(self, texto, botao=None, destino=None):
         self.texto.setText(texto)
         self.b_abrir.setText(botao or t("rot.titulo"))
-        self.destino = "probes" if botao else "rotinas"
+        self.destino = destino or ("probes" if botao else "rotinas")
         self.show()
 
 
@@ -596,6 +598,13 @@ class JanelaPrincipal(QMainWindow):
         self._timer_atualizacao.timeout.connect(self._procurar_atualizacao)
         self._timer_atualizacao.start(6 * 3600 * 1000)
         self._painel_acoes = None
+        self._painel_arquivos = None
+        self._sugestao = None
+        self._sugeridas = set()                  # janelas que já receberam a sugestão (não repete na mesma janela)
+        self._timer_contexto = QTimer(self)      # 5.2 (F4): olha o programa em uso, só se a pessoa ligou
+        self._timer_contexto.setInterval(4000)
+        self._timer_contexto.timeout.connect(self._olhar_programa)
+        self._ligar_contexto()
         self.barra = BarraRapida()
         self.barra.enviar.connect(self._enviar_da_barra)
         self.barra.parar.connect(self.parar)
@@ -753,10 +762,11 @@ class JanelaPrincipal(QMainWindow):
         self.config.modelos_mudaram.connect(self.ponte.atualizar_modelos)
         self.config.assistente_mudou.connect(self._atualizar_bandeja)
         self.config.assistente_mudou.connect(self._registrar_atalhos_globais)
+        self.config.assistente_mudou.connect(self._ligar_contexto)
         self.config.rodar_rotina.connect(self._rodar_agora)
         self.config.rotinas_mudaram.connect(self._atualizar_bandeja)
         self.faixa.abrir.connect(lambda: self.cabecalho.sino.click() if getattr(self.faixa, "destino", "") == "probes"
-                                 else self.abrir_config("rotinas"))
+                                 else self.abrir_config(getattr(self.faixa, "destino", "") or "rotinas"))
         self.cabecalho.sino.configurar.connect(lambda: self.abrir_config("probes"))
         self.cabecalho.sino.chegou.connect(self._aviso_de_probe)
         v = self.voz
@@ -1382,12 +1392,24 @@ class JanelaPrincipal(QMainWindow):
             if nova:
                 self._nova_versao = nova
                 self.depois(lambda: self.lateral.mostrar_versao(nova["versao"]))
+            # 5.2 (F9.5): o Ollama não atualiza modelo sozinho; o Gargantua novo só chega se a pessoa baixar de novo
+            velhos = tars_gerenciar_modelos.desatualizados(self.nucleo.OLLAMA_HOST)
+            if velhos:
+                nomes = ", ".join(n.split("/")[-1] for n in velhos)
+                self.depois(lambda: self.faixa.mostrar(t("modelo.novo", nomes=nomes), t("cfg.gerenciar.atualizar"), "gerenciar"))
 
         threading.Thread(target=trabalho, daemon=True).start()
 
     def _atualizar_agora(self):
         nova = self._nova_versao
         if not nova:
+            return
+        if nova.get("comando"):        # instalado pelo script (Windows, macOS, outros Linux): o comando vai para a área
+            try:
+                plataforma.escrever_area_de_transferencia(nova["comando"])
+            except OSError:
+                pass
+            self.lateral.estado_atualizacao(t("jp.comando_atualizar", comando=nova["comando"]), t("jp.atualizar"), True)
             return
         self.lateral.estado_atualizacao(t("jp.conferindo"), t("jp.atualizar"), False)
         tipo = "appimage" if os.environ.get("APPIMAGE") and "appimage" in nova["arquivos"] else \
@@ -1431,9 +1453,16 @@ class JanelaPrincipal(QMainWindow):
     def _abrir_acoes(self):
         """5.2: o painel das ações de texto com o que está selecionado agora (lido antes de o painel aparecer)."""
         texto = acoes_lib.ler_selecao()
+        arquivos = [] if texto.strip() else plataforma.arquivos_selecionados()
+        if arquivos:                   # arquivos selecionados no gerenciador: o painel das ações em arquivos (F4)
+            self._abrir_painel_arquivos(arquivos)
+            return
         if not texto.strip():          # nada selecionado: o atalho vira o lançador (a barra rápida pede qualquer coisa)
             self.barra.mostrar()
             return
+        self._abrir_acoes_com(texto)
+
+    def _abrir_acoes_com(self, texto):
         if self._painel_acoes is None:
             n = self.nucleo
             garg = n.MODELO_GARGANTUA.split(":")[0]
@@ -1444,6 +1473,65 @@ class JanelaPrincipal(QMainWindow):
             self._painel_acoes = PainelAcoes(n.OLLAMA_HOST, instalados, garg + ":lite", garg + ":latest")
             self._painel_acoes.substituir.connect(self._colar_resultado)
         self._painel_acoes.abrir(texto)
+
+    # -- 5.2 (F4): sugestão pelo programa em uso ------------------------------------------------------------
+    def _ligar_contexto(self):
+        if tars_contexto.ligado():
+            self._timer_contexto.start()
+        else:
+            self._timer_contexto.stop()
+            if self._sugestao is not None:
+                self._sugestao.hide()
+
+    def _olhar_programa(self):
+        n = self.nucleo
+
+        def trabalho():
+            try:
+                ativa = n.janela_ativa_x()
+                janela = next((j for j in n.listar_janelas_x() or [] if j["id"] == ativa), None)
+            except Exception:  # noqa: BLE001  (sem acesso às janelas agora: tenta na próxima volta)
+                return
+            if not janela or janela["id"] in self._sugeridas or janela.get("pid") in n._pids_protegidos():
+                return
+            sugestao = tars_contexto.sugestao(janela["titulo"], janela["classe"])
+            if sugestao and not tars_contexto.silenciado(tars_contexto.programa(janela["classe"])):
+                self._sugeridas.add(janela["id"])
+                self.depois(lambda: self._mostrar_sugestao(sugestao, tars_contexto.programa(janela["classe"])))
+        threading.Thread(target=trabalho, daemon=True).start()
+
+    def _mostrar_sugestao(self, sugestao, programa):
+        if self._sugestao is None:
+            from .sugestao import CartaoSugestao
+            self._sugestao = CartaoSugestao()
+            self._sugestao.revisar.connect(self._revisar_pela_sugestao)
+            self._sugestao.silenciar.connect(lambda: (tars_contexto.silenciar(self._sugestao.programa), self._sugestao.hide()))
+        self._sugestao.programa = programa
+        self._sugestao.mostrar(sugestao)
+
+    def _revisar_pela_sugestao(self):
+        """Revisar: o texto selecionado no programa vai para as ações de texto (corrigir). Sem seleção, explica."""
+        self._sugestao.hide()
+
+        def depois_de_esconder():
+            texto = acoes_lib.ler_selecao()
+            if texto.strip():
+                self._abrir_acoes_com(texto)
+            else:
+                self._notificar(t("ctx.selecione"))
+        QTimer.singleShot(250, depois_de_esconder)      # o foco volta ao programa de antes de ler a seleção
+
+    def _abrir_painel_arquivos(self, arquivos):
+        if self._painel_arquivos is None:
+            from .arquivos import PainelArquivos
+            n = self.nucleo
+            garg = n.MODELO_GARGANTUA.split(":")[0]
+            try:
+                instalados = n.listar_modelos_instalados()
+            except Exception:  # noqa: BLE001  (Ollama fora: renomear e resumir mostram o nome de hoje / o erro)
+                instalados = []
+            self._painel_arquivos = PainelArquivos(n.OLLAMA_HOST, instalados, garg + ":lite", garg + ":latest")
+        self._painel_arquivos.abrir(arquivos)
 
     def _colar_resultado(self, texto):
         """Depois que o painel some, o foco volta ao programa de antes: cola lá (numa thread, para não travar a janela)."""

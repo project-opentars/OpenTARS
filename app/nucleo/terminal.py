@@ -573,6 +573,10 @@ def main():
         import tars_prova
         sys.exit(tars_prova.executar(sys.modules[__name__], argumentos))
 
+    if any(a in ("--desinstalar", "--uninstall") for a in argumentos):
+        import tars_desinstalar
+        sys.exit(tars_desinstalar.executar(OLLAMA_HOST, t))
+
     if any(a in ("--diagnostico", "--autoteste") for a in argumentos):
         import tars_autoteste
         completo = "--autoteste" in argumentos

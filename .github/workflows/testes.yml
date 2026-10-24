@@ -52,6 +52,15 @@ jobs:
           python tests/test_acessibilidade_outros_sistemas.py
       - name: Serviço dos Probes (trava e comando)
         run: python tests/test_probes_servico.py
+      - name: Assistente (F4 e F3.5) e aviso de modelo novo
+        run: |
+          python tests/test_busca_arquivos.py
+          python tests/test_acoes_arquivos.py
+          python tests/test_contexto.py
+          python tests/test_qt_lancador.py
+          python tests/test_qt_arquivos.py
+          python tests/test_qt_primeiro_uso_sistema.py
+          python tests/test_gerenciar_modelos.py
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
 

@@ -28,6 +28,8 @@ Interface (devolvem o resultado ou levantam `NaoSuportado`/`OSError`):
     area_util()                             fora do Linux (no Linux o núcleo fala com o X direto: nucleo/janelas.py)
     programas()                             [{nome, outros_nomes, comando, id}] fora do Linux (no Linux: os .desktop)
     recursos()                              {função: existe neste sistema?} (para o diagnóstico)
+    arquivos_selecionados()                 os arquivos do gerenciador de arquivos no momento do atalho (ações em arquivos)
+    permissoes(), pedir_permissao(qual)     só no macOS: {"acessibilidade", "tela"} concedidas?; pedir abre os Ajustes
     lancador(nome)                          o comando instalado (opentars, opentars-gui), no PATH ou em ~/.local/bin
     comando_instalar(*pacotes)              "sudo dnf install ..." com os nomes desta distribuição (só no Linux)
     dica_instalar(texto)                    troca "sudo apt install x" num texto pelo comando desta distribuição
@@ -82,6 +84,20 @@ def pastas():
 
 def abrir(alvo):
     return _backend().abrir(alvo)
+
+
+def arquivos_selecionados():
+    """Os arquivos selecionados no gerenciador de arquivos quando o atalho foi apertado (Windows e macOS: da cópia simulada
+    do ler_selecao; Linux: os que a pessoa copiou com Ctrl+C). [] se não eram arquivos."""
+    return _backend().arquivos_selecionados()
+
+
+def permissoes():
+    return _backend().permissoes() if sistema() == "macos" else {}
+
+
+def pedir_permissao(qual):
+    return _backend().pedir_permissao(qual)
 
 
 def lancador(nome):

@@ -63,6 +63,8 @@ try {
     if (-not (Test-Path (Join-Path $origem "tars.py"))) { throw "tars.py not found in $origem" }
     if (Test-Path $App) { Remove-Item -Recurse -Force $App }
     Copy-Item -Recurse -Force $origem $App
+    # a hora da instalação: o app compara com a do lançamento seguinte para avisar (tars_atualizacao.py)
+    New-Item -ItemType File -Force -Path (Join-Path $App ".instalado-pelo-script") | Out-Null
 } finally {
     Remove-Item -Recurse -Force $temp -ErrorAction SilentlyContinue
 }

@@ -89,6 +89,25 @@ def escrever_area_de_transferencia(texto):
     raise OSError(f"não consegui escrever na área de transferência: {erro}")
 
 
+def arquivos_selecionados():
+    """No Linux não há cópia simulada (Ctrl+C num terminal mata o programa): valem os arquivos que a pessoa copiou no
+    gerenciador de arquivos (text/uri-list na área de transferência). Só os que existem; [] se não houver."""
+    from urllib.parse import unquote, urlparse
+    comandos = [["xclip", "-selection", "clipboard", "-t", "text/uri-list", "-o"]]
+    if _wayland():
+        comandos.insert(0, ["wl-paste", "--no-newline", "--type", "text/uri-list"])
+    for comando in [c for c in comandos if shutil.which(c[0])]:
+        try:
+            r = subprocess.run(comando, capture_output=True, text=True, timeout=TIMEOUT)
+        except (OSError, subprocess.SubprocessError):
+            continue
+        if r.returncode == 0:
+            caminhos = [unquote(urlparse(linha.strip()).path) for linha in r.stdout.splitlines()
+                        if linha.strip().startswith("file://")]
+            return [c for c in caminhos if os.path.exists(c)]
+    return []
+
+
 def ler_selecao():
     """A seleção PRIMARY: o texto marcado agora, sem tecla simulada (campo de senha não entra nela)."""
     comandos = [["xclip", "-selection", "primary", "-o"], ["xsel", "--primary", "--output"]]

@@ -55,6 +55,7 @@ fi
 [ -f "$ORIGEM/tars.py" ] || { echo "tars.py not found in $ORIGEM" >&2; exit 1; }
 rm -rf "$APP_CODIGO"
 cp -R "$ORIGEM" "$APP_CODIGO"
+touch "$APP_CODIGO/.instalado-pelo-script"      # a hora da instalação: o app avisa do lançamento seguinte (tars_atualizacao.py)
 
 # 2. O Python (pelo uv) e as dependências
 UV="$(command -v uv || true)"

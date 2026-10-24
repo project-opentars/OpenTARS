@@ -56,8 +56,25 @@ def _esperar_soltar_teclas(limite=1.0):
         time.sleep(0.02)
 
 
+_ARQUIVOS = []      # os arquivos da última cópia simulada (Finder), lidos antes de devolver a área de transferência
+
+
+def _arquivos_na_area():
+    from AppKit import NSPasteboard, NSPasteboardURLReadingFileURLsOnlyKey, NSURL
+    urls = NSPasteboard.generalPasteboard().readObjectsForClasses_options_(
+        [NSURL], {NSPasteboardURLReadingFileURLsOnlyKey: True}) or []
+    return [str(u.path()) for u in urls]
+
+
+def arquivos_selecionados():
+    lista = list(_ARQUIVOS)
+    _ARQUIVOS.clear()
+    return lista
+
+
 def ler_selecao():
-    """Cmd+C simulado e a área de transferência devolvida. shortcut: só texto volta (imagem copiada antes se perde)."""
+    """Cmd+C simulado e a área de transferência devolvida. shortcut: só texto volta (imagem copiada antes se perde).
+    Se o que estava selecionado eram arquivos (Finder, que também põe os nomes como texto), eles ficam em _ARQUIVOS."""
     _esperar_soltar_teclas()
     try:
         antes = ler_area_de_transferencia()
@@ -70,7 +87,8 @@ def ler_selecao():
         time.sleep(0.03)
     if _mudancas() == numero:
         return ""                 # nada copiado: não havia seleção, era campo de senha ou falta a permissão
-    texto = ler_area_de_transferencia()
+    _ARQUIVOS[:] = _arquivos_na_area()
+    texto = "" if _ARQUIVOS else ler_area_de_transferencia()
     if antes is not None:
         escrever_area_de_transferencia(antes)
     return texto
@@ -110,6 +128,32 @@ def autostart(nome, titulo, comando, ligado):
     arquivo.write_bytes(plistlib.dumps({"Label": nome, "ProgramArguments": [str(c) for c in comando], "RunAtLoad": True,
                                         "WorkingDirectory": str(APP), "ProcessType": "Interactive"}))
     return arquivo.exists()
+
+
+# ------------------------------------------------------------
+# Permissões (F3.5): Acessibilidade (clicar, digitar, colar, ler a seleção) e Gravação de Tela (ver a tela). O atalho pelo
+# Carbon não pede Monitoramento de Entrada, e o microfone o próprio macOS pede quando a voz liga.
+# ------------------------------------------------------------
+AJUSTES = {"acessibilidade": "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility",
+           "tela": "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"}
+
+
+def permissoes():
+    """{"acessibilidade": concedida?, "tela": concedida?}"""
+    import ApplicationServices as AX
+    import Quartz
+    return {"acessibilidade": bool(AX.AXIsProcessTrusted()), "tela": bool(Quartz.CGPreflightScreenCaptureAccess())}
+
+
+def pedir_permissao(qual):
+    """Põe o openTARS na lista do macOS (sem isso ele nem aparece em Ajustes) e abre a página certa dos Ajustes."""
+    if qual == "acessibilidade":
+        import ApplicationServices as AX
+        AX.AXIsProcessTrustedWithOptions({AX.kAXTrustedCheckOptionPrompt: True})
+    else:
+        import Quartz
+        Quartz.CGRequestScreenCaptureAccess()
+    abrir(AJUSTES[qual])
 
 
 # ------------------------------------------------------------

@@ -104,9 +104,39 @@ def _esperar_soltar_teclas(user32, limite=1.0):
         time.sleep(0.02)
 
 
+_ARQUIVOS = []      # os arquivos da última cópia simulada (Explorer), lidos antes de devolver a área de transferência
+
+
+def _arquivos_na_area(user32):
+    """Os caminhos que o Explorer pôs na área de transferência (CF_HDROP), ou []."""
+    from ctypes import wintypes
+    shell32 = ctypes.WinDLL("shell32")
+    shell32.DragQueryFileW.argtypes = [wintypes.HANDLE, wintypes.UINT, wintypes.LPWSTR, wintypes.UINT]
+    shell32.DragQueryFileW.restype = wintypes.UINT
+    if not user32.IsClipboardFormatAvailable(15) or not user32.OpenClipboard(None):     # 15 = CF_HDROP
+        return []
+    try:
+        lista = user32.GetClipboardData(15)
+        saida = []
+        for i in range(shell32.DragQueryFileW(lista, 0xFFFFFFFF, None, 0) if lista else 0):
+            tamanho = shell32.DragQueryFileW(lista, i, None, 0) + 1
+            nome = ctypes.create_unicode_buffer(tamanho)
+            shell32.DragQueryFileW(lista, i, nome, tamanho)
+            saida.append(nome.value)
+        return saida
+    finally:
+        user32.CloseClipboard()
+
+
+def arquivos_selecionados():
+    lista = list(_ARQUIVOS)
+    _ARQUIVOS.clear()
+    return lista
+
+
 def ler_selecao():
     """shortcut: só texto volta para a área de transferência (imagem copiada antes se perde); trocar por salvar todos os
-    formatos se alguém reclamar."""
+    formatos se alguém reclamar. Se o que estava selecionado eram arquivos (Explorer), eles ficam em _ARQUIVOS."""
     user32, _kernel32 = _dlls()
     if _classe_da_janela_ativa(user32) in CONSOLES:
         return ""
@@ -124,7 +154,8 @@ def ler_selecao():
     if user32.GetClipboardSequenceNumber() == numero:
         return ""                # nada copiado: não havia seleção (ou era campo de senha, que não deixa copiar)
     time.sleep(0.03)
-    texto = ler_area_de_transferencia()
+    _ARQUIVOS[:] = _arquivos_na_area(user32)
+    texto = "" if _ARQUIVOS else ler_area_de_transferencia()
     if antes is not None:
         escrever_area_de_transferencia(antes)
     return texto

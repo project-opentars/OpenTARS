@@ -1,9 +1,17 @@
 """A barra rápida (atalho global ou `opentars-gui --rapido`): uma caixa flutuante no alto da tela.
-Pergunta, vê a resposta, some. Quem trabalha é a janela principal; a barra só espelha a conversa."""
+Pergunta, vê a resposta, some. Quem trabalha é a janela principal; a barra só espelha a conversa.
+
+5.2 (F4): é também o lançador do assistente: vazia, mostra as capacidades do mock-up (tarefa, tela, buscar arquivo,
+web, lembrete). "Buscar um arquivo" roda aqui mesmo, sem modelo (tars_busca_arquivos); as outras preenchem o pedido."""
+import datetime
+import threading
+from pathlib import Path
 
 from PySide6.QtCore import QPoint, Qt, QTimer, Signal
-from PySide6.QtWidgets import QApplication, QFrame, QHBoxLayout, QLabel, QPushButton, QTextBrowser, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QFrame, QHBoxLayout, QLabel, QPushButton, QTextBrowser, QVBoxLayout, QWidget
 
+import tars_busca_arquivos as busca
+import tars_plataforma as plataforma
 from tars_i18n import t
 
 from . import tema
@@ -14,10 +22,14 @@ LARGURA = 680
 ALTURA_MAXIMA_RESPOSTA = 340
 
 
+CAPACIDADES = ("tarefa", "tela", "arquivo", "web", "lembrete")
+
+
 class BarraRapida(QFrame):
     enviar = Signal(str)
     parar = Signal()
     abrir_janela = Signal()
+    arquivos_achados = Signal(object)
 
     def __init__(self):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint)
@@ -38,13 +50,41 @@ class BarraRapida(QFrame):
         self.entrada = CaixaEntrada()
         self.entrada.setPlaceholderText(t("rapido.dica"))
         self.entrada.enviar.connect(self._enviar)
+        self.entrada.textChanged.connect(self._ao_digitar)
         topo.addWidget(self.entrada, 1)
         v.addLayout(topo)
+
+        self.capacidades = QWidget()
+        lista = QVBoxLayout(self.capacidades)
+        lista.setContentsMargins(0, 2, 0, 2)
+        lista.setSpacing(2)
+        for cap in CAPACIDADES:
+            b = QPushButton()          # um botão de verdade (Tab e Enter chegam nele), com título e explicação dentro
+            b.setAccessibleName(t(f"rapido.cap.{cap}"))
+            b.setCursor(Qt.PointingHandCursor)
+            b.setMinimumHeight(52)
+            b.setStyleSheet(f"QPushButton {{ border: 0; border-radius: 10px; background: transparent; }} "
+                            f"QPushButton:hover, QPushButton:focus {{ background: {CORES['destaque']}; }}")
+            dentro = QVBoxLayout(b)
+            dentro.setContentsMargins(12, 6, 12, 6)
+            dentro.setSpacing(1)
+            for texto, estilo in ((t(f"rapido.cap.{cap}"), f"font-size: 14px; font-weight: 600; color: {CORES['texto']};"),
+                                  (t(f"rapido.cap.{cap}_desc"), f"font-size: 12px; color: {CORES['apoio']};")):
+                rot = QLabel(texto)
+                rot.setStyleSheet(estilo + " background: transparent;")
+                rot.setAttribute(Qt.WA_TransparentForMouseEvents)
+                dentro.addWidget(rot)
+            b.clicked.connect(lambda _=False, c=cap: self._escolher(c))
+            lista.addWidget(b)
+        v.addWidget(self.capacidades)
+        self.modo = "pedido"
+        self.achados = []
+        self.arquivos_achados.connect(self._mostrar_arquivos)
 
         self.resposta = QTextBrowser()
         self.resposta.setOpenLinks(False)
         self.resposta.setOpenExternalLinks(False)
-        self.resposta.anchorClicked.connect(lambda u: abrir_link_seguro(u.toString()))
+        self.resposta.anchorClicked.connect(self._link)
         self.resposta.setFrameShape(QFrame.NoFrame)
         self.resposta.setStyleSheet("background: transparent; border: 0; font-size: 14px;")
         self.resposta.hide()
@@ -84,6 +124,9 @@ class BarraRapida(QFrame):
             self._texto = ""
             self.resposta.hide()
             self.resposta.clear()
+            self.modo = "pedido"
+            self.entrada.setPlaceholderText(t("rapido.dica"))
+            self.capacidades.setVisible(not self.entrada.toPlainText().strip())
             tela = QApplication.primaryScreen().availableGeometry() if QApplication.primaryScreen() else None
             if tela is not None:
                 self.adjustSize()
@@ -96,9 +139,65 @@ class BarraRapida(QFrame):
     def esconder(self):
         self.hide()
 
+    # -- lançador (5.2, F4) --------------------------------------------------------------------------
+    def _ao_digitar(self):
+        if self.entrada.toPlainText().strip() or self.resposta.isVisibleTo(self):
+            self.capacidades.hide()
+
+    def _escolher(self, cap):
+        self.capacidades.hide()
+        if cap == "arquivo":
+            self.modo = "arquivo"
+            self.entrada.setPlaceholderText(t("busca.dica"))
+        elif cap != "tarefa":
+            self.entrada.setPlainText(t(f"rapido.pref.{cap}"))
+            self.entrada.moveCursor(self.entrada.textCursor().End)
+        self.entrada.setFocus()
+        self.adjustSize()
+
+    def _buscar_arquivos(self, frase):
+        self.status.setText(t("busca.procurando"))
+        self._texto = f"**{frase}**\n\n*{t('busca.procurando')}*"
+        self.resposta.show()
+        self._desenhar()
+        threading.Thread(target=lambda: self.arquivos_achados.emit(busca.buscar(frase)), daemon=True).start()
+
+    def _mostrar_arquivos(self, achados):
+        self.achados = achados
+        self.status.setText(t("rapido.ajuda"))
+        if not achados:
+            self._texto = t("busca.nada")
+        else:
+            casa = str(Path.home())
+            linhas = [t("busca.achados", n=len(achados)), ""]
+            for i, a in enumerate(achados):        # no markdown do Qt, _texto_ sai sublinhado como link: itálico com *
+                pasta = a["pasta"].replace(casa, "~", 1)
+                data = datetime.date.fromtimestamp(a["modificado"]).strftime("%d/%m/%Y")
+                detalhe = f"{pasta} · {data}" + (f" · {t('busca.sem_texto')}" if a["sem_texto"] else "")
+                linhas += [f"**{a['nome']}** · [{t('busca.abrir')}](opentars-abrir:{i}) · "
+                           f"[{t('busca.pasta')}](opentars-pasta:{i})  ", detalhe + ("  " if a["trecho"] else "")] + \
+                          ([f"*{a['trecho']}*"] if a["trecho"] else []) + ["", "&nbsp;", ""]      # o markdown do Qt não dá margem
+            linhas.append(f"*{t('busca.nota')}*")
+            self._texto = "\n".join(linhas)
+        self._desenhar()
+
+    def _link(self, url):
+        """Os links dos resultados da busca abrem só o que a busca achou (pelo número); o resto vai pelo caminho seguro."""
+        texto = url.toString()
+        esquema, _, numero = texto.partition(":")
+        if esquema in ("opentars-abrir", "opentars-pasta") and numero.isdigit() and int(numero) < len(self.achados):
+            achado = self.achados[int(numero)]
+            plataforma.abrir(achado["caminho"] if esquema == "opentars-abrir" else achado["pasta"])
+            return
+        abrir_link_seguro(texto)
+
     def _enviar(self):
         texto = self.entrada.toPlainText().strip()
         if not texto or self._ocupado:
+            return
+        if self.modo == "arquivo":
+            self.entrada.clear()
+            self._buscar_arquivos(texto)
             return
         self.entrada.clear()
         self.perguntas += 1

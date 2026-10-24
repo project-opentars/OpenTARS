@@ -41,11 +41,21 @@ def _buscar(timeout=5):
 
 
 def _desligado():
-    """TARS_SEM_AVISO_VERSAO desliga. Fora do Linux também: aqui se atualiza o .deb; no Windows, no macOS e no Linux
-    instalado pelo script (Fedora, Arch, openSUSE: deixa a marca .instalado-pelo-script) atualizar é rodar o instalador de
-    novo (5.2)."""
-    return (os.environ.get("TARS_SEM_AVISO_VERSAO", "0") not in ("0", "", "off", "no", "nao")
-            or plataforma.sistema() != "linux" or (Path(__file__).resolve().parent / ".instalado-pelo-script").exists())
+    """TARS_SEM_AVISO_VERSAO desliga."""
+    return os.environ.get("TARS_SEM_AVISO_VERSAO", "0") not in ("0", "", "off", "no", "nao")
+
+
+# 5.2: no Windows, no macOS e no Linux instalado pelo script (Fedora, Arch, openSUSE) não há .deb para trocar: atualizar é
+# rodar o comando de instalação de novo. O sinal de versão nova é o mesmo (o .deb novo no GitHub, publicado junto com os
+# scripts), comparado com a hora da instalação, que os instaladores marcam com este arquivo.
+MARCA_SCRIPT = Path(__file__).resolve().parent / ".instalado-pelo-script"
+_RAW = "https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento"
+COMANDO_REINSTALAR = {"windows": f"irm {_RAW}/windows/instalar.ps1 | iex", "macos": f"curl -fsSL {_RAW}/macos/instalar.sh | bash",
+                      "linux": f"curl -fsSL {_RAW}/linux/instalar.sh | bash"}
+
+
+def pelo_script():
+    return plataforma.sistema() != "linux" or MARCA_SCRIPT.exists()
 
 
 def versao_publicada(agora=None, buscar=None, cache=None):
@@ -248,6 +258,11 @@ def procurar_atualizacao(versao_local, obter_json=None, obter_texto=None, extras
     """Primeiro o upload direto no repositório; se não houver, a Release do GitHub. TARS_SEM_AVISO_VERSAO desliga os dois."""
     if _desligado():
         return None
+    if pelo_script():
+        if compilado is None:
+            compilado = MARCA_SCRIPT.stat().st_mtime if MARCA_SCRIPT.exists() else compilado_em()
+        achou = procurar_no_repositorio(obter_json, extras, compilado, "")
+        return dict(achou, arquivos={}, comando=COMANDO_REINSTALAR[plataforma.sistema()]) if achou else None
     achou = procurar_no_repositorio(obter_json, extras, compilado, ultima)
     return achou or procurar_em_release(versao_local, obter_json, obter_texto, extras, compilado, ultima)
 
