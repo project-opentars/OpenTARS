@@ -602,11 +602,17 @@ class JanelaPrincipal(QMainWindow):
         self.barra.abrir_janela.connect(lambda: self.trazer_para_frente("mostrar"))
         self._criar_bandeja()
         self._atalhos = None
-        if plataforma.sistema() == "windows":      # no Windows o atalho global é escutado pela própria janela
+        if plataforma.sistema() == "windows":      # no Windows e no macOS o atalho global é escutado pela própria janela
             from .atalhos_windows import AtalhosWindows
             self._atalhos = AtalhosWindows(self.trazer_para_frente)
             QApplication.instance().installNativeEventFilter(self._atalhos)
-            self._registrar_atalhos_windows()
+        elif plataforma.sistema() == "macos":
+            from .atalhos_macos import AtalhosMac
+            try:
+                self._atalhos = AtalhosMac(self.trazer_para_frente)
+            except OSError:          # sem o Carbon (não deveria acontecer): fica sem atalho, a janela abre igual
+                self._atalhos = None
+        self._registrar_atalhos_globais()
         if assistente.ligado():      # 5.2: o modelo das ações de texto volta para a memória quando o openTARS abre
             host, modelo = self.nucleo.OLLAMA_HOST, self._modelo_das_acoes()
             threading.Thread(target=lambda: _sem_erro(assistente.manter_carregado, host, modelo, True), daemon=True).start()
@@ -746,7 +752,7 @@ class JanelaPrincipal(QMainWindow):
         self.config.mudou_mascote.connect(self.mascote.mostrar_de_novo)
         self.config.modelos_mudaram.connect(self.ponte.atualizar_modelos)
         self.config.assistente_mudou.connect(self._atualizar_bandeja)
-        self.config.assistente_mudou.connect(self._registrar_atalhos_windows)
+        self.config.assistente_mudou.connect(self._registrar_atalhos_globais)
         self.config.rodar_rotina.connect(self._rodar_agora)
         self.config.rotinas_mudaram.connect(self._atualizar_bandeja)
         self.faixa.abrir.connect(lambda: self.cabecalho.sino.click() if getattr(self.faixa, "destino", "") == "probes"
@@ -1324,7 +1330,7 @@ class JanelaPrincipal(QMainWindow):
             instalados = []
         return acoes_lib.escolher_modelo(instalados, garg + ":lite", garg + ":latest")
 
-    def _registrar_atalhos_windows(self):
+    def _registrar_atalhos_globais(self):
         if self._atalhos is None:
             return
         self._atalhos.limpar()

@@ -9,6 +9,9 @@
 - transcrever: faster-whisper (roda na CPU, int8);
 - falar: Piper (voz neural local) + o tocador que houver (pw-play,
   paplay, aplay).
+- 5.2: no Windows e no macOS o microfone é o sounddevice (este arquivo com
+  --gravar, cru como o arecord) e o tocador é o do sistema (winsound com
+  --tocar no Windows, afplay no macOS).
 
 Tudo 100% local. As dependências (faster-whisper, piper-tts) e os modelos
 (~470 MB de bibliotecas, ~220 MB dos modelos do Whisper e ~60 MB por voz) só são baixados quando a pessoa
@@ -262,7 +265,9 @@ TOCADORES = (
     ("pw-play", ["pw-play"]),
     ("paplay", ["paplay"]),
     ("aplay", ["aplay", "-q"]),
+    ("afplay", ["afplay"]),          # macOS
 )
+_AJUDANTE = [sys.executable, str(Path(__file__).resolve())]     # este arquivo como programa (--gravar, --tocar)
 
 
 def _primeiro(programas, existe=shutil.which):
@@ -272,11 +277,20 @@ def _primeiro(programas, existe=shutil.which):
     return None
 
 
+def _gravadores(existe=shutil.which):
+    """Os gravadores que existem aqui, na ordem de preferência."""
+    if plataforma.sistema() != "linux":
+        return [_AJUDANTE + ["--gravar"]] if _tem_modulo("sounddevice") else []
+    return [list(c) for p, c in GRAVADORES if existe(p)]
+
+
 def comando_gravar(existe=shutil.which):
-    return _primeiro(GRAVADORES, existe)
+    return next(iter(_gravadores(existe)), None)
 
 
 def comando_tocar(existe=shutil.which):
+    if plataforma.sistema() == "windows":
+        return _AJUDANTE + ["--tocar"]
     return _primeiro(TOCADORES, existe)
 
 
@@ -297,6 +311,10 @@ def o_que_falta(idioma="en", existe=shutil.which, tem_modulo=_tem_modulo):
         falta.append("kokoro-onnx")
     if not kokoro_baixado():
         falta.append("voz")
+    if plataforma.sistema() != "linux":
+        if not tem_modulo("sounddevice"):
+            falta.append("sounddevice")       # o microfone; o tocador é do sistema (winsound, afplay)
+        return falta
     if not comando_gravar(existe):
         falta.append("gravador")
     if not comando_tocar(existe):
@@ -331,8 +349,9 @@ def instalar(idioma, avisar=print):
     """Instala as bibliotecas no Python do openTARS, baixa o Kokoro e os
     modelos do Whisper. Devolve (ok, mensagem)."""
     falta = o_que_falta(idioma)
-    if "faster-whisper" in falta or "kokoro-onnx" in falta:
-        ok, erro = _pip(PACOTES, avisar)
+    pacotes = PACOTES if plataforma.sistema() == "linux" else PACOTES + ("sounddevice",)
+    if set(falta) & set(pacotes):
+        ok, erro = _pip(pacotes, avisar)
         if not ok:
             return False, erro
     lugar = (os.environ.get("TARS_WHISPER_DISPOSITIVO") or "auto").lower()
@@ -872,10 +891,20 @@ class Falador:
         processo = self._kokoro
         if processo is None or processo.stdout is None:
             return {}
-        prontos, _, _ = select.select([processo.stdout], [], [], timeout)
-        if not prontos:
-            return {}
-        linha = processo.stdout.readline()
+        if os.name == "nt":
+            # o select do Windows só aceita socket: lê numa thread (no tempo esgotado quem chama mata o processo,
+            # e a leitura parada termina junto)
+            caixa = queue.Queue()
+            threading.Thread(target=lambda: caixa.put(processo.stdout.readline()), daemon=True).start()
+            try:
+                linha = caixa.get(timeout=timeout)
+            except queue.Empty:
+                return {}
+        else:
+            prontos, _, _ = select.select([processo.stdout], [], [], timeout)
+            if not prontos:
+                return {}
+            linha = processo.stdout.readline()
         try:
             return json.loads(linha) if linha else {}
         except ValueError:
@@ -1169,9 +1198,10 @@ class Ouvinte:
         if self._gravar is not None:
             yield from self._gravar()
             return
-        candidatos = [c for p, c in GRAVADORES if shutil.which(p)]
+        candidatos = _gravadores()
         if not candidatos:
-            raise RuntimeError("no recorder (install alsa-utils or pulseaudio-utils)")
+            raise RuntimeError("no recorder (install alsa-utils or pulseaudio-utils)" if plataforma.sistema() == "linux"
+                               else "no recorder (sounddevice missing: turn the voice off and on again)")
         erros = []
         for comando in candidatos:
             self._processo = subprocess.Popen(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -1392,5 +1422,28 @@ def _trabalhador_kokoro(modelo, vozes):
             print(json.dumps({"ok": False, "erro": str(e)[:300]}), flush=True)
 
 
+def _gravar_microfone():
+    """Windows e macOS: o microfone pelo sounddevice (PortAudio) na saída, cru como o arecord (16 kHz, mono, s16le)."""
+    import sounddevice
+    saida = sys.stdout.buffer
+    with sounddevice.RawInputStream(samplerate=TAXA, channels=1, dtype="int16", blocksize=800) as fluxo:
+        while True:
+            dados, _transbordou = fluxo.read(800)
+            saida.write(bytes(dados))
+            saida.flush()
+
+
+def _tocar_wav(caminho):
+    import winsound
+    winsound.PlaySound(caminho, winsound.SND_FILENAME)
+
+
 if __name__ == "__main__" and len(sys.argv) >= 4 and sys.argv[1] == "--kokoro":
     _trabalhador_kokoro(sys.argv[2], sys.argv[3])
+elif __name__ == "__main__" and sys.argv[1:2] == ["--gravar"]:
+    try:
+        _gravar_microfone()
+    except (BrokenPipeError, KeyboardInterrupt):
+        pass
+elif __name__ == "__main__" and len(sys.argv) >= 3 and sys.argv[1] == "--tocar":
+    _tocar_wav(sys.argv[2])

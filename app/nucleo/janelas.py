@@ -95,6 +95,13 @@ def listar_janelas_x():
 
     if SESSAO_GRAFICA == "nenhuma":
         return None
+    if plataforma.sistema() != "linux":      # 5.2: Windows (ctypes) e macOS (Quartz); o nome "_x" ficou por compatibilidade
+        try:
+            ULTIMO_ERRO_X = None
+            return plataforma.janelas()
+        except Exception as e:  # noqa: BLE001
+            ULTIMO_ERRO_X = f"{type(e).__name__}: {e}"
+            return None
 
     try:
         d = _abrir_display_x()
@@ -151,6 +158,11 @@ def janela_ativa_x():
     """id da janela em foco (ou None)."""
     if SESSAO_GRAFICA == "nenhuma":
         return None
+    if plataforma.sistema() != "linux":
+        try:
+            return plataforma.janela_ativa()
+        except Exception:  # noqa: BLE001
+            return None
     try:
         d = _abrir_display_x()
     except Exception:
@@ -165,6 +177,8 @@ def janela_ativa_x():
 def focar_janela_x(id_janela):
     """Traz a janela pra frente (e restaura se estava minimizada), do
     mesmo jeito que clicar nela na barra de tarefas."""
+    if plataforma.sistema() != "linux":
+        return plataforma.focar_janela(id_janela)
 
     from Xlib import X, protocol
 
@@ -196,6 +210,8 @@ def focar_janela_x(id_janela):
 def fechar_janela_x(id_janela):
     """Pede pra janela fechar, como clicar no X dela: o app pode
     perguntar se quer salvar, em vez de ser encerrado à força."""
+    if plataforma.sistema() != "linux":
+        return plataforma.fechar_janela(id_janela)
 
     from Xlib import X, protocol
 
@@ -243,6 +259,9 @@ def _bordas_x(d, janela):
 
 def geometria_para_mover_x(id_janela):
     """(área útil, bordas, tamanho externo, posição externa) da janela."""
+    if plataforma.sistema() != "linux":
+        info = next(j for j in plataforma.janelas() if j["id"] == int(id_janela))
+        return plataforma.area_util(), (0, 0, 0, 0), (info["largura"], info["altura"]), (info["x"], info["y"])
     d = _abrir_display_x()
     try:
         raiz = d.screen().root
@@ -259,6 +278,8 @@ def mover_janela_x(id_janela, x=None, y=None, largura=None, altura=None, maximiz
     """Move/redimensiona pelo retângulo EXTERNO (com a moldura), ou
     maximiza (True) / restaura (False). Com EWMH (GNOME, KDE, XFCE,
     Cinnamon, Openbox...), pede ao gerenciador; sem ele, move direto."""
+    if plataforma.sistema() != "linux":
+        return plataforma.mover_janela(id_janela, x, y, largura, altura, maximizar)
     from Xlib import X
 
     d = _abrir_display_x()

@@ -13,6 +13,9 @@ coordenada:
   a ação vai direto pro aplicativo pelo D-Bus.
 
 Apps GTK (GNOME, Zorin), Qt/KDE, Firefox e LibreOffice expõem essa árvore.
+No Windows (UI Automation) e no macOS (AX) quem fala com o sistema é
+tars_plataforma/uia.py e ax.py, com os mesmos nomes de papel do AT-SPI:
+o resto deste módulo vale igual nos três.
 Quando um app não expõe (alguns jogos, apps Electron sem acessibilidade),
 a ferramenta avisa e a IA volta pro print + coordenadas.
 
@@ -22,6 +25,7 @@ janela (pid, título, nomes possíveis) e devolve dicionários simples.
 """
 
 import os
+import sys
 import threading
 import time
 import unicodedata
@@ -80,6 +84,13 @@ ACOES_PREFERIDAS = ("click", "press", "activate", "jump", "toggle", "open", "sel
 # Símbolos que a IA escreve de um jeito e o app mostra de outro.
 SINONIMOS = {"*": "×", "x": "×", "/": "÷", "-": "−", "–": "−", "sqrt": "√", "pi": "π"}
 
+if sys.platform == "win32":
+    from tars_plataforma import uia as _nativo
+elif sys.platform == "darwin":
+    from tars_plataforma import ax as _nativo
+else:
+    _nativo = None
+
 _atspi = {"modulo": None, "erro": None, "tentou": False}
 _trava = threading.Lock()
 _cache = {}  # id da janela -> (instante, [itens], janela)
@@ -109,6 +120,9 @@ def _modulo():
         _atspi["tentou"] = True
         if os.environ.get("TARS_SEM_ACESSIBILIDADE") == "1":
             _atspi["erro"] = "disabled (TARS_SEM_ACESSIBILIDADE=1)"
+        elif _nativo is not None:
+            _atspi["erro"] = _nativo.erro()
+            _atspi["modulo"] = None if _atspi["erro"] else _nativo
         else:
             try:
                 import gi
@@ -138,6 +152,8 @@ def ativar():
     """Liga a acessibilidade da sessão (org.a11y.Status.IsEnabled), como
     um leitor de tela faz. Apps Qt/KDE e alguns outros só expõem a árvore
     com isso ligado. Vale até sair da sessão; não muda nada permanente."""
+    if _nativo is not None:
+        return False          # no Windows e no macOS não há o que ligar
     try:
         from gi.repository import Gio, GLib
         bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
@@ -157,6 +173,8 @@ def ativar():
 
 def _estados(no):
     try:
+        if _nativo is not None:
+            return _nativo.estados(no)
         return {s.value_nick for s in no.get_state_set().get_states()}
     except Exception:
         return set()
@@ -164,6 +182,8 @@ def _estados(no):
 
 def _papel(no):
     try:
+        if _nativo is not None:
+            return _nativo.papel(no)
         return no.get_role().value_nick
     except Exception:
         return ""
@@ -171,12 +191,20 @@ def _papel(no):
 
 def _nome(no):
     try:
+        if _nativo is not None:
+            return _nativo.nome(no)
         return no.get_name() or ""
     except Exception:
         return ""
 
 
 def _filhos(no):
+    if _nativo is not None:
+        try:
+            yield from _nativo.filhos(no)
+        except Exception:
+            pass
+        return
     try:
         n = no.get_child_count()
     except Exception:
@@ -195,6 +223,11 @@ def janelas():
     Atspi = _modulo()
     if Atspi is None:
         return []
+    if _nativo is not None:
+        try:
+            return _nativo.janelas()
+        except Exception:
+            return []
     saida = []
     try:
         desktop = Atspi.get_desktop(0)
@@ -285,6 +318,8 @@ def _texto_do_no(no, papel):
     Atspi = _modulo()
     if papel in PAPEIS_CAMPO or papel in ("document-text", "paragraph"):
         try:
+            if _nativo is not None:
+                return _nativo.texto(no)[:LIMITE_CHARS_TEXTO] or _nome(no)
             n = Atspi.Text.get_character_count(no)
             if n:
                 return Atspi.Text.get_text(no, 0, min(n, LIMITE_CHARS_TEXTO))
@@ -300,7 +335,7 @@ def _nome_do_elemento(no, papel):
     if nome:
         return nome
     try:
-        nome = no.get_description() or ""
+        nome = (_nativo.descricao(no) if _nativo is not None else no.get_description()) or ""
     except Exception:
         nome = ""
     if nome:
@@ -448,6 +483,11 @@ def parecidos(janela, nome, limite=8):
 def _acionar(no):
     """Executa a ação padrão do elemento (clicar, pressionar, ativar)."""
     Atspi = _modulo()
+    if _nativo is not None:
+        try:
+            return bool(_nativo.acionar(no))
+        except Exception:
+            return False
     try:
         n = Atspi.Action.get_n_actions(no)
     except Exception:
@@ -471,6 +511,8 @@ def _acionar(no):
 def _retangulo(no):
     Atspi = _modulo()
     try:
+        if _nativo is not None:
+            return _nativo.retangulo(no)
         r = Atspi.Component.get_extents(no, Atspi.CoordType.SCREEN)
         return (r.x, r.y, r.width, r.height)
     except Exception:
@@ -480,6 +522,8 @@ def _retangulo(no):
 def coordenadas_confiaveis(janela):
     """As posições informadas pelo app são de tela? GTK 4 informa posições
     relativas (um botão no meio da janela aparece em 0,0)."""
+    if _nativo is not None:
+        return True           # UI Automation e AX dão posições de tela
     try:
         app = janela["no"].get_application()
         return not (app.get_toolkit_name() == "GTK" and (app.get_toolkit_version() or "").startswith("4"))
@@ -551,7 +595,7 @@ def preencher(janela, nome, texto):
     no, papel_item, nome_item, estados, _tipo = item
     rotulo = _rotulo(papel_item, nome_item, estados)
     try:
-        if Atspi.EditableText.set_text_contents(no, texto):
+        if _nativo.escrever(no, texto) if _nativo is not None else Atspi.EditableText.set_text_contents(no, texto):
             limite = time.monotonic() + ESPERA_MAXIMA_APOS_ACAO_SEG
             while time.monotonic() < limite:
                 time.sleep(INTERVALO_LEITURA_SEG)
@@ -563,7 +607,7 @@ def preencher(janela, nome, texto):
     except Exception:
         pass
     try:
-        Atspi.Component.grab_focus(no)
+        _nativo.focar(no) if _nativo is not None else Atspi.Component.grab_focus(no)
     except Exception:
         pass
     return {"sucesso": False, "achou": True, "elemento": rotulo, "precisa_digitar": True}

@@ -45,6 +45,13 @@ jobs:
         run: python tests/test_shell_portatil.py
       - name: Backend do Windows de verdade (no macOS, pula)
         run: python tests/test_plataforma_windows.py
+      - name: Abrir e fechar programas, atalho global e clique pelo nome pelo núcleo
+        run: |
+          python tests/test_apps_outros_sistemas.py
+          python tests/test_atalhos_outros_sistemas.py
+          python tests/test_acessibilidade_outros_sistemas.py
+      - name: Serviço dos Probes (trava e comando)
+        run: python tests/test_probes_servico.py
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
 
@@ -107,6 +114,11 @@ jobs:
       - name: A janela carrega (sem tela)
         env: {QT_QPA_PLATFORM: offscreen}
         run: cd "$HOME/Library/Application Support/openTARS/app" && "../venv/bin/python3" -c "import tars_qt.principal; print('qt ok')"
+      - name: Backend do macOS no Python instalado
+        env: {QT_QPA_PLATFORM: offscreen}
+        run: |
+          "$HOME/Library/Application Support/openTARS/venv/bin/python3" app/tests/test_plataforma_macos.py
+          plutil -extract NSMicrophoneUsageDescription raw ~/Applications/openTARS.app/Contents/Info.plist
       - name: Remover
         run: |
           bash app/empacotamento/macos/instalar.sh --remover

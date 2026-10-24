@@ -168,7 +168,8 @@ def _janela_acessivel(nome):
 
     motivo = acess.indisponivel()
     if motivo:
-        return None, AVISO_SEM_ACESSIBILIDADE.format(motivo=motivo)
+        aviso = AVISO_SEM_ACESSIBILIDADE if plataforma.sistema() == "linux" else AVISO_SEM_ACESSIBILIDADE.split(" (To enable")[0]
+        return None, aviso.format(motivo=motivo)
     if nome and _sem_arvore(nome):
         return None, _mensagem_sem_arvore(nome)
 
@@ -268,7 +269,7 @@ def _clicar_pelo_retangulo(alvo, retangulo):
     """Plano B de click_element: elemento sem ação de acessibilidade, mas
     com posição conhecida. Só com X11 e só se a posição cair dentro da
     janela (GTK 4 informa posições relativas, que clicariam no lugar errado)."""
-    if SESSAO_GRAFICA != "x11" or ERRO_PYAUTOGUI or not retangulo:
+    if SESSAO_GRAFICA not in ("x11", "windows", "aqua") or ERRO_PYAUTOGUI or not retangulo:
         return False
     if not acess.coordenadas_confiaveis(alvo):
         return False

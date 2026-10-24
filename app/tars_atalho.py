@@ -444,7 +444,7 @@ def para_windows(combinacao):
     especiais = {"space": 0x20, "Return": 0x0D, "Tab": 0x09, "Escape": 0x1B}
     if tecla in especiais:
         codigo = especiais[tecla]
-    elif len(tecla) == 1 and tecla.isalnum():
+    elif len(tecla) == 1 and tecla.isascii() and tecla.isalnum():       # "ç" não tem código virtual próprio
         codigo = ord(tecla.upper())
     elif re.fullmatch(r"F([1-9]|1[0-2])", tecla):
         codigo = 0x6F + int(tecla[1:])
@@ -453,16 +453,40 @@ def para_windows(combinacao):
     return modificadores, codigo
 
 
+# códigos de tecla do Mac (kVK_ANSI_*) na ordem do teclado; § e \n ocupam o lugar das teclas que não são letra nem número
+_TECLAS_MAC = "asdfhgzxcv§bqweryt123465=97-80]ou[ip\nlj'k;\\,/nm."
+_FUNCAO_MAC = (0x7A, 0x78, 0x63, 0x76, 0x60, 0x61, 0x62, 0x64, 0x65, 0x6D, 0x67, 0x6F)
+
+
+def para_macos(combinacao):
+    """'<Primary><Alt>r' -> (modificadores, código da tecla) do RegisterEventHotKey do macOS; None se a tecla não tiver código.
+    <Primary> vira Control, não Command: o mesmo Ctrl+Alt+R dos outros sistemas (Command+Option+R já é de apps como o Safari)."""
+    bits = {"primary": 0x1000, "control": 0x1000, "ctrl": 0x1000, "alt": 0x0800, "shift": 0x0200, "super": 0x0100}
+    modificadores = sum(bits.get(m.lower(), 0) for m in re.findall(r"<(\w+)>", combinacao or ""))
+    tecla = re.sub(r"<\w+>", "", combinacao or "")
+    especiais = {"space": 0x31, "Return": 0x24, "Tab": 0x30, "Escape": 0x35}
+    if tecla in especiais:
+        codigo = especiais[tecla]
+    elif len(tecla) == 1 and tecla.isascii() and tecla.isalnum():
+        codigo = _TECLAS_MAC.index(tecla.lower())
+    elif re.fullmatch(r"F([1-9]|1[0-2])", tecla):
+        codigo = _FUNCAO_MAC[int(tecla[1:]) - 1]
+    else:
+        return None
+    return modificadores, codigo
+
+
 def registrar_acoes(combinacao=None):
-    """5.2: cadastra o atalho das ações de texto (GNOME; no Windows o próprio openTARS escuta). Devolve (ok, mensagem)."""
+    """5.2: cadastra o atalho das ações de texto (GNOME; no Windows e no macOS o próprio openTARS escuta). Devolve (ok, mensagem)."""
     combinacao = normalizar_combinacao(combinacao) if combinacao else (i18n.ler_config().get("atalho_acoes") or ACOES_PADRAO)
     if not combinacao:
         return False, t("atalho.invalido")
-    if plataforma.sistema() == "windows":       # o RegisterHotKey é da janela aberta (tars_qt/atalhos_windows.py)
-        if not para_windows(combinacao):
+    sistema = plataforma.sistema()
+    if sistema in ("windows", "macos"):     # quem escuta é a janela aberta (tars_qt/atalhos_windows.py e atalhos_macos.py)
+        if not (para_windows if sistema == "windows" else para_macos)(combinacao):
             return False, t("atalho.invalido")
         i18n.salvar_config(atalho_acoes=combinacao, atalho_acoes_registrado=True)
-        return True, t("atalho.acoes_windows", atalho=legivel(combinacao))
+        return True, t(f"atalho.acoes_{sistema}", atalho=legivel(combinacao))
     qual = ambiente()
     if qual != "gnome":
         return False, t("atalho.manual", ambiente=_NOMES_AMBIENTE.get(qual, qual or "?"), comando="opentars-gui " + ACOES_MARCA)

@@ -26,17 +26,18 @@ os.environ["XDG_DATA_HOME"] = str(casa / "dados-xdg")
 assert p.pastas()["dados"] == casa / "dados-xdg" / "opentars"
 print("OK: pastas por sistema (XDG no Linux, Library no macOS, AppData no Windows)")
 
-for so in ("macos",):          # o Windows já tem estas funções (F5): testadas no próprio Windows (test_plataforma_windows)
+from tars_plataforma import macos, windows  # noqa: E402
+for modulo, so in ((macos, "macos"), (windows, "windows")):
+    try:
+        modulo.funcao_que_nao_existe()
+    except p.NaoSuportado as e:
+        assert so in str(e) and "fase" in str(e), e
+    else:
+        raise AssertionError(f"{so}: deveria levantar NaoSuportado")
     p.sistema = lambda so=so: so
-    for chamada in (lambda: p.lixeira("x"), lambda: p.notificar("a", "b"), p.ler_area_de_transferencia,
-                    lambda: p.escrever_area_de_transferencia("x"), lambda: p.autostart("a", "A", ["a"], True)):
-        try:
-            chamada()
-        except p.NaoSuportado as e:
-            assert so in str(e) and "fase" in str(e), e
-        else:
-            raise AssertionError(f"{so}: deveria levantar NaoSuportado")
-print("OK: no macOS o que falta levanta NaoSuportado com a fase")
+    assert all(p.recursos().values()), (so, p.recursos())
+p.sistema = lambda: "linux"
+print("OK: macOS e Windows têm todas as funções da camada; o que não existir levanta NaoSuportado com a fase")
 
 p.sistema = lambda: "linux"
 assert p.tecla_comando() == "ctrl"

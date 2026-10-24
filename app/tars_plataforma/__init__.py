@@ -24,6 +24,9 @@ Interface (devolvem o resultado ou levantam `NaoSuportado`/`OSError`):
     ler_selecao()                           o texto marcado agora em qualquer programa ("" se nada)
     teclas_de_colar()                       as teclas de colar na janela ativa (Ctrl+Shift+V num terminal do Linux)
     nome_do_sistema()                       "Windows 11 23H2", "macOS 15.2 Sequoia" (o Linux lê o /etc/os-release no prompt)
+    janelas(), janela_ativa(), focar_janela(id), fechar_janela(id), mover_janela(id, x, y, largura, altura, maximizar),
+    area_util()                             fora do Linux (no Linux o núcleo fala com o X direto: nucleo/janelas.py)
+    programas()                             [{nome, outros_nomes, comando, id}] fora do Linux (no Linux: os .desktop)
     recursos()                              {função: existe neste sistema?} (para o diagnóstico)
     descrever()                             sistema, versão, arquitetura, núcleos, RAM e Python (para os relatórios)
 """
@@ -130,17 +133,47 @@ def _versao_windows():
         return ""
 
 
+def janelas():
+    return _backend().janelas()
+
+
+def janela_ativa():
+    return _backend().janela_ativa()
+
+
+def focar_janela(id_janela):
+    return _backend().focar_janela(id_janela)
+
+
+def fechar_janela(id_janela):
+    return _backend().fechar_janela(id_janela)
+
+
+def mover_janela(id_janela, x=None, y=None, largura=None, altura=None, maximizar=None):
+    return _backend().mover_janela(id_janela, x, y, largura, altura, maximizar)
+
+
+def area_util():
+    return _backend().area_util()
+
+
+def programas():
+    return _backend().programas()
+
+
 def tecla_comando():
     return "command" if sistema() == "macos" else "ctrl"
 
 
 FUNCOES = ("abrir", "lixeira", "notificar", "ler_area_de_transferencia", "escrever_area_de_transferencia", "autostart",
            "ler_selecao", "teclas_de_colar")
+FUNCOES_FORA_DO_LINUX = ("janelas", "programas")      # no Linux o núcleo usa o X e os .desktop
 
 
 def recursos():
     backend = _backend()
-    return {funcao: funcao in vars(backend) for funcao in FUNCOES}
+    funcoes = FUNCOES + (FUNCOES_FORA_DO_LINUX if sistema() != "linux" else ())
+    return {funcao: funcao in vars(backend) for funcao in funcoes}
 
 
 def descrever():

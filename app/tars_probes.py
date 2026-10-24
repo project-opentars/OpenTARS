@@ -27,6 +27,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import time
 import urllib.request
 import uuid
@@ -1230,24 +1231,57 @@ def uma_volta(probes, host, instalados, avisar=avisar_desktop, t=lambda chave, *
     return feitos
 
 
+_LONGE_DO_PID = 1 << 20      # no Windows a trava é de um trecho do arquivo: um byte longe do PID, que continua legível
+
+
+def _travar(fd, exclusiva=True):
+    """flock no Linux e no macOS; msvcrt.locking no Windows. Levanta OSError se outro processo já tem a trava."""
+    if os.name == "nt":
+        import msvcrt
+        os.lseek(fd, _LONGE_DO_PID, os.SEEK_SET)
+        msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+    else:
+        import fcntl
+        fcntl.flock(fd, (fcntl.LOCK_EX if exclusiva else fcntl.LOCK_SH) | fcntl.LOCK_NB)
+
+
+def _destravar(fd):
+    if os.name == "nt":
+        import msvcrt
+        os.lseek(fd, _LONGE_DO_PID, os.SEEK_SET)
+        msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+    else:
+        import fcntl
+        fcntl.flock(fd, fcntl.LOCK_UN)
+
+
+def _prioridade_baixa():
+    try:
+        if os.name == "nt":
+            import psutil
+            psutil.Process().nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
+        else:
+            os.nice(10)
+    except Exception:  # noqa: BLE001  (sem permissão: segue na prioridade normal)
+        pass
+
+
 def servico(host, instalados_de, parar=None, intervalo=INTERVALO_SERVICO, t=lambda chave, **k: chave, avisar=avisar_desktop):
     """O laço do serviço: uma instância só (trava no probes.pid), com prioridade baixa (nice), olhando o arquivo a cada
     minuto; sem Probe ligado não chama modelo nenhum. parar(): True encerra (testes). Devolve 3 se já há um rodando."""
-    import fcntl
     caminho = arquivo_pid()
     caminho.parent.mkdir(parents=True, exist_ok=True)
     fd = os.open(str(caminho), os.O_RDWR | os.O_CREAT, 0o600)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        _travar(fd)
     except OSError:
         os.close(fd)
         return 3                               # já há um serviço rodando
-    os.ftruncate(fd, 0)
-    os.write(fd, str(os.getpid()).encode())
-    try:
-        os.nice(10)
-    except OSError:
-        pass
+    pid = str(os.getpid()).encode()
+    os.lseek(fd, 0, os.SEEK_SET)
+    os.write(fd, pid)
+    os.ftruncate(fd, len(pid))
+    _prioridade_baixa()
     probes = Probes()
     try:
         while not (parar and parar()):
@@ -1267,14 +1301,13 @@ def servico(host, instalados_de, parar=None, intervalo=INTERVALO_SERVICO, t=lamb
 
 def servico_rodando():
     """O PID do serviço, se ele está rodando (a trava do probes.pid está pega), ou None."""
-    import fcntl
     caminho = arquivo_pid()
     if not caminho.exists():
         return None
     fd = os.open(str(caminho), os.O_RDONLY)
     try:
-        fcntl.flock(fd, fcntl.LOCK_SH | fcntl.LOCK_NB)
-        fcntl.flock(fd, fcntl.LOCK_UN)
+        _travar(fd, exclusiva=False)
+        _destravar(fd)
         return None                            # conseguiu a trava: ninguém está rodando
     except OSError:
         try:
@@ -1290,9 +1323,14 @@ def arquivo_autostart():
 
 
 def comando_do_servico():
+    tars = str(Path(__file__).resolve().parent / "tars.py")
+    if plataforma.sistema() == "windows":      # pythonw: o serviço roda sem janela de console
+        pythonw = Path(sys.executable).with_name("pythonw.exe")
+        return [str(pythonw if pythonw.exists() else sys.executable), tars, "--probes"]
     if shutil.which("opentars"):
         return ["opentars", "--probes"]
-    return [os.environ.get("TARS_PYTHON") or "python3", str(Path(__file__).resolve().parent / "tars.py"), "--probes"]
+    # no macOS aberto pelo Finder o PATH não tem ~/.local/bin, e o python3 do sistema não tem as bibliotecas
+    return [os.environ.get("TARS_PYTHON") or sys.executable, tars, "--probes"]
 
 
 def ligar_servico(ligado, iniciar=True):

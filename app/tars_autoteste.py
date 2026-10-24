@@ -172,13 +172,6 @@ def diagnostico(core, rel):
     else:
         rel.item(True, t("diag.mouse"), "pyautogui")
 
-    if core.plataforma.sistema() != "linux":
-        # janelas, clique pelo nome, área de transferência e atalho deste sistema: na linha "Plataforma" acima
-        if core.SESSAO_GRAFICA != "nenhuma":
-            _print_da_tela(core, rel, t)
-        rel.item("info", t("diag.acessibilidade"), t("diag.fora_do_linux"))
-        return bool(versao and conversa)
-
     janelas = core.listar_janelas_x()
     if janelas is None:
         rel.item(None if core.SESSAO_GRAFICA == "wayland" else False, t("diag.janelas"), t("diag.janelas_sem_x"))
@@ -190,7 +183,8 @@ def diagnostico(core, rel):
 
     motivo = acess.indisponivel()
     if motivo:
-        rel.item(False, t("diag.acessibilidade"), f"{motivo} → sudo apt install gir1.2-atspi-2.0 python3-gi at-spi2-core")
+        dica = " → sudo apt install gir1.2-atspi-2.0 python3-gi at-spi2-core" if core.plataforma.sistema() == "linux" else ""
+        rel.item(False, t("diag.acessibilidade"), f"{motivo}{dica}")
     else:
         acessiveis = acess.janelas()
         if acessiveis:
@@ -198,6 +192,8 @@ def diagnostico(core, rel):
             rel.item(True, t("diag.acessibilidade"), t("diag.acessiveis", n=len(acessiveis), apps=", ".join(apps[:8])))
         else:
             rel.item(None, t("diag.acessibilidade"), t("diag.nenhuma_acessivel"))
+    if core.plataforma.sistema() != "linux":
+        return bool(versao and conversa)       # área de transferência e atalho deste sistema: na linha "Plataforma" acima
 
     copia = next((p for p in ("wl-copy", "xclip", "xsel") if shutil.which(p)), None)
     rel.item(True if copia else None, t("diag.clipboard"), copia or t("diag.clipboard_falta"))

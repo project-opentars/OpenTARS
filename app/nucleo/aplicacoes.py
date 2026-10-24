@@ -437,6 +437,15 @@ def desktop_entries(forcar=False):
     ):
         return _cache_desktop["dados"]
 
+    if plataforma.sistema() != "linux":
+        # Windows e macOS: o catálogo da plataforma (Menu Iniciar, pastas de apps), já com o comando de abrir
+        try:
+            encontrados = [dict(p, exec="", terminal=False) for p in plataforma.programas()]
+        except Exception:
+            encontrados = []
+        _cache_desktop.update(dados=encontrados, ts=agora)
+        return encontrados
+
     encontrados = []
     ids_vistos = set()
 
@@ -640,6 +649,9 @@ def _buscar_app_no_sistema(alvo_original):
 
     if melhor and melhor_pontuacao >= 500:
 
+        if "comando" in melhor:      # Windows e macOS: a entrada já traz o comando
+            return {"tipo": "desktop", "nome": melhor["nome"], "comando": list(melhor["comando"]),
+                    "id": melhor.get("id"), "origem": melhor["nome"]}
         return {
             "tipo": "desktop",
             "nome": melhor["nome"],
@@ -693,9 +705,14 @@ def _termos_do_app(app, encontrado):
         stem = Path(encontrado["arquivo"]).stem  # org.gnome.Calculator
         termos += [stem, stem.split(".")[-1]]
     if encontrado.get("id"):
-        termos.append(encontrado["id"].split(".")[-1])
+        ident = encontrado["id"]
+        if plataforma.sistema() == "windows":
+            # "{GUID}\\notepad.exe" -> notepad; o de app da loja ("Microsoft.WindowsCalculator_8wekyb3d8bbwe!App") não ajuda
+            ident = re.split(r"[\\/]", ident)[-1]
+            ident = ident[:-4] if ident.lower().endswith(".exe") else ("" if "!" in ident else ident)
+        termos.append(ident.split(".")[-1])
     base = os.path.basename(encontrado["comando"][0])
-    if base not in ("gtk-launch", "gio", "kioclient", "kioclient5", "flatpak", "xdg-open"):
+    if base not in ("gtk-launch", "gio", "kioclient", "kioclient5", "flatpak", "xdg-open", "explorer.exe", "open"):
         termos.append(base)
     return [t for t in dict.fromkeys(termos) if t]
 
@@ -831,6 +848,8 @@ def abrir_aplicativo(app):
 
     janelas_x = listar_janelas_x()
     ids_antes = {j["id"] for j in janelas_x or []}
+    # explorer.exe (Windows) e open (macOS) só repassam o pedido e saem, o explorer com código 1: não dizem nada do app
+    trampolim = os.path.basename(comando[0]).lower() in ("explorer.exe", "open")
 
     try:
         proc = subprocess.Popen(
@@ -851,8 +870,8 @@ def abrir_aplicativo(app):
     # assim o próximo passo (print, clique, digitar) já acontece nela.
     # No Wayland o X só enxerga janelas XWayland: esperar a janela de um
     # app nativo seria esperar à toa o tempo todo.
-    if janelas_x is not None and SESSAO_GRAFICA == "x11":
-        janela, ja_aberta = _esperar_janela_do_app(termos, ids_antes, proc)
+    if janelas_x is not None and SESSAO_GRAFICA in ("x11", "windows", "aqua"):
+        janela, ja_aberta = _esperar_janela_do_app(termos, ids_antes, None if trampolim else proc)
         if janela:
             try:
                 if janela["id"] != janela_ativa_x():
@@ -872,7 +891,7 @@ def abrir_aplicativo(app):
                 ),
             }
 
-        if proc is not None and proc.poll() not in (None, 0):
+        if proc is not None and not trampolim and proc.poll() not in (None, 0):
             return {
                 **base_resultado,
                 "sucesso": False,

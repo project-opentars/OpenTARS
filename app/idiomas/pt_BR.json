@@ -885,6 +885,7 @@
  "voz.falta_voz": "a voz do idioma",
  "voz.falta_gravador": "um gravador de áudio (sudo apt install alsa-utils)",
  "voz.falta_tocador": "um tocador de áudio (sudo apt install alsa-utils)",
+ "voz.falta_sounddevice": "a biblioteca do microfone (sounddevice; o openTARS instala ao ligar a voz)",
  "voz.precisa_sistema": "Antes, instale no sistema: {itens}",
  "voz.instalada": "Voz pronta! Use Ctrl+M pra falar, ou ligue \"Ouvir TARS\" no botão Voz.",
  "voz.erro_instalar": "Não consegui instalar a voz: {erro}",
@@ -1597,5 +1598,5 @@
  "rot.tray_acoes": "Ações de texto com o que está selecionado",
  "rot.tray_assistente": "Assistente ligado",
  "atalho.acoes_windows": "No Windows, {atalho} abre as ações de texto enquanto o openTARS estiver aberto (o ícone perto do relógio). Para valer desde o começo do dia, ligue Iniciar com o sistema.",
- "diag.fora_do_linux": "janelas, clique pelo nome e atalho global deste sistema ainda estão sendo feitos (5.2); o que já existe está na linha Plataforma"
+ "atalho.acoes_macos": "No macOS, {atalho} abre as ações de texto enquanto o openTARS estiver aberto (o ícone na barra de menus). Para valer desde o começo do dia, ligue Iniciar com o sistema."
 }

@@ -817,6 +817,7 @@
  "voz.falta_voz": "the voice for this language",
  "voz.falta_gravador": "an audio recorder (sudo apt install alsa-utils)",
  "voz.falta_tocador": "an audio player (sudo apt install alsa-utils)",
+ "voz.falta_sounddevice": "the microphone library (sounddevice; openTARS installs it when you turn the voice on)",
  "voz.precisa_sistema": "First install on the system: {itens}",
  "voz.instalada": "Voice ready! Press Ctrl+M to speak, or turn on \"Listen for TARS\" in the Voice button.",
  "voz.erro_instalar": "Could not install the voice: {erro}",
@@ -1529,5 +1530,5 @@
  "rot.tray_acoes": "Text actions on the selection",
  "rot.tray_assistente": "Assistant on",
  "atalho.acoes_windows": "On Windows, {atalho} opens the text actions while openTARS is open (the icon near the clock). To have it from the start of the day, turn on Start with the system.",
- "diag.fora_do_linux": "windows, click by name and the global shortcut for this system are still being built (5.2); what already works is on the Platform line"
+ "atalho.acoes_macos": "On macOS, {atalho} opens the text actions while openTARS is open (the icon in the menu bar). To have it from the start of the day, turn on Start with the system."
 }

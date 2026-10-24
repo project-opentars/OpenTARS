@@ -192,6 +192,177 @@ def autostart(nome, titulo, comando, ligado):
     return atalho.exists()
 
 
+# ------------------------------------------------------------
+# Janelas (ctypes): as de aplicativo, como na barra de tarefas
+# ------------------------------------------------------------
+def _api_janelas():
+    from ctypes import wintypes
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.EnumWindows.argtypes = [ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM), wintypes.LPARAM]
+    user32.EnumChildWindows.argtypes = [wintypes.HWND, ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM),
+                                        wintypes.LPARAM]
+    for nome in ("GetWindowTextW", "GetClassNameW"):
+        getattr(user32, nome).argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
+    for nome in ("IsWindowVisible", "IsIconic", "GetWindowTextLengthW", "SetForegroundWindow", "IsZoomed"):
+        getattr(user32, nome).argtypes = [wintypes.HWND]
+    user32.GetWindow.argtypes = [wintypes.HWND, wintypes.UINT]
+    user32.GetWindow.restype = wintypes.HWND
+    user32.GetWindowLongW.argtypes = [wintypes.HWND, ctypes.c_int]
+    user32.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
+    user32.GetWindowRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
+    user32.GetForegroundWindow.restype = wintypes.HWND
+    user32.ShowWindow.argtypes = [wintypes.HWND, ctypes.c_int]
+    user32.PostMessageW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM]
+    user32.MoveWindow.argtypes = [wintypes.HWND, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, wintypes.BOOL]
+    return user32, wintypes
+
+
+def _camuflada(hwnd):
+    """Apps da loja deixam janelas "camufladas" (existem, não aparecem): DWMWA_CLOAKED."""
+    from ctypes import wintypes
+    valor = wintypes.DWORD()
+    try:
+        ctypes.windll.dwmapi.DwmGetWindowAttribute(wintypes.HWND(hwnd), 14, ctypes.byref(valor), ctypes.sizeof(valor))
+    except OSError:
+        return False
+    return bool(valor.value)
+
+
+def _nome_do_processo(pid):
+    try:
+        import psutil
+        return psutil.Process(pid).name().rsplit(".", 1)[0]
+    except Exception:  # noqa: BLE001  (processo que acabou, sem permissão)
+        return ""
+
+
+def _processo_do_quadro(user32, wintypes, hwnd, pid):
+    """Apps da loja (Calculadora, Configurações) moram dentro do ApplicationFrameHost: o app é o dono da janela filha."""
+    outros = []
+
+    @ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+    def filho(h, _):
+        dono = wintypes.DWORD()
+        user32.GetWindowThreadProcessId(h, ctypes.byref(dono))
+        if dono.value != pid:
+            outros.append(dono.value)
+            return False
+        return True
+
+    user32.EnumChildWindows(hwnd, filho, 0)
+    return outros[0] if outros else pid
+
+
+def janelas():
+    user32, wintypes = _api_janelas()
+    achadas = []
+
+    @ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+    def cada(hwnd, _):
+        if not user32.IsWindowVisible(hwnd) or user32.GetWindow(hwnd, 4) or _camuflada(hwnd):    # 4 = GW_OWNER
+            return True
+        if user32.GetWindowLongW(hwnd, -20) & 0x80:                                              # WS_EX_TOOLWINDOW
+            return True
+        tamanho = user32.GetWindowTextLengthW(hwnd)
+        titulo = ctypes.create_unicode_buffer(tamanho + 1)
+        user32.GetWindowTextW(hwnd, titulo, tamanho + 1)
+        if not titulo.value:
+            return True
+        classe = ctypes.create_unicode_buffer(256)
+        user32.GetClassNameW(hwnd, classe, 256)
+        pid = wintypes.DWORD()
+        user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+        if classe.value == "ApplicationFrameWindow":
+            pid = wintypes.DWORD(_processo_do_quadro(user32, wintypes, hwnd, pid.value))
+        caixa = wintypes.RECT()
+        user32.GetWindowRect(hwnd, ctypes.byref(caixa))
+        achadas.append({"id": int(hwnd), "titulo": titulo.value, "classe": f"{classe.value} {_nome_do_processo(pid.value)}",
+                        "pid": pid.value or None, "x": caixa.left, "y": caixa.top, "largura": caixa.right - caixa.left,
+                        "altura": caixa.bottom - caixa.top, "minimizada": bool(user32.IsIconic(hwnd))})
+        return True
+
+    user32.EnumWindows(cada, 0)
+    return list(reversed(achadas))          # o EnumWindows vai da frente para trás; o app espera da mais antiga à mais nova
+
+
+def janela_ativa():
+    user32, _ = _api_janelas()
+    return int(user32.GetForegroundWindow() or 0) or None
+
+
+def focar_janela(id_janela):
+    user32, _ = _api_janelas()
+    if user32.IsIconic(id_janela):
+        user32.ShowWindow(id_janela, 9)                       # SW_RESTORE
+    # o Windows só deixa trazer para a frente quem acabou de receber uma tecla: um Alt solto destrava (truque conhecido)
+    user32.keybd_event(0x12, 0, 0, 0)
+    user32.keybd_event(0x12, 0, 2, 0)
+    if not user32.SetForegroundWindow(id_janela):
+        raise OSError("o Windows não deixou trazer a janela para a frente")
+
+
+def fechar_janela(id_janela):
+    user32, _ = _api_janelas()
+    user32.PostMessageW(id_janela, 0x0010, 0, 0)            # WM_CLOSE: como clicar no X (o app pode perguntar se salva)
+
+
+def mover_janela(id_janela, x=None, y=None, largura=None, altura=None, maximizar=None):
+    user32, wintypes = _api_janelas()
+    if maximizar is not None:
+        user32.ShowWindow(id_janela, 3 if maximizar else 9)   # SW_MAXIMIZE / SW_RESTORE
+        return
+    if user32.IsZoomed(id_janela):
+        user32.ShowWindow(id_janela, 9)
+    caixa = wintypes.RECT()
+    user32.GetWindowRect(id_janela, ctypes.byref(caixa))
+    user32.MoveWindow(id_janela, caixa.left if x is None else int(x), caixa.top if y is None else int(y),
+                      (caixa.right - caixa.left) if largura is None else int(largura),
+                      (caixa.bottom - caixa.top) if altura is None else int(altura), True)
+
+
+def area_util():
+    from ctypes import wintypes
+    caixa = wintypes.RECT()
+    ctypes.windll.user32.SystemParametersInfoW(0x0030, 0, ctypes.byref(caixa), 0)    # SPI_GETWORKAREA: sem a barra de tarefas
+    return caixa.left, caixa.top, caixa.right - caixa.left, caixa.bottom - caixa.top
+
+
+# ------------------------------------------------------------
+# Programas: o Menu Iniciar inteiro (inclusive os apps da loja, como a Calculadora), com o nome no idioma do Windows
+# ------------------------------------------------------------
+_PROGRAMAS = {"lista": None, "quando": 0.0}
+SISTEMA = (("Calculator", ["calculadora", "calc"], "calc.exe"), ("Notepad", ["bloco de notas", "editor de texto",
+           "text editor", "notepad"], "notepad.exe"), ("Paint", ["paint", "mspaint"], "mspaint.exe"),
+           ("File Explorer", ["explorador de arquivos", "arquivos", "files", "explorer"], "explorer.exe"),
+           ("Command Prompt", ["prompt de comando", "terminal", "cmd"], "cmd.exe"),
+           ("Task Manager", ["gerenciador de tarefas", "taskmgr"], "taskmgr.exe"))
+
+
+def programas():
+    """[{'nome', 'outros_nomes', 'comando', 'id'}]: o Get-StartApps (5 min de cache) e os programas do próprio Windows."""
+    if _PROGRAMAS["lista"] is not None and time.time() - _PROGRAMAS["quando"] < 300:
+        return _PROGRAMAS["lista"]
+    lista = []
+    try:
+        r = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command",
+                            "[Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-StartApps | ConvertTo-Json -Compress"],
+                           capture_output=True, timeout=60, creationflags=CREATE_NO_WINDOW)
+        import json
+        dados = json.loads(r.stdout.decode("utf-8", "replace") or "[]")
+        for item in dados if isinstance(dados, list) else [dados]:
+            if item.get("Name") and item.get("AppID"):
+                lista.append({"nome": item["Name"], "outros_nomes": [], "id": item["AppID"],
+                              "comando": ["explorer.exe", "shell:AppsFolder\\" + item["AppID"]]})
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    pasta = Path(os.environ.get("SystemRoot") or "C:\\Windows") / "System32"
+    for nome, outros, exe in SISTEMA:
+        if (pasta / exe).exists() or exe == "explorer.exe":
+            lista.append({"nome": nome, "outros_nomes": outros, "id": exe, "comando": [exe]})
+    _PROGRAMAS.update(lista=lista, quando=time.time())
+    return lista
+
+
 def __getattr__(funcao):
     """O que ainda não existe aqui levanta NaoSuportado com a fase, em vez de falhar em silêncio."""
     if funcao.startswith("__"):

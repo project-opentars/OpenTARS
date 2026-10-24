@@ -489,7 +489,7 @@ def _conferir(acao, x, y):
 def _ponto_por_acessibilidade(nome, janela):
     """Centro do elemento na tela pela árvore de acessibilidade (sem
     clicar), ou None. Só no X11 e com coordenadas de tela confiáveis."""
-    if SESSAO_GRAFICA != "x11" or acess.indisponivel():
+    if SESSAO_GRAFICA not in ("x11", "windows", "aqua") or acess.indisponivel():
         return None
     try:
         alvo, erro = _janela_acessivel(janela)
