@@ -38,7 +38,7 @@ def o_que_falta_voz():
 
 def descrever_falta_voz(falta):
     """['piper-tts', 'gravador'] -> texto no idioma da pessoa."""
-    return ", ".join(t(f"voz.falta_{item.replace('-', '_')}") for item in falta)
+    return plataforma.dica_instalar(", ".join(t(f"voz.falta_{item.replace('-', '_')}") for item in falta))
 
 
 def falador():

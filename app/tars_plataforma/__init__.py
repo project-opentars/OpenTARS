@@ -28,10 +28,15 @@ Interface (devolvem o resultado ou levantam `NaoSuportado`/`OSError`):
     area_util()                             fora do Linux (no Linux o núcleo fala com o X direto: nucleo/janelas.py)
     programas()                             [{nome, outros_nomes, comando, id}] fora do Linux (no Linux: os .desktop)
     recursos()                              {função: existe neste sistema?} (para o diagnóstico)
+    lancador(nome)                          o comando instalado (opentars, opentars-gui), no PATH ou em ~/.local/bin
+    comando_instalar(*pacotes)              "sudo dnf install ..." com os nomes desta distribuição (só no Linux)
+    dica_instalar(texto)                    troca "sudo apt install x" num texto pelo comando desta distribuição
     descrever()                             sistema, versão, arquitetura, núcleos, RAM e Python (para os relatórios)
 """
 import os
 import platform
+import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -77,6 +82,28 @@ def pastas():
 
 def abrir(alvo):
     return _backend().abrir(alvo)
+
+
+def lancador(nome):
+    """O comando instalado (opentars, opentars-gui): no PATH ou em ~/.local/bin, onde os instaladores por usuário o põem
+    (o Arch e o macOS aberto pelo Finder não têm ~/.local/bin no PATH). None se não houver."""
+    local = Path.home() / ".local" / "bin" / nome
+    return shutil.which(nome) or (str(local) if local.is_file() and os.access(local, os.X_OK) else None)
+
+
+def comando_instalar(*pacotes):
+    """Os pacotes vêm com o nome do Debian; volta o comando com os nomes desta distribuição. Fora do Linux, None."""
+    return _backend().comando_instalar(*pacotes) if sistema() == "linux" else None
+
+
+_RE_APT = re.compile(r"sudo apt(?:-get)? install((?: [a-z0-9][\w.+:-]*)+)")
+
+
+def dica_instalar(texto):
+    """Troca "sudo apt install x y" num aviso pelo comando desta distribuição (dnf, pacman, zypper), com os nomes de lá."""
+    if sistema() != "linux" or (_backend().gerenciador() or "apt") == "apt":
+        return texto
+    return _RE_APT.sub(lambda m: comando_instalar(*m.group(1).split()), texto)
 
 
 def lixeira(caminho):

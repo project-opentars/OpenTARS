@@ -91,4 +91,20 @@ assert arquivo == casa / "cfg" / "autostart" / "opentars-teste.desktop", arquivo
 assert "Exec=opentars --x" in arquivo.read_text() and "Name=openTARS Teste" in arquivo.read_text()
 assert not p.autostart("opentars-teste", "openTARS Teste", ["opentars"], False) and not arquivo.exists()
 print("OK: início automático no Linux (~/.config/autostart)")
+
+from tars_plataforma import linux as lx  # noqa: E402
+original_gerenciador = lx.gerenciador
+try:
+    lx.gerenciador = lambda: "dnf"
+    assert p.dica_instalar("(sudo apt install python3-gi gir1.2-atspi-2.0 at-spi2-core).") == \
+        "(sudo dnf install python3-gobject at-spi2-core).", p.dica_instalar("(sudo apt install python3-gi gir1.2-atspi-2.0 at-spi2-core).")
+    lx.gerenciador = lambda: "pacman"
+    assert p.comando_instalar("python3-tk", "xclip") == "sudo pacman -S tk xclip"
+    lx.gerenciador = lambda: "zypper"
+    assert p.dica_instalar("PDF (sudo apt install poppler-utils).") == "PDF (sudo zypper install poppler-tools)."
+    lx.gerenciador = lambda: "apt"
+    assert p.dica_instalar("x: sudo apt install xclip") == "x: sudo apt install xclip"
+finally:
+    lx.gerenciador = original_gerenciador
+print("OK: as dicas de instalação usam o gerenciador e os nomes de pacote da distribuição (dnf, pacman, zypper)")
 print("test_plataforma: TUDO OK.")

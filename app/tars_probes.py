@@ -1327,8 +1327,8 @@ def comando_do_servico():
     if plataforma.sistema() == "windows":      # pythonw: o serviço roda sem janela de console
         pythonw = Path(sys.executable).with_name("pythonw.exe")
         return [str(pythonw if pythonw.exists() else sys.executable), tars, "--probes"]
-    if shutil.which("opentars"):
-        return ["opentars", "--probes"]
+    if plataforma.lancador("opentars"):
+        return [plataforma.lancador("opentars"), "--probes"]
     # no macOS aberto pelo Finder o PATH não tem ~/.local/bin, e o python3 do sistema não tem as bibliotecas
     return [os.environ.get("TARS_PYTHON") or sys.executable, tars, "--probes"]
 

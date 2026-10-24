@@ -41,10 +41,11 @@ def _buscar(timeout=5):
 
 
 def _desligado():
-    """TARS_SEM_AVISO_VERSAO desliga. Fora do Linux também: aqui se atualiza o .deb; no Windows e no macOS atualizar é rodar o
-    instalador de novo (5.2)."""
+    """TARS_SEM_AVISO_VERSAO desliga. Fora do Linux também: aqui se atualiza o .deb; no Windows, no macOS e no Linux
+    instalado pelo script (Fedora, Arch, openSUSE: deixa a marca .instalado-pelo-script) atualizar é rodar o instalador de
+    novo (5.2)."""
     return (os.environ.get("TARS_SEM_AVISO_VERSAO", "0") not in ("0", "", "off", "no", "nao")
-            or plataforma.sistema() != "linux")
+            or plataforma.sistema() != "linux" or (Path(__file__).resolve().parent / ".instalado-pelo-script").exists())
 
 
 def versao_publicada(agora=None, buscar=None, cache=None):

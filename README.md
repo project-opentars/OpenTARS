@@ -24,7 +24,7 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 
 ## Download and install
 
-**Linux:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Windows and macOS: [experimental, below](#windows-and-macos-experimental-coming-in-52).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
+**Linux:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Fedora, Arch, openSUSE, Windows and macOS: [experimental, below](#windows-macos-and-other-linux-experimental-coming-in-52).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
 
 ```bash
 wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
@@ -51,7 +51,7 @@ opentars-gui
 
 Details, environment variables and WSL are in [Installation](#installation). Your history and settings are kept on updates.
 
-### Windows and macOS (experimental, coming in 5.2)
+### Windows, macOS and other Linux (experimental, coming in 5.2)
 
 **Not tested on a real Windows or Mac yet.** Both installers pass our automatic tests on GitHub's Windows and macOS machines (install, diagnosis, window, removal), but nobody has used openTARS on them day to day. Those machines have no microphone and nobody at the keyboard, so some parts below were written but have never run. No administrator password is needed: everything goes into your user folder, with Python brought by [uv](https://docs.astral.sh/uv/) and the official Ollama.
 
@@ -71,7 +71,15 @@ curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/
 
 Then open **openTARS** from `~/Applications` (it is built on your Mac and signed there, so macOS does not quarantine it). macOS asks for **Accessibility**, **Screen Recording** and, for voice, the **Microphone** in System Settings → Privacy & Security. What it does: the same as on Windows, with the text actions on `Control+Option+R` (Control, not Command, so your apps keep their shortcuts). Checked on GitHub's Mac: files, the clipboard, the Trash, start at login, the list of apps and windows, and, with Accessibility allowed, listing the elements of a TextEdit document, filling its text by name and moving its window. Never run yet: selecting text for the text actions, the shortcuts, voice.
 
-To help us, run these in a new terminal and send us the reports they save in your home folder: `opentars --diagnostico` (checks everything) and `opentars --prova` (48 everyday tasks with the real AI, in a temporary folder). On macOS the commands are in `~/.local/bin`. Running the install command again updates. To remove:
+**Fedora, Arch, openSUSE and other Linux without `.deb`**, in a terminal:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/linux/instalar.sh | bash
+```
+
+It is the same app as on Ubuntu. The system packages it uses come from your distribution's package manager (`dnf`, `pacman` or `zypper`), and that step and Ollama's official installer are the only ones that ask for your password; everything else goes into your user folder, with your distribution's Python. Then open **openTARS** from the application menu. On Arch, update the system first (`sudo pacman -Syu`). Checked in containers of Fedora 44, Arch and openSUSE Tumbleweed: install, a normal user, the accessibility library, the diagnosis, the real window on a virtual screen and the removal. Not used on a real desktop yet.
+
+To help us, run these in a new terminal and send us the reports they save in your home folder: `opentars --diagnostico` (checks everything) and `opentars --prova` (48 everyday tasks with the real AI, in a temporary folder). On macOS and the other Linux the commands are in `~/.local/bin`. Running the install command again updates. To remove:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1))) -Remover
@@ -79,6 +87,10 @@ To help us, run these in a new terminal and send us the reports they save in you
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash -s -- --remover
+```
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/linux/instalar.sh | bash -s -- --remover
 ```
 
 <div align="center">

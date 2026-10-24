@@ -4,7 +4,6 @@
   descarrega na hora (keep_alive 0). O Gargantua 2 só carrega quando uma ação pede (texto longo) e descarrega sozinho.
 - Iniciar com o sistema: só se a pessoa ligar; sobe o openTARS escondido (`opentars-gui --residente`), com o ícone na bandeja.
 - O atalho das ações de texto é à parte (`tars_atalho.registrar_acoes`)."""
-import shutil
 import sys
 from pathlib import Path
 
@@ -44,7 +43,7 @@ def comando_residente():
         sem_console = python.with_name("pythonw.exe")
         return [str(sem_console if sem_console.exists() else python), "-m", "tars_qt", "--residente"]
     # shortcut: rodando da fonte (sem o pacote instalado) o início com o sistema não acha o opentars-gui; só vale instalado
-    return [shutil.which("opentars-gui") or "opentars-gui", "--residente"]
+    return [plataforma.lancador("opentars-gui") or "opentars-gui", "--residente"]
 
 
 def inicia_com_sistema():

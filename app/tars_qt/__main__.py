@@ -6,7 +6,6 @@ Abre o assistente de primeiro uso (se ainda não foi feito, ou com
 
 import os
 import time
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -27,7 +26,8 @@ def abrir_principal(argv=None):
             JanelaPrincipal = None
         if JanelaPrincipal is not None:
             return _rodar_principal(argv, criar_aplicativo, JanelaPrincipal)
-    comando = shutil.which("opentars-gui")
+    import tars_plataforma
+    comando = tars_plataforma.lancador("opentars-gui")
     extra = [a for a in argv if a in ("--rapido", "--quick")]
     argumentos = [comando, "--tk"] + extra if comando else [sys.executable, str(RAIZ / "tars_gui.py"), "--tk"] + extra
     subprocess.Popen(argumentos, start_new_session=True)

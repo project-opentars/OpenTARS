@@ -48,7 +48,8 @@ def _socket():
 def motivo_indisponivel(executar=subprocess.run):
     """None se o ydotool 1.x estiver pronto; senão, o motivo (em inglês, pra IA/log)."""
     if not shutil.which("ydotool"):
-        return "ydotool is not installed (sudo apt install ydotool)"
+        import tars_plataforma
+        return tars_plataforma.dica_instalar("ydotool is not installed (sudo apt install ydotool)")
     try:
         ajuda = executar(["ydotool", "mousemove", "--help"], capture_output=True, text=True, timeout=5)
         texto = (ajuda.stdout or "") + (ajuda.stderr or "")

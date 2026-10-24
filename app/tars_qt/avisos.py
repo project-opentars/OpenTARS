@@ -6,7 +6,6 @@ processos e se entendem pelo arquivo."""
 import datetime as dt
 import html
 import os
-import shutil
 import subprocess
 import sys
 import threading
@@ -269,7 +268,9 @@ def rodar_bandeja(host, instalados_de, comando_abrir=None):
     menu = QMenu()
 
     def abrir_app():
-        subprocess.Popen(comando_abrir or ([shutil.which("opentars")] if shutil.which("opentars") else
+        import tars_plataforma
+        lancador = tars_plataforma.lancador("opentars")
+        subprocess.Popen(comando_abrir or ([lancador] if lancador else
                                            [sys.executable, str(Path(__file__).resolve().parent.parent / "tars.py")]),
                          stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                          start_new_session=True)

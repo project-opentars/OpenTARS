@@ -72,6 +72,18 @@ jobs:
       - run: pip install requests psutil pyautogui pillow PySide6-Essentials
       - run: python -c "import tars"
 
+  instalador_outros_linux:
+    # o instalar.sh de ponta a ponta em contêineres (sem Ollama): pacotes do sistema, usuário comum, AT-SPI, diagnóstico,
+    # alguns testes, a janela Qt de verdade num X virtual e a remoção
+    strategy:
+      fail-fast: false
+      matrix: {imagem: ["fedora:latest", "archlinux:latest", "opensuse/tumbleweed:latest"]}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar e conferir no contêiner
+        run: docker run --rm -v "$PWD/app:/fonte:ro" ${{ matrix.imagem }} bash /fonte/empacotamento/linux/testar_conteiner.sh
+
   instalador_windows:
     # o instalar.ps1 de ponta a ponta com o código deste commit (sem baixar o Ollama), o app instalado e a remoção
     runs-on: windows-latest

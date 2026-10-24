@@ -185,7 +185,8 @@ def _texto_do_pdf(caminho):
         leitor = pypdf.PdfReader(str(caminho))
         return "\n\n".join((p.extract_text() or "") for p in leitor.pages)
     except ImportError:
-        raise ErroAnexo("To read PDFs install poppler-utils (sudo apt install poppler-utils).")
+        import tars_plataforma
+        raise ErroAnexo(tars_plataforma.dica_instalar("To read PDFs install poppler-utils (sudo apt install poppler-utils)."))
     except Exception as e:
         raise ErroAnexo(f"I could not read the PDF ({type(e).__name__}).")
 

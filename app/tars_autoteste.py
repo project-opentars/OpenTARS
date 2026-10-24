@@ -183,7 +183,8 @@ def diagnostico(core, rel):
 
     motivo = acess.indisponivel()
     if motivo:
-        dica = " → sudo apt install gir1.2-atspi-2.0 python3-gi at-spi2-core" if core.plataforma.sistema() == "linux" else ""
+        dica = (" → " + core.plataforma.comando_instalar("gir1.2-atspi-2.0", "python3-gi", "at-spi2-core")
+                if core.plataforma.sistema() == "linux" else "")
         rel.item(False, t("diag.acessibilidade"), f"{motivo}{dica}")
     else:
         acessiveis = acess.janelas()
@@ -196,13 +197,13 @@ def diagnostico(core, rel):
         return bool(versao and conversa)       # área de transferência e atalho deste sistema: na linha "Plataforma" acima
 
     copia = next((p for p in ("wl-copy", "xclip", "xsel") if shutil.which(p)), None)
-    rel.item(True if copia else None, t("diag.clipboard"), copia or t("diag.clipboard_falta"))
+    rel.item(True if copia else None, t("diag.clipboard"), copia or core.plataforma.dica_instalar(t("diag.clipboard_falta")))
 
     try:
         import tkinter  # noqa: F401
         rel.item(True, t("diag.interface"), "tkinter")
     except Exception as e:
-        rel.item(False, t("diag.interface"), f"{e} → sudo apt install python3-tk")
+        rel.item(False, t("diag.interface"), f"{e} → {core.plataforma.comando_instalar('python3-tk')}")
 
     try:
         import tars_atalho
@@ -328,7 +329,7 @@ def _print_da_tela(core, rel, t):
         img = core._capturar_tela()
         ms = (time.time() - inicio) * 1000
         if core.SESSAO_GRAFICA == "wayland" and core._imagem_toda_preta(img):
-            rel.item(False, t("diag.print"), t("diag.print_preto"))
+            rel.item(False, t("diag.print"), core.plataforma.dica_instalar(t("diag.print_preto")))
         else:
             rel.item(True, t("diag.print"), f"{img.size[0]}x{img.size[1]} · {ms:.0f} ms")
     except Exception as e:

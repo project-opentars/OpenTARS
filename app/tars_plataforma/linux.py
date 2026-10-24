@@ -14,6 +14,29 @@ def _wayland():
     return bool(os.environ.get("WAYLAND_DISPLAY")) or os.environ.get("XDG_SESSION_TYPE", "").lower() == "wayland"
 
 
+# Nome do pacote no Debian -> nos outros gerenciadores (só os que o app cita nas dicas; os iguais não precisam estar aqui)
+PACOTES = {
+    "python3-gi": {"dnf": "python3-gobject", "pacman": "python-gobject", "zypper": "python3-gobject"},
+    "gir1.2-atspi-2.0": {"dnf": "at-spi2-core", "pacman": "at-spi2-core", "zypper": "typelib-1_0-Atspi-2_0"},
+    "python3-tk": {"dnf": "python3-tkinter", "pacman": "tk", "zypper": "python3-tk"},
+    "poppler-utils": {"pacman": "poppler", "zypper": "poppler-tools"},
+    "libnotify-bin": {"dnf": "libnotify", "pacman": "libnotify", "zypper": "libnotify-tools"},
+}
+INSTALAR = {"apt": "sudo apt install", "dnf": "sudo dnf install", "pacman": "sudo pacman -S", "zypper": "sudo zypper install"}
+
+
+def gerenciador():
+    """apt, dnf, pacman ou zypper: o gerenciador de pacotes desta distribuição (None se nenhum conhecido)."""
+    return next((nome for programa, nome in (("apt-get", "apt"), ("dnf", "dnf"), ("pacman", "pacman"), ("zypper", "zypper"))
+                 if shutil.which(programa)), None)
+
+
+def comando_instalar(*pacotes):
+    qual = gerenciador() or "apt"
+    nomes = dict.fromkeys(p if qual == "apt" else PACOTES.get(p, {}).get(qual, p) for p in pacotes)
+    return f"{INSTALAR[qual]} {' '.join(nomes)}"
+
+
 def abrir(alvo):
     subprocess.Popen(["xdg-open", str(alvo)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
 

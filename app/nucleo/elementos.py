@@ -168,7 +168,8 @@ def _janela_acessivel(nome):
 
     motivo = acess.indisponivel()
     if motivo:
-        aviso = AVISO_SEM_ACESSIBILIDADE if plataforma.sistema() == "linux" else AVISO_SEM_ACESSIBILIDADE.split(" (To enable")[0]
+        aviso = (plataforma.dica_instalar(AVISO_SEM_ACESSIBILIDADE) if plataforma.sistema() == "linux"
+                 else AVISO_SEM_ACESSIBILIDADE.split(" (To enable")[0])
         return None, aviso.format(motivo=motivo)
     if nome and _sem_arvore(nome):
         return None, _mensagem_sem_arvore(nome)

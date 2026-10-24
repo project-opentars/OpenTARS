@@ -599,7 +599,7 @@ def _capturar_tela():
     except Exception as e:
         erros.append(str(e))
 
-    dica = (
+    dica = plataforma.dica_instalar(
         " Install a screenshot tool: sudo apt install gnome-screenshot "
         "(GNOME/Zorin/Ubuntu), kde-spectacle (KDE) or grim (Sway/Hyprland)."
         if SESSAO_GRAFICA == "wayland"

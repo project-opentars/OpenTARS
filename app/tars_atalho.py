@@ -126,7 +126,7 @@ def _eh_nosso(comando, marca=MARCA_COMANDO):
 
 
 def comando_barra_rapida(marca=MARCA_COMANDO):
-    lancador = shutil.which("opentars-gui")
+    lancador = plataforma.lancador("opentars-gui")
     if lancador:
         return f"{lancador} {marca}"
     gui = Path(__file__).resolve().with_name("tars_gui.py")
