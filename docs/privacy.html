@@ -44,13 +44,17 @@
         <li>No account, no telemetry and no analytics.</li>
         <li>Your chats, memory and settings are files in your home folder. Settings → Memory &amp; privacy shows what openTARS remembers, forgets items one by one and erases everything.</li>
         <li>The log (<code>~/.tars_log</code>) records the actions taken, in a private folder. It keeps only the length of text typed on your behalf, not the text itself.</li>
+        <li><strong>Text actions</strong> read the text you selected only when you press the shortcut, and Replace puts back what you had copied. openTARS never reads the clipboard in the background, and the selected text is treated as material, never as instructions.</li>
+        <li><strong>Edited photos</strong> are saved as a new copy without the location and device data the camera wrote; the original is not changed.</li>
+        <li>The <strong>suggestion based on the program you are using</strong> is off by default. When on, it looks at the name and title of the active window at that moment and saves nothing.</li>
       </ul>
     </article>
 
     <article>
       <h2>What can leave it</h2>
       <ul>
-        <li><strong>The update check.</strong> At most once a day, read-only requests to GitHub (<code>api.github.com</code>, <code>raw.githubusercontent.com</code>, <code>github.com</code>) to see if there is a new package. Nothing about you is sent besides the request itself. <code>TARS_SEM_AVISO_VERSAO=1</code> turns it off.</li>
+        <li><strong>The update check.</strong> When the window opens and every 6 hours while it stays open, read-only requests to GitHub (<code>api.github.com</code>, <code>raw.githubusercontent.com</code>, <code>github.com</code>) to see if there is a new package. Nothing about you is sent besides the request itself. <code>TARS_SEM_AVISO_VERSAO=1</code> turns it off.</li>
+        <li><strong>The model check.</strong> When the window opens and every 6 hours, openTARS asks Ollama's registry (<code>registry.ollama.ai</code>) for the description of the published Gargantua, to tell you when yours is older. Nothing is downloaded until you click Update.</li>
         <li><strong>The cloud, only if you turn it on.</strong> The text you write and the screenshots you ask about go to the provider you chose, with your own key or account. The key is stored only on this computer, never shown, never written to the log and never passed to the commands the AI runs. A cloud model is never picked automatically, and the window warns you when your text goes to a provider.</li>
         <li><strong>Model downloads.</strong> The installer downloads Gargantua 2 from Ollama.</li>
         <li><strong>Websites you ask for.</strong> When you ask openTARS to open or search a site, your browser visits it as usual.</li>
@@ -74,7 +78,7 @@
 
     <article>
       <h2>Report a security issue</h2>
-      <p>Write to <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a> before opening a public issue. Include the openTARS version (<code>opentars --version</code>), your distro, what you did and what happened. Reports are answered as soon as possible, and fixes ship as a new package that installed copies pick up on their own.</p>
+      <p>Write to <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a> before opening a public issue. Include the openTARS version (<code>opentars --version</code>), your system (Linux distro, Windows or macOS version), what you did and what happened. Reports are answered as soon as possible, and fixes ship as a new package that installed copies pick up on their own.</p>
     </article>
   </div>
 </main>

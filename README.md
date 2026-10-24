@@ -4,27 +4,27 @@
 
 # openTARS
 
-**The local AI assistant for Linux, now with an AI trained just for it.**
+**The local AI assistant for Linux, Windows and macOS, with an AI trained just for it.**
 
 Ask in your own words. It opens programs, clicks buttons by their name, types, searches the web, looks at the screen and runs commands.<br>
 With a local Ollama model, processing stays on your machine. Ollama Cloud is optional and only used when you choose a cloud model. No subscription.<br>
-**5.1 Tesseract:** three modes (Lite, Base and Pro), **Probes** that watch things for you in the background, a terminal on par with today's AI command-line tools, the cloud through your Ollama account and web search through SearXNG. **Gargantua 2** is now the official AI: smaller, and it sees the screen by itself. **Cooper has been discontinued.**
+**5.2 Ranger:** openTARS comes to **Windows and macOS** (and Fedora, Arch and openSUSE) with one command each, and becomes an assistant for the whole system: a **launcher** on the quick bar, **text actions** in any app (`Ctrl+Alt+R`), actions on **selected files**, **photo edits** by sentence, and a **Gargantua 2 retrained** to say when it does not know.
 
-[![Version 5.1 Tesseract](https://img.shields.io/badge/version-5.1%20Tesseract-5FD97A?style=flat-square)](#installation)
+[![Version 5.2 Ranger](https://img.shields.io/badge/version-5.2%20Ranger-5FD97A?style=flat-square)](#installation)
 [![Official AI: Gargantua 2](https://img.shields.io/badge/official%20AI-Gargantua%202-5FD97A?style=flat-square)](#gargantua-the-official-ai)
 [![MIT License](https://img.shields.io/badge/license-MIT-5FD97A?style=flat-square)](LICENSE)
-[![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%C2%B7%20Mint%20%C2%B7%20Zorin%20%C2%B7%20Debian-1A2446?style=flat-square&logo=linux&logoColor=white)](#compatibility)
+[![Linux, Windows, macOS](https://img.shields.io/badge/runs%20on-Linux%20%C2%B7%20Windows%20%C2%B7%20macOS-1A2446?style=flat-square)](#compatibility)
 [![Ollama](https://img.shields.io/badge/runs%20on-Ollama-1A2446?style=flat-square)](https://ollama.com)
 [![Languages](https://img.shields.io/badge/languages-EN%20%C2%B7%20PT--BR-1A2446?style=flat-square)](#languages)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[What's new](#whats-new-in-51-tesseract) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
+[What's new](#whats-new-in-52-ranger) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
 
 </div>
 
 ## Download and install
 
-**Linux:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Fedora, Arch, openSUSE, Windows and macOS: [experimental, below](#windows-macos-and-other-linux-experimental-coming-in-52).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
+**Linux:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Windows, macOS, Fedora, Arch and openSUSE: [one command each, below](#windows-macos-and-other-linux-new-in-52-still-early).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
 
 ```bash
 wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
@@ -51,9 +51,9 @@ opentars-gui
 
 Details, environment variables and WSL are in [Installation](#installation). Your history and settings are kept on updates.
 
-### Windows, macOS and other Linux (experimental, coming in 5.2)
+### Windows, macOS and other Linux (new in 5.2, still early)
 
-**Not tested on a real Windows or Mac yet.** Both installers pass our automatic tests on GitHub's Windows and macOS machines (install, diagnosis, window, removal), but nobody has used openTARS on them day to day. Those machines have no microphone and nobody at the keyboard, so some parts below were written but have never run. No administrator password is needed: everything goes into your user folder, with Python brought by [uv](https://docs.astral.sh/uv/) and the official Ollama.
+**Early.** Windows had its first run on a real laptop on October 24: the first-run window froze while checking the graphics card and its step 4 did not continue; both are fixed. No real Mac has run openTARS yet. Both installers, and the first run, the main window, the quick bar, the text actions and the Probes, pass our automatic tests on GitHub's Windows and macOS machines, but nobody has used openTARS on them day to day. Those machines have no microphone and nobody at the keyboard, so some parts below were written but have never run. No administrator password is needed: everything goes into your user folder, with Python brought by [uv](https://docs.astral.sh/uv/) and the official Ollama.
 
 **Windows 10 or 11**, in PowerShell:
 
@@ -137,6 +137,37 @@ With a local model and web search off, your conversation and screen stay on your
 </td>
 </tr>
 </table>
+
+## What's new in 5.2 Ranger
+
+5.2 takes openTARS beyond Ubuntu and makes it an assistant for the whole system, the way assistants built into an operating system work, always with Ollama and Gargantua. **Windows and macOS are early**: see [what was tested](#windows-macos-and-other-linux-new-in-52-still-early).
+
+<table>
+<tr>
+<td width="38%"><img src="docs/img/real-52-launcher.png" alt="The quick bar with nothing typed, offering: do a task on the computer, ask about the screen, find a file, search the web and create a reminder"></td>
+<td width="31%"><img src="docs/img/real-52-text-actions.png" alt="The text actions panel rewriting a selected sentence, with Replace in the text, Copy and Discard"></td>
+<td width="31%"><img src="docs/img/real-52-photo.png" alt="Editing a selected photo: square and brighter, with a before and after preview and the button to save a copy"></td>
+</tr>
+<tr>
+<td align="center"><sub>The launcher: the quick bar with nothing typed</sub></td>
+<td align="center"><sub>Text actions in any app (<code>Ctrl+Alt+R</code>)</sub></td>
+<td align="center"><sub>A photo edited by sentence, saved as a copy</sub></td>
+</tr>
+</table>
+
+| | |
+|---|---|
+| 🪟 **Windows and macOS** | One command each, no administrator password (Python through uv, Ollama and openTARS in your user folder). On Windows, programs open and close by name (Start menu apps included), windows move, and buttons and fields are clicked and filled by name through UI Automation; Gargantua's file commands (`mkdir`, `ls`, `mv`, `rm`...) run in Python, since Windows has no bash, and the dangerous-command rules still read them. On macOS, `openTARS.app` is built and signed on your Mac, and clicking by name uses Accessibility. The first run has a step for the shortcut and, on a Mac, Accessibility and Screen Recording |
+| 🐧 **Fedora, Arch and openSUSE** | A one-line installer with packages from `dnf`, `pacman` or `zypper`, tested in containers, including the real window on a virtual screen |
+| 🚀 **The launcher** | Open the quick bar with nothing typed and it offers five things: **do a task** on the computer, **ask about the screen**, **find a file**, **search the web** and **create a reminder**. Finding a file looks at names, folders and the text inside documents (PDF too), with no index and no model; results only open what the search found |
+| ✍️ **Text actions in any app** | Select text and press `Ctrl+Alt+R` (`Control+Option+R` on a Mac): **fix**, **more formal**, **simpler**, **summarize**, **translate** between English and Portuguese, or **ask** about it. **Replace** puts the result back and restores what you had copied. Text in, text out: no tools run, and the selected text is material, never instructions. In our test of 76 text tasks Gargantua 2 got 71 right and the Lite 64. The shortcut is off until you turn it on in **Settings → Assistant** |
+| 📂 **Actions on selected files** | Summarize, rename by content with a preview you can edit, move, or send to the trash after you confirm; renaming and moving can be undone while the panel is open |
+| 🖼️ **Edit a photo with a sentence** | "Crop it square and make it brighter", in English or Portuguese: crop (square, 16:9, 4:3, 3:2), rotate, mirror, brighter or darker, contrast, black and white, shrink for email, change the format. A before and after preview first; the result is always a **new copy** without location and device data. No image model: a 12-megapixel photo takes 0.35 s |
+| 🛎️ **Assistant** | An icon next to the clock with the text actions. **Assistant on** keeps the model in memory so actions answer at once; a suggestion based on the program you are using can be turned on. Everything is off by default |
+| 🪐 **Gargantua 2 retrained** | Trained again with the 5.2 examples (saying it does not know, conversation, text actions, answering from search results with the source, Windows and macOS): 73 of 80 everyday tasks, and 68 for the Lite. openTARS tells you when the Gargantua you have is older than the published one |
+| 🧪 **Check it yourself** | `opentars --prova` runs 48 everyday tasks with your model in a temporary folder and saves a report (Gargantua 2 does 46 of 48 on Linux); `opentars --diagnostico` saves a report about your system; `opentars --desinstalar` removes openTARS on any system and asks before deleting your data or models |
+
+**Not in 5.2:** Probes inside an isolated computer, MCP, sub-agents and terminal hooks are planned for 5.3. Voice and the global shortcuts were written for Windows and macOS but have never run there.
 
 ## What's new in 5.1 Tesseract
 
@@ -525,7 +556,9 @@ The AI answers in the chosen language. Spanish, French and German left the inter
 
 | | Works | Notes |
 |---|---|---|
-| **Distros** | Ubuntu 22.04+, Debian 12+, Mint, Zorin, Pop!_OS and derivatives | needs `apt` |
+| **Distros** | Ubuntu 22.04+, Debian 12+, Mint, Zorin, Pop!_OS and derivatives (`.deb`); Fedora, Arch and openSUSE (script, tested in containers) | |
+| **Windows** | 10 and 11, by the PowerShell command | new in 5.2: first run on a real laptop on October 24; voice and the shortcuts never ran there |
+| **macOS** | 12 or newer, by the Terminal command | new in 5.2: only GitHub's macOS machines so far, no real Mac |
 | **Desktop** | GNOME, KDE, Cinnamon, XFCE, MATE and others | menu apps, Snap and Flatpak, by name in any language |
 | **Xorg (X11) session** | everything | |
 | **Wayland session** | chat, opening apps and sites, commands, screenshots and **clicking by name** | click and typing by coordinate only reach some apps (a Wayland limitation); not yet validated on a clean install |
@@ -683,6 +716,12 @@ The file is not in the current folder. Go to the folder where it was downloaded 
 ## Uninstall
 
 ```bash
+opentars --desinstalar
+```
+
+It works on every system and asks before deleting your data or the models. On Ubuntu and Debian you can also do it by hand:
+
+```bash
 opentars --atalho off     # optional: removes the global shortcut
 sudo apt remove opentars
 ```
@@ -691,7 +730,7 @@ Ollama, the downloaded models and your data (`~/.tars_sessoes.json`, `~/.tars_lo
 
 ## For developers
 
-The source of the app is in [`app/`](app/): it is the development version (what will become 5.2: Windows, macOS and other Linux, and the assistant with text actions), while `opentars_all.deb` at the top of this repository is the current release. The tests run on every change on Linux, Windows and macOS through GitHub Actions ([`.github/workflows/testes.yml`](.github/workflows/testes.yml)). Gargantua's training kit is not in this repository.
+The source of the app is in [`app/`](app/) (the Windows, macOS and other Linux installers install from it), and `opentars_all.deb` at the top of this repository is the same release packaged for Ubuntu and Debian. The tests run on every change on Linux, Windows and macOS through GitHub Actions ([`.github/workflows/testes.yml`](.github/workflows/testes.yml)). Gargantua's training kit is not in this repository.
 
 ```
 tars.py                 start of the core: graphical session, configuration, and loads the parts of nucleo/
