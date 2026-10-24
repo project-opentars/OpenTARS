@@ -24,7 +24,7 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 
 ## Download and install
 
-Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
+**Linux:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Windows and macOS: [experimental, below](#windows-and-macos-experimental-coming-in-52).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
 
 ```bash
 wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
@@ -50,6 +50,36 @@ opentars-gui
 | Uninstall | `sudo apt remove opentars` |
 
 Details, environment variables and WSL are in [Installation](#installation). Your history and settings are kept on updates.
+
+### Windows and macOS (experimental, coming in 5.2)
+
+**Not tested on a real Windows or Mac yet.** Both installers pass our automatic tests on GitHub's Windows and macOS machines (install, diagnosis, window, removal), but nobody has used openTARS on them day to day. No administrator password is needed: everything goes into your user folder, with Python brought by [uv](https://docs.astral.sh/uv/) and the official Ollama.
+
+**Windows 10 or 11**, in PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex
+```
+
+Then open **openTARS** from the Start menu (the first time it downloads Gargantua 2). What already works: the window and the chat, files and folders (the commands Gargantua learned run in Python, since Windows has no bash), the quick bar with `Ctrl+Alt+Space` and the text actions with `Ctrl+Alt+R` while openTARS is open (turn the shortcut on in **Settings → Assistant**). Not yet: opening programs by name, clicking buttons by their name, voice.
+
+**macOS 12 or newer**, in Terminal:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash
+```
+
+Then open **openTARS** from `~/Applications` (it is built on your Mac and signed there, so macOS does not quarantine it). macOS asks for **Accessibility** and **Screen Recording** in System Settings → Privacy & Security. What already works: the window and the chat, files and folders, looking at the screen. Not yet: text actions, the global shortcut, clicking buttons by their name, voice.
+
+To help us, run these in a new terminal and send us the reports they save in your home folder: `opentars --diagnostico` (checks everything) and `opentars --prova` (48 everyday tasks with the real AI, in a temporary folder). On macOS the commands are in `~/.local/bin`. Running the install command again updates. To remove:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1))) -Remover
+```
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash -s -- --remover
+```
 
 <div align="center">
 
