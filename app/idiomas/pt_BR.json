@@ -449,7 +449,7 @@
  "lista.nenhum_modelo": "Nenhum modelo encontrado no Ollama (ele pode estar offline, ou nenhum modelo foi baixado ainda — use 'ollama pull <modelo>').",
  "lista.capacidades": "capacidades",
  "lista.embeddings": "{n} modelo(s) de embedding instalado(s) não aparecem aqui — servem só para gerar vetores, não para conversar, então não entram na escolha de IA.",
- "aviso.ollama_offline": "O Ollama não está respondendo em {host}. Inicie o serviço (sudo systemctl start ollama) ou confira a variável OLLAMA_HOST. Sem ele, o openTARS não tem IA pra responder.",
+ "aviso.ollama_offline": "O Ollama não está respondendo em {host}. Abra o Ollama (no Linux: sudo systemctl start ollama; no Windows e no macOS: o app Ollama) ou confira a variável OLLAMA_HOST. Sem ele, o openTARS não tem IA pra responder.",
  "aviso.sem_display": "nenhuma sessão gráfica encontrada (variável DISPLAY vazia)",
  "aviso.sem_mouse": "Controle de mouse/teclado desligado: {motivo}. Conversa, abrir apps/sites e comandos de terminal continuam funcionando.",
  "aviso.wayland": "Sessão Wayland: abrir apps/sites, comandos, prints e cliques pelo nome do botão funcionam, mas cliques e digitação por coordenada só chegam a alguns aplicativos. Para controle total, na tela de login clique na engrenagem e escolha a sessão com \"Xorg\".",
@@ -1596,5 +1596,6 @@
  "cfg.assist.erro": "Não deu certo: {erro}",
  "rot.tray_acoes": "Ações de texto com o que está selecionado",
  "rot.tray_assistente": "Assistente ligado",
- "atalho.acoes_windows": "No Windows, {atalho} abre as ações de texto enquanto o openTARS estiver aberto (o ícone perto do relógio). Para valer desde o começo do dia, ligue Iniciar com o sistema."
+ "atalho.acoes_windows": "No Windows, {atalho} abre as ações de texto enquanto o openTARS estiver aberto (o ícone perto do relógio). Para valer desde o começo do dia, ligue Iniciar com o sistema.",
+ "diag.fora_do_linux": "janelas, clique pelo nome e atalho global deste sistema ainda estão sendo feitos (5.2); o que já existe está na linha Plataforma"
 }

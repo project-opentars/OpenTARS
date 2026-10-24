@@ -172,6 +172,13 @@ def diagnostico(core, rel):
     else:
         rel.item(True, t("diag.mouse"), "pyautogui")
 
+    if core.plataforma.sistema() != "linux":
+        # janelas, clique pelo nome, área de transferência e atalho deste sistema: na linha "Plataforma" acima
+        if core.SESSAO_GRAFICA != "nenhuma":
+            _print_da_tela(core, rel, t)
+        rel.item("info", t("diag.acessibilidade"), t("diag.fora_do_linux"))
+        return bool(versao and conversa)
+
     janelas = core.listar_janelas_x()
     if janelas is None:
         rel.item(None if core.SESSAO_GRAFICA == "wayland" else False, t("diag.janelas"), t("diag.janelas_sem_x"))
@@ -179,16 +186,7 @@ def diagnostico(core, rel):
         rel.item(True, t("diag.janelas"), t("diag.janelas_ok", n=len(janelas)))
 
     if core.SESSAO_GRAFICA != "nenhuma":
-        inicio = time.time()
-        try:
-            img = core._capturar_tela()
-            ms = (time.time() - inicio) * 1000
-            if core.SESSAO_GRAFICA == "wayland" and core._imagem_toda_preta(img):
-                rel.item(False, t("diag.print"), t("diag.print_preto"))
-            else:
-                rel.item(True, t("diag.print"), f"{img.size[0]}x{img.size[1]} · {ms:.0f} ms")
-        except Exception as e:
-            rel.item(False, t("diag.print"), str(e)[:200])
+        _print_da_tela(core, rel, t)
 
     motivo = acess.indisponivel()
     if motivo:
@@ -328,6 +326,19 @@ def _teste_calculadora(core, rel):
             pass
 
 
+def _print_da_tela(core, rel, t):
+    inicio = time.time()
+    try:
+        img = core._capturar_tela()
+        ms = (time.time() - inicio) * 1000
+        if core.SESSAO_GRAFICA == "wayland" and core._imagem_toda_preta(img):
+            rel.item(False, t("diag.print"), t("diag.print_preto"))
+        else:
+            rel.item(True, t("diag.print"), f"{img.size[0]}x{img.size[1]} · {ms:.0f} ms")
+    except Exception as e:
+        rel.item(False, t("diag.print"), str(e)[:200])
+
+
 def executar(core, completo=False):
     """Roda o diagnóstico (e, com completo=True, o autoteste). Devolve o
     código de saída: 0 sem falhas, 1 com alguma."""
@@ -351,7 +362,7 @@ def executar(core, completo=False):
     resumo = t("diag.resumo", falhas=rel.falhas, avisos=rel.avisos)
     rel.linhas.append("\n" + resumo)
     print(core.c(resumo, core.Cor.VERDE if not rel.falhas else core.Cor.AMARELO))
-    if completo and rel.salvar():
+    if rel.salvar():         # 5.2: o diagnóstico também salva (é o que o amigo com o Mac manda de volta)
         print(core.c(t("auto.relatorio_salvo", arquivo=ARQUIVO_RELATORIO), core.Cor.CINZA))
     print()
     sys.stdout.flush()

@@ -108,8 +108,9 @@ if (-not $SemOllama) {
 # 4. Comandos (opentars, opentars-gui) e o atalho no Menu Iniciar
 $python = Join-Path $Venv "Scripts\python.exe"
 $pythonw = Join-Path $Venv "Scripts\pythonw.exe"
-Set-Content -Encoding ASCII -Path (Join-Path $Bin "opentars.cmd") -Value "@echo off`r`n`"$python`" `"$App\tars.py`" %*"
-Set-Content -Encoding ASCII -Path (Join-Path $Bin "opentars-gui.cmd") -Value "@echo off`r`ncd /d `"$App`"`r`nstart `"`" `"$pythonw`" -m tars_qt %*"
+# PYTHONUTF8: acentos certos quando a saída vai para um arquivo ou outro programa
+Set-Content -Encoding ASCII -Path (Join-Path $Bin "opentars.cmd") -Value "@echo off`r`nset PYTHONUTF8=1`r`n`"$python`" `"$App\tars.py`" %*"
+Set-Content -Encoding ASCII -Path (Join-Path $Bin "opentars-gui.cmd") -Value "@echo off`r`nset PYTHONUTF8=1`r`ncd /d `"$App`"`r`nstart `"`" `"$pythonw`" -m tars_qt %*"
 $caminho = [Environment]::GetEnvironmentVariable("Path", "User")
 if (-not $caminho) { $caminho = "" }
 if (($caminho -split ";") -notcontains $Bin) {

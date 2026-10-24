@@ -411,7 +411,7 @@
  "lista.nenhum_modelo": "No models found in Ollama (it may be offline, or no model was downloaded yet — use 'ollama pull <model>').",
  "lista.capacidades": "capabilities",
  "lista.embeddings": "{n} installed embedding model(s) are not shown — they only generate vectors, not conversation, so they are not picked as a chat AI.",
- "aviso.ollama_offline": "Ollama is not responding at {host}. Start the service (sudo systemctl start ollama) or check the OLLAMA_HOST variable. Without it, openTARS has no AI to answer.",
+ "aviso.ollama_offline": "Ollama is not responding at {host}. Start Ollama (on Linux: sudo systemctl start ollama; on Windows and macOS: the Ollama app) or check the OLLAMA_HOST variable. Without it, openTARS has no AI to answer.",
  "aviso.sem_display": "no graphical session found (DISPLAY is empty)",
  "aviso.sem_mouse": "Mouse/keyboard control is off: {motivo}. Chat, opening apps/websites and terminal commands still work.",
  "aviso.wayland": "Wayland session: opening apps/websites, commands, screenshots and clicking buttons by name work, but clicks and typing by coordinates only reach some apps. For full control, pick the \"Xorg\" session on the login screen (gear icon).",
@@ -1528,5 +1528,6 @@
  "cfg.assist.erro": "That didn't work: {erro}",
  "rot.tray_acoes": "Text actions on the selection",
  "rot.tray_assistente": "Assistant on",
- "atalho.acoes_windows": "On Windows, {atalho} opens the text actions while openTARS is open (the icon near the clock). To have it from the start of the day, turn on Start with the system."
+ "atalho.acoes_windows": "On Windows, {atalho} opens the text actions while openTARS is open (the icon near the clock). To have it from the start of the day, turn on Start with the system.",
+ "diag.fora_do_linux": "windows, click by name and the global shortcut for this system are still being built (5.2); what already works is on the Platform line"
 }

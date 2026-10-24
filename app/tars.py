@@ -49,6 +49,13 @@ import tars_modos as modos
 import tars_confianca as confianca_lib
 import tars_plataforma as plataforma
 import tars_shell as shell_lib
+
+# Windows: num terminal ou num pipe em cp1252 não existem ✓ ✗ ⎿; trocar o caractere é melhor que o programa cair
+for _saida in (sys.stdout, sys.stderr):
+    try:
+        _saida.reconfigure(errors="replace")
+    except (AttributeError, ValueError):
+        pass
 import tars_probes as probes_lib
 import tars_web as web_lib
 

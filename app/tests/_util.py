@@ -27,7 +27,8 @@ if RAIZ not in sys.path:
 # Testes previsíveis: textos em português (a menos que o teste peça outro
 # idioma) e nada gravado na configuração real do usuário.
 os.environ.setdefault("TARS_IDIOMA", "pt_BR")
-os.environ.setdefault("TARS_SEM_AVISO_VERSAO", "1")  # testes não vão à internet ver se há versão nova
+os.environ.setdefault("TARS_SEM_AVISO_VERSAO", "1")
+os.environ.setdefault("TARS_ARQUIVO_AUTOTESTE", os.path.join(tempfile.mkdtemp(prefix="opentars-auto-"), "autoteste.txt"))  # testes não vão à internet ver se há versão nova
 os.environ.setdefault("TARS_ARQUIVO_CONFIG", os.path.join(tempfile.mkdtemp(prefix="opentars-teste-"), "config.json"))
 os.environ.setdefault("TARS_SEM_ATALHO", "1")
 # 5.1: a escolha do Gargantua Lite depende da máquina; os testes fixam o completo (o do Lite pede o dele)
