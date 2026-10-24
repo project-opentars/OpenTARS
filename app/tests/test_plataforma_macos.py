@@ -54,27 +54,37 @@ lista = p.programas()
 assert any(e["id"] == "Calculator" for e in lista) and all(e["comando"][:2] == ["open", "-a"] for e in lista), lista[:5]
 print(f"OK: catálogo de programas ({len(lista)} apps)")
 
+# um documento de verdade no TextEdit: sem arquivo ele só mostra o painel de abrir
+documento = Path(tempfile.mkdtemp(prefix="opentars-doc-")) / "nota.txt"
+documento.write_text("primeira linha\n")
 antes = {j["id"] for j in p.janelas()}
-subprocess.run(["open", "-a", "TextEdit"], check=True)
+subprocess.run(["open", "-a", "TextEdit", str(documento)], check=True)
 fim, nova = time.time() + 30, None
 while time.time() < fim and not nova:
     time.sleep(0.5)
     nova = next((j for j in p.janelas() if j["id"] not in antes and j["classe"] in ("TextEdit", "Editor de Texto")), None)
-if nova:
+try:
+    assert nova, [(j["classe"], j["titulo"]) for j in p.janelas()]
     x, y, largura, altura = p.area_util()
     assert largura > 0 and altura > 0
-    print(f"OK: janelas: o TextEdit apareceu no Quartz ({nova['largura']}x{nova['altura']})")
-else:
-    print("  (o TextEdit não mostrou janela no runner: sem documento aberto ele só mostra o painel de abrir)")
-subprocess.run(["osascript", "-e", 'quit app "TextEdit"'], capture_output=True)
+    print(f"OK: janelas: o TextEdit apareceu no Quartz ('{nova['titulo']}', {nova['largura']}x{nova['altura']})")
 
-import tars_acessibilidade as acess  # noqa: E402
-motivo = acess.indisponivel()
-if motivo:
-    print(f"  (clique pelo nome indisponível no runner, como esperado sem a permissão: {motivo})")
-else:
-    janelas = acess.janelas()
-    print(f"OK: AX liberada: {len(janelas)} janela(s) acessíveis")
-    if janelas:
-        print(f"OK: {janelas[0]['app']}: {acess.listar(janelas[0])['total']} elementos")
+    import tars_acessibilidade as acess  # noqa: E402
+    motivo = acess.indisponivel()
+    if motivo:
+        print(f"  (clique pelo nome indisponível aqui: {motivo})")
+    else:
+        alvo = acess.achar_janela(pid=nova["pid"], titulo=nova["titulo"], termos=["TextEdit"])
+        assert alvo, [(j["app"], j["titulo"]) for j in acess.janelas()]
+        lista = acess.listar(alvo)
+        assert lista["total"] > 0, lista
+        print(f"OK: AX: '{alvo['titulo']}' tem {lista['total']} elementos: {lista['elementos']}")
+        r = acess.preencher(alvo, "", "escrito pelo openTARS")
+        assert r["achou"] and (r["sucesso"] or r.get("precisa_digitar")), r
+        print(f"OK: preencher pelo nome: {r}")
+        p.mover_janela(nova["id"], 40, 60, 500, 400)
+        movida = next(j for j in p.janelas() if j["id"] == nova["id"])
+        print(f"OK: mover pela AX: ({movida['x']}, {movida['y']}, {movida['largura']}x{movida['altura']})")
+finally:
+    subprocess.run(["osascript", "-e", 'tell application "TextEdit" to quit saving no'], capture_output=True)
 print("test_plataforma_macos: TUDO OK.")
