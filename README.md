@@ -53,7 +53,7 @@ Details, environment variables and WSL are in [Installation](#installation). You
 
 ### Windows and macOS (experimental, coming in 5.2)
 
-**Not tested on a real Windows or Mac yet.** Both installers pass our automatic tests on GitHub's Windows and macOS machines (install, diagnosis, window, removal), but nobody has used openTARS on them day to day. No administrator password is needed: everything goes into your user folder, with Python brought by [uv](https://docs.astral.sh/uv/) and the official Ollama.
+**Not tested on a real Windows or Mac yet.** Both installers pass our automatic tests on GitHub's Windows and macOS machines (install, diagnosis, window, removal), but nobody has used openTARS on them day to day. Those machines have no microphone and nobody at the keyboard, so some parts below were written but have never run. No administrator password is needed: everything goes into your user folder, with Python brought by [uv](https://docs.astral.sh/uv/) and the official Ollama.
 
 **Windows 10 or 11**, in PowerShell:
 
@@ -61,7 +61,7 @@ Details, environment variables and WSL are in [Installation](#installation). You
 irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex
 ```
 
-Then open **openTARS** from the Start menu (the first time it downloads Gargantua 2). What already works: the window and the chat, files and folders (the commands Gargantua learned run in Python, since Windows has no bash), the quick bar with `Ctrl+Alt+Space` and the text actions with `Ctrl+Alt+R` while openTARS is open (turn the shortcut on in **Settings → Assistant**). Not yet: opening programs by name, clicking buttons by their name, voice.
+Then open **openTARS** from the Start menu (the first time it downloads Gargantua 2). What it does: the window and the chat, files and folders (the commands Gargantua learned run in Python, since Windows has no bash), opening and closing programs by name (Start menu apps included) and moving windows, clicking buttons and filling fields by their name (UI Automation), the quick bar with `Ctrl+Alt+Space` and the text actions with `Ctrl+Alt+R` while openTARS is open (turn the shortcut on in **Settings → Assistant**), Probes and voice. Checked on GitHub's Windows: files, the clipboard, the Recycle Bin, start at login, opening Notepad and finding, moving and closing its window, listing its elements, filling its text and clicking its menu by name. Never run yet: the shortcuts and voice.
 
 **macOS 12 or newer**, in Terminal:
 
@@ -69,7 +69,7 @@ Then open **openTARS** from the Start menu (the first time it downloads Gargantu
 curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash
 ```
 
-Then open **openTARS** from `~/Applications` (it is built on your Mac and signed there, so macOS does not quarantine it). macOS asks for **Accessibility** and **Screen Recording** in System Settings → Privacy & Security. What already works: the window and the chat, files and folders, looking at the screen. Not yet: text actions, the global shortcut, clicking buttons by their name, voice.
+Then open **openTARS** from `~/Applications` (it is built on your Mac and signed there, so macOS does not quarantine it). macOS asks for **Accessibility**, **Screen Recording** and, for voice, the **Microphone** in System Settings → Privacy & Security. What it does: the same as on Windows, with the text actions on `Control+Option+R` (Control, not Command, so your apps keep their shortcuts). Checked on GitHub's Mac: files, the clipboard, the Trash, start at login, the list of apps and windows, and, with Accessibility allowed, listing the elements of a TextEdit document, filling its text by name and moving its window. Never run yet: selecting text for the text actions, the shortcuts, voice.
 
 To help us, run these in a new terminal and send us the reports they save in your home folder: `opentars --diagnostico` (checks everything) and `opentars --prova` (48 everyday tasks with the real AI, in a temporary folder). On macOS the commands are in `~/.local/bin`. Running the install command again updates. To remove:
 
