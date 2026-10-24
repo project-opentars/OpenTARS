@@ -5,6 +5,8 @@
 - Iniciar com o sistema: só se a pessoa ligar; sobe o openTARS escondido (`opentars-gui --residente`), com o ícone na bandeja.
 - O atalho das ações de texto é à parte (`tars_atalho.registrar_acoes`)."""
 import shutil
+import sys
+from pathlib import Path
 
 import requests
 
@@ -37,6 +39,10 @@ def ligar(ativo, host, modelo, sessao=None):
 
 
 def comando_residente():
+    if plataforma.sistema() == "windows":    # o atalho do Windows roda na pasta do app; pythonw não abre console
+        python = Path(sys.executable)
+        sem_console = python.with_name("pythonw.exe")
+        return [str(sem_console if sem_console.exists() else python), "-m", "tars_qt", "--residente"]
     # shortcut: rodando da fonte (sem o pacote instalado) o início com o sistema não acha o opentars-gui; só vale instalado
     return [shutil.which("opentars-gui") or "opentars-gui", "--residente"]
 

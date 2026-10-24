@@ -1595,5 +1595,6 @@
  "cfg.assist.acoes_modelo": "Modelo das ações: {modelo}.",
  "cfg.assist.erro": "Não deu certo: {erro}",
  "rot.tray_acoes": "Ações de texto com o que está selecionado",
- "rot.tray_assistente": "Assistente ligado"
+ "rot.tray_assistente": "Assistente ligado",
+ "atalho.acoes_windows": "No Windows, {atalho} abre as ações de texto enquanto o openTARS estiver aberto (o ícone perto do relógio). Para valer desde o começo do dia, ligue Iniciar com o sistema."
 }

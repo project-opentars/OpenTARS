@@ -26,6 +26,7 @@ import sys
 from pathlib import Path
 
 import tars_i18n as i18n
+import tars_plataforma as plataforma
 from tars_i18n import t
 
 PADRAO = "<Primary><Alt>space"
@@ -435,11 +436,33 @@ def garantir_registrado():
     return registrar()
 
 
+def para_windows(combinacao):
+    """'<Primary><Alt>r' -> (modificadores, código da tecla) do RegisterHotKey do Windows; None se a tecla não tiver código."""
+    bits = {"primary": 2, "control": 2, "ctrl": 2, "alt": 1, "shift": 4, "super": 8}
+    modificadores = sum(bits.get(m.lower(), 0) for m in re.findall(r"<(\w+)>", combinacao or ""))
+    tecla = re.sub(r"<\w+>", "", combinacao or "")
+    especiais = {"space": 0x20, "Return": 0x0D, "Tab": 0x09, "Escape": 0x1B}
+    if tecla in especiais:
+        codigo = especiais[tecla]
+    elif len(tecla) == 1 and tecla.isalnum():
+        codigo = ord(tecla.upper())
+    elif re.fullmatch(r"F([1-9]|1[0-2])", tecla):
+        codigo = 0x6F + int(tecla[1:])
+    else:
+        return None
+    return modificadores, codigo
+
+
 def registrar_acoes(combinacao=None):
-    """5.2: cadastra o atalho das ações de texto (só no GNOME por enquanto). Devolve (ok, mensagem)."""
+    """5.2: cadastra o atalho das ações de texto (GNOME; no Windows o próprio openTARS escuta). Devolve (ok, mensagem)."""
     combinacao = normalizar_combinacao(combinacao) if combinacao else (i18n.ler_config().get("atalho_acoes") or ACOES_PADRAO)
     if not combinacao:
         return False, t("atalho.invalido")
+    if plataforma.sistema() == "windows":       # o RegisterHotKey é da janela aberta (tars_qt/atalhos_windows.py)
+        if not para_windows(combinacao):
+            return False, t("atalho.invalido")
+        i18n.salvar_config(atalho_acoes=combinacao, atalho_acoes_registrado=True)
+        return True, t("atalho.acoes_windows", atalho=legivel(combinacao))
     qual = ambiente()
     if qual != "gnome":
         return False, t("atalho.manual", ambiente=_NOMES_AMBIENTE.get(qual, qual or "?"), comando="opentars-gui " + ACOES_MARCA)
@@ -449,7 +472,7 @@ def registrar_acoes(combinacao=None):
 
 
 def remover_acoes():
-    ok = _remover_gnome(ACOES_MARCA) if ambiente() == "gnome" else True
+    ok = _remover_gnome(ACOES_MARCA) if plataforma.sistema() == "linux" and ambiente() == "gnome" else True
     i18n.salvar_config(atalho_acoes_registrado=False)
     return ok, t("atalho.removido")
 

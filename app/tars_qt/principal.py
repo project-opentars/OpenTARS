@@ -13,6 +13,7 @@ from PySide6.QtGui import QAction, QFont, QFontMetrics, QKeySequence, QShortcut,
 from PySide6.QtWidgets import (QApplication, QButtonGroup, QFileDialog, QFrame, QHBoxLayout, QLabel, QMainWindow, QMenu,
                                QLineEdit, QPlainTextEdit, QPushButton, QScrollArea, QStackedWidget, QSystemTrayIcon, QVBoxLayout, QWidget)
 
+import tars_atalho
 import tars_atualizacao
 import tars_historico
 import tars_i18n
@@ -600,6 +601,12 @@ class JanelaPrincipal(QMainWindow):
         self.barra.parar.connect(self.parar)
         self.barra.abrir_janela.connect(lambda: self.trazer_para_frente("mostrar"))
         self._criar_bandeja()
+        self._atalhos = None
+        if plataforma.sistema() == "windows":      # no Windows o atalho global é escutado pela própria janela
+            from .atalhos_windows import AtalhosWindows
+            self._atalhos = AtalhosWindows(self.trazer_para_frente)
+            QApplication.instance().installNativeEventFilter(self._atalhos)
+            self._registrar_atalhos_windows()
         if assistente.ligado():      # 5.2: o modelo das ações de texto volta para a memória quando o openTARS abre
             host, modelo = self.nucleo.OLLAMA_HOST, self._modelo_das_acoes()
             threading.Thread(target=lambda: _sem_erro(assistente.manter_carregado, host, modelo, True), daemon=True).start()
@@ -739,6 +746,7 @@ class JanelaPrincipal(QMainWindow):
         self.config.mudou_mascote.connect(self.mascote.mostrar_de_novo)
         self.config.modelos_mudaram.connect(self.ponte.atualizar_modelos)
         self.config.assistente_mudou.connect(self._atualizar_bandeja)
+        self.config.assistente_mudou.connect(self._registrar_atalhos_windows)
         self.config.rodar_rotina.connect(self._rodar_agora)
         self.config.rotinas_mudaram.connect(self._atualizar_bandeja)
         self.faixa.abrir.connect(lambda: self.cabecalho.sino.click() if getattr(self.faixa, "destino", "") == "probes"
@@ -1315,6 +1323,15 @@ class JanelaPrincipal(QMainWindow):
         except Exception:  # noqa: BLE001
             instalados = []
         return acoes_lib.escolher_modelo(instalados, garg + ":lite", garg + ":latest")
+
+    def _registrar_atalhos_windows(self):
+        if self._atalhos is None:
+            return
+        self._atalhos.limpar()
+        config = tars_i18n.ler_config()
+        self._atalhos.registrar(config.get("atalho") or tars_atalho.PADRAO, "rapido")
+        if config.get("atalho_acoes_registrado"):
+            self._atalhos.registrar(config.get("atalho_acoes") or tars_atalho.ACOES_PADRAO, "acoes")
 
     def _alternar_assistente(self, ativo):
         host, modelo = self.nucleo.OLLAMA_HOST, self._modelo_das_acoes()

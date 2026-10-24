@@ -26,7 +26,7 @@ os.environ["XDG_DATA_HOME"] = str(casa / "dados-xdg")
 assert p.pastas()["dados"] == casa / "dados-xdg" / "opentars"
 print("OK: pastas por sistema (XDG no Linux, Library no macOS, AppData no Windows)")
 
-for so in ("windows", "macos"):
+for so in ("macos",):          # o Windows já tem estas funções (F5): testadas no próprio Windows (test_plataforma_windows)
     p.sistema = lambda so=so: so
     for chamada in (lambda: p.lixeira("x"), lambda: p.notificar("a", "b"), p.ler_area_de_transferencia,
                     lambda: p.escrever_area_de_transferencia("x"), lambda: p.autostart("a", "A", ["a"], True)):
@@ -36,7 +36,7 @@ for so in ("windows", "macos"):
             assert so in str(e) and "fase" in str(e), e
         else:
             raise AssertionError(f"{so}: deveria levantar NaoSuportado")
-print("OK: no Windows e no macOS o que falta levanta NaoSuportado com a fase")
+print("OK: no macOS o que falta levanta NaoSuportado com a fase")
 
 p.sistema = lambda: "linux"
 assert p.tecla_comando() == "ctrl"

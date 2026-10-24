@@ -43,6 +43,8 @@ jobs:
         run: python tests/test_instancia_windows.py
       - name: Mini-shell dos comandos de bash do treino
         run: python tests/test_shell_portatil.py
+      - name: Backend do Windows de verdade (no macOS, pula)
+        run: python tests/test_plataforma_windows.py
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
 
@@ -62,3 +64,50 @@ jobs:
         with: {python-version: "3.12"}
       - run: pip install requests psutil pyautogui pillow PySide6-Essentials
       - run: python -c "import tars"
+
+  instalador_windows:
+    # o instalar.ps1 de ponta a ponta com o código deste commit (sem baixar o Ollama), o app instalado e a remoção
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar
+        shell: powershell
+        run: .\app\empacotamento\windows\instalar.ps1 -Fonte app -SemOllama
+      - name: Diagnóstico pelo comando instalado
+        shell: powershell
+        run: |
+          & "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd" --diagnostico
+          if (-not (Test-Path "$env:USERPROFILE\opentars-autoteste.txt")) { throw "sem relatório" }
+          if (-not (Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\openTARS.lnk")) { throw "sem atalho" }
+          exit 0
+      - name: Backend do Windows no Python instalado
+        shell: powershell
+        run: |
+          $env:QT_QPA_PLATFORM = "offscreen"
+          & "$env:LOCALAPPDATA\openTARS\venv\Scripts\python.exe" app\tests\test_plataforma_windows.py
+          & "$env:LOCALAPPDATA\openTARS\venv\Scripts\python.exe" -c "import sys; sys.path.insert(0, r'$env:LOCALAPPDATA\openTARS\app'); import tars_qt.atalhos_windows, tars_qt.principal; print('qt ok')"
+      - name: Remover
+        shell: powershell
+        run: |
+          .\app\empacotamento\windows\instalar.ps1 -Remover
+          if (Test-Path "$env:LOCALAPPDATA\openTARS") { throw "não removeu" }
+
+  instalador_macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar
+        run: bash app/empacotamento/macos/instalar.sh --fonte app --sem-ollama
+      - name: Diagnóstico pelo comando instalado e o app assinado
+        run: |
+          ~/.local/bin/opentars --diagnostico || true
+          test -f ~/opentars-autoteste.txt
+          test -x ~/Applications/openTARS.app/Contents/MacOS/openTARS
+          codesign -v ~/Applications/openTARS.app
+      - name: A janela carrega (sem tela)
+        env: {QT_QPA_PLATFORM: offscreen}
+        run: cd "$HOME/Library/Application Support/openTARS/app" && "../venv/bin/python3" -c "import tars_qt.principal; print('qt ok')"
+      - name: Remover
+        run: |
+          bash app/empacotamento/macos/instalar.sh --remover
+          test ! -e "$HOME/Library/Application Support/openTARS"

@@ -165,6 +165,8 @@ def comando_instalar_ollama():
 
 def instalar_ollama(rodar=None):
     """(ok, mensagem). `rodar` existe pros testes; no uso normal executa o instalador."""
+    if plataforma.sistema() != "linux":      # no Windows e no macOS quem instala o Ollama é o instalador do openTARS
+        return False, "https://ollama.com/download"
     rodar = rodar or (lambda cmd: subprocess.run(cmd, capture_output=True, text=True, timeout=1800))
     try:
         r = rodar(comando_instalar_ollama())

@@ -687,12 +687,13 @@ class PAssistente(Pagina):
     def _cadastrar(self):
         ok, mensagem = tars_atalho.registrar_acoes()
         self.ao_abrir()
-        if not ok:
-            self.atalho.setText(mensagem)
+        self.atalho.setText(mensagem)
+        self.cfg.assistente_mudou.emit()      # no Windows a janela registra o atalho de novo
 
     def _remover(self):
         tars_atalho.remover_acoes()
         self.ao_abrir()
+        self.cfg.assistente_mudou.emit()
 
     def _iniciar_com_sistema(self, ativo):
         try:

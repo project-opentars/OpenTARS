@@ -40,9 +40,16 @@ def _buscar(timeout=5):
     return r.text if r.status_code == 200 else None
 
 
+def _desligado():
+    """TARS_SEM_AVISO_VERSAO desliga. Fora do Linux também: aqui se atualiza o .deb; no Windows e no macOS atualizar é rodar o
+    instalador de novo (5.2)."""
+    return (os.environ.get("TARS_SEM_AVISO_VERSAO", "0") not in ("0", "", "off", "no", "nao")
+            or plataforma.sistema() != "linux")
+
+
 def versao_publicada(agora=None, buscar=None, cache=None):
     """A versão publicada (do cache de até 24 h, ou buscada agora), ou None."""
-    if os.environ.get("TARS_SEM_AVISO_VERSAO", "0") not in ("0", "", "off", "no", "nao"):
+    if _desligado():
         return None
     agora = agora or time.time()
     cache = Path(cache or arquivo_cache())
@@ -238,7 +245,7 @@ def procurar_no_repositorio(obter_json=None, extras=(), compilado=None, ultima=N
 
 def procurar_atualizacao(versao_local, obter_json=None, obter_texto=None, extras=(), compilado=None, ultima=None):
     """Primeiro o upload direto no repositório; se não houver, a Release do GitHub. TARS_SEM_AVISO_VERSAO desliga os dois."""
-    if os.environ.get("TARS_SEM_AVISO_VERSAO", "0") not in ("0", "", "off", "no", "nao"):
+    if _desligado():
         return None
     achou = procurar_no_repositorio(obter_json, extras, compilado, ultima)
     return achou or procurar_em_release(versao_local, obter_json, obter_texto, extras, compilado, ultima)
@@ -251,7 +258,7 @@ def procurar_em_release(versao_local, obter_json=None, obter_texto=None, extras=
     ter sido montado e o hash não é o do que o usuário já instalou por aqui (ou quando o número de versão é maior).
     Tag, título e SHA256SUMS não são obrigatórios: o hash vem do SHA256SUMS (se existir) ou do campo `digest`
     que o próprio GitHub calcula para cada arquivo enviado. Sem hash para conferir: não instala."""
-    if os.environ.get("TARS_SEM_AVISO_VERSAO", "0") not in ("0", "", "off", "no", "nao"):
+    if _desligado():
         return None
     try:
         release = _release_mais_recente(obter_json or _get_json)
