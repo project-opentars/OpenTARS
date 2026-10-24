@@ -1,6 +1,6 @@
 """5.2 (F4, contexto do programa em uso): uma sugestão pelo programa ativo, como no mock-up aprovado em 20/10 ("Você está
 escrevendo um e-mail. Quer que eu revise a ortografia?"). Só o nome do programa e o título da janela, lidos na hora e
-nunca gravados nem enviados; desligado por padrão (Configurações > Assistente). O histórico da tela estilo Recall fica fora,
+nunca gravados nem enviados; ligado por padrão desde 24/10 (Configurações > Assistente). O histórico da tela estilo Recall fica fora,
 por privacidade. Sem Qt."""
 import unicodedata
 

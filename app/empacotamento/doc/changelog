@@ -13,8 +13,10 @@ opentars (5.2) unstable; urgency=medium
     ferramentas; o trecho é dado, nunca ordem); ações em arquivos selecionados (resumir,
     renomear pelo conteúdo com prévia, mover, lixeira, desfazer); editar uma foto por frase
     (cortar, girar, clarear, reduzir, trocar o formato; sempre uma cópia, sem os metadados);
-    sugestão pelo programa em uso (desligada por padrão); assistente residente com ícone,
-    desligado por padrão.
+    sugestão pelo programa em uso; assistente residente com ícone, que inicia com o sistema.
+    Tudo do assistente vem ligado por padrão (o modelo das ações na memória, o atalho, o início
+    com o sistema e a sugestão), uma vez, na primeira abertura; o que a pessoa desligar fica
+    desligado.
   * Gargantua 2 retreinado com os dados da 5.2 (ações de texto, dizer que não sabe, citar a
     fonte da busca, outros sistemas): 2B 73/80 e Lite 68/80 na prova de 80 tarefas; ações de
     texto 71/76 e 64/76. O app avisa quando o Gargantua instalado não é o publicado.

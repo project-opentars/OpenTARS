@@ -762,7 +762,11 @@ class PaginaSistema(Pagina):
             b.setEnabled(not estado.get(qual))
 
     def ligar_atalho(self):
-        ok, _mensagem = tars_atalho.registrar_acoes()
+        if tars_i18n.ler_config().get("atalho_acoes_registrado"):     # já vem ligado (padrão): o botão desliga
+            tars_atalho.remover_acoes()
+            ok = False
+        else:
+            ok, _mensagem = tars_atalho.registrar_acoes()
         self.b_atalho.setText(t("pu.sist.ligado") if ok else t("pu.sist.ligar"))
 
     def alternar_inicio(self):
@@ -829,6 +833,7 @@ class JanelaPrimeiroUso(QMainWindow):
         self.paginas = {}
         self.atual = "idioma"
         threading.Thread(target=pu.maquina_fraca, daemon=True).start()     # o nvidia-smi longe da tela (fica guardado)
+        tars_assistente.aplicar_padroes()      # 5.2: o assistente já vem ligado; o passo do Windows mostra e deixa desligar
         self.montar()
 
     # -- montagem ----------------------------------------------------

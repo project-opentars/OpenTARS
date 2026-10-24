@@ -621,6 +621,7 @@ class JanelaPrincipal(QMainWindow):
                 self._atalhos = AtalhosMac(self.trazer_para_frente)
             except OSError:          # sem o Carbon (não deveria acontecer): fica sem atalho, a janela abre igual
                 self._atalhos = None
+        assistente.aplicar_padroes()     # 5.2: tudo ligado por padrão, uma vez (decisão do Enzo, 24/10)
         self._registrar_atalhos_globais()
         if assistente.ligado():      # 5.2: o modelo das ações de texto volta para a memória quando o openTARS abre
             host, modelo = self.nucleo.OLLAMA_HOST, self._modelo_das_acoes()
