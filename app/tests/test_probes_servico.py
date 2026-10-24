@@ -44,6 +44,33 @@ fio2.join(5)
 assert codigo.get("r") == 0, codigo
 print("OK: o serviço que sobe enquanto alguém confere o estado espera a trava, em vez de sair achando que há outro")
 
+# a trava dos arquivos (Probes, rotinas) entre a janela e o serviço: cada um com a sua instância, como dois processos.
+# No Windows ela não travava nada (só havia fcntl): somas se perdiam e o os.replace dava "acesso negado"
+import tars_memoria  # noqa: E402
+import tars_rotinas  # noqa: E402
+contador = Path(tempfile.mkdtemp(prefix="opentars-trava-")) / "contador.json"
+tars_memoria.gravar_texto_atomico(contador, "0")
+erros = []
+
+
+def somar():
+    try:
+        for _ in range(40):
+            with tars_rotinas._Trava(contador):
+                n = int(contador.read_text())
+                tars_memoria.gravar_texto_atomico(contador, str(n + 1))
+    except Exception as e:  # noqa: BLE001
+        erros.append(repr(e))
+
+
+fios = [threading.Thread(target=somar) for _ in range(4)]
+for f in fios:
+    f.start()
+for f in fios:
+    f.join(60)
+assert not erros and contador.read_text() == "160", (contador.read_text(), erros[:3])
+print("OK: a trava dos arquivos vale entre instâncias (janela e serviço): 4 x 40 somas, nenhuma perdida")
+
 comando = tp.comando_do_servico()
 assert comando[-1] == "--probes", comando
 if tp.plataforma.sistema() == "windows":

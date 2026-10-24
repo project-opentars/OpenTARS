@@ -10,6 +10,7 @@ import json
 import os
 import re
 import threading
+import time
 import unicodedata
 from pathlib import Path
 
@@ -51,7 +52,14 @@ def gravar_texto_atomico(caminho, texto, modo=0o600):
             f.flush()
             os.fsync(f.fileno())
         os.chmod(temporario, modo)
-        os.replace(temporario, caminho)
+        for tentativa in range(50):
+            try:
+                os.replace(temporario, caminho)
+                break
+            except PermissionError:      # Windows: alguém lendo o arquivo agora bloqueia a troca por um instante
+                if os.name != "nt" or tentativa == 49:
+                    raise
+                time.sleep(0.02)
     except BaseException:
         try:
             os.unlink(temporario)

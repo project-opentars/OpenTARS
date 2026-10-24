@@ -255,5 +255,13 @@ def descrever():
             "python": platform.python_version()}
 
 
+def janelas_prontas():
+    """Dá para listar as janelas agora sem esperar? No macOS o Quartz carrega em segundo plano na abertura (leva segundos);
+    até lá, o contexto do pedido segue sem a lista de janelas. Nos outros sistemas, sempre."""
+    return sistema() != "macos" or _backend().frameworks_prontos()
+
+
 if sistema() == "windows":
     esconder_consoles_dos_filhos()
+elif sistema() == "macos":
+    _backend()          # começa a carregar o Quartz em segundo plano (macos.py)

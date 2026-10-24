@@ -794,6 +794,8 @@ def _desfecho(tarefa, conteudo, usou_ferramenta, algum_sucesso, mentiu):
 
 
 def _janelas_para_contexto():
+    if not plataforma.janelas_prontas():       # macOS: o Quartz ainda carregando; o pedido não espera por ele
+        return []
     try:
         janelas = listar_janelas_x()
         ativa = janela_ativa_x() if janelas else None

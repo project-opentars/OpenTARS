@@ -4,10 +4,29 @@ seleção, os cliques e os títulos das janelas pedem Acessibilidade e Gravaçã
 import os
 import plistlib
 import subprocess
+import threading
 import time
 from pathlib import Path
 
 from . import NaoSuportado
+
+
+def _carregar_frameworks():
+    try:
+        import AppKit  # noqa: F401
+        import Quartz  # noqa: F401
+    except Exception:  # noqa: BLE001  (sem o pyobjc: cada função diz o que falta quando for chamada)
+        pass
+
+
+# O primeiro import do Quartz (pyobjc) leva segundos: no CI do macOS passou de 15 s, e cada pedido do chat esperava por ele
+# ao montar a lista de janelas. Carrega já, em segundo plano; quem só quer contexto pergunta frameworks_prontos().
+_CARREGANDO = threading.Thread(target=_carregar_frameworks, daemon=True, name="pyobjc")
+_CARREGANDO.start()
+
+
+def frameworks_prontos():
+    return not _CARREGANDO.is_alive()
 
 APP = Path(__file__).resolve().parent.parent
 

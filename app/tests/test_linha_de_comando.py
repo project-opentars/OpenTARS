@@ -30,7 +30,7 @@ sys.argv = ["opentars", "--version"]
 saida = io.StringIO()
 with contextlib.redirect_stdout(saida):
     tars.main()
-assert tars.VERSAO_EXIBIDA in saida.getvalue() and "5.1 Tesseract" in saida.getvalue(), saida.getvalue()
+assert tars.VERSAO_EXIBIDA in saida.getvalue() and "5.2 Ranger" in saida.getvalue(), saida.getvalue()
 sys.argv = ["opentars", "--help"]
 saida = io.StringIO()
 with contextlib.redirect_stdout(saida):

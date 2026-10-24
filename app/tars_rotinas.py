@@ -16,6 +16,7 @@ import os
 import re
 import tempfile
 import threading
+import time
 import unicodedata
 import uuid
 from pathlib import Path
@@ -238,10 +239,22 @@ class _Trava:
         self._rlock.acquire()
         if self._n == 0:
             try:
-                import fcntl
                 Path(self._arquivo).parent.mkdir(parents=True, exist_ok=True)
                 self._fd = os.open(self._arquivo, os.O_RDWR | os.O_CREAT, 0o600)
-                fcntl.flock(self._fd, fcntl.LOCK_EX)
+                if os.name == "nt":
+                    # 5.2: sem fcntl no Windows a trava não travava nada, e a janela e o serviço dos Probes liam e gravavam o
+                    # mesmo arquivo juntos (uma leitura no meio do os.replace voltava vazia). msvcrt espera como o flock.
+                    import msvcrt
+                    while True:
+                        try:
+                            os.lseek(self._fd, 0, os.SEEK_SET)
+                            msvcrt.locking(self._fd, msvcrt.LK_NBLCK, 1)
+                            break
+                        except OSError:
+                            time.sleep(0.02)
+                else:
+                    import fcntl
+                    fcntl.flock(self._fd, fcntl.LOCK_EX)
             except (ImportError, OSError):
                 self._fd = None
         self._n += 1
@@ -251,6 +264,10 @@ class _Trava:
         self._n -= 1
         if self._n == 0 and self._fd is not None:
             try:
+                if os.name == "nt":
+                    import msvcrt
+                    os.lseek(self._fd, 0, os.SEEK_SET)
+                    msvcrt.locking(self._fd, msvcrt.LK_UNLCK, 1)
                 os.close(self._fd)       # fechar solta o flock
             except OSError:
                 pass
