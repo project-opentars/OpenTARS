@@ -738,6 +738,7 @@
  "pu.ollama.instalando": "Installing Ollama. A system window may ask for your password.",
  "pu.ollama.iniciando": "Starting Ollama…",
  "pu.ollama.erro_instalar": "I couldn't install it: {motivo}",
+ "pu.ollama.abri_download": "I opened the Ollama download page in your browser. Install it, open Ollama and click Look again.",
  "pu.ollama.erro_iniciar": "I couldn't start it: {motivo}",
  "pu.nuvem.titulo": "Do you want to use the cloud too?",
  "pu.nuvem.texto": "TARS works 100% on your computer. The cloud is an extra, for requests that need a bigger model. You can change this later in Settings.",

@@ -107,4 +107,18 @@ try:
 finally:
     lx.gerenciador = original_gerenciador
 print("OK: as dicas de instalação usam o gerenciador e os nomes de pacote da distribuição (dnf, pacman, zypper)")
+
+
+class _PopenFalso:
+    def __init__(self, *a, creationflags=0, **k):
+        self.flags = creationflags
+
+
+assert not p.esconder_consoles_dos_filhos(_PopenFalso, tem_console=True), "com console (o CLI), os filhos usam o dele"
+assert _PopenFalso(["nvidia-smi"]).flags == 0
+assert p.esconder_consoles_dos_filhos(_PopenFalso, tem_console=False)
+assert not p.esconder_consoles_dos_filhos(_PopenFalso, tem_console=False), "uma vez só"
+assert _PopenFalso(["nvidia-smi"]).flags == 0x08000000
+assert _PopenFalso(["cmd.exe"], creationflags=0x10).flags == 0x10, "quem pede console para a pessoa continua com ele"
+print("OK: sem console (pythonw), os programas de console que o app roda não abrem janela; o Prompt de Comando abre")
 print("test_plataforma: TUDO OK.")

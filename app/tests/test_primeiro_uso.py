@@ -41,21 +41,37 @@ assert pu.nome_do_gargantua(["qwen3:4b"]) == pu.MODELO_GARGANTUA
 assert pu.modelos_instalados("http://127.0.0.1:9") == []
 
 # --- instalar / iniciar (sem rodar nada de verdade) --------------------
-cmd = pu.comando_instalar_ollama()
-assert cmd[-1].endswith("| sh") and "ollama.com/install.sh" in cmd[-1]
-
-
 class _R:
     def __init__(self, codigo, saida="", erro=""):
         self.returncode, self.stdout, self.stderr = codigo, saida, erro
 
 
-assert pu.instalar_ollama(rodar=lambda c: _R(0)) == (True, "")
-ok, msg = pu.instalar_ollama(rodar=lambda c: _R(1, erro="sem rede"))
-assert not ok and "sem rede" in msg
-ok, msg = pu.instalar_ollama(rodar=lambda c: (_ for _ in ()).throw(OSError("boom")))
-assert not ok and "boom" in msg
+if pu.plataforma.sistema() == "linux":
+    cmd = pu.comando_instalar_ollama()
+    assert cmd[-1].endswith("| sh") and "ollama.com/install.sh" in cmd[-1]
+    assert pu.instalar_ollama(rodar=lambda c: _R(0)) == (True, "")
+    ok, msg = pu.instalar_ollama(rodar=lambda c: _R(1, erro="sem rede"))
+    assert not ok and "sem rede" in msg
+    ok, msg = pu.instalar_ollama(rodar=lambda c: (_ for _ in ()).throw(OSError("boom")))
+    assert not ok and "boom" in msg
+else:       # no Windows e no macOS quem instala o Ollama é o instalador do openTARS: a janela mostra a página de download
+    assert pu.instalar_ollama(rodar=lambda c: _R(0)) == (False, "https://ollama.com/download")
 assert pu.iniciar_ollama(procurar=lambda: True) == (True, "")
+# Windows: o Ollama é o app da bandeja (ollama app.exe), não um "ollama serve" num console
+lancados, original_popen, original_sistema = [], pu.subprocess.Popen, pu.plataforma.sistema
+pu.subprocess.Popen = lambda cmd, **k: lancados.append(cmd)
+pu.plataforma.sistema = lambda: "windows"
+os.environ["LOCALAPPDATA"] = pasta_local = tempfile.mkdtemp()
+app_ollama = os.path.join(pasta_local, "Programs", "Ollama", "ollama app.exe")
+os.makedirs(os.path.dirname(app_ollama))
+open(app_ollama, "w").close()
+try:
+    vezes = iter([False, True])
+    assert pu.iniciar_ollama(procurar=lambda: next(vezes)) == (True, "") and lancados == [[app_ollama]], lancados
+finally:
+    pu.subprocess.Popen, pu.plataforma.sistema = original_popen, original_sistema
+    del os.environ["LOCALAPPDATA"]
+print("OK: no Windows, iniciar o Ollama abre o app da bandeja")
 
 # --- baixar o Gargantua -----------------------------------------------
 vistos = []
@@ -108,7 +124,18 @@ pu.salvar_nuvem(True, "groq", "https://api.groq.com/openai/v1/", " segredo ")
 n = pu.carregar_nuvem()
 assert n == {"ativa": True, "provedor": "groq", "endereco": "https://api.groq.com/openai/v1", "chave": "segredo"}, n
 modo = stat.S_IMODE(os.stat(pu.arquivo_nuvem()).st_mode)
-assert modo == 0o600, oct(modo)
+assert os.name == "nt" or modo == 0o600, oct(modo)
+# 5.2: o Python do Windows não tem os.fchmod; antes o Continuar do passo 4 (e o Abrir do fim) morria calado ali
+fchmod = getattr(os, "fchmod", None)
+if fchmod:
+    del os.fchmod
+try:
+    pu.salvar_nuvem(False)
+    pu.marcar_concluido(False)
+finally:
+    if fchmod:
+        os.fchmod = fchmod
+print("OK: salvar a nuvem e o fim do primeiro uso funcionam sem os.fchmod (Windows)")
 pu.salvar_nuvem(False)
 n = pu.carregar_nuvem()
 assert n["ativa"] is False and n["chave"] == "segredo", "desligar não apaga a chave"

@@ -70,7 +70,8 @@ def _gravar_json(caminho, dados, modo=0o600):
     temporario = caminho.with_name(caminho.name + ".tmp")
     # O arquivo nasce já com a permissão certa: a chave não fica legível nem por um instante.
     fd = os.open(str(temporario), os.O_WRONLY | os.O_CREAT | os.O_TRUNC, modo)
-    os.fchmod(fd, modo)      # se já havia um .tmp antigo (0644), o modo do os.open é ignorado: força aqui
+    if hasattr(os, "fchmod"):    # o Windows não tem (lá o arquivo já fica na pasta do usuário); sem isto o Continuar morria
+        os.fchmod(fd, modo)      # se já havia um .tmp antigo (0644), o modo do os.open é ignorado: força aqui
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
     os.replace(temporario, caminho)
@@ -182,10 +183,20 @@ def iniciar_ollama(esperar=12, procurar=None):
     procurar = procurar or (lambda: achar_ollama(tem_comando=True)["responde"])
     if procurar():
         return True, ""
-    if not shutil.which("ollama"):
+    so = plataforma.sistema()
+    app_windows = Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "Programs" / "Ollama" / "ollama app.exe"
+    # no Windows e no macOS o Ollama é um app de bandeja/barra de menus: abrir o app sobe o servidor do jeito dele
+    if so == "windows" and app_windows.exists():
+        comando = [str(app_windows)]
+    elif so == "macos" and Path("/Applications/Ollama.app").exists():
+        comando = ["open", "-a", "Ollama"]
+    elif shutil.which("ollama"):
+        comando = ["ollama", "serve"]
+    else:
         return False, "ollama: comando não encontrado"
     try:
-        subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+        subprocess.Popen(comando, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         start_new_session=True)
     except OSError as e:
         return False, str(e)
     limite = time.time() + esperar
@@ -239,13 +250,20 @@ def _e_lite(modelo):
     return "lite" in re.split(r"[-_. ]", segmento[len("gargantua"):]) + re.split(r"[-_. ]", tag)
 
 
+_VRAM = {}
+
+
 def _vram_mb():
-    try:
-        r = subprocess.run(["nvidia-smi", "--query-gpu=memory.total", "--format=csv,noheader,nounits"],
-                           capture_output=True, text=True, timeout=5)
-        return max((int(float(x)) for x in r.stdout.split()), default=0) if r.returncode == 0 else 0
-    except (OSError, ValueError, subprocess.SubprocessError):
-        return 0
+    """Guardado na primeira vez: o nvidia-smi leva segundos em alguns notebooks e a janela do primeiro uso pergunta várias
+    vezes (no Windows, cada chamada na tela travava a janela)."""
+    if "mb" not in _VRAM:
+        try:
+            r = subprocess.run(["nvidia-smi", "--query-gpu=memory.total", "--format=csv,noheader,nounits"],
+                               capture_output=True, text=True, timeout=5)
+            _VRAM["mb"] = max((int(float(x)) for x in r.stdout.split()), default=0) if r.returncode == 0 else 0
+        except (OSError, ValueError, subprocess.SubprocessError):
+            _VRAM["mb"] = 0
+    return _VRAM["mb"]
 
 
 def _ram_mb():

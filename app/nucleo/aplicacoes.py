@@ -858,6 +858,8 @@ def abrir_aplicativo(app):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             start_new_session=True,
+            # Windows: um programa de console (o Prompt de Comando) ganha a sua janela; os outros ignoram
+            creationflags=getattr(subprocess, "CREATE_NEW_CONSOLE", 0),
             # Chromium/Electron (Claude, Discord, VS Code, Chrome) só
             # expõem os botões pra acessibilidade com isso: aí o clique
             # pelo nome funciona neles também. Os outros apps ignoram.

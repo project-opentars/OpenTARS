@@ -806,6 +806,7 @@
  "pu.ollama.instalando": "Instalando o Ollama. Uma janela do sistema pode pedir a sua senha.",
  "pu.ollama.iniciando": "Iniciando o Ollama…",
  "pu.ollama.erro_instalar": "Não consegui instalar: {motivo}",
+ "pu.ollama.abri_download": "Abri a página de download do Ollama no navegador. Instale, abra o Ollama e clique em Procurar de novo.",
  "pu.ollama.erro_iniciar": "Não consegui iniciar: {motivo}",
  "pu.nuvem.titulo": "Quer usar a nuvem também?",
  "pu.nuvem.texto": "O TARS funciona 100% no seu computador. A nuvem é um extra, para pedidos que pedem um modelo maior. Você pode mudar isso depois, em Configurações.",

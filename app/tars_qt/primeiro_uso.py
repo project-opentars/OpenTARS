@@ -359,6 +359,10 @@ class PaginaOllama(Pagina):
     def instalou(self, ok, msg):
         if ok:
             self.procurar()
+        elif msg.startswith("https://"):      # Windows e macOS: o instalador do Ollama é o do site, a pessoa instala
+            import webbrowser
+            webbrowser.open(msg)
+            self.mostrar("faltando", erro=t("pu.ollama.abri_download"))
         else:
             self.mostrar("faltando", erro=t("pu.ollama.erro_instalar", motivo=msg))
 
@@ -488,7 +492,8 @@ class PaginaChave(Pagina):
 
     def continuar(self):
         sem_chave = not self.endereco.text().strip() or not self.chave.text().strip()
-        if sem_chave and pu.conta_ollama(self.jan.estado["host"]):
+        conta = self.login.conta if self.login.conferido else (sem_chave and pu.conta_ollama(self.jan.estado["host"]))
+        if sem_chave and conta:
             pu.salvar_nuvem(False)                 # a nuvem vem pela conta do Ollama: nenhuma chave guardada
             self.jan.estado["nuvem_conta"] = True
             self.jan.ir("gargantua")
@@ -540,9 +545,9 @@ class PaginaGargantua(Pagina):
         self.l_espaco = LinhaStatus("feito", t("pu.garg.espaco_ok"))
         self.corpo.addWidget(self.l_ollama)
         self.corpo.addWidget(self.l_espaco)
-        if pu.maquina_fraca():          # 5.1: o Gargantua Lite, menor, em vez do 4B
-            self.l_nome.setText(t("pu.garg.nome_lite"))
-            self.corpo.addWidget(LinhaStatus("feito", t("pu.garg.lite_nota")))
+        self.l_lite = LinhaStatus("feito", t("pu.garg.lite_nota"))
+        self.l_lite.hide()
+        self.corpo.addWidget(self.l_lite)
         self.l_erro = rotulo("", "erro", quebra=True)
         self.l_erro.hide()
         self.corpo.addWidget(self.l_erro)
@@ -554,6 +559,11 @@ class PaginaGargantua(Pagina):
         self.nav.addWidget(self.b_continuar)
 
     def ao_entrar(self):
+        # aqui e não no construir: as páginas são todas montadas na abertura (e de novo ao trocar o idioma), e a conta
+        # da máquina (nvidia-smi) já foi feita em segundo plano pela janela
+        if pu.maquina_fraca():          # 5.1: o Gargantua Lite, menor, em vez do 4B
+            self.l_nome.setText(t("pu.garg.nome_lite"))
+            self.l_lite.show()
         livre = pu.espaco_livre_gb()
         self.livre = livre
         precisa = pu.tamanho_gargantua_gb()
@@ -818,6 +828,7 @@ class JanelaPrimeiroUso(QMainWindow):
         self.setMinimumSize(1000, 700)
         self.paginas = {}
         self.atual = "idioma"
+        threading.Thread(target=pu.maquina_fraca, daemon=True).start()     # o nvidia-smi longe da tela (fica guardado)
         self.montar()
 
     # -- montagem ----------------------------------------------------

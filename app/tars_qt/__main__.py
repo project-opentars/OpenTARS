@@ -55,7 +55,7 @@ def _ligar_diagnostico():
 
             def mensagem_qt(tipo, contexto, mensagem):
                 arquivo.write(f"[Qt {getattr(tipo, 'name', tipo)}] {mensagem}\n")
-                if "Warning" not in str(getattr(tipo, "name", tipo)) or "thread" in mensagem.lower():
+                if sys.__stderr__ and ("Warning" not in str(getattr(tipo, "name", tipo)) or "thread" in mensagem.lower()):
                     sys.__stderr__.write(f"[Qt] {mensagem}\n")
             qInstallMessageHandler(mensagem_qt)
         except Exception:

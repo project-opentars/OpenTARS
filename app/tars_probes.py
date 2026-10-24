@@ -369,8 +369,18 @@ def medir_sistema():
     m["temperatura"] = round(max(temps)) if temps else None
     try:
         m["cpu"] = round(100 * os.getloadavg()[0] / (os.cpu_count() or 1))
-    except OSError:
+    except (OSError, AttributeError):        # o Windows não tem getloadavg
         pass
+    if m["bateria"] is None or m["cpu"] is None:     # Windows e macOS: sem /sys, o psutil lê
+        try:
+            import psutil
+            bateria = psutil.sensors_battery() if m["bateria"] is None else None
+            if bateria is not None:
+                m["bateria"], m["carregando"] = round(bateria.percent), bool(bateria.power_plugged)
+            if m["cpu"] is None:
+                m["cpu"] = round(psutil.cpu_percent(interval=0.5))
+        except Exception:  # noqa: BLE001  (sem psutil ou sem sensor: fica sem o número, como antes)
+            pass
     try:
         import socket
         socket.create_connection(("1.1.1.1", 443), timeout=3).close()

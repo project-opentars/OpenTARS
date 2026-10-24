@@ -32,6 +32,7 @@ class LoginOllama(QWidget):
     def __init__(self, host, abrir_link=None, ao_mudar=None):
         super().__init__()
         self.host, self.ao_mudar = host, ao_mudar
+        self.conta, self.conferido = None, False       # o último resultado (o primeiro uso lê daqui, sem esperar a rede)
         self.abrir_link = abrir_link or self._abrir_no_navegador
         self._esperando_ate = 0
         v = QVBoxLayout(self)
@@ -80,6 +81,7 @@ class LoginOllama(QWidget):
         self._fundo(trabalho, pronto)
 
     def mostrar(self, conta, nuvem):
+        self.conta, self.conferido = conta, True
         if conta:
             texto = t("nuvem.login.conectado", conta=conta)
             texto += " " + (t("nuvem.login.modelos", lista=", ".join(nuvem)) if nuvem else t("nuvem.login.sem_modelo"))

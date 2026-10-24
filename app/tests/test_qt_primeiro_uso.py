@@ -60,6 +60,8 @@ def ate_o_fim(j):
     assert j.atual == "teste"
     esperar(lambda: j.paginas["teste"].b_continuar.isEnabled(), o_que="teste rápido")
     j.paginas["teste"].b_continuar.click()
+    if j.atual == "sistema":                     # Windows e macOS: o passo das permissões e do atalho
+        j.paginas["sistema"].nav.itemAt(j.paginas["sistema"].nav.count() - 1).widget().click()
     assert j.atual == "pronto"
 
 
@@ -67,7 +69,7 @@ def ate_o_fim(j):
 tars_i18n.definir_idioma("pt_BR")
 j = JanelaPrimeiroUso()
 j.show()
-assert j.atual == "idioma" and len(j.paginas) == 8
+assert j.atual == "idioma" and len(j.paginas) == 8 + ("sistema" in j.paginas)
 assert j.windowTitle() == tars_i18n.t("pu.janela")
 j.paginas["idioma"].continuar()                 # mantém português
 assert j.atual == "modo"                         # 5.1: o modo vem logo depois do idioma
@@ -134,7 +136,7 @@ c.continuar()
 assert j3.atual == "gargantua"
 n = pu.carregar_nuvem()
 assert n == {"ativa": True, "provedor": "outro", "endereco": url, "chave": "boa"}, n
-assert stat.S_IMODE(os.stat(pu.arquivo_nuvem()).st_mode) == 0o600
+assert os.name == "nt" or stat.S_IMODE(os.stat(pu.arquivo_nuvem()).st_mode) == 0o600
 ate_o_fim(j3)
 assert j3.paginas["pronto"].resumo_nuvem.texto.plano() == tars_i18n.t("pu.pronto.nuvem_sim", provedor="Outro")
 j3.close()

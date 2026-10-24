@@ -65,6 +65,26 @@ jobs:
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
 
+  janelas:
+    # as janelas de verdade (sem tela) no Windows e no macOS, com um Ollama de mentira: o primeiro uso de ponta a ponta, a
+    # principal, os cliques, os modos, a barra rápida, as ações, os Probes e as rotinas. Pegaria o passo 4 do Windows.
+    strategy:
+      fail-fast: false
+      matrix: {os: [windows-latest, macos-latest]}
+    runs-on: ${{ matrix.os }}
+    defaults: {run: {working-directory: app}}
+    env: {QT_QPA_PLATFORM: offscreen, PYTHONUTF8: "1"}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests psutil pyautogui pillow PySide6-Essentials
+      - name: Janelas
+        run: >
+          python tests/run_all.py test_primeiro_uso test_qt_primeiro_uso test_qt_primeiro_uso_gargantua2 test_nuvem_login
+          test_qt_principal test_qt_cliques test_qt_modos test_qt_barra_rapida test_qt_acoes test_qt_probes test_qt_rotinas
+          test_qt_codigo test_qt_imagem test_qt_mascote test_qt_atualizacao test_mais_modelos test_qt_download_grande
+
   app_importa:
     # Mostra o que ainda impede o app inteiro de carregar no Windows e no macOS (fcntl, AT-SPI, X...).
     # Pode falhar até as fases F5/F6: serve de lista de tarefas, não de trava.

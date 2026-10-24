@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Roda todos os test_*.py desta pasta, um por um, num subprocesso
 (cada teste carrega o tars.py do zero, então não interferem entre si).
-Uso: python3 tests/run_all.py
+Uso: python3 tests/run_all.py [test_x test_y ...]   (sem nomes: todos)
 """
 
 import subprocess
@@ -10,7 +10,7 @@ from pathlib import Path
 
 PASTA = Path(__file__).parent
 
-arquivos = sorted(PASTA.glob("test_*.py"))
+arquivos = [PASTA / (n if n.endswith(".py") else n + ".py") for n in sys.argv[1:]] or sorted(PASTA.glob("test_*.py"))
 
 falhas = []
 

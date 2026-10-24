@@ -55,6 +55,28 @@ def sistema():
     return "macos" if sys.platform == "darwin" else "linux"
 
 
+def esconder_consoles_dos_filhos(popen=None, tem_console=None):
+    """Windows sem console (pythonw: a janela e o serviço dos Probes): cada programa de console que o app roda (nvidia-smi,
+    ollama, powershell) abria uma janela preta por cima, e a janela do app parecia travada. Aqui o padrão vira
+    CREATE_NO_WINDOW; quem abre um console para a pessoa passa CREATE_NEW_CONSOLE, e aí o Windows ignora o outro."""
+    import subprocess
+    popen = popen or subprocess.Popen
+    if tem_console is None:
+        import ctypes
+        tem_console = bool(ctypes.windll.kernel32.GetConsoleWindow())
+    if tem_console or getattr(popen, "_sem_console", False):
+        return False
+    original = popen.__init__
+
+    def __init__(self, *a, creationflags=0, **k):
+        if not creationflags & (0x10 | 0x08):         # CREATE_NEW_CONSOLE, DETACHED_PROCESS
+            creationflags |= 0x08000000               # CREATE_NO_WINDOW
+        original(self, *a, creationflags=creationflags, **k)
+    popen.__init__ = __init__
+    popen._sem_console = True
+    return True
+
+
 def _backend():
     so = sistema()
     if so == "windows":
@@ -231,3 +253,7 @@ def descrever():
     return {"sistema": so, "versao": versao, "plataforma": platform.platform(), "arquitetura": platform.machine(),
             "processador": platform.processor() or None, "nucleos": os.cpu_count(), "ram_gb": ram,
             "python": platform.python_version()}
+
+
+if sistema() == "windows":
+    esconder_consoles_dos_filhos()
