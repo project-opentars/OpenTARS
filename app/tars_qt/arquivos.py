@@ -1,31 +1,36 @@
 """5.2 (F4): o painel das ações em arquivos (atalho global com arquivos selecionados no gerenciador de arquivos), como no
-mock-up aprovado em 20/10: resumir, renomear pelo conteúdo, mover para uma pasta e mandar para a lixeira. Tudo mostra a
-prévia antes e só muda algo com o clique de confirmação; renomear e mover dá para desfazer enquanto o painel está aberto.
+mock-up aprovado em 20/10: resumir, renomear pelo conteúdo, mover para uma pasta e mandar para a lixeira; com fotos, editar
+a foto por frase (F4.8, mock-up aprovado em 24/10, tars_fotos: sempre cópia). Tudo mostra a prévia antes e só muda algo
+com o clique de confirmação; renomear e mover dá para desfazer enquanto o painel está aberto.
 O texto dos arquivos vai ao modelo pelo contrato das ações de texto (é dado, nunca instrução)."""
 import shutil
 import threading
 from pathlib import Path
 
 from PySide6.QtCore import QPoint, Qt, Signal
-from PySide6.QtGui import QCursor, QGuiApplication
+from PySide6.QtGui import QCursor, QGuiApplication, QPixmap
 from PySide6.QtWidgets import (QFileDialog, QFrame, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextBrowser, QVBoxLayout,
                                QWidget)
 
 import tars_acoes_arquivos as aa
 import tars_acoes_texto as acoes_lib
+import tars_fotos as fotos
 from tars_i18n import idioma_atual, t
 
 from . import icones, tema
 from .tema import CORES
 
 LARGURA = 500
-ACOES = ("resumir", "renomear", "mover", "lixeira")
+ACOES = ("resumir", "foto", "renomear", "mover", "lixeira")
+LUGAR = {"resumir": (0, 0), "foto": (0, 0), "renomear": (0, 1), "mover": (1, 0), "lixeira": (1, 1)}   # foto ou resumir
+RAPIDOS = ("quadrado", "clara", "girar", "cinza", "email")
 MAXIMO_RESUMOS = 5
 
 
 class PainelArquivos(QFrame):
     nomes_prontos = Signal(int, object)        # (rodada, [(caminho, novo | None)])
     resumo_pronto = Signal(int, str)
+    previa_pronta = Signal(int, object)        # (pedido, (png antes, png depois, tamanho antes, tamanho depois) | None)
 
     def __init__(self, host, modelos_instalados, lite, principal):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
@@ -62,13 +67,13 @@ class PainelArquivos(QFrame):
         chips = QGridLayout()          # 2 x 2: numa linha só os quatro não cabem e o texto some
         chips.setSpacing(6)
         self.botoes_acao = {}
-        for i, acao in enumerate(ACOES):
+        for acao in ACOES:
             b = QPushButton(t(f"arq.acao.{acao}"))
             b.setProperty("papel", "chip")
             b.setCheckable(True)
             b.setMinimumHeight(36)
             b.clicked.connect(lambda _=False, a=acao: self.escolher(a))
-            chips.addWidget(b, i // 2, i % 2)
+            chips.addWidget(b, *LUGAR[acao])
             self.botoes_acao[acao] = b
         v.addLayout(chips)
 
@@ -100,15 +105,18 @@ class PainelArquivos(QFrame):
         v.addWidget(tema.rotulo(t("arq.rodape"), "nota", quebra=True))
         self.nomes_prontos.connect(self._nomes_prontos)
         self.resumo_pronto.connect(self._resumo_pronto)
+        self.previa_pronta.connect(self._previa_pronta)
 
     # -- abrir e escolher -------------------------------------------------------------------------------
     def abrir(self, arquivos):
         self.arquivos = [str(a) for a in arquivos]
         self.feitos = []
-        self.titulo.setText(t("arq.titulo", n=len(self.arquivos)))
-        self.modelo.setText(acoes_lib.escolher_modelo(self.instalados, self.lite, self.principal).split("/")[-1])
-        self.escolher("renomear")
-        self.adjustSize()
+        so_fotos = all(fotos.e_foto(a) for a in self.arquivos)
+        self.botoes_acao["foto"].setVisible(so_fotos)
+        self.botoes_acao["resumir"].setVisible(not so_fotos)       # foto não tem texto para resumir
+        self.titulo.setText(t("arq.titulo_fotos" if so_fotos else "arq.titulo", n=len(self.arquivos)))
+        self.escolher("foto" if so_fotos else "renomear")
+        self._encaixar()
         tela = QGuiApplication.screenAt(QCursor.pos()) or QGuiApplication.primaryScreen()
         area = tela.availableGeometry()
         p = QCursor.pos() + QPoint(24, 24)
@@ -117,6 +125,10 @@ class PainelArquivos(QFrame):
         self.show()
         self.raise_()
         self.activateWindow()
+
+    def _encaixar(self):
+        """A altura que o conteúdo pede (o adjustSize do Qt corta janelas em 2/3 da tela e o conteúdo se sobrepõe)."""
+        self.resize(LARGURA, self.sizeHint().height())
 
     def _limpar(self):
         while self.caixa.count():
@@ -146,8 +158,12 @@ class PainelArquivos(QFrame):
         self._limpar()
         self.botao_desfazer.setVisible(bool(self.feitos))
         self.caixa.addWidget(tema.rotulo(t(f"arq.previa.{acao}"), "nota"))
+        self.modelo.setText(t("arq.sem_modelo") if acao in ("foto", "mover", "lixeira") else
+                            acoes_lib.escolher_modelo(self.instalados, self.lite, self.principal).split("/")[-1])
         n = len(self.arquivos)
-        if acao == "renomear":
+        if acao == "foto":
+            self._montar_foto()
+        elif acao == "renomear":
             for caminho in self.arquivos:
                 campo = QLineEdit(t("arq.pensando"))
                 campo.setEnabled(False)
@@ -173,7 +189,98 @@ class PainelArquivos(QFrame):
             self.botao_aplicar.setText(t("arq.escolher_pasta") if acao == "mover" else t("arq.lixeira_n", n=n))
             self.botao_aplicar.setEnabled(True)
             self.aviso.setText(t(f"arq.aviso_{acao}"))
-        self.adjustSize()
+        self._encaixar()
+
+    # -- editar a foto (F4.8) ----------------------------------------------------------------------------
+    def _montar_foto(self):
+        self.pedido_foto = QLineEdit()
+        self.pedido_foto.setPlaceholderText(t("foto.dica"))
+        self.pedido_foto.setAccessibleName(t("foto.dica"))
+        self.pedido_foto.setMinimumHeight(40)
+        self.pedido_foto.returnPressed.connect(self._atualizar_foto)
+        self.pedido_foto.textChanged.connect(lambda _texto: self.botao_aplicar.setEnabled(False))
+        self.caixa.insertWidget(0, self.pedido_foto)
+        rapidos = QWidget()
+        r = QGridLayout(rapidos)          # 3 + 2: numa linha só os cinco não cabem
+        r.setContentsMargins(0, 0, 0, 0)
+        r.setSpacing(6)
+        for i, chave in enumerate(RAPIDOS):
+            b = QPushButton(t(f"foto.chip.{chave}"))
+            b.setProperty("papel", "chip")
+            b.setMinimumHeight(32)
+            b.clicked.connect(lambda _=False, c=chave: self._rapido(c))
+            r.addWidget(b, i // 3, i % 3)
+        self.caixa.insertWidget(1, rapidos)
+        lado = QHBoxLayout()
+        self.img_antes, self.img_depois = QLabel(), QLabel()
+        self.leg_antes, self.leg_depois = QLabel(), QLabel()
+        for legenda in (self.leg_antes, self.leg_depois):
+            legenda.setStyleSheet(f"color: {CORES['apoio']}; font-size: 12px;")
+            legenda.setFixedHeight(18)
+        for img, legenda in ((self.img_antes, self.leg_antes), (None, None), (self.img_depois, self.leg_depois)):
+            if img is None:
+                lado.addWidget(QLabel("→"), 0, Qt.AlignVCenter)
+                continue
+            coluna = QVBoxLayout()
+            img.setFixedSize(176, 132)
+            img.setAlignment(Qt.AlignCenter)
+            coluna.addWidget(img)
+            coluna.addWidget(legenda, 0, Qt.AlignHCenter)
+            lado.addLayout(coluna)
+        bloco = QWidget()
+        bloco.setLayout(lado)
+        bloco.setMinimumHeight(132 + 18 + 12)
+        self.caixa.addWidget(bloco)
+        self.entendido = tema.rotulo(t("foto.o_que_fazer"), "texto", quebra=True)
+        self.caixa.addWidget(self.entendido)
+        self.operacoes = []
+        n = len(self.arquivos)
+        self.botao_aplicar.setText(t("foto.salvar", nome=fotos.nome_da_copia(self.arquivos[0], []).name) if n == 1
+                                   else t("foto.salvar_n", n=n))
+        self.botao_aplicar.setEnabled(False)
+        self.aviso.setText(t("foto.aviso"))
+        self._atualizar_foto()
+
+    def _rapido(self, chave):
+        atual = self.pedido_foto.text().strip()
+        frase = t(f"foto.frase.{chave}")
+        self.pedido_foto.setText(f"{atual}, {frase}" if atual else frase)
+        self._atualizar_foto()
+
+    def _atualizar_foto(self):
+        texto = self.pedido_foto.text().strip()
+        self.operacoes = fotos.entender(texto)
+        o_que = fotos.descrever(self.operacoes, "pt_BR" if idioma_atual().startswith("pt") else "en")
+        self.entendido.setText(t("foto.entendi", o_que=o_que) if o_que else
+                               t("foto.nao_entendi") if texto else t("foto.o_que_fazer"))
+        self.pedido_previa = getattr(self, "pedido_previa", 0) + 1     # só a prévia do último pedido aparece
+        numero, caminho, operacoes = self.pedido_previa, self.arquivos[0], list(self.operacoes)
+
+        def trabalho():
+            try:
+                resultado = fotos.previa(caminho, operacoes)
+            except Exception:  # noqa: BLE001  (arquivo que o Pillow não abre: sem prévia, o botão fica desligado)
+                resultado = None
+            self.previa_pronta.emit(numero, resultado)
+        threading.Thread(target=trabalho, daemon=True).start()
+
+    def _previa_pronta(self, numero, resultado):
+        if numero != self.pedido_previa or self.acao != "foto":
+            return
+        if resultado is None:
+            self.entendido.setText(t("foto.nao_abre"))
+            return
+        antes, depois, tam_antes, tam_depois = resultado
+        for img, dados in ((self.img_antes, antes), (self.img_depois, depois)):
+            mapa = QPixmap()
+            mapa.loadFromData(dados)
+            img.setPixmap(mapa.scaled(img.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        self.leg_antes.setText(t("foto.antes", w=tam_antes[0], h=tam_antes[1]))
+        self.leg_depois.setText(t("foto.depois", w=tam_depois[0], h=tam_depois[1]))
+        self.botao_aplicar.setEnabled(bool(self.operacoes))
+        if len(self.arquivos) == 1:
+            self.botao_aplicar.setText(t("foto.salvar", nome=fotos.nome_da_copia(self.arquivos[0], self.operacoes).name))
+        self._encaixar()
 
     # -- o modelo -------------------------------------------------------------------------------------
     def _modelo(self):
@@ -213,6 +320,16 @@ class PainelArquivos(QFrame):
 
     # -- aplicar -------------------------------------------------------------------------------------------
     def aplicar(self):
+        if self.acao == "foto":
+            salvas, erros = [], []
+            for caminho in self.arquivos:
+                try:
+                    salvas.append(fotos.salvar_copia(caminho, self.operacoes).name)
+                except Exception as e:  # noqa: BLE001  (formato que o Pillow não grava, disco cheio)
+                    erros.append(f"{Path(caminho).name}: {e}")
+            self.aviso.setText(t("foto.salvas", nomes=", ".join(salvas)) + (" " + "; ".join(erros) if erros else ""))
+            self.botao_aplicar.setEnabled(False)       # uma cópia por clique; mudar a frase libera de novo
+            return
         if self.acao == "renomear":
             pares = [(c, campo.text().strip()) for c, campo in self.campos if campo.text().strip() != Path(c).name]
             self.feitos = aa.renomear(pares)

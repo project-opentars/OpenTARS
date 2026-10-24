@@ -57,4 +57,24 @@ assert not lixo
 painel.aplicar()
 assert lixo == arquivos, lixo
 print("OK: a lixeira só vai com o botão de confirmação")
+# F4.8: com fotos selecionadas, o painel abre em "Editar a foto" (sem "Resumir"); a cópia só sai com o clique
+from PIL import Image  # noqa: E402
+foto = pasta / "IMG_2041.jpg"
+Image.new("RGB", (400, 300), (40, 90, 160)).save(foto)
+antes = foto.read_bytes()
+painel.abrir([str(foto)])
+assert painel.acao == "foto" and painel.botoes_acao["foto"].isVisibleTo(painel)
+assert not painel.botoes_acao["resumir"].isVisibleTo(painel) and not painel.botao_aplicar.isEnabled()
+painel._rapido("quadrado")
+painel._rapido("clara")
+assert painel.pedido_foto.text() == f"{pa.t('foto.frase.quadrado')}, {pa.t('foto.frase.clara')}"
+esperar(lambda: painel.botao_aplicar.isEnabled())
+assert "300 x 300" in painel.leg_depois.text() and painel.img_depois.pixmap() is not None
+assert not (pasta / "IMG_2041-editada.jpg").exists(), "a prévia não salva nada"
+painel.aplicar()
+assert (pasta / "IMG_2041-editada.jpg").exists() and foto.read_bytes() == antes and not painel.botao_aplicar.isEnabled()
+painel.pedido_foto.setText("bom dia")
+painel._atualizar_foto()
+assert painel.entendido.plano() == pa.t("foto.nao_entendi")
+print("OK: fotos abrem em Editar a foto; os atalhos montam o pedido; a prévia não salva; a cópia sai só com o clique")
 print("test_qt_arquivos: TUDO OK.")

@@ -55,6 +55,7 @@ jobs:
       - name: Assistente (F4 e F3.5) e aviso de modelo novo
         run: |
           python tests/test_busca_arquivos.py
+          python tests/test_fotos.py
           python tests/test_acoes_arquivos.py
           python tests/test_contexto.py
           python tests/test_qt_lancador.py
