@@ -24,7 +24,21 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 
 ## Download and install
 
-**Linux:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Windows, macOS, Fedora, Arch and openSUSE: [one command each, below](#windows-macos-and-other-linux-new-in-52-still-early).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
+**Windows 10 or 11**, in PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex
+```
+
+**macOS 12 or newer**, in Terminal:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash
+```
+
+No administrator password on either: everything goes into your user folder. Both are new in 5.2 and still early ([what was tested](#windows-macos-and-other-linux-new-in-52-still-early)).
+
+**Ubuntu, Debian and derivatives:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Windows, macOS, Fedora, Arch and openSUSE: [one command each, below](#windows-macos-and-other-linux-new-in-52-still-early).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
 
 ```bash
 wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
@@ -126,7 +140,7 @@ Several layers read each request in milliseconds, without spending any AI, and r
 <td width="50%" valign="top">
 
 ### Clicks by name, not by position
-It presses buttons by the text they show ("7", "=", "Save") through Linux accessibility: no screenshot, no coordinates, in milliseconds, even on Wayland. Looking at the screen (Gargantua 2 itself) is the plan B.
+It presses buttons by the text they show ("7", "=", "Save") through the system's accessibility (AT-SPI on Linux, UI Automation on Windows, Accessibility on macOS): no screenshot, no coordinates, in milliseconds, even on Wayland. Looking at the screen (Gargantua 2 itself) is the plan B.
 
 </td>
 <td width="50%" valign="top">

@@ -84,7 +84,8 @@ fi
 
 # 4. O openTARS.app (um lançador que abre a janela), assinado ad-hoc, e os comandos
 rm -rf "$APP_MAC"
-mkdir -p "$APP_MAC/Contents/MacOS"
+mkdir -p "$APP_MAC/Contents/MacOS" "$APP_MAC/Contents/Resources"
+cp "$APP_CODIGO/empacotamento/macos/opentars.icns" "$APP_MAC/Contents/Resources/opentars.icns" 2>/dev/null || true
 cat > "$APP_MAC/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -93,6 +94,7 @@ cat > "$APP_MAC/Contents/Info.plist" <<PLIST
   <key>CFBundleDisplayName</key><string>openTARS</string>
   <key>CFBundleIdentifier</key><string>io.github.project-opentars.opentars</string>
   <key>CFBundleExecutable</key><string>openTARS</string>
+  <key>CFBundleIconFile</key><string>opentars</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleShortVersionString</key><string>5.2</string>
   <key>LSMinimumSystemVersion</key><string>12.0</string>

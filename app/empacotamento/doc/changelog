@@ -23,6 +23,10 @@ opentars (5.2) unstable; urgency=medium
   * Pouca confiança: numa pergunta de fato, o app mede a confiança da resposta (logprobs) e,
     com a pesquisa ligada, confere pela busca; sem ela, avisa embaixo da resposta.
   * opentars --prova (48 tarefas, relatório JSON) e opentars --diagnostico nos três sistemas.
+  * Revisão de 25/10: a rolagem da conversa para na última mensagem (antes sobrava vazio embaixo);
+    o Gargantua diz que se chama Gargantua e foi desenvolvido pelo Enzo, fundador do openTARS;
+    pesquisa dentro de Spotify, Amazon, Wikipedia, GitHub, Maps, Reddit e outros sites; o ícone
+    do openTARS no Windows (atalhos e barra de tarefas) e no macOS.
   * Já publicados nas revisões de 21/10: Mais modelos, Gerenciar modelos e imagem local no chat.
 
  -- openTARS <projectopentars@gmail.com>  Sat, 24 Oct 2026 20:20:00 -0300

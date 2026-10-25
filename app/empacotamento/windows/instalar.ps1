@@ -123,6 +123,7 @@ $atalho.TargetPath = $pythonw
 $atalho.Arguments = "-m tars_qt"
 $atalho.WorkingDirectory = $App
 $atalho.Description = "openTARS"
+$atalho.IconLocation = (Join-Path $App "empacotamento\windows\opentars.ico") + ",0"      # sem isto o atalho mostra o ícone do pythonw
 $atalho.Save()
 
 Dizer "Pronto. Abra o openTARS pelo Menu Iniciar (na primeira vez ele baixa o Gargantua 2, com barra)." `

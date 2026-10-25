@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 from urllib.parse import unquote
 
-from PySide6.QtCore import QSize, Qt, QTimer, Signal
+from PySide6.QtCore import QEvent, QSize, Qt, QTimer, Signal
 from PySide6.QtGui import QFont, QFontMetrics, QGuiApplication, QImage, QImageReader, QPixmap
 from PySide6.QtWidgets import (QFrame, QHBoxLayout, QLabel, QPlainTextEdit, QPushButton, QScrollArea, QSizePolicy,
                                QToolButton, QVBoxLayout, QWidget)
@@ -666,11 +666,39 @@ class AreaConversa(QScrollArea):
         horizontal.addWidget(self.coluna_w, 1000)
         horizontal.addStretch(1)
         self.setWidget(miolo)
+        self._miolo = miolo
+        self._ajuste = QTimer(self)             # 5.2: a altura certa do miolo (ver _ajustar_altura), uma vez por rajada
+        self._ajuste.setSingleShot(True)
+        self._ajuste.setInterval(30)
+        self._ajuste.timeout.connect(self._ajustar_altura)
+        self.coluna_w.installEventFilter(self)
         self._colar = True
         self.verticalScrollBar().valueChanged.connect(self._ao_rolar)
         self.verticalScrollBar().rangeChanged.connect(self._ao_crescer)
         self.itens = []
         self.vazio = None
+
+    def eventFilter(self, objeto, evento):
+        if objeto is self.coluna_w and evento.type() in (QEvent.LayoutRequest, QEvent.Resize):
+            self._ajuste.start()
+        return super().eventFilter(objeto, evento)
+
+    def _ajustar_altura(self):
+        """A rolagem ia além da última mensagem (centenas de pixels de vazio): o miolo pega a altura do `sizeHint` dos
+        blocos de texto com quebra de linha, que supõe uma largura qualquer e passa da altura que eles realmente ocupam. A
+        altura certa é a da coluna na largura de verdade (heightForWidth), que termina na última mensagem."""
+        lay = self.coluna_w.layout()
+        largura = self.coluna_w.width()
+        if lay is None or largura <= 0:
+            return
+        altura = lay.heightForWidth(largura) if lay.hasHeightForWidth() else lay.sizeHint().height()
+        altura = max(altura, self.viewport().height())      # nunca menor que a janela (o fundo continua o do miolo)
+        if self._miolo.height() != altura or self._miolo.minimumHeight() != altura:
+            self._miolo.setFixedHeight(altura)
+
+    def resizeEvent(self, evento):
+        super().resizeEvent(evento)
+        self._ajuste.start()
 
     def _ao_rolar(self, valor):
         barra = self.verticalScrollBar()

@@ -215,11 +215,12 @@ def autostart(nome, titulo, comando, ligado):
     atalho.parent.mkdir(parents=True, exist_ok=True)
     roteiro = ("$a = (New-Object -ComObject WScript.Shell).CreateShortcut($env:TARS_LNK); $a.TargetPath = $env:TARS_ALVO;"
                "$a.Arguments = $env:TARS_ARGS; $a.WorkingDirectory = $env:TARS_PASTA; $a.Description = $env:TARS_TITULO;"
-               "$a.WindowStyle = 7; $a.Save()")
+               "$a.IconLocation = $env:TARS_ICONE; $a.WindowStyle = 7; $a.Save()")
     subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", roteiro], capture_output=True, timeout=60,
                    check=True, creationflags=CREATE_NO_WINDOW,
                    env=dict(os.environ, TARS_LNK=str(atalho), TARS_ALVO=str(comando[0]), TARS_TITULO=str(titulo),
-                            TARS_ARGS=subprocess.list2cmdline([str(c) for c in comando[1:]]), TARS_PASTA=str(APP)))
+                            TARS_ARGS=subprocess.list2cmdline([str(c) for c in comando[1:]]), TARS_PASTA=str(APP),
+                            TARS_ICONE=str(APP / "empacotamento" / "windows" / "opentars.ico") + ",0"))
     return atalho.exists()
 
 

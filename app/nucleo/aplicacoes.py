@@ -165,6 +165,35 @@ GOOGLE_SEARCH_URL = "https://www.google.com/search?q="
 _BUSCAS_POR_SERVICO = {
     "youtube": "https://www.youtube.com/results?search_query=",
     "google": GOOGLE_SEARCH_URL,
+    # 5.2: a busca de dentro do próprio site, para "pesquisa X no Spotify" não virar uma busca no Google
+    "spotify": "https://open.spotify.com/search/",
+    "amazon": "https://www.amazon.com/s?k=",
+    "wikipedia": "https://wikipedia.org/w/index.php?search=",
+    "github": "https://github.com/search?q=",
+    "maps": "https://www.google.com/maps/search/",
+    "reddit": "https://www.reddit.com/search/?q=",
+    "stackoverflow": "https://stackoverflow.com/search?q=",
+    "imdb": "https://www.imdb.com/find/?q=",
+    "netflix": "https://www.netflix.com/search?q=",
+    "twitter": "https://x.com/search?q=",
+    "linkedin": "https://www.linkedin.com/search/results/all/?keywords=",
+    "pinterest": "https://www.pinterest.com/search/pins/?q=",
+    "soundcloud": "https://soundcloud.com/search?q=",
+    "twitch": "https://www.twitch.tv/search?term=",
+    "steam": "https://store.steampowered.com/search/?term=",
+    "ebay": "https://www.ebay.com/sch/i.html?_nkw=",
+    "aliexpress": "https://www.aliexpress.com/wholesale?SearchText=",
+    "mercadolivre": "https://lista.mercadolivre.com.br/",
+    "npm": "https://www.npmjs.com/search?q=",
+    "pypi": "https://pypi.org/search/?q=",
+}
+_BUSCADORES_GERAIS = frozenset({"bing", "duckduckgo", "duck duck go", "ddg", "brave", "searxng", "yahoo", "web"})
+# nomes que a pessoa (ou o modelo) usa para o mesmo site
+_APELIDOS_DE_SERVICO = {
+    "google maps": "maps", "googlemaps": "maps", "gmaps": "maps", "mapa": "maps", "mapas": "maps",
+    "wiki": "wikipedia", "stack overflow": "stackoverflow", "x": "twitter", "mercado livre": "mercadolivre",
+"yt": "youtube", "spotify web": "spotify", "prime": "amazon",
+    "amazon.com": "amazon", "youtube.com": "youtube", "github.com": "github", "reddit.com": "reddit",
 }
 
 # Os verbos de busca ("pesquisar", "search", "buscar"...), os conectores
@@ -1258,8 +1287,15 @@ def pesquisar_web(query, service=None):
         }
 
     servico_normalizado = normalizar(service or "").strip()
+    servico_normalizado = _APELIDOS_DE_SERVICO.get(servico_normalizado, servico_normalizado)
+    if servico_normalizado in _BUSCADORES_GERAIS:       # outro buscador: é a busca geral de sempre
+        servico_normalizado = ""
+    if servico_normalizado and servico_normalizado not in _BUSCAS_POR_SERVICO:
+        # um site que não está na lista: a melhor busca é a do Google com o nome dele junto (nunca uma URL inventada)
+        query = f"{query} {service.strip()}"
+        servico_normalizado = ""
     url_base = _BUSCAS_POR_SERVICO.get(servico_normalizado, GOOGLE_SEARCH_URL)
-    url = url_base + quote_plus(query)
+    url = url_base + (quote_plus(query) if servico_normalizado != "mercadolivre" else quote_plus(query).replace("+", "-"))
     base = {"acao": "search_web", "query": query, "servico": servico_normalizado or "google"}
     ligada = _pesquisa_ligada()
     abrir = (not ligada or _servico_com_busca_propria(servico_normalizado)

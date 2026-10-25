@@ -824,6 +824,26 @@ def _ultimo_pedido_real(mensagens=None):
     return None
 
 
+_PERGUNTA_DE_IDENTIDADE = re.compile(
+    r"\b(?:quem (?:e|eh) (?:voce|vc|tu)|quem (?:te |lhe )?(?:criou|fez|desenvolveu|programou|inventou|treinou)|"
+    r"quem (?:e|eh) (?:o )?(?:seu )?(?:criador|dono|fundador|desenvolvedor)|qual (?:e )?(?:o )?seu nome|como (?:voce )?se chama|"
+    r"seu nome|voce (?:e|eh) (?:o )?(?:chatgpt|gpt|gemini|claude|llama|qwen|alexa|siri)|"
+    r"who (?:are you|made you|created you|built you|developed you|trained you|is your (?:creator|developer|founder|maker))|"
+    r"what(?:'s| is) your name|your (?:name|creator|developer|founder)|who (?:is|are) (?:the )?(?:founder|creator) of opentars|"
+    r"(?:fundador|criador|dono|founder|creator) (?:do |da |of )?opentars)\b")
+_VERBOS_DE_BUSCA = re.compile(r"\b(?:pesquis\w*|busc\w*|procur\w*|search\w*|find|look up|look for|ache|achar)\b")
+
+
+def _sites_citados_na_busca(texto_n):
+    """Os sites com busca própria que o pedido cita ("pesquisa X no spotify"), fora google e youtube (que a IA já conhece)."""
+    if not _VERBOS_DE_BUSCA.search(texto_n):
+        return []
+    nomes = set(_BUSCAS_POR_SERVICO) | set(_APELIDOS_DE_SERVICO)
+    achados = [n for n in sorted(nomes, key=len, reverse=True)
+               if n not in ("google", "youtube", "yt", "x", "mapa", "mapas", "prime") and re.search(rf"\b{re.escape(n)}\b", texto_n)]
+    return [_APELIDOS_DE_SERVICO.get(n, n) for n in achados]
+
+
 def _contexto_do_pedido(texto, tarefa, multi_etapas, retoma=None):
     """O que a IA precisa saber antes de agir: as janelas abertas (não
     precisa abrir o que já está aberto, sabe o nome certo da janela) e, se
@@ -835,6 +855,16 @@ def _contexto_do_pedido(texto, tarefa, multi_etapas, retoma=None):
         # 18/10: "use the built-in tool" sozinho não diz o quê; o modelo pequeno inventava (abriu o "app" google)
         linhas.append(f"The user's message refers to the previous request: \"{retoma}\". Do that request now with the "
                       "right tool, and say only what the tool results confirm.")
+    texto_n = normalizar(retoma or texto)
+    if _PERGUNTA_DE_IDENTIDADE.search(texto_n):
+        linhas.append("About you: your name is Gargantua. You were developed by Enzo, the founder of openTARS, and you run "
+                      "inside the openTARS app (openTARS is the app, Gargantua is you). Say so in your own words; never "
+                      "name another company or model as your maker.")
+    sites = _sites_citados_na_busca(texto_n)
+    if sites:
+        linhas.append("To search INSIDE a site, call search_web with query = only the search terms and service = the site "
+                      f"name, here: service=\"{sites[0]}\". Do not use google as the service and do not open_website "
+                      "for a search.")
     if CONTEXTO_JANELAS and tarefa in ("acao", "visao"):
         janelas = _janelas_para_contexto()
         if janelas:

@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://project-opentars.github.io/OpenTARS/img/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="openTARS, the local AI assistant for Linux, with a screenshot of its window">
+<meta property="og:image:alt" content="openTARS, the local AI assistant, with a screenshot of its window">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="openTARS: the local AI assistant for Linux, Windows and macOS">
 <meta name="twitter:description" content="Tell your computer what to do. Open source, local by default, with optional external services.">
@@ -56,11 +56,21 @@
       <div>
         <h1 class="display">Tell your computer what to do.</h1>
         <p class="lede">openTARS is an AI assistant that does the work on your computer. It opens programs, presses buttons by their name, types, runs commands and looks at the screen. With a local Ollama model, processing stays on your machine; cloud models and web search are optional.</p>
-        <div class="actions">
-          <a class="btn" href="https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb">Download the .deb</a>
-          <a class="link" href="#install">Or install with one command</a>
+        <h2 class="or" style="margin:1.4rem 0 .4rem">Windows 10 or 11, in PowerShell</h2>
+        <div class="cmd">
+          <pre id="cmdwin-top">irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex</pre>
+          <button type="button" data-copy="cmdwin-top">Copy</button>
         </div>
-        <p class="facts">Version 5.2 Ranger. Free and open source under the MIT license. For Linux, and new in 5.2: Windows and macOS, still early (<a href="#install">what was tested</a>).</p>
+        <h2 class="or" style="margin:1rem 0 .4rem">macOS 12 or newer, in Terminal</h2>
+        <div class="cmd">
+          <pre id="cmdmac-top">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash</pre>
+          <button type="button" data-copy="cmdmac-top">Copy</button>
+        </div>
+        <div class="actions">
+          <a class="btn" href="https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb">Download for Ubuntu and Debian (.deb)</a>
+          <a class="link" href="#install">Fedora, Arch, openSUSE and details</a>
+        </div>
+        <p class="facts">Version 5.2 Ranger. Free and open source under the MIT license. For Windows, macOS and Linux; Windows and macOS are new in 5.2 and still early (<a href="#install">what was tested</a>).</p>
       </div>
 
       <div class="term play" role="img" aria-label="A terminal session: the request “open the calculator and work out 7 + 2”, then four steps that open Calculator and press 7, plus, 2 and equals, then the answer 9.">
@@ -99,7 +109,7 @@
         <p class="lede quiet">In English or Portuguese, typed, spoken or from the terminal. A few things people ask, and what openTARS does with them:</p>
       </div>
       <ol class="ledger">
-        <li><q>Open the calculator and work out 7 + 2</q><p>Opens Calculator and presses each key by the text on it, through the system's accessibility (UI Automation on Windows). On Linux it works in milliseconds, even on Wayland.</p></li>
+        <li><q>Open the calculator and work out 7 + 2</q><p>Opens Calculator and presses each key by the text on it, through the system's accessibility (UI Automation on Windows, Accessibility on macOS). On Linux it works in milliseconds, even on Wayland.</p></li>
         <li><q>Make a folder called Invoices in my Documents</q><p>Knows where your personal folders are, in your language, and creates it.</p></li>
         <li><q>What is using all my memory?</q><p>Runs the command, reads the output and answers in plain words.</p></li>
         <li class="stop"><q>Delete the old logs in Downloads</q><p>Stops first. It shows you the exact command with Allow and Deny, and nothing is removed until you choose.</p></li>
@@ -262,8 +272,8 @@
           <dl class="pacote">
             <div><dt>Version</dt><dd>5.2 Ranger</dd></div>
             <div><dt>Size</dt><dd>1.3 MB</dd></div>
-            <div><dt>Updated</dt><dd>October 24, 2026</dd></div>
-            <div class="sha"><dt>SHA-256</dt><dd><code>151fb68c7465958094b6297a6888359bdc2abfa461dcbacc1e36da5427540bd7</code></dd></div>
+            <div><dt>Updated</dt><dd>October 25, 2026</dd></div>
+            <div class="sha"><dt>SHA-256</dt><dd><code>51f57a89efc3712dc03ab22acbeb47f3a6fe36dd2512ccceb5f20129167a975e</code></dd></div>
           </dl>
           <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved. To check the download first: <code>sha256sum opentars_all.deb</code> must print the SHA-256 above.</p>
           <h3 class="or">Or paste one line in a terminal</h3>

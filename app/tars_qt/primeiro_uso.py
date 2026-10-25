@@ -944,6 +944,12 @@ def criar_aplicativo(argv):
         # em várias máquinas. Vale também para quem não passa pelo lançador (o serviço dos Probes, opentars --probes).
         if not os.environ.get("QT_QPA_PLATFORM") and os.environ.get("DISPLAY"):
             os.environ["QT_QPA_PLATFORM"] = "xcb"
+    if plataforma.sistema() == "windows":
+        try:     # sem uma identidade própria a barra de tarefas agrupa a janela como "Python" e mostra o ícone do pythonw
+            import ctypes
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("project-opentars.openTARS")
+        except Exception:  # noqa: BLE001
+            pass
     app = QApplication.instance() or QApplication((["opentars"] + list(argv[1:])) if argv else ["opentars"])
     # O menu e a barra de tarefas ligam a janela ao ícone pelo nome (WM_CLASS = Opentars, igual ao StartupWMClass do atalho).
     app.setApplicationName("Opentars")
