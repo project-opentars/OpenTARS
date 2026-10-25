@@ -73,11 +73,17 @@ class _Manipulador(http.server.BaseHTTPRequestHandler):
                 self.wfile.flush()
                 time.sleep(s.atraso)
             return
+        if self.path == "/api/show":
+            return self._responder(200, {"capabilities": ["completion", "tools"], "details": {"family": "qwen35"}, "model_info": {}})
         if self.path == "/api/generate":          # sem prompt: só carrega ou descarrega (keep_alive)
             return self._responder(200, {"model": corpo.get("model"), "done": True})
         if self.path == "/api/chat":
             if s.erro_no_chat:
                 return self._responder(500, {"error": s.erro_no_chat})
+            if corpo.get("stream") is True:          # o terminal e a janela leem em fluxo (ndjson)
+                linhas = [{"message": {"role": "assistant", "content": s.resposta}, "done": False},
+                          {"message": {"role": "assistant", "content": ""}, "done": True, "done_reason": "stop"}]
+                return self._responder(200, ("\n".join(json.dumps(l) for l in linhas) + "\n").encode(), "application/x-ndjson")
             return self._responder(200, {"message": {"role": "assistant", "content": s.resposta}})
         self._responder(404, {"error": "?"})
 

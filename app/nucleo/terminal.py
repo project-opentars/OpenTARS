@@ -299,15 +299,38 @@ def _boas_vindas(pedidos):
         print(c(f"  ⚠ {aviso}", Cor.AMARELO))
 
 
+TEM_READLINE = False
+
+
+def _ligar_cores_do_windows():
+    """O console clássico do Windows (cmd, PowerShell antigo) imprime as cores como lixo ("←[1m") até alguém ligar o modo
+    de terminal virtual; o Windows Terminal já vem com ele ligado."""
+    if os.name != "nt":
+        return
+    try:
+        import ctypes
+        kernel = ctypes.windll.kernel32
+        for alca in (-11, -12):               # stdout e stderr
+            h = kernel.GetStdHandle(alca)
+            modo = ctypes.c_uint32()
+            if h and kernel.GetConsoleMode(h, ctypes.byref(modo)):
+                kernel.SetConsoleMode(h, modo.value | 0x0004)      # ENABLE_VIRTUAL_TERMINAL_PROCESSING
+    except Exception:  # noqa: BLE001  (sem console: as cores só aparecem se a saída for um terminal)
+        pass
+
+
 def modo_chat_terminal(pedido_unico=None, retomar=None):
     """opentars --chat: conversa por texto no terminal. Sem pedido_unico, fica num laço (/ajuda, /sair); com ele,
     responde uma vez e sai. retomar (5.1): None = continua a última conversa (como na 5.0), "nova" = começa outra,
     "escolher" = lista as conversas salvas (--resume)."""
     global CLI_ATIVO
+    global TEM_READLINE
     try:  # setas, histórico e edição da linha (ctrl+r busca nos pedidos anteriores)
         import readline  # noqa: F401
-    except ImportError:
-        pass
+        TEM_READLINE = True
+    except ImportError:       # Windows: sem readline, as marcas \001 \002 do prompt apareceriam na tela
+        TEM_READLINE = False
+    _ligar_cores_do_windows()
     CLI_ATIVO = True
     carregar_contexto_projeto()
     real = sys.stdout
@@ -358,8 +381,9 @@ def _conversar(pedido_unico, retomar=None):
         while True:
             try:
                 # \001..\002 avisam o readline que as cores não ocupam coluna (senão a edição da linha embaralha)
-                linha = input("\n" + "\001" + Cor.NEGRITO + Cor.VERDE + "\002" + "❯ "
-                              + "\001" + Cor.RESET + "\002" if interativo else "").strip()
+                ini, fim = ("\001", "\002") if TEM_READLINE else ("", "")
+                linha = input("\n" + ini + Cor.NEGRITO + Cor.VERDE + fim + "❯ "
+                              + ini + Cor.RESET + fim if interativo else "").strip()
             except EOFError:
                 print()
                 break
@@ -513,6 +537,7 @@ _LOGO_NOME = [
 def _mostrar_logo():
     if not sys.stdout.isatty() or os.environ.get("NO_COLOR"):
         return
+    _ligar_cores_do_windows()
     print()
     for i, coluna in enumerate(_LOGO_COLUNAS):
         linha = "   " + (_LOGO_FAIXA if coluna is None else c(coluna, Cor.NEGRITO))
