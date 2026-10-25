@@ -27,6 +27,8 @@ opentars (5.2) unstable; urgency=medium
     o Gargantua diz que se chama Gargantua e foi desenvolvido pelo Enzo, fundador do openTARS;
     pesquisa dentro de Spotify, Amazon, Wikipedia, GitHub, Maps, Reddit e outros sites; o ícone
     do openTARS no Windows (atalhos e barra de tarefas) e no macOS.
+  * Revisão de 25/10 (3): o Bonsai Image cabe numa placa de 6 GB com o desktop usando parte dela
+    (o VAE fica no processador até a hora de decodificar); conferido gerando imagens de verdade.
   * Revisão de 25/10 (2): gerar imagem pelo chat com o Bonsai Image 4B, opcional (~9,5 GB, placa
     NVIDIA de 6 GB ou Mac com Apple Silicon; antes de gerar, o openTARS tira os outros modelos da
     placa); modelinhos de foto baixados com o openTARS (~300 MB, na CPU): tirar o fundo, aumentar a

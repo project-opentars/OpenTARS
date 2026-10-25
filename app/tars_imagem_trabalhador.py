@@ -31,7 +31,30 @@ def carregar():
                        text_encoder_path=str(texto), vae_path=str(g._find_subdir(raiz, "vae")),
                        tokenizer_path=str(texto / "tokenizer"))
     pipe.prewarm()
+    _vae_so_para_decodificar(pipe)
     return pipe
+
+
+def _vae_so_para_decodificar(pipe):
+    """Placa de 6 GB com o desktop usando ~700 MB (25/10): faltavam ~25 MB para codificar o texto. O VAE só é usado no fim
+    (decodificar); fica no processador até lá e volta para a placa só no decode. shortcut: mexe num atributo interno deles
+    (`_vae`); se a versão mudar e ele sumir, segue sem isto."""
+    import torch
+    vae = getattr(pipe, "_vae", None)
+    if vae is None or not torch.cuda.is_available():
+        return
+    vae.to("cpu")
+    torch.cuda.empty_cache()
+    decodificar = vae.decode
+
+    def decode(latentes, *a, **k):
+        vae.to("cuda")
+        try:
+            return decodificar(latentes.to("cuda"), *a, **k)
+        finally:
+            vae.to("cpu")
+            torch.cuda.empty_cache()
+    vae.decode = decode
 
 
 pipeline = None

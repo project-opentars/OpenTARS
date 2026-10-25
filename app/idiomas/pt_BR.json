@@ -1735,7 +1735,7 @@
  "foto.chat_feito": "Pronto: {o_que}. A original não mudou; a cópia está ao lado dela: {nomes}.",
  "foto.chat_erro": "Não consegui editar: {erros}",
  "imagem.nao_instalado": "Para gerar imagens eu uso o Bonsai Image 4B, que é opcional (cerca de 9,5 GB e uma placa NVIDIA com 6 GB, ou um Mac com Apple Silicon). Instale em Configurações > Mais modelos > Bonsai Image 4B e me peça de novo.",
- "imagem.gerando": "Gerando a imagem: {o_que} (na primeira vez o modelo leva uns 30 segundos para carregar)",
+ "imagem.gerando": "Gerando a imagem: {o_que} (a primeira imagem leva cerca de 1 minuto, para carregar o modelo; as seguintes, segundos)",
  "imagem.pronta": "Pronto. Salvei em {pasta}: {arquivo}.",
  "imagem.sem_memoria": "A placa de vídeo está com só {livre} MB livres e o Bonsai precisa de uns 5 GB. Feche jogos ou programas que usam a placa e me peça de novo.",
  "imagem.erro": "Não consegui gerar a imagem ({erro}).",

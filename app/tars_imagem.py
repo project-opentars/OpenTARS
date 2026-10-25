@@ -9,7 +9,9 @@ confirmação (~9 GB: Python, CUDA e o modelo), sem sudo, em `<dados>/imagem/`. 
   os modelos do Ollama: na RTX 3050 de 6 GB os dois não cabem juntos (medido em 21/10). Depois de alguns minutos parado,
   o processo sai e a placa volta para o Ollama.
 
-Medido em 21/10 no PC do Enzo (RTX 3050 6 GB, placa livre): carga ~32 s, 512 px ~5 s, 576 px ~6 s, 640 px não cabe."""
+Medido em 25/10 pelo caminho do app no PC do Enzo (RTX 3050 6 GB, ~5,0 GB livres com o desktop): a primeira imagem
+de 512 px levou 70 s (carga e compilação), as seguintes 5,4 s; um pedido em português também funciona. Em 21/10, com a placa
+mais livre: 640 px e acima não cabem."""
 import json
 import os
 import re
@@ -133,7 +135,7 @@ def descarregar_ollama(host, abrir=None):
         return []
 
 
-MEMORIA_MINIMA_MB = 5000          # medido em 21/10: pico de ~5,0 GB em 512 px
+MEMORIA_MINIMA_MB = 4700          # o modelo carregado ocupa 4,67 GB (25/10); abaixo disso nem carrega
 
 
 def memoria_livre_mb():
@@ -152,8 +154,11 @@ def _trabalhador():
         script = Path(__file__).resolve().parent / "tars_imagem_trabalhador.py"
         criacao = 0x08000000 if plataforma.sistema() == "windows" else 0            # CREATE_NO_WINDOW
         registro = open(pasta() / "trabalhador.log", "a", encoding="utf-8")       # a saída das bibliotecas, para diagnóstico
+        # 25/10: com 5,0 GB livres (o desktop usa ~650 MB da placa de 6 GB) faltavam 256 MB ao codificar o texto, e o PyTorch
+        # guardava ~277 MB reservados sem uso; segmentos expansíveis devolvem essa sobra
+        env = dict(os.environ, PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True")
         proc = subprocess.Popen([str(python_do_venv()), str(script), str(demo())], cwd=str(demo()), stdin=subprocess.PIPE,
-                                stdout=subprocess.PIPE, stderr=registro, text=True, creationflags=criacao)
+                                stdout=subprocess.PIPE, stderr=registro, text=True, creationflags=criacao, env=env)
         _TRABALHADOR["proc"] = proc
         threading.Thread(target=_vigiar_ocioso, args=(proc,), daemon=True).start()
     return proc

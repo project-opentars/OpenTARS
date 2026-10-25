@@ -1667,7 +1667,7 @@
  "foto.chat_feito": "Done: {o_que}. The original is unchanged; the copy is next to it: {nomes}.",
  "foto.chat_erro": "I couldn't edit it: {erros}",
  "imagem.nao_instalado": "To make images I use Bonsai Image 4B, which is optional (about 9.5 GB, and an NVIDIA card with 6 GB or a Mac with Apple Silicon). Install it in Settings > More models > Bonsai Image 4B and ask me again.",
- "imagem.gerando": "Generating the image: {o_que} (the first time, the model takes about 30 seconds to load)",
+ "imagem.gerando": "Generating the image: {o_que} (the first image takes about a minute while the model loads; the next ones, seconds)",
  "imagem.pronta": "Done. I saved it in {pasta}: {arquivo}.",
  "imagem.sem_memoria": "The graphics card has only {livre} MB free and Bonsai needs about 5 GB. Close games or programs that use the card and ask me again.",
  "imagem.erro": "I couldn't make the image ({erro}).",
