@@ -1,7 +1,7 @@
 """5.2: o assistente residente (decisões do Enzo, 20/10; tudo ligado por padrão desde 24/10). Sem Qt.
 
-- Ligado: o modelo das ações de texto fica na memória do Ollama (keep_alive -1) para responderem na hora; desligar
-  descarrega na hora (keep_alive 0).
+- Ligado: as ações de texto usam o Lite; depois de cada uso o modelo fica na memória só por KEEP_ALIVE_OCIOSO e o
+  Ollama o descarrega sozinho (25/10, pedido do Enzo: parado, a IA sai da memória). Desligar descarrega na hora (0).
 - Iniciar com o sistema: sobe o openTARS escondido (`opentars-gui --residente`), com o ícone na bandeja.
 - O atalho das ações de texto é à parte (`tars_atalho.registrar_acoes`).
 - aplicar_padroes(): liga tudo isso (e a sugestão pelo programa em uso) uma vez, na primeira abertura."""
@@ -22,9 +22,12 @@ def ligado():
     return bool(i18n.ler_config().get("assistente"))
 
 
+KEEP_ALIVE_OCIOSO = "3m"       # quanto o modelo do assistente fica na memória depois do último uso
+
+
 def manter_carregado(host, modelo, carregar, sessao=None):
-    """Um pedido sem prompt só carrega (keep_alive -1: até mandar descarregar) ou descarrega (0) o modelo."""
-    r = (sessao or requests).post(f"{host}/api/generate", json={"model": modelo, "keep_alive": -1 if carregar else 0},
+    """Um pedido sem prompt carrega o modelo por KEEP_ALIVE_OCIOSO (e o Ollama descarrega sozinho) ou descarrega já (0)."""
+    r = (sessao or requests).post(f"{host}/api/generate", json={"model": modelo, "keep_alive": KEEP_ALIVE_OCIOSO if carregar else 0},
                                   timeout=(5, 180))
     if r.status_code != 200:
         try:
@@ -35,9 +38,11 @@ def manter_carregado(host, modelo, carregar, sessao=None):
 
 
 def ligar(ativo, host, modelo, sessao=None):
-    """Guarda a escolha e carrega/descarrega o Lite. Erro do Ollama sobe (a tela mostra); a escolha fica guardada."""
+    """Guarda a escolha. Ligar não carrega nada (a IA só entra na memória quando é usada); desligar descarrega o modelo
+    na hora. Erro do Ollama sobe (a tela mostra); a escolha fica guardada."""
     i18n.salvar_config(assistente=bool(ativo))
-    manter_carregado(host, modelo, bool(ativo), sessao)
+    if not ativo:
+        manter_carregado(host, modelo, False, sessao)
 
 
 def comando_residente():

@@ -273,7 +273,7 @@
             <div><dt>Version</dt><dd>5.2 Ranger</dd></div>
             <div><dt>Size</dt><dd>1.3 MB</dd></div>
             <div><dt>Updated</dt><dd>October 25, 2026</dd></div>
-            <div class="sha"><dt>SHA-256</dt><dd><code>d15a8e9b9c1505beb4a5293bc4481438e2688ee59108f92921ccd099cdf000fa</code></dd></div>
+            <div class="sha"><dt>SHA-256</dt><dd><code>848a94b37dcdd50f1057442b5543fce97dd2ff64074e1d1f9ed641a436214e97</code></dd></div>
           </dl>
           <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved. To check the download first: <code>sha256sum opentars_all.deb</code> must print the SHA-256 above.</p>
           <h3 class="or">Or paste one line in a terminal</h3>
@@ -345,7 +345,7 @@
         <li><h3>Edit a photo with a sentence</h3><p>“Crop it square and make it brighter”: crop, rotate, brighten, black and white, shrink for email, change the format, in the file panel or right in the chat. Always a copy, without the location and device data. A 12-megapixel photo takes 0.35 s.</p></li>
         <li><h3>Small photo models, built in</h3><p>Remove the background, upscale 4x, and remove an object by clicking on it. Four small open models (about 300 MB, downloaded with openTARS) run on the processor: removing a background took about 9 s on a 16-thread CPU, the others about a second.</p></li>
         <li><h3>Make images</h3><p>Ask “draw a lighthouse at dusk” in the chat. It uses Bonsai Image 4B by PrismML, an optional install of about 9.5 GB that needs an NVIDIA card with 6 GB or a Mac with Apple Silicon. On our RTX 3050 (6 GB) the first 512-pixel image took about a minute while the model loaded, the next ones about 5 s; openTARS takes the other models off the card first.</p></li>
-        <li><h3>One small AI in the background</h3><p>Gargantua 2 Lite is always installed and is the only AI that stays in the background: the assistant, text actions and Probes. Gargantua 2 answers in the window.</p></li>
+        <li><h3>One small AI in the background</h3><p>Gargantua 2 Lite is always installed and is the only AI the assistant uses in the background (text actions and Probes), and it leaves the memory by itself 3 minutes after the last use. Gargantua 2 answers in the window.</p></li>
         <li><h3>It says when it is unsure</h3><p>On a factual question, openTARS checks how sure the answer is. With web search on, it looks it up; without it, it tells you under the answer. A hint, not a guarantee.</p></li>
         <li><h3>Gargantua 2, retrained</h3><p>Trained again with the 5.2 examples: it says when it does not know, works on selected text and knows Windows and macOS. The app tells you when a newer Gargantua is published.</p></li>
         <li><h3>Check it yourself</h3><p><code>opentars --prova</code> runs 48 everyday tasks with your model and saves a report; <code>opentars --diagnostico</code> checks your system; <code>opentars --desinstalar</code> removes it.</p></li>

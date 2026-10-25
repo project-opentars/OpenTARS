@@ -88,12 +88,12 @@ def escolher_modelo(instalados, lite, principal, texto=""):
 def rodar(acao, texto, modelo, host, pergunta=None, ao_pedaco=None, cancelar=None, sessao=None, padrao="pt_BR",
           manter=False):
     """Pede ao Ollama e devolve o texto inteiro; `ao_pedaco(trecho)` recebe a resposta enquanto chega. `manter`: o assistente
-    está ligado, o modelo fica na memória depois (keep_alive -1)."""
+    está ligado, o modelo fica na memória só por 3 minutos depois do uso (keep_alive "3m") e sai sozinho."""
     sessao = sessao or requests
     corpo = {"model": modelo, "stream": True, "think": False, "messages": mensagens(acao, texto, pergunta, padrao),
              "options": {"temperature": 0.1, "num_predict": 1200}}
     if manter:
-        corpo["keep_alive"] = -1
+        corpo["keep_alive"] = "3m"
     partes = []
     with sessao.post(f"{host}/api/chat", json=corpo, stream=True, timeout=(5, 300)) as r:
         if r.status_code != 200:        # o Ollama explica no corpo ("model 'x' not found"); o status sozinho não diz nada

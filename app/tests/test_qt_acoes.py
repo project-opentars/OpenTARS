@@ -117,16 +117,17 @@ assert teclas == [("ctrl", "v")] and area["texto"] == "resultado"
 time.sleep(0.3)
 assert area["texto"] == "o que a pessoa tinha copiado"
 print("OK: colar põe o resultado, aperta colar e devolve a área de transferência")
-# o assistente residente: ligar carrega (keep_alive -1) e guarda; as ações passam a manter o modelo; desligar descarrega
+# o assistente residente (25/10): ligar só guarda a escolha (a IA entra na memória quando é usada); as ações deixam o modelo
+# por 3 minutos e o Ollama o descarrega sozinho; desligar descarrega na hora
 assert not assistente.ligado()
+antes = len([1 for m, p, c in servidor.pedidos if p == "/api/generate"])
 assistente.ligar(True, url, LITE)
-gerar = [c for m, p, c in servidor.pedidos if p == "/api/generate"]
-assert gerar[-1] == {"model": LITE, "keep_alive": -1} and assistente.ligado(), gerar
+assert assistente.ligado() and len([1 for m, p, c in servidor.pedidos if p == "/api/generate"]) == antes, "ligar não carrega nada"
 painel.abrir(TEXTO)
 esperar(lambda: painel.resultado)
-assert ultimo_chat()["keep_alive"] == -1
+assert ultimo_chat()["keep_alive"] == assistente.KEEP_ALIVE_OCIOSO == "3m"
 assistente.ligar(False, url, LITE)
-assert [c for m, p, c in servidor.pedidos if p == "/api/generate"][-1]["keep_alive"] == 0 and not assistente.ligado()
+assert [c for m, p, c in servidor.pedidos if p == "/api/generate"][-1] == {"model": LITE, "keep_alive": 0} and not assistente.ligado()
 assert assistente.iniciar_com_sistema(True) and "--residente" in assistente.comando_residente()
 inicio = plataforma.arquivo_autostart(assistente.NOME_AUTOSTART).read_bytes()      # no Windows é um .lnk (UTF-16)
 assert (b"--residente" in inicio or "--residente".encode("utf-16-le") in inicio) and assistente.inicia_com_sistema()

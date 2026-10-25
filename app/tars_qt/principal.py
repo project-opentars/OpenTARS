@@ -7,6 +7,7 @@ import datetime as dt
 import os
 import threading
 import time
+from pathlib import Path
 
 from PySide6.QtCore import QSize, Qt, QTimer, Signal
 from PySide6.QtGui import QAction, QFont, QFontMetrics, QKeySequence, QShortcut, QTextCursor
@@ -610,6 +611,7 @@ class JanelaPrincipal(QMainWindow):
         self.barra.enviar.connect(self._enviar_da_barra)
         self.barra.parar.connect(self.parar)
         self.barra.abrir_janela.connect(lambda: self.trazer_para_frente("mostrar"))
+        self.barra.editar_foto.connect(self._escolher_foto)
         self._criar_bandeja()
         self._atalhos = None
         if plataforma.sistema() == "windows":      # no Windows e no macOS o atalho global é escutado pela própria janela
@@ -624,9 +626,6 @@ class JanelaPrincipal(QMainWindow):
                 self._atalhos = None
         assistente.aplicar_padroes()     # 5.2: tudo ligado por padrão, uma vez (decisão do Enzo, 24/10)
         self._registrar_atalhos_globais()
-        if assistente.ligado():      # 5.2: o modelo das ações de texto volta para a memória quando o openTARS abre
-            host, modelo = self.nucleo.OLLAMA_HOST, self._modelo_das_acoes()
-            threading.Thread(target=lambda: _sem_erro(assistente.manter_carregado, host, modelo, True), daemon=True).start()
         self._ocioso = QTimer(self)
         self._ocioso.timeout.connect(self._checar_ocioso)
         self._ocioso.start(60000)
@@ -1307,11 +1306,14 @@ class JanelaPrincipal(QMainWindow):
         b.triggered.connect(self._sair_de_vez)
         acoes = QAction(t("rot.tray_acoes"), menu)
         acoes.triggered.connect(self._abrir_acoes)
+        foto = QAction(t("rot.tray_foto"), menu)
+        foto.triggered.connect(self._escolher_foto)
         self._acao_assistente = QAction(t("rot.tray_assistente"), menu)
         self._acao_assistente.setCheckable(True)
         self._acao_assistente.triggered.connect(self._alternar_assistente)
         menu.addAction(a)
         menu.addAction(acoes)
+        menu.addAction(foto)
         menu.addAction(self._acao_assistente)
         menu.addSeparator()
         menu.addAction(b)
@@ -1553,6 +1555,15 @@ class JanelaPrincipal(QMainWindow):
             else:
                 self._notificar(t("ctx.selecione"))
         QTimer.singleShot(250, depois_de_esconder)      # o foco volta ao programa de antes de ler a seleção
+
+    def _escolher_foto(self):
+        """25/10: o assistente edita fotos sem precisar selecioná-las antes: escolhe uma ou mais e abre o painel da foto
+        (cortar, clarear, tirar o fundo, aumentar, remover um objeto)."""
+        import tars_fotos
+        filtro = t("foto.filtro", ext=" ".join("*" + e for e in sorted(tars_fotos.EXTENSOES)))
+        caminhos, _ = QFileDialog.getOpenFileNames(None, t("foto.escolher"), str(Path.home()), filtro)
+        if caminhos:
+            self._abrir_painel_arquivos(caminhos)
 
     def _abrir_painel_arquivos(self, arquivos):
         if self._painel_arquivos is None:

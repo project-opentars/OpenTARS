@@ -22,7 +22,7 @@ LARGURA = 680
 ALTURA_MAXIMA_RESPOSTA = 340
 
 
-CAPACIDADES = ("tarefa", "tela", "arquivo", "web", "lembrete")
+CAPACIDADES = ("tarefa", "tela", "arquivo", "foto", "web", "lembrete")
 
 
 class BarraRapida(QFrame):
@@ -30,6 +30,7 @@ class BarraRapida(QFrame):
     parar = Signal()
     abrir_janela = Signal()
     arquivos_achados = Signal(object)
+    editar_foto = Signal()                  # 25/10: "Editar uma foto": o assistente abre o seletor e o painel da foto
 
     def __init__(self):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint)
@@ -146,6 +147,10 @@ class BarraRapida(QFrame):
 
     def _escolher(self, cap):
         self.capacidades.hide()
+        if cap == "foto":
+            self.hide()
+            self.editar_foto.emit()
+            return
         if cap == "arquivo":
             self.modo = "arquivo"
             self.entrada.setPlaceholderText(t("busca.dica"))

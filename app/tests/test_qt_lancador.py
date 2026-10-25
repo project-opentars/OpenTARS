@@ -23,9 +23,15 @@ br.busca.buscar = lambda frase: [{"caminho": "/casa/Documentos/Contrato de alugu
 barra = br.BarraRapida()
 barra.mostrar()
 app.processEvents()
-assert barra.capacidades.isVisibleTo(barra) and len(barra.capacidades.findChildren(br.QPushButton)) == 5
+assert barra.capacidades.isVisibleTo(barra) and len(barra.capacidades.findChildren(br.QPushButton)) == 6
 botoes = {b.accessibleName(): b for b in barra.capacidades.findChildren(br.QPushButton)}
-print("OK: vazia, a barra mostra as 5 capacidades do mock-up")
+print("OK: vazia, a barra mostra as capacidades do mock-up e a de editar uma foto")
+pedidos_foto = []
+barra.editar_foto.connect(lambda: pedidos_foto.append(1))
+botoes[br.t("rapido.cap.foto")].click()
+assert pedidos_foto == [1] and not barra.isVisible(), "Editar uma foto fecha a barra e pede o seletor de fotos"
+barra.mostrar()
+print("OK: Editar uma foto fecha a barra e abre o seletor de fotos do assistente")
 
 botoes[br.t("rapido.cap.web")].click()
 assert barra.entrada.toPlainText() == br.t("rapido.pref.web") and not barra.capacidades.isVisibleTo(barra)
