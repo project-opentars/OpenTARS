@@ -54,6 +54,24 @@ codigo, saida = rodar(["--chat"], entrada="say hello\n/sair\n", ambiente=dict(en
 assert codigo == 0 and "Traceback" not in saida, (codigo, saida[-1500:])
 print("OK: o chat não cai com a saída em cp1252 (sem UTF-8)")
 
+# o modelo pede ferramentas de verdade: criar pasta e arquivo pelo execute_terminal (no Windows, o mini-shell em Python)
+servidor.roteiro = [{"ferramenta": ("execute_terminal", {"command": "mkdir Projeto"})},
+                    {"ferramenta": ("execute_terminal", {"command": "echo ola > Projeto/nota.txt"})},
+                    {"ferramenta": ("execute_terminal", {"command": "ls Projeto"})},
+                    {"texto": "Pronto: a pasta Projeto está criada."}]
+codigo, saida = rodar(["-p", "create a folder called Projeto with a note inside"])
+assert codigo == 0 and "Traceback" not in saida, (codigo, saida[-2000:])
+assert (Path(casa) / "Projeto").is_dir() and (Path(casa) / "Projeto" / "nota.txt").exists(), (os.listdir(casa), saida[-2000:])
+servidor.roteiro = None
+print("OK: o terminal executa ferramentas de verdade (mkdir, echo > arquivo, ls)")
+
+# a conversa interativa também usa ferramentas
+servidor.roteiro = [{"ferramenta": ("execute_terminal", {"command": "mkdir Outra"})}, {"texto": "Feito."}]
+codigo, saida = rodar(["--chat"], entrada="create Outra\n/sair\n")
+assert codigo == 0 and "Traceback" not in saida and (Path(casa) / "Outra").is_dir(), (codigo, os.listdir(casa), saida[-2000:])
+servidor.roteiro = None
+print("OK: o chat interativo executa ferramentas")
+
 codigo, saida = rodar(["--diagnostico"])
 assert "Traceback" not in saida, (codigo, saida[-1500:])
 print("OK: --diagnostico não cai")

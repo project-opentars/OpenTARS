@@ -80,6 +80,17 @@ class _Manipulador(http.server.BaseHTTPRequestHandler):
         if self.path == "/api/chat":
             if s.erro_no_chat:
                 return self._responder(500, {"error": s.erro_no_chat})
+            roteiro = getattr(s, "roteiro", None)    # lista de respostas: {"ferramenta": (nome, argumentos)} ou {"texto": "..."}
+            if roteiro and corpo.get("stream") is True:
+                passo = roteiro.pop(0) if len(roteiro) > 1 else roteiro[0]
+                if "ferramenta" in passo:
+                    nome, argumentos = passo["ferramenta"]
+                    mensagem = {"role": "assistant", "content": "", "tool_calls": [{"function": {"name": nome, "arguments": argumentos}}]}
+                else:
+                    mensagem = {"role": "assistant", "content": passo["texto"]}
+                linhas = [{"message": mensagem, "done": False},
+                          {"message": {"role": "assistant", "content": ""}, "done": True, "done_reason": "stop"}]
+                return self._responder(200, ("\n".join(json.dumps(l) for l in linhas) + "\n").encode(), "application/x-ndjson")
             if corpo.get("stream") is True:          # o terminal e a janela leem em fluxo (ndjson)
                 linhas = [{"message": {"role": "assistant", "content": s.resposta}, "done": False},
                           {"message": {"role": "assistant", "content": ""}, "done": True, "done_reason": "stop"}]
@@ -98,5 +109,6 @@ def subir(modelos=(), chave="", resposta="4", erro_no_download="", erro_no_chat=
     servidor.erro_no_download = erro_no_download
     servidor.erro_no_chat = erro_no_chat
     servidor.atraso = atraso
+    servidor.roteiro = None
     threading.Thread(target=servidor.serve_forever, daemon=True).start()
     return servidor, f"http://127.0.0.1:{servidor.server_address[1]}"
