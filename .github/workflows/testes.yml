@@ -131,6 +131,14 @@ jobs:
           if (-not (Test-Path "$env:USERPROFILE\opentars-autoteste.txt")) { throw "sem relatório" }
           if (-not (Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\openTARS.lnk")) { throw "sem atalho" }
           exit 0
+      - name: O comando opentars está no PATH do usuário e roda
+        shell: powershell
+        run: |
+          $u = [Environment]::GetEnvironmentVariable("Path", "User")
+          if (($u -split ";") -notcontains "$env:LOCALAPPDATA\openTARS\bin") { throw "opentars não está no PATH do usuário" }
+          $env:Path = $u + ";" + $env:Path
+          opentars --version
+          if ($LASTEXITCODE -ne 0) { throw "opentars --version falhou" }
       - name: Backend do Windows no Python instalado
         shell: powershell
         run: |
@@ -155,6 +163,10 @@ jobs:
           test -f ~/opentars-autoteste.txt
           test -x ~/Applications/openTARS.app/Contents/MacOS/openTARS
           codesign -v ~/Applications/openTARS.app
+      - name: Um Terminal novo (zsh) acha o comando opentars
+        run: |
+          zsh -ic 'command -v opentars && opentars --version' | tee /tmp/zsh.txt
+          grep -q "5.2" /tmp/zsh.txt
       - name: A janela carrega (sem tela)
         env: {QT_QPA_PLATFORM: offscreen}
         run: cd "$HOME/Library/Application Support/openTARS/app" && "../venv/bin/python3" -c "import tars_qt.principal; print('qt ok')"

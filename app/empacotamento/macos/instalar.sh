@@ -33,6 +33,11 @@ dizer() { if [ "$PT" = 1 ]; then echo "[openTARS] $1"; else echo "[openTARS] $2"
 
 if [ "$REMOVER" = 1 ]; then
     rm -rf "$PASTA" "$APP_MAC" "$BIN/opentars" "$BIN/opentars-gui" "$HOME/Library/LaunchAgents/opentars-assistente.plist"
+    for arq in "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bash_profile"; do      # tira as 2 linhas que o instalador pôs no PATH
+        if grep -qF "# openTARS (comandos opentars e opentars-gui)" "$arq" 2>/dev/null; then
+            grep -vF -e "# openTARS (comandos opentars e opentars-gui)" -e 'export PATH="$HOME/.local/bin:$PATH"' "$arq" > "$arq.novo" && mv "$arq.novo" "$arq" || true
+        fi
+    done
     dizer "Removido. Suas conversas e configurações ficaram em ~/Library/Application Support/opentars; o Ollama e os modelos também." \
           "Removed. Your chats and settings stay in ~/Library/Application Support/opentars; Ollama and the models stay too."
     exit 0
@@ -117,7 +122,15 @@ dizer "Pronto. Abra o openTARS em ~/Applications (na primeira vez ele baixa o Ga
       "Done. Open openTARS from ~/Applications (the first time it downloads Gargantua 2, with a progress bar)."
 dizer "O macOS vai pedir Acessibilidade e Gravação de Tela para o openTARS clicar e ver a tela: libere em Ajustes do Sistema > Privacidade e Segurança." \
       "macOS will ask for Accessibility and Screen Recording so openTARS can click and see the screen: allow it in System Settings > Privacy & Security."
-case ":$PATH:" in *":$BIN:"*) ;; *) dizer "Os comandos ficaram em $BIN; para usar no Terminal: export PATH=\"$BIN:\$PATH\"" \
-                                           "The commands are in $BIN; to use them in Terminal: export PATH=\"$BIN:\$PATH\"" ;; esac
+# o Terminal do macOS (zsh) não tem ~/.local/bin no PATH: sem isto, "opentars" dá "command not found". Uma linha marcada,
+# nos arquivos que o zsh e o bash do Mac leem ao abrir um terminal; o --remover tira.
+MARCA_PATH="# openTARS (comandos opentars e opentars-gui)"
+for arq in "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bash_profile"; do
+    [ "$arq" = "$HOME/.bash_profile" ] && [ ! -f "$arq" ] && continue
+    grep -qF "$MARCA_PATH" "$arq" 2>/dev/null || printf '\n%s\nexport PATH="$HOME/.local/bin:$PATH"\n' "$MARCA_PATH" >> "$arq"
+done
+export PATH="$BIN:$PATH"
+dizer "Os comandos opentars e opentars-gui ficaram em $BIN (já no PATH dos seus terminais novos: abra um Terminal novo)." \
+      "The opentars and opentars-gui commands are in $BIN (already on the PATH of new terminals: open a new Terminal)."
 dizer "Para conferir e medir: '$BIN/opentars --diagnostico' e '$BIN/opentars --prova'; mande os relatórios que eles salvam." \
       "To check and measure: '$BIN/opentars --diagnostico' and '$BIN/opentars --prova'; send the reports they save."
