@@ -175,7 +175,7 @@ CODINOME = "Ranger"
 VERSAO_EXIBIDA = f"{VERSAO} {CODINOME}"
 # Endurance Neo: sobe a cada pacote publicado (AAAAMMDDNN). O aviso de versão
 # nova compara com a REVISAO do tars.py do GitHub (tars_atualizacao.py).
-REVISAO = 2026102501
+REVISAO = 2026102502
 
 # Endereço do servidor Ollama — respeita a variável de ambiente padrão
 # do próprio Ollama (OLLAMA_HOST), pra funcionar sem editar o código

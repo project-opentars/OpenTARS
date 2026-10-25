@@ -23,6 +23,7 @@ import tars_atualizacao
 import tars_contexto
 import tars_gerenciar_modelos as gm
 import tars_i18n
+import tars_imagem as imagem_lib
 import tars_mais_modelos as mm
 import tars_modos as modos
 import tars_primeiro_uso as pu
@@ -360,9 +361,10 @@ class _CartaoModelo(QFrame):
     """Um modelo da lista: nome, tamanho, o que sabe fazer e um botão. Clicar no cartão também baixa."""
     clicou = Signal()
 
-    def __init__(self, nome, gb, capacidades):
+    def __init__(self, nome, gb, capacidades, destaque=False):
         super().__init__()
         self.setProperty("papel", "cartao-modelo")
+        self.setProperty("destaque", destaque)
         self.gb = gb
         self.estado = "livre"
         v = QVBoxLayout(self)
@@ -374,7 +376,18 @@ class _CartaoModelo(QFrame):
         col.setSpacing(2)
         titulo = QLabel(nome)
         titulo.setStyleSheet("font-size: 15px; font-weight: 600;")
-        col.addWidget(titulo)
+        if destaque:
+            linha_t = QHBoxLayout()
+            linha_t.setSpacing(8)
+            linha_t.addWidget(titulo)
+            selo = QLabel(t("cfg.modelos.destaque"))
+            selo.setProperty("papel", "selo-destaque")
+            linha_t.addWidget(selo)
+            linha_t.addStretch(1)
+            col.addLayout(linha_t)
+            col.addWidget(rotulo(t("cfg.modelos.destaque_nota"), "nota", quebra=True))
+        else:
+            col.addWidget(titulo)
         col.addWidget(rotulo(" · ".join([mm.tamanho_texto(gb)] + [t(f"cfg.modelos.cap.{c}") for c in capacidades]), "nota"))
         topo.addLayout(col, 1)
         self.botao = _botao("", "chip", self.clicou.emit)
@@ -431,6 +444,69 @@ class _CartaoModelo(QFrame):
         super().mouseReleaseEvent(e)
 
 
+class _CartaoBonsai(QFrame):
+    """25/10 (decisão do Enzo): o Bonsai Image 4B, que gera imagens. Não é modelo do Ollama: instala o programa deles e o
+    modelo (~9,5 GB) numa pasta do openTARS, com confirmação (o botão pede o segundo clique e mostra o tamanho)."""
+
+    def __init__(self, cfg):
+        super().__init__()
+        self.cfg = cfg
+        self.setProperty("papel", "cartao-modelo")
+        v = QVBoxLayout(self)
+        v.setContentsMargins(16, 14, 16, 14)
+        v.setSpacing(8)
+        topo = QHBoxLayout()
+        col = QVBoxLayout()
+        col.setSpacing(2)
+        titulo = QLabel("Bonsai Image 4B")
+        titulo.setStyleSheet("font-size: 15px; font-weight: 600;")
+        col.addWidget(titulo)
+        col.addWidget(rotulo(t("cfg.bonsai.sub", tamanho=mm.tamanho_texto(imagem_lib.TAMANHO_GB)), "nota", quebra=True))
+        topo.addLayout(col, 1)
+        self.b_instalar = _Confirma(t("cfg.bonsai.instalar", tamanho=mm.tamanho_texto(imagem_lib.TAMANHO_GB)), self.instalar)
+        self.b_remover = _Confirma(t("cfg.bonsai.remover"), self.remover)
+        topo.addWidget(self.b_instalar)
+        topo.addWidget(self.b_remover)
+        v.addLayout(topo)
+        self.info = rotulo("", "nota", quebra=True)
+        v.addWidget(self.info)
+        self.atualizar()
+
+    def atualizar(self, instalando=False):
+        pronto = imagem_lib.instalado()
+        pode, motivo = (True, "") if pronto or instalando else imagem_lib.pode_instalar()
+        self.b_instalar.setVisible(not pronto)
+        self.b_instalar.setEnabled(pode and not instalando)
+        self.b_remover.setVisible(pronto)
+        if pronto:
+            self.info.setText(t("cfg.bonsai.pronto"))
+        elif not pode:
+            chave = {"placa": "cfg.bonsai.nao_da.placa", "apple_silicon": "cfg.bonsai.nao_da.apple_silicon",
+                     "disco": "cfg.bonsai.nao_da.disco"}.get(motivo, "cfg.bonsai.nao_da.falta")
+            self.info.setText(t(chave, programa=motivo.split(":")[-1]))
+        elif not instalando:
+            self.info.setText(t("cfg.bonsai.nota"))
+
+    def instalar(self):
+        self.atualizar(instalando=True)
+        self.info.setText(t("cfg.bonsai.instalando", linha=""))
+
+        def linha(texto):
+            if texto.strip():
+                self.cfg.depois(lambda: self.info.setText(t("cfg.bonsai.instalando", linha=texto.strip()[:140])))
+
+        def pronto(r):
+            ok, erro = r if not isinstance(r, Exception) else (False, str(r))
+            self.atualizar()
+            if not ok:
+                self.info.setText(t("cfg.bonsai.erro", erro=erro))
+        self.cfg.em_segundo_plano(lambda: imagem_lib.instalar(linha), pronto)
+
+    def remover(self):
+        imagem_lib.remover()
+        self.atualizar()
+
+
 class PModelos(Pagina):
     def __init__(self, cfg):
         super().__init__(t("cfg.modelos.titulo"), t("cfg.modelos.sub"))
@@ -445,8 +521,11 @@ class PModelos(Pagina):
         self._ollama_ok = True
         for grupo, itens in mm.GRUPOS:
             s, v = _secao(t(f"cfg.modelos.g.{grupo}"), t(f"cfg.modelos.g.{grupo}_sub"))
+            if grupo == "imagem":
+                self.bonsai = _CartaoBonsai(cfg)
+                v.addWidget(self.bonsai)
             for tag, nome, gb, capacidades in itens:
-                c = _CartaoModelo(nome, gb, capacidades)
+                c = _CartaoModelo(nome, gb, capacidades, destaque=(tag == mm.DESTAQUE))
                 c.clicou.connect(lambda tag=tag: self._clicou(tag))
                 self.cartoes[tag] = c
                 v.addWidget(c)

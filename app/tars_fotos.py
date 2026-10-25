@@ -55,6 +55,11 @@ def entender(frase):
     achar(r"e-?mail|whats|menor|reduz|diminu|comprim|smaller|shrink|compress|resize for",
           lambda m: ("reduzir", int(n.group(1)) if (n := re.search(r"(\d{3,4})\s*(px|pixels?)\b", texto)) else LADO_EMAIL))
     achar(r"\b(para|pra|em|to|as|into)\s+(png|jpe?g|webp)\b", lambda m: ("formato", m.group(2)))
+    # 25/10: os modelinhos (tars_modelinhos), na CPU
+    achar(r"(tir|remov|apag)\w* (o |a )?fundo|sem fundo|fundo transparente|recort[ae] (a pessoa|o objeto)|"
+          r"remove (the )?background|no background|transparent background|cut ?out", lambda m: ("sem_fundo",))
+    achar(r"(aument|melhor)\w* (a )?(resolu|qualidade|nitidez)|mais resolu|alta resolu|upscale|"
+          r"(increase|higher|more) resolution|enhance|sharper", lambda m: ("aumentar",))
     vistos, saida = set(), []
     for _pos, op in sorted(achados, key=lambda x: x[0]):
         if op[0] not in vistos:              # "mais clara, mais clara" é uma vez só
@@ -92,6 +97,12 @@ def descrever(operacoes, idioma="pt_BR"):
             partes.append(f"reduzir para no máximo {op[1]} px" if pt else f"shrink to at most {op[1]} px")
         elif nome == "formato":
             partes.append(f"salvar como {op[1].upper()}" if pt else f"save as {op[1].upper()}")
+        elif nome == "sem_fundo":
+            partes.append("tirar o fundo (fica transparente, em PNG)" if pt else "remove the background (transparent, as PNG)")
+        elif nome == "aumentar":
+            partes.append("aumentar a resolução 4x" if pt else "upscale 4x")
+        elif nome == "remover":
+            partes.append("remover o objeto clicado" if pt else "remove the clicked object")
     if not partes:
         return ""
     return ", ".join(partes[:-1]) + (" e " if pt else " and ") + partes[-1] if len(partes) > 1 else partes[0]
@@ -109,10 +120,28 @@ def _cortar(imagem, a, b):
     return imagem.crop((0, y, w, y + novo_h))
 
 
-def aplicar(imagem, operacoes):
-    """A imagem com as operações (uma nova; a recebida não muda)."""
+def _em_ordem(operacoes):
+    """Remover vem primeiro (o ponto clicado é na foto original), aumentar e tirar o fundo por último (o fundo transparente
+    não sobrevive a preto e branco nem ao JPEG)."""
+    peso = {"remover": 0, "aumentar": 2, "sem_fundo": 3}
+    return sorted(operacoes, key=lambda op: peso.get(op[0], 1))
+
+
+def aplicar(imagem, operacoes, escala_ponto=1.0):
+    """A imagem com as operações (uma nova; a recebida não muda). `escala_ponto`: na prévia a foto é reduzida, e o ponto
+    clicado (na original) também."""
     imagem = ImageOps.exif_transpose(imagem)            # a orientação que o celular grava vira pixels de verdade
-    for op in operacoes:
+    for op in _em_ordem(operacoes):
+        if op[0] in ("remover", "aumentar", "sem_fundo"):
+            import tars_modelinhos as modelinhos
+            if op[0] == "remover":
+                ponto = (op[1] * escala_ponto, op[2] * escala_ponto)
+                imagem = modelinhos.remover(imagem, modelinhos.selecionar(imagem, ponto))
+            elif op[0] == "aumentar":
+                imagem = modelinhos.aumentar(imagem)
+            else:
+                imagem = modelinhos.tirar_fundo(imagem)
+            continue
         nome = op[0]
         if nome == "quadrado":
             imagem = _cortar(imagem, 1, 1)
@@ -139,6 +168,8 @@ def nome_da_copia(caminho, operacoes, sufixo="editada"):
     Nunca um que exista."""
     caminho = Path(caminho)
     formato = next((op[1] for op in operacoes if op[0] == "formato"), None)
+    if any(op[0] == "sem_fundo" for op in operacoes):
+        formato = "png"                                  # o fundo transparente só existe em PNG
     ext = FORMATOS[formato][1] if formato else caminho.suffix
     destino, n = caminho.with_name(f"{caminho.stem}-{sufixo}{ext}"), 2
     while destino.exists():
@@ -168,19 +199,24 @@ def previa(caminho, operacoes, lado=360):
         original.draft("RGB", (lado * 2, lado * 2))     # JPEG grande: carrega já reduzido (rápido)
         reduzida = ImageOps.exif_transpose(original.copy())
     reduzida.thumbnail((lado, lado))
-    depois = aplicar(reduzida, [op for op in operacoes if op[0] != "reduzir"])     # na prévia, reduzir não aparece
+    # na prévia, reduzir e aumentar não aparecem (só mudam o tamanho, que a legenda diz)
+    depois = aplicar(reduzida, [op for op in operacoes if op[0] not in ("reduzir", "aumentar")],
+                     escala_ponto=reduzida.size[0] / tamanho_antes[0])
     return _png(reduzida), _png(depois), tamanho_antes, _dimensoes(tamanho_antes, operacoes)
 
 
 def _dimensoes(tamanho, operacoes):
     """O tamanho final, calculado sem processar a foto inteira."""
     w, h = tamanho
-    for op in operacoes:
+    for op in _em_ordem(operacoes):
         if op[0] in ("quadrado", "proporcao"):
             a, b = (1, 1) if op[0] == "quadrado" else (op[1], op[2])
             w, h = (round(h * a / b), h) if w / h > a / b else (w, round(w * b / a))
         elif op[0] == "girar" and op[1] != 180:
             w, h = h, w
+        elif op[0] == "aumentar":
+            f = min(4, 4096 / max(w, h)) if max(w, h) * 4 > 4096 else 4
+            w, h = max(1, round(w * f)), max(1, round(h * f))
         elif op[0] == "reduzir" and max(w, h) > op[1]:
             f = op[1] / max(w, h)
             w, h = max(1, round(w * f)), max(1, round(h * f))

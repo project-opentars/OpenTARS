@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
 )
 
 import tars_assistente
+import tars_modelinhos as modelinhos
 import tars_atalho
 import tars_atualizacao
 import tars_i18n
@@ -69,11 +70,14 @@ def formatar_gb(bytes_):
     return texto.replace(".", ",") if tars_i18n.idioma_atual().startswith("pt") else texto
 
 
+MODELINHOS = "modelinhos"        # na fila de downloads do primeiro uso, junto com os modelos do Ollama
+
+
 class Sinais(QObject):
     ollama = Signal(dict)
     instalado = Signal(bool, str)
     iniciado = Signal(bool, str)
-    ja_tem = Signal(bool)
+    ja_tem = Signal(object)          # a lista do que falta baixar (vazia: já tem tudo)
     # bytes feitos e totais vão como object: Signal(int) é de 32 bits (máximo ~2,1 GB) e o Gargantua tem ~2,5 GB;
     # com int o Qt estoura (OverflowError), a atualização se perde e a barra fica em 0% o download inteiro
     progresso = Signal(float, object, object, object)
@@ -564,26 +568,29 @@ class PaginaGargantua(Pagina):
         if pu.maquina_fraca():          # 5.1: o Gargantua Lite, menor, em vez do 4B
             self.l_nome.setText(t("pu.garg.nome_lite"))
             self.l_lite.show()
-        livre = pu.espaco_livre_gb()
-        self.livre = livre
-        precisa = pu.tamanho_gargantua_gb()
-        if livre is not None and livre < precisa * 1.1:
-            self.l_espaco.definir("ativo", t("pu.garg.espaco_pouco", livre=f"{livre:.1f}", precisa=f"{precisa:.1f}"))
+        self.fila = []
         sinais, host = self.jan.sinais, self.jan.estado["host"]
 
         def trabalho():
-            modelos = pu.modelos_instalados(host)
-            fio.emitir(sinais.ja_tem, pu.tem_gargantua_desta_maquina(modelos))
+            faltam = pu.faltam_no_primeiro_uso(pu.modelos_instalados(host))
+            fio.emitir(sinais.ja_tem, faltam + ([MODELINHOS] if modelinhos.faltando() else []))
 
         threading.Thread(target=trabalho, daemon=True).start()
 
-    def ja_tinha(self, tem):
-        if tem:
+    def ja_tinha(self, faltam):
+        if not faltam:
             self.h1.setText(t("pu.garg.titulo_ja"))
             self.p.setText(t("pu.garg.texto_ja"))
             self.concluir_barra()
-        else:
-            self.baixar()
+            return
+        livre = pu.espaco_livre_gb()
+        precisa = pu.tamanho_dos_modelos_gb([n for n in faltam if n != MODELINHOS]) + \
+            (modelinhos.bytes_faltando() / 1e9 if MODELINHOS in faltam else 0)
+        self.livre = livre
+        if livre is not None and livre < precisa * 1.1:
+            self.l_espaco.definir("ativo", t("pu.garg.espaco_pouco", livre=f"{livre:.1f}", precisa=f"{precisa:.1f}"))
+        self.fila = list(faltam)
+        self.baixar()
 
     def concluir_barra(self):
         """O Gargantua está pronto (desde o Gargantua 2 ele enxerga a tela: não há mais um segundo download)."""
@@ -599,7 +606,14 @@ class PaginaGargantua(Pagina):
         self.b_continuar.setEnabled(True)
 
     def baixar(self):
-        self._iniciar_download(pu.gargantua_desta_maquina())
+        if not self.fila:
+            self.fila = [pu.gargantua_desta_maquina()]
+        nome = self.fila[0]
+        self.l_nome.setText(t("pu.garg.nome_modelinhos") if nome == MODELINHOS else
+                            t("pu.garg.nome_lite") if nome == pu.MODELO_GARGANTUA_LITE else t("pu.garg.nome"))
+        self.barra.setValue(0)
+        self.l_percentual.setText("0%")
+        self._iniciar_download(nome)
 
     def _iniciar_download(self, nome):
         self.baixando = True
@@ -613,7 +627,12 @@ class PaginaGargantua(Pagina):
             fio.emitir(sinais.progresso, p.fracao, p.feito, p.total, p.segundos_restantes())
 
         def trabalho():
-            ok, erro = pu.baixar_modelo(nome, host, ao_progredir=ao_progredir, cancelado=lambda: self.cancelar)
+            if nome == MODELINHOS:      # 25/10: os modelinhos de foto, obrigatórios, do Hugging Face com o hash conferido
+                ok, erro = modelinhos.baixar_todos(
+                    lambda feito, total: fio.emitir(sinais.progresso, feito / total if total else 1.0, feito, total, None),
+                    cancelado=lambda: self.cancelar)
+            else:
+                ok, erro = pu.baixar_modelo(nome, host, ao_progredir=ao_progredir, cancelado=lambda: self.cancelar)
             fio.emitir(sinais.baixado, ok, erro)
 
         threading.Thread(target=trabalho, daemon=True).start()
@@ -634,6 +653,10 @@ class PaginaGargantua(Pagina):
     def terminou(self, ok, erro):
         self.baixando = False
         if ok:
+            self.fila = self.fila[1:]
+            if self.fila:                    # o próximo da fila (o 2B e depois o Lite obrigatório)
+                self.baixar()
+                return
             self.concluir_barra()
         elif erro == "cancelado":
             self.l_erro.setText(t("pu.garg.pausado"))

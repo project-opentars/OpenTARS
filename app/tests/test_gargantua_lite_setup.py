@@ -24,6 +24,13 @@ assert pu.nome_do_gargantua(["qwen3:4b", "ProjectOpenTARS/Gargantua:1.2-lite"]) 
 os.environ["TARS_GARGANTUA"] = "completo"
 assert not pu.maquina_fraca(vram_mb=0, ram_mb=1000, threads=1) and pu.gargantua_desta_maquina() == pu.MODELO_GARGANTUA
 assert not pu.tem_gargantua_desta_maquina(["ProjectOpenTARS/Gargantua:lite"]), "fora da máquina fraca o Lite não basta"
+os.environ["TARS_GARGANTUA"] = "completo"
+assert pu.faltam_no_primeiro_uso([]) == [pu.MODELO_GARGANTUA, pu.MODELO_GARGANTUA_LITE]
+assert pu.faltam_no_primeiro_uso(["ProjectOpenTARS/Gargantua:latest"]) == [pu.MODELO_GARGANTUA_LITE], "o 1.x vale como principal"
+assert pu.faltam_no_primeiro_uso(["projectopentars/gargantua-2:lite", "ProjectOpenTARS/Gargantua-2:latest"]) == []
+os.environ["TARS_GARGANTUA"] = "lite"
+assert pu.faltam_no_primeiro_uso([]) == [pu.MODELO_GARGANTUA_LITE], "máquina fraca: só o Lite"
+os.environ["TARS_GARGANTUA"] = "completo"
 print("OK: a regra da máquina fraca, o modelo e o tamanho certos, e TARS_GARGANTUA força")
 
 # o instalador usa a mesma regra

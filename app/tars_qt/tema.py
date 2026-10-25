@@ -293,6 +293,8 @@ QFrame[papel="anexo"] {{ background: {c['cartao']}; border: 1px solid {c['borda2
 QFrame[papel="secao"] {{ background: {c['cartao']}; border: 1px solid {c['borda']}; border-radius: 14px; }}
 QFrame[papel="cartao-modelo"] {{ background: {c['fundo']}; border: 1px solid {c['borda']}; border-radius: 12px; }}
 QFrame[papel="cartao-modelo"]:hover {{ border-color: {c['borda3']}; }}
+QFrame[papel="cartao-modelo"][destaque="true"] {{ background: {c['cartao']}; border: 2px solid {c['verde']}; }}
+QLabel[papel="selo-destaque"] {{ color: {c['escuro']}; background: {c['verde']}; border-radius: 8px; padding: 1px 8px; font-size: 11px; font-weight: 700; }}
 QFrame[papel="linha-lista"] {{ background: {c['fundo']}; border: 0; border-radius: 8px; }}
 QFrame[papel="faixa-voz"] {{ background: {c['cartao']}; border: 1px solid {c['borda2']}; border-radius: 14px; }}
 

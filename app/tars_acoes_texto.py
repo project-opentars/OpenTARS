@@ -74,10 +74,15 @@ def mensagens(acao, texto, pergunta=None, padrao="pt_BR"):
             {"role": "user", "content": pedido(acao, idioma_do_texto(texto, padrao), texto, pergunta)}]
 
 
-def escolher_modelo(instalados, lite, principal):
-    """O Gargantua 2 quando ele está instalado; sem ele, o Lite. Na prova das ações de texto (23/10) o 2B fez 71/76 e o
-    Lite 56/76 (inventa resposta que o texto não tem e quase não encurta o resumo). Rever depois do treino da 5.2 (F9)."""
-    return principal if principal in instalados or lite not in instalados else lite
+TEXTO_LONGO = 1500      # caracteres; shortcut: um corte fixo, rever se o Lite errar muito em textos médios
+
+
+def escolher_modelo(instalados, lite, principal, texto=""):
+    """25/10 (decisão do Enzo): o Lite é a única IA em segundo plano, então as ações usam o Lite; o 2B só para texto longo
+    (e só se instalado), carregado na hora e descarregado depois. Na prova das ações (23/10): 2B 71/76, Lite da 5.2 64/76."""
+    if lite not in instalados:
+        return principal
+    return principal if len(texto or "") > TEXTO_LONGO and principal in instalados else lite
 
 
 def rodar(acao, texto, modelo, host, pergunta=None, ao_pedaco=None, cancelar=None, sessao=None, padrao="pt_BR",

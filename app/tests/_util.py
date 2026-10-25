@@ -31,6 +31,7 @@ os.environ.setdefault("TARS_SEM_AVISO_VERSAO", "1")
 os.environ.setdefault("TARS_ARQUIVO_AUTOTESTE", os.path.join(tempfile.mkdtemp(prefix="opentars-auto-"), "autoteste.txt"))  # testes não vão à internet ver se há versão nova
 os.environ.setdefault("TARS_ARQUIVO_CONFIG", os.path.join(tempfile.mkdtemp(prefix="opentars-teste-"), "config.json"))
 os.environ.setdefault("TARS_SEM_ATALHO", "1")
+os.environ.setdefault("TARS_SEM_MODELINHOS", "1")      # os modelinhos de foto (~300 MB) não se baixam nos testes
 # 5.1: a escolha do Gargantua Lite depende da máquina; os testes fixam o completo (o do Lite pede o dele)
 os.environ.setdefault("TARS_GARGANTUA", "completo")
 # 18/10: o registro das ferramentas também: sem isto, os testes escreviam "open_application app82..." no ~/.tars_log de verdade

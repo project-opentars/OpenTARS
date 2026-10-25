@@ -88,7 +88,7 @@ assert j.paginas["pronto"].resumo_nuvem.texto.plano() == tars_i18n.t("pu.pronto.
 j.terminar()
 assert pu.primeiro_uso_concluido() and j.terminou
 puxados = [c["model"] for m, p, c in servidor.pedidos if p == "/api/pull"]
-assert puxados == ["ProjectOpenTARS/Gargantua-2"], puxados   # só o Gargantua 2 (que enxerga); o Cooper foi descontinuado
+assert puxados == ["ProjectOpenTARS/Gargantua-2", "ProjectOpenTARS/Gargantua-2:lite"], puxados   # o 2B e o Lite obrigatório
 
 # --- 2) trocar de idioma reconstrói a janela -------------------------------
 pu.marcar_concluido(False)
@@ -148,9 +148,9 @@ j4 = JanelaPrimeiroUso()
 j4.show()
 passar_pelo_ollama(j4)
 j4.paginas["nuvem"].continuar()
-esperar(lambda: j4.paginas["gargantua"].b_continuar.isEnabled(), o_que="atalho 'já instalado'")
-assert not [1 for m, p, _ in servidor2.pedidos if p == "/api/pull"], "não deve baixar de novo"
-assert j4.paginas["gargantua"].h1.plano() == tars_i18n.t("pu.garg.titulo_ja")
+esperar(lambda: j4.paginas["gargantua"].pronto and j4.paginas["gargantua"].b_continuar.isEnabled(), o_que="só o Lite")
+puxados2 = [c["model"] for m, p, c in servidor2.pedidos if p == "/api/pull"]
+assert puxados2 == ["ProjectOpenTARS/Gargantua-2:lite"], puxados2    # o principal já existe; só o Lite obrigatório vem
 j4.close()
 
 # --- 5) Ollama fora do ar: oferece instalar, não avança ------------------------

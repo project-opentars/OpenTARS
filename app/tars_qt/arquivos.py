@@ -7,7 +7,7 @@ import shutil
 import threading
 from pathlib import Path
 
-from PySide6.QtCore import QPoint, Qt, Signal
+from PySide6.QtCore import QEvent, QPoint, Qt, Signal
 from PySide6.QtGui import QCursor, QGuiApplication, QPixmap
 from PySide6.QtWidgets import (QFileDialog, QFrame, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextBrowser, QVBoxLayout,
                                QWidget)
@@ -23,7 +23,7 @@ from .tema import CORES
 LARGURA = 500
 ACOES = ("resumir", "foto", "renomear", "mover", "lixeira")
 LUGAR = {"resumir": (0, 0), "foto": (0, 0), "renomear": (0, 1), "mover": (1, 0), "lixeira": (1, 1)}   # foto ou resumir
-RAPIDOS = ("quadrado", "clara", "girar", "cinza", "email")
+RAPIDOS = ("quadrado", "clara", "girar", "cinza", "email", "sem_fundo", "aumentar", "remover")
 MAXIMO_RESUMOS = 5
 
 
@@ -158,7 +158,7 @@ class PainelArquivos(QFrame):
         self._limpar()
         self.botao_desfazer.setVisible(bool(self.feitos))
         self.caixa.addWidget(tema.rotulo(t(f"arq.previa.{acao}"), "nota"))
-        self.modelo.setText(t("arq.sem_modelo") if acao in ("foto", "mover", "lixeira") else
+        self.modelo.setText(t("arq.neste_computador") if acao == "foto" else t("arq.sem_modelo") if acao in ("mover", "lixeira") else
                             acoes_lib.escolher_modelo(self.instalados, self.lite, self.principal).split("/")[-1])
         n = len(self.arquivos)
         if acao == "foto":
@@ -233,7 +233,8 @@ class PainelArquivos(QFrame):
         self.caixa.addWidget(bloco)
         self.entendido = tema.rotulo(t("foto.o_que_fazer"), "texto", quebra=True)
         self.caixa.addWidget(self.entendido)
-        self.operacoes = []
+        self.operacoes, self.extras, self.esperando_clique, self.tam_original = [], [], False, None
+        self.img_antes.installEventFilter(self)
         n = len(self.arquivos)
         self.botao_aplicar.setText(t("foto.salvar", nome=fotos.nome_da_copia(self.arquivos[0], [], t("foto.sufixo")).name) if n == 1
                                    else t("foto.salvar_n", n=n))
@@ -242,14 +243,34 @@ class PainelArquivos(QFrame):
         self._atualizar_foto()
 
     def _rapido(self, chave):
+        if chave == "remover":          # 25/10: não cabe numa frase; a pessoa clica no objeto na foto da esquerda
+            self.esperando_clique = True
+            self.img_antes.setCursor(Qt.CrossCursor)
+            self.entendido.setText(t("foto.clique_no_objeto"))
+            return
         atual = self.pedido_foto.text().strip()
         frase = t(f"foto.frase.{chave}")
         self.pedido_foto.setText(f"{atual}, {frase}" if atual else frase)
         self._atualizar_foto()
 
+    def eventFilter(self, objeto, evento):
+        if objeto is getattr(self, "img_antes", None) and evento.type() == QEvent.MouseButtonRelease and \
+                self.esperando_clique and self.tam_original and objeto.pixmap() is not None and not objeto.pixmap().isNull():
+            mapa = objeto.pixmap()
+            x0, y0 = (objeto.width() - mapa.width()) / 2, (objeto.height() - mapa.height()) / 2   # a foto vem centrada
+            px, py = (evento.position().x() - x0) / mapa.width(), (evento.position().y() - y0) / mapa.height()
+            if 0 <= px <= 1 and 0 <= py <= 1:
+                self.esperando_clique = False
+                objeto.unsetCursor()
+                self.extras = [op for op in self.extras if op[0] != "remover"] + \
+                    [("remover", round(px * self.tam_original[0]), round(py * self.tam_original[1]))]
+                self._atualizar_foto()
+            return True
+        return super().eventFilter(objeto, evento)
+
     def _atualizar_foto(self):
         texto = self.pedido_foto.text().strip()
-        self.operacoes = fotos.entender(texto)
+        self.operacoes = fotos.entender(texto) + list(getattr(self, "extras", []))
         o_que = fotos.descrever(self.operacoes, "pt_BR" if idioma_atual().startswith("pt") else "en")
         self.entendido.setText(t("foto.entendi", o_que=o_que) if o_que else
                                t("foto.nao_entendi") if texto else t("foto.o_que_fazer"))
@@ -261,16 +282,21 @@ class PainelArquivos(QFrame):
                 resultado = fotos.previa(caminho, operacoes)
             except Exception:  # noqa: BLE001  (arquivo que o Pillow não abre: sem prévia, o botão fica desligado)
                 resultado = None
-            self.previa_pronta.emit(numero, resultado)
+            try:
+                self.previa_pronta.emit(numero, resultado)
+            except RuntimeError:        # o painel fechou enquanto a prévia (que pode levar segundos) era feita
+                pass
         threading.Thread(target=trabalho, daemon=True).start()
 
     def _previa_pronta(self, numero, resultado):
         if numero != self.pedido_previa or self.acao != "foto":
             return
         if resultado is None:
-            self.entendido.setText(t("foto.nao_abre"))
+            self.entendido.setText(t("foto.nao_abre") if not any(op[0] in ("remover", "aumentar", "sem_fundo")
+                                                                 for op in self.operacoes) else t("foto.modelinhos_faltando"))
             return
         antes, depois, tam_antes, tam_depois = resultado
+        self.tam_original = tam_antes
         for img, dados in ((self.img_antes, antes), (self.img_depois, depois)):
             mapa = QPixmap()
             mapa.loadFromData(dados)

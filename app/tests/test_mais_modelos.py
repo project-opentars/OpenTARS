@@ -26,7 +26,9 @@ app.setStyleSheet(tema.folha_principal() if hasattr(tema, "folha_principal") els
 # 1. a lista em si
 tags = mm.todas_as_tags()
 assert len(tags) == len(set(tags)) and len(tags) >= 55, tags
-assert [g for g, _ in mm.GRUPOS] == ["bonsai", "imagem", "geral", "visao", "codigo", "grandes"]
+assert [g for g, _ in mm.GRUPOS] == ["opentars", "bonsai", "imagem", "geral", "visao", "codigo", "grandes"]
+nossos = [i[0] for g, itens in mm.GRUPOS if g == "opentars" for i in itens]
+assert nossos[0] == mm.DESTAQUE == "ProjectOpenTARS/Gargantua-2:lite" and "ProjectOpenTARS/Gargantua-2:latest" in nossos, nossos
 bonsai = [i for g, itens in mm.GRUPOS if g == "bonsai" for i in itens]
 assert [i[0] for i in bonsai] == ["bonsai-2:2b", "bonsai-2:4b", "bonsai-2:9b", "bonsai-2:27b"], "todos os tamanhos do Bonsai 2"
 imagens = {i[0] for g, itens in mm.GRUPOS if g == "imagem" for i in itens}

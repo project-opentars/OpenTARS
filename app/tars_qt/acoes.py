@@ -238,8 +238,8 @@ class PainelAcoes(QFrame):
         self.resultado = ""
         self.saida.setPlainText(t("acoes.pensando"))
         self._recebeu = False
-        modelo = acoes_lib.escolher_modelo(self.instalados, self.lite, self.principal)
-        manter = assistente.ligado()
+        modelo = acoes_lib.escolher_modelo(self.instalados, self.lite, self.principal, self.texto)
+        manter = assistente.ligado() and modelo == self.lite      # só o Lite fica na memória; o 2B descarrega sozinho
         self.modelo.setText(t("acoes.modelo", modelo=_nome_curto(modelo)))
         acao = self.acao_atual()
 

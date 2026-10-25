@@ -129,7 +129,7 @@ if ! "$VENV/bin/python3" -c "import sys" >/dev/null 2>&1; then
         exit 1; }
 fi
 "$VENV/bin/python3" -m pip install --quiet --upgrade pip
-"$VENV/bin/python3" -m pip install --quiet requests psutil pyautogui pillow PySide6-Essentials
+"$VENV/bin/python3" -m pip install --quiet requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime
 
 # 4. O Ollama, pelo instalador oficial (ele mesmo pede a senha). Sem ele o openTARS abre, mas não tem IA local.
 if [ "$SEM_OLLAMA" = 0 ]; then

@@ -27,6 +27,12 @@ opentars (5.2) unstable; urgency=medium
     o Gargantua diz que se chama Gargantua e foi desenvolvido pelo Enzo, fundador do openTARS;
     pesquisa dentro de Spotify, Amazon, Wikipedia, GitHub, Maps, Reddit e outros sites; o ícone
     do openTARS no Windows (atalhos e barra de tarefas) e no macOS.
+  * Revisão de 25/10 (2): gerar imagem pelo chat com o Bonsai Image 4B, opcional (~9,5 GB, placa
+    NVIDIA de 6 GB ou Mac com Apple Silicon; antes de gerar, o openTARS tira os outros modelos da
+    placa); modelinhos de foto baixados com o openTARS (~300 MB, na CPU): tirar o fundo, aumentar a
+    resolução 4x, selecionar por clique e remover um objeto; editar foto pelo chat; o Gargantua 2
+    Lite é baixado sempre e é a única IA em segundo plano (assistente, ações de texto e Probes); o
+    grupo "Modelos do openTARS" no topo de Mais modelos, com o Lite em destaque.
   * Já publicados nas revisões de 21/10: Mais modelos, Gerenciar modelos e imagem local no chat.
 
  -- openTARS <projectopentars@gmail.com>  Sat, 24 Oct 2026 20:20:00 -0300

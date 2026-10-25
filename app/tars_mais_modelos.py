@@ -8,6 +8,12 @@ Se um tamanho mudar lá, é aqui que se corrige.
 
 # (id do grupo, ((tag no Ollama, nome mostrado, tamanho do download em GB, o que sabe fazer), ...))
 GRUPOS = (
+    # 25/10 (decisão do Enzo): os modelos do openTARS no topo, o Lite primeiro e destacado (é o que fica em segundo plano)
+    ("opentars", (
+        ("ProjectOpenTARS/Gargantua-2:lite", "Gargantua 2 Lite", 0.617, ("vision", "tools")),
+        ("ProjectOpenTARS/Gargantua-2:latest", "Gargantua 2", 1.6, ("vision", "tools")),
+        ("ProjectOpenTARS/Gargantua:code", "Gargantua Code", 1.1, ("tools",)),
+    )),
     ("bonsai", (
         ("bonsai-2:2b", "Bonsai 2 · 2B", 0.911, ("vision", "tools", "thinking")),
         ("bonsai-2:4b", "Bonsai 2 · 4B", 1.6, ("vision", "tools", "thinking")),
@@ -84,6 +90,7 @@ GRUPOS = (
 )
 
 CAPACIDADES = ("vision", "tools", "thinking", "image", "text")
+DESTAQUE = "ProjectOpenTARS/Gargantua-2:lite"
 
 # Etiquetas que o Ollama mostra com outro nome quando o modelo foi baixado sem a tag (o mesmo arquivo).
 _APELIDOS = {

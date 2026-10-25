@@ -1579,6 +1579,58 @@ def perguntar_modelo(modelo, texto, tarefa=None, multi_etapas=False, anexos=None
             historico_modelos.registrar(modelo, _tarefa_do_historico(tarefa), desfecho)
 
 
+def _editar_foto_pelo_chat(texto, anexos):
+    """25/10 (decisão do Enzo): "deixa essa foto quadrada e mais clara", "tira o fundo" com uma foto anexada ou citada:
+    o código entende a frase (tars_fotos, as mesmas regras do painel de arquivos), salva uma CÓPIA ao lado da original e
+    mostra no chat. Sem modelo de linguagem: o prompt e as 19 ferramentas do treino não mudam. None = não era isso."""
+    import tars_fotos as fotos_lib
+    imagens = [a for a in anexos or [] if getattr(a, "tipo", "") == "imagem" and fotos_lib.e_foto(a.caminho)]
+    operacoes = fotos_lib.entender(texto) if imagens else []
+    if not operacoes:
+        return None
+    idioma = "pt_BR" if i18n.idioma_atual().startswith("pt") else "en"
+    o_que = fotos_lib.descrever(operacoes, idioma)
+    feitas, erros = [], []
+    for a in imagens:
+        try:
+            feitas.append(fotos_lib.salvar_copia(a.caminho, operacoes, t("foto.sufixo")))
+        except Exception as e:  # noqa: BLE001  (modelinho ainda baixando, formato que o Pillow não grava, disco cheio)
+            erros.append(f"{a.nome}: {e}")
+    partes = [t("foto.chat_feito", o_que=o_que, nomes=", ".join(p.name for p in feitas))] if feitas else []
+    partes += [f"![{p.name}]({p})" for p in feitas]
+    partes += [t("foto.chat_erro", erros="; ".join(erros))] if erros else []
+    return _responder_sem_modelo(texto, "\n\n".join(partes))
+
+
+def _responder_sem_modelo(texto, resposta):
+    emitir("resposta", texto=resposta, inicio=True, apos_pensamento=False)
+    emitir("fim_stream")
+    conversa.append({"role": "user", "content": texto})
+    conversa.append({"role": "assistant", "content": resposta})
+    salvar_sessoes()
+    return resposta
+
+
+def _gerar_imagem_pelo_chat(texto):
+    """25/10 (decisão do Enzo): "desenhe um farol ao entardecer" gera a imagem com o Bonsai Image 4B (opcional), pelo
+    código: o prompt e as 19 ferramentas do treino não mudam. Sem o Bonsai, explica como instalar. None = não era isso."""
+    import tars_imagem
+    o_que = tars_imagem.pedido_de_imagem(texto)
+    if not o_que:
+        return None
+    if not tars_imagem.instalado():
+        return _responder_sem_modelo(texto, t("imagem.nao_instalado"))
+    print(c(f"[openTARS] {t('imagem.gerando', o_que=o_que)}", Cor.CINZA))
+    try:
+        arquivo = tars_imagem.gerar(o_que, host=OLLAMA_HOST)
+    except RuntimeError as e:
+        motivo = str(e)
+        resposta = (t("imagem.sem_memoria", livre=motivo.split(":", 1)[1]) if motivo.startswith("sem_memoria:")
+                    else t("imagem.erro", erro=motivo))
+        return _responder_sem_modelo(texto, resposta)
+    return _responder_sem_modelo(texto, t("imagem.pronta", arquivo=arquivo.name, pasta=arquivo.parent) + f"\n\n![{o_que}]({arquivo})")
+
+
 def processar_mensagem(texto, anexos=None):
     """Um pedido do usuário do começo ao fim: comandos (/modelo,
     /limpar...), escolha do modelo, resposta e salvamento. Usado pelo
@@ -1605,6 +1657,15 @@ def processar_mensagem(texto, anexos=None):
 
     if anexos and not (texto or "").strip():
         texto = TEXTO_PEDIDO_SO_ANEXOS
+
+    editada = _editar_foto_pelo_chat(texto, anexos)
+    if editada is not None:
+        return editada
+    gerada = _gerar_imagem_pelo_chat(texto) if not anexos else None
+    if gerada is not None:
+        return gerada
+    import tars_imagem
+    tars_imagem.parar()        # o Bonsai segura a placa; a conversa (Ollama) precisa dela agora
 
     # "use a ferramenta", "faz de verdade", "try again": a tarefa e o modelo saem do pedido anterior, que é o que vai ser feito
     retoma = _ultimo_pedido_real() if not anexos and escolha.eh_retomada(normalizar(texto)) else None

@@ -20,7 +20,7 @@ MODELO_AJUDANTE="qwen2.5:0.5b"
 MODELO_AJUDANTE_ANTIGO="gemma3:270m"
 DIR_OPENTARS="/usr/share/opentars"
 VENV="$DIR_OPENTARS/venv"
-DEPENDENCIAS=("requests:requests" "psutil:psutil" "pyautogui:pyautogui" "PIL:pillow" "PySide6:PySide6-Essentials")
+DEPENDENCIAS=("requests:requests" "psutil:psutil" "pyautogui:pyautogui" "PIL:pillow" "PySide6:PySide6-Essentials" "numpy:numpy" "onnxruntime:onnxruntime")
 
 # Textos no idioma do sistema: vêm de idiomas/*.json, pelo mesmo módulo
 # que o openTARS usa (tars_i18n.py). Se algo falhar, aparecem as chaves

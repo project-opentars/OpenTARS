@@ -52,34 +52,55 @@ def puxados(servidor):
     return [c["model"] for m, p, c in servidor.pedidos if p == "/api/pull"]
 
 
-# 1) nada instalado: baixa só o Gargantua 2, sem opção nem fase do Cooper
+# 1) nada instalado: baixa o Gargantua 2 e o Lite obrigatório (25/10), sem opção nem fase do Cooper
 j, pg, srv = abrir([])
 esperar(lambda: pg.pronto and pg.b_continuar.isEnabled(), o_que="baixar o Gargantua 2")
-assert puxados(srv) == [pu.MODELO_GARGANTUA] == ["ProjectOpenTARS/Gargantua-2"], puxados(srv)
+assert puxados(srv) == [pu.MODELO_GARGANTUA, pu.MODELO_GARGANTUA_LITE] == \
+    ["ProjectOpenTARS/Gargantua-2", "ProjectOpenTARS/Gargantua-2:lite"], puxados(srv)
 assert not hasattr(pg, "c_cooper") and not hasattr(pg, "baixar_cooper"), "o Cooper não é mais oferecido"
 j.close()
-print("OK: sem nenhum modelo, baixa só o Gargantua 2")
+print("OK: sem nenhum modelo, baixa o Gargantua 2 e o Lite (a IA de segundo plano)")
 
 # 2) o Gargantua 2 já está instalado: nada é baixado
-j, pg, srv = abrir([GARG2])
+j, pg, srv = abrir([GARG2, pu.MODELO_GARGANTUA_LITE])
 esperar(lambda: pg.b_continuar.isEnabled(), o_que="já instalado")
 assert puxados(srv) == [] and pg.h1.plano() == tars_i18n.t("pu.garg.titulo_ja")
 j.close()
-print("OK: com o Gargantua 2 instalado, nada é baixado de novo")
+j, pg, srv = abrir([GARG2])
+esperar(lambda: pg.pronto and pg.b_continuar.isEnabled(), o_que="só falta o Lite")
+assert puxados(srv) == [pu.MODELO_GARGANTUA_LITE], puxados(srv)
+j.close()
+print("OK: com o Gargantua 2 e o Lite instalados, nada é baixado; sem o Lite, só ele vem")
 
 # 3) quem já tem o Gargantua 1.x continua com ele (não é obrigado a baixar o novo)
 j, pg, srv = abrir([GARG1])
-esperar(lambda: pg.b_continuar.isEnabled(), o_que="Gargantua antigo")
-assert puxados(srv) == []
+esperar(lambda: pg.pronto and pg.b_continuar.isEnabled(), o_que="Gargantua antigo")
+assert puxados(srv) == [pu.MODELO_GARGANTUA_LITE], puxados(srv)
 j.close()
-print("OK: o Gargantua 1.x instalado vale; nada é baixado")
+print("OK: o Gargantua 1.x instalado vale como principal; só o Lite obrigatório vem")
 
 # 4) um Cooper instalado não conta como Gargantua e nada o baixa
 j, pg, srv = abrir([COOPER])
 esperar(lambda: pg.pronto and pg.b_continuar.isEnabled(), o_que="só o Cooper")
-assert puxados(srv) == [pu.MODELO_GARGANTUA], puxados(srv)
+assert puxados(srv) == [pu.MODELO_GARGANTUA, pu.MODELO_GARGANTUA_LITE], puxados(srv)
 j.close()
 print("OK: o Cooper antigo não substitui o Gargantua, e o Gargantua 2 vem baixado")
+
+# 4b) 25/10: os modelinhos de foto entram na fila depois dos modelos (obrigatórios); aqui de mentira
+import tars_modelinhos  # noqa: E402
+os.environ.pop("TARS_SEM_MODELINHOS", None)
+originais = tars_modelinhos.faltando, tars_modelinhos.baixar_todos
+baixados = []
+tars_modelinhos.faltando = lambda: [] if baixados else ["fundo"]
+tars_modelinhos.bytes_faltando = lambda: 300_000_000
+tars_modelinhos.baixar_todos = lambda ao_progredir=None, cancelado=None: (ao_progredir(1, 1), baixados.append(1), (True, ""))[2]
+j, pg, srv = abrir([GARG2, pu.MODELO_GARGANTUA_LITE])
+esperar(lambda: pg.pronto and pg.b_continuar.isEnabled(), o_que="modelinhos")
+assert baixados == [1] and puxados(srv) == [], (baixados, puxados(srv))
+j.close()
+tars_modelinhos.faltando, tars_modelinhos.baixar_todos = originais
+os.environ["TARS_SEM_MODELINHOS"] = "1"
+print("OK: os modelinhos de foto entram na fila do primeiro uso, mesmo com os modelos já instalados")
 
 # 5) espaço: o Gargantua 2 precisa de ~1,7 GB, e o aviso aparece quando falta
 real = pu.espaco_livre_gb

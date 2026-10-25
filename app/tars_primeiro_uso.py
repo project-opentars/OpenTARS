@@ -297,6 +297,21 @@ def tamanho_gargantua_gb():
     return TAMANHO_GARGANTUA_LITE_GB if maquina_fraca() else TAMANHO_GARGANTUA_GB
 
 
+def tem_lite(modelos):
+    return any(str(m).strip().lower() == MODELO_GARGANTUA_LITE.lower() for m in modelos)
+
+
+def faltam_no_primeiro_uso(modelos):
+    """25/10 (decisão do Enzo): o Gargantua 2 Lite é obrigatório em toda máquina (é a única IA em segundo plano: assistente,
+    ações de texto, Probes); onde há placa de vídeo o principal (2B) vem junto, e um Gargantua oficial já instalado vale."""
+    faltam = [] if maquina_fraca() or tem_gargantua(modelos) else [MODELO_GARGANTUA]
+    return faltam + ([] if tem_lite(modelos) else [MODELO_GARGANTUA_LITE])
+
+
+def tamanho_dos_modelos_gb(nomes):
+    return sum(TAMANHO_GARGANTUA_LITE_GB if n == MODELO_GARGANTUA_LITE else TAMANHO_GARGANTUA_GB for n in nomes)
+
+
 def tem_gargantua_desta_maquina(modelos):
     """O oficial sempre serve; o Lite só conta onde ele é o escolhido (máquina fraca)."""
     return tem_gargantua(modelos) or (maquina_fraca() and any(_e_lite(m) for m in modelos))

@@ -50,7 +50,7 @@ painel.abrir(TEXTO)
 assert painel.isVisible() and painel.aba == "reescrever" and painel.opcao == "corrigir"
 assert esperar(lambda: painel.resultado.startswith("Olá, pessoal")), painel.saida.toPlainText()
 corpo = ultimo_chat()
-assert corpo["model"] == PRINCIPAL and corpo["think"] is False and "keep_alive" not in corpo
+assert corpo["model"] == LITE and corpo["think"] is False and "keep_alive" not in corpo
 assert corpo["messages"][0]["content"] == acoes_lib.SISTEMA_ACAO_TEXTO
 assert corpo["messages"][1]["content"] == acoes_lib.pedido("corrigir", "pt_BR", TEXTO), corpo["messages"][1]["content"]
 assert "Gargantua-2" in painel.modelo.text() and "ProjectOpenTARS" not in painel.modelo.text()
@@ -81,10 +81,11 @@ assert esperar(lambda: painel.resultado == "Em até 30 dias.")
 assert "Question: Quando é a reunião?" in ultimo_chat()["messages"][1]["content"]
 print("OK: perguntar manda a pergunta junto e não oferece substituir")
 
-assert acoes_lib.escolher_modelo([LITE, PRINCIPAL], LITE, PRINCIPAL) == PRINCIPAL
-assert acoes_lib.escolher_modelo([LITE], LITE, PRINCIPAL) == LITE
-assert acoes_lib.escolher_modelo([], LITE, PRINCIPAL) == PRINCIPAL
-print("OK: o Gargantua 2 quando instalado (prova das ações: 71/76 contra 56/76 do Lite); sem ele, o Lite")
+assert acoes_lib.escolher_modelo([LITE, PRINCIPAL], LITE, PRINCIPAL, "curto") == LITE
+assert acoes_lib.escolher_modelo([LITE, PRINCIPAL], LITE, PRINCIPAL, "x" * 2000) == PRINCIPAL
+assert acoes_lib.escolher_modelo([LITE], LITE, PRINCIPAL, "x" * 2000) == LITE
+assert acoes_lib.escolher_modelo([PRINCIPAL], LITE, PRINCIPAL) == PRINCIPAL
+print("OK: o Lite (a IA de segundo plano) nas ações; o 2B só para texto longo e se instalado")
 
 colados = []
 painel.substituir.connect(colados.append)
@@ -118,13 +119,13 @@ assert area["texto"] == "o que a pessoa tinha copiado"
 print("OK: colar põe o resultado, aperta colar e devolve a área de transferência")
 # o assistente residente: ligar carrega (keep_alive -1) e guarda; as ações passam a manter o modelo; desligar descarrega
 assert not assistente.ligado()
-assistente.ligar(True, url, PRINCIPAL)
+assistente.ligar(True, url, LITE)
 gerar = [c for m, p, c in servidor.pedidos if p == "/api/generate"]
-assert gerar[-1] == {"model": PRINCIPAL, "keep_alive": -1} and assistente.ligado(), gerar
+assert gerar[-1] == {"model": LITE, "keep_alive": -1} and assistente.ligado(), gerar
 painel.abrir(TEXTO)
 esperar(lambda: painel.resultado)
 assert ultimo_chat()["keep_alive"] == -1
-assistente.ligar(False, url, PRINCIPAL)
+assistente.ligar(False, url, LITE)
 assert [c for m, p, c in servidor.pedidos if p == "/api/generate"][-1]["keep_alive"] == 0 and not assistente.ligado()
 assert assistente.iniciar_com_sistema(True) and "--residente" in assistente.comando_residente()
 inicio = plataforma.arquivo_autostart(assistente.NOME_AUTOSTART).read_bytes()      # no Windows é um .lnk (UTF-16)

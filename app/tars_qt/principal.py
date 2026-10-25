@@ -21,6 +21,7 @@ import tars_historico
 import tars_i18n
 import tars_acoes_texto as acoes_lib
 import tars_assistente as assistente
+import tars_modelinhos as modelinhos
 import tars_modos as modos
 import tars_plataforma as plataforma
 import tars_primeiro_uso as pu
@@ -1393,6 +1394,8 @@ class JanelaPrincipal(QMainWindow):
             if nova:
                 self._nova_versao = nova
                 self.depois(lambda: self.lateral.mostrar_versao(nova["versao"]))
+            self._garantir_lite()
+            self._garantir_modelinhos()
             # 5.2 (F9.5): o Ollama não atualiza modelo sozinho; o Gargantua novo só chega se a pessoa baixar de novo
             velhos = tars_gerenciar_modelos.desatualizados(self.nucleo.OLLAMA_HOST)
             if velhos:
@@ -1400,6 +1403,35 @@ class JanelaPrincipal(QMainWindow):
                 self.depois(lambda: self.faixa.mostrar(t("modelo.novo", nomes=nomes), t("cfg.gerenciar.atualizar"), "gerenciar"))
 
         threading.Thread(target=trabalho, daemon=True).start()
+
+    def _garantir_lite(self):
+        """25/10 (decisão do Enzo): o Gargantua 2 Lite é obrigatório (a única IA em segundo plano). Quem instalou antes, ou
+        pulou o download, recebe ele aqui, em segundo plano, com a faixa avisando. Roda na thread da busca de atualização."""
+        host = self.nucleo.OLLAMA_HOST
+        if getattr(self, "_baixando_lite", False) or os.environ.get("TARS_SEM_ATALHO") == "1":      # testes não baixam
+            return
+        instalados = pu.modelos_instalados(host)
+        if not instalados or pu.tem_lite(instalados):        # Ollama fora (lista vazia) ou já tem
+            return
+        self._baixando_lite = True
+        self.depois(lambda: self.faixa.mostrar(t("lite.baixando")))
+        try:
+            ok, erro = pu.baixar_modelo(pu.MODELO_GARGANTUA_LITE, host)
+        finally:
+            self._baixando_lite = False
+        self.depois(lambda: self.faixa.mostrar(t("lite.pronto") if ok else t("lite.erro", erro=erro)))
+
+    def _garantir_modelinhos(self):
+        """25/10: os modelinhos de foto também são obrigatórios; quem atualizou recebe aqui, em segundo plano."""
+        if getattr(self, "_baixando_modelinhos", False) or os.environ.get("TARS_SEM_ATALHO") == "1" or not modelinhos.faltando():
+            return
+        self._baixando_modelinhos = True
+        self.depois(lambda: self.faixa.mostrar(t("modelinhos.baixando")))
+        try:
+            ok, erro = modelinhos.baixar_todos()
+        finally:
+            self._baixando_modelinhos = False
+        self.depois(lambda: self.faixa.mostrar(t("modelinhos.pronto") if ok else t("modelinhos.erro", erro=erro)))
 
     def _atualizar_agora(self):
         nova = self._nova_versao

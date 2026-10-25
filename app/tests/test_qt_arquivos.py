@@ -77,4 +77,24 @@ painel.pedido_foto.setText("bom dia")
 painel._atualizar_foto()
 assert painel.entendido.plano() == pa.t("foto.nao_entendi")
 print("OK: fotos abrem em Editar a foto; os atalhos montam o pedido; a prévia não salva; a cópia sai só com o clique")
+
+# 25/10: remover um objeto pelo clique na foto da esquerda (os modelinhos de mentira aqui; os de verdade em test_modelinhos)
+import tars_modelinhos  # noqa: E402
+from PySide6.QtCore import QPointF  # noqa: E402
+from PySide6.QtGui import QMouseEvent  # noqa: E402
+cliques = []
+tars_modelinhos.selecionar = lambda img, ponto: cliques.append(ponto) or Image.new("L", img.size, 0)
+tars_modelinhos.remover = lambda img, mascara: img.convert("RGB")
+painel.abrir([str(foto)])
+painel._rapido("remover")
+assert painel.esperando_clique and painel.entendido.plano() == pa.t("foto.clique_no_objeto")
+esperar(lambda: painel.tam_original is not None and painel.img_antes.pixmap() is not None)
+mapa = painel.img_antes.pixmap()
+centro = QPointF(painel.img_antes.width() / 2, painel.img_antes.height() / 2)
+painel.eventFilter(painel.img_antes, QMouseEvent(QMouseEvent.MouseButtonRelease, centro, centro, pa.Qt.LeftButton,
+                                                 pa.Qt.LeftButton, pa.Qt.NoModifier))
+assert not painel.esperando_clique and ("remover", 200, 150) in painel.operacoes, painel.operacoes
+esperar(lambda: painel.botao_aplicar.isEnabled())
+assert cliques[-1] == (180.0, 135.0), cliques       # na prévia (360 px) o ponto vem na escala da foto reduzida
+print("OK: remover um objeto: o painel pede o clique, leva o ponto para a foto original e mostra a prévia")
 print("test_qt_arquivos: TUDO OK.")

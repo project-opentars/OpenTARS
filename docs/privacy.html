@@ -56,7 +56,7 @@
         <li><strong>The update check.</strong> When the window opens and every 6 hours while it stays open, read-only requests to GitHub (<code>api.github.com</code>, <code>raw.githubusercontent.com</code>, <code>github.com</code>) to see if there is a new package. Nothing about you is sent besides the request itself. <code>TARS_SEM_AVISO_VERSAO=1</code> turns it off.</li>
         <li><strong>The model check.</strong> When the window opens and every 6 hours, openTARS asks Ollama's registry (<code>registry.ollama.ai</code>) for the description of the published Gargantua, to tell you when yours is older. Nothing is downloaded until you click Update.</li>
         <li><strong>The cloud, only if you turn it on.</strong> The text you write and the screenshots you ask about go to the provider you chose, with your own key or account. The key is stored only on this computer, never shown, never written to the log and never passed to the commands the AI runs. A cloud model is never picked automatically, and the window warns you when your text goes to a provider.</li>
-        <li><strong>Model downloads.</strong> The installer downloads Gargantua 2 from Ollama.</li>
+        <li><strong>Model downloads.</strong> The installer downloads Gargantua 2 and Gargantua 2 Lite from Ollama, and the four small photo models from Hugging Face (<code>huggingface.co</code>), each one checked against a fixed SHA-256. If you choose to install Bonsai Image 4B, its installer downloads the PrismML program from GitHub, its Python packages and the model from Hugging Face. Images are made on your computer.</li>
         <li><strong>Websites you ask for.</strong> When you ask openTARS to open or search a site, your browser visits it as usual.</li>
       </ul>
     </article>

@@ -232,10 +232,10 @@
         <article class="model">
           <p class="role">Runs anywhere</p>
           <h3>Gargantua Lite</h3>
-          <p>The everyday Gargantua in an even smaller model that also sees images, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it runs fine on the processor alone. It makes more mistakes than Gargantua 2, most of all when it has to look at a picture or use the calculator, which it sometimes swaps for a web search. Retrained on October 23 with the same new examples as Gargantua 2, it now finds a button on the screen almost as often (9 against 10 of 15 tries in our screen test). Computers without a graphics card and with little memory get it on their own; anywhere else, pick it in the model picker.</p>
+          <p>The everyday Gargantua in an even smaller model that also sees images, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it runs fine on the processor alone. It makes more mistakes than Gargantua 2, most of all when it has to look at a picture or use the calculator, which it sometimes swaps for a web search. Retrained on October 23 with the same new examples as Gargantua 2, it now finds a button on the screen almost as often (9 against 10 of 15 tries in our screen test). Every computer gets it: it is the AI that runs the assistant, text actions and Probes in the background.</p>
           <dl>
             <dt>Test</dt><dd>68 of 80 everyday tasks done right, no dangerous command run</dd>
-            <dt>Size</dt><dd>about 0.6 GB with vision, optional</dd>
+            <dt>Size</dt><dd>about 0.6 GB with vision, always installed</dd>
             <dt>Runs on</dt><dd>the processor alone (about 2.6 s a request on a 16-thread CPU), or a graphics card (0.3 s)</dd>
             <dt>Honesty</dt><dd>says it does not know in 15 of 16 questions about people and things that do not exist</dd>
             <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua-2:lite</code></dd>
@@ -273,7 +273,7 @@
             <div><dt>Version</dt><dd>5.2 Ranger</dd></div>
             <div><dt>Size</dt><dd>1.3 MB</dd></div>
             <div><dt>Updated</dt><dd>October 25, 2026</dd></div>
-            <div class="sha"><dt>SHA-256</dt><dd><code>51f57a89efc3712dc03ab22acbeb47f3a6fe36dd2512ccceb5f20129167a975e</code></dd></div>
+            <div class="sha"><dt>SHA-256</dt><dd><code>f73721b587f39affa0dca2f363e1c6d628cbba16e054c55d9430f2af881236bc</code></dd></div>
           </dl>
           <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved. To check the download first: <code>sha256sum opentars_all.deb</code> must print the SHA-256 above.</p>
           <h3 class="or">Or paste one line in a terminal</h3>
@@ -311,7 +311,7 @@
           <ul>
             <li>Windows</li><li>macOS</li><li>Fedora</li><li>Arch</li><li>openSUSE</li>
           </ul>
-          <p class="quiet">They pass our automated tests on GitHub's Windows and macOS machines and in Fedora, Arch and openSUSE containers. Windows had its first run on a real laptop on October 24; no real Mac has run openTARS yet. Tell us what breaks.</p>
+          <p class="quiet">They pass our automated tests on GitHub's Windows and macOS machines and in Fedora, Arch and openSUSE containers. We have also used them on real Windows and Fedora computers; no real Mac has run openTARS yet. Tell us what breaks.</p>
         </div>
       </div>
       <details class="legacy">
@@ -337,12 +337,15 @@
         <p class="lede quiet">Out now. Update from the app, or install with the commands above.</p>
       </div>
       <ul class="next">
-        <li><h3>Windows and macOS</h3><p>openTARS now runs on Windows and macOS too, installed with one command and no administrator. It clicks buttons by name through UI Automation on Windows and Accessibility on macOS. Both are early: they pass our automated tests, Windows had its first run on a real laptop, and no real Mac has run it yet.</p></li>
+        <li><h3>Windows and macOS</h3><p>openTARS now runs on Windows and macOS too, installed with one command and no administrator. It clicks buttons by name through UI Automation on Windows and Accessibility on macOS. Both are new: they pass our automated tests, we have used it on real Windows computers, and no real Mac has run it yet.</p></li>
         <li><h3>Other Linux</h3><p>Fedora, Arch and openSUSE get a one-line installer, tested in containers.</p></li>
         <li><h3>A launcher for everything</h3><p>Open the quick bar with nothing typed and it offers five things: do a task on the computer, ask about the screen, find a file, search the web and create a reminder. Finding a file looks at names and the text inside, with no index and no model.</p></li>
-        <li><h3>Text actions in any app</h3><p>Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>R</kbd>: fix it, make it more formal or simpler, summarize, translate between English and Portuguese, or ask about it. The selected text is only material: openTARS never runs anything written in it. Gargantua 2 got 71 of 76 right in our text test.</p></li>
+        <li><h3>Text actions in any app</h3><p>Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>R</kbd>: fix it, make it more formal or simpler, summarize, translate between English and Portuguese, or ask about it. The selected text is only material: openTARS never runs anything written in it. Gargantua 2 Lite, which stays in the background, got 64 of 76 right in our text test; long texts go to Gargantua 2 (71 of 76).</p></li>
         <li><h3>Actions on selected files</h3><p>Summarize, rename by content with a preview you can edit, move, or send to the trash after you confirm. Renaming and moving can be undone.</p></li>
-        <li><h3>Edit a photo with a sentence</h3><p>“Crop it square and make it brighter”: crop, rotate, brighten, black and white, shrink for email, change the format. Always a copy, without the location and device data. No image model: a 12-megapixel photo takes 0.35 s.</p></li>
+        <li><h3>Edit a photo with a sentence</h3><p>“Crop it square and make it brighter”: crop, rotate, brighten, black and white, shrink for email, change the format, in the file panel or right in the chat. Always a copy, without the location and device data. A 12-megapixel photo takes 0.35 s.</p></li>
+        <li><h3>Small photo models, built in</h3><p>Remove the background, upscale 4x, and remove an object by clicking on it. Four small open models (about 300 MB, downloaded with openTARS) run on the processor: removing a background took about 9 s on a 16-thread CPU, the others about a second.</p></li>
+        <li><h3>Make images</h3><p>Ask “draw a lighthouse at dusk” in the chat. It uses Bonsai Image 4B by PrismML, an optional install of about 9.5 GB that needs an NVIDIA card with 6 GB or a Mac with Apple Silicon. On our RTX 3050 (6 GB) a 512-pixel image took about 5 s once loaded; openTARS takes the other models off the card first.</p></li>
+        <li><h3>One small AI in the background</h3><p>Gargantua 2 Lite is always installed and is the only AI that stays in the background: the assistant, text actions and Probes. Gargantua 2 answers in the window.</p></li>
         <li><h3>It says when it is unsure</h3><p>On a factual question, openTARS checks how sure the answer is. With web search on, it looks it up; without it, it tells you under the answer. A hint, not a guarantee.</p></li>
         <li><h3>Gargantua 2, retrained</h3><p>Trained again with the 5.2 examples: it says when it does not know, works on selected text and knows Windows and macOS. The app tells you when a newer Gargantua is published.</p></li>
         <li><h3>Check it yourself</h3><p><code>opentars --prova</code> runs 48 everyday tasks with your model and saves a report; <code>opentars --diagnostico</code> checks your system; <code>opentars --desinstalar</code> removes it.</p></li>

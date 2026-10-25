@@ -73,7 +73,7 @@ fi
 dizer "Preparando o Python e as dependências (alguns minutos na primeira vez)..." \
       "Setting up Python and the dependencies (a few minutes the first time)..."
 [ -x "$VENV/bin/python3" ] || "$UV" venv --python 3.12 "$VENV"
-"$UV" pip install --python "$VENV/bin/python3" requests psutil pyautogui pillow PySide6-Essentials pyobjc-framework-ApplicationServices pip
+"$UV" pip install --python "$VENV/bin/python3" requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime pyobjc-framework-ApplicationServices pip
 
 # 3. O Ollama (o app oficial). Sem ele o openTARS abre, mas não tem IA local.
 if [ "$SEM_OLLAMA" = 0 ]; then

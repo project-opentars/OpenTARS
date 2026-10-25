@@ -87,7 +87,7 @@ if (-not (Test-Path (Join-Path $Venv "Scripts\python.exe"))) {
     & $uvExe venv --python 3.12 $Venv
     if ($LASTEXITCODE) { throw "uv venv failed ($LASTEXITCODE)" }
 }
-& $uvExe pip install --python (Join-Path $Venv "Scripts\python.exe") requests psutil pyautogui pillow PySide6-Essentials uiautomation pip
+& $uvExe pip install --python (Join-Path $Venv "Scripts\python.exe") requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime uiautomation pip
 if ($LASTEXITCODE) { throw "uv pip install failed ($LASTEXITCODE)" }
 
 # 3. O Ollama (por usuário). Sem ele o openTARS abre, mas não tem IA local.
