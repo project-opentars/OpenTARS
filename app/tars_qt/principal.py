@@ -163,7 +163,7 @@ class Lateral(QFrame):
         self.v_sub = QLabel(t("jp.nada_sem_clique"))
         self.v_sub.setWordWrap(True)
         self.v_sub.setStyleSheet(f"font-size: 12px; color: {CORES['apoio']};")
-        self.b_atualizar = _botao(t("jp.atualizar"), "atualizar", self.atualizar)
+        self.b_atualizar = _botao(t("jp.ver_atualizacao"), "atualizar", self.atualizar)
         cv.addWidget(self.v_titulo)
         cv.addWidget(self.v_sub)
         cv.addSpacing(8)
@@ -194,17 +194,14 @@ class Lateral(QFrame):
         self.buscar.emit(self.busca.text().strip())
 
     def mostrar_versao(self, versao):
+        """25/10 (pedido do Enzo): a barra lateral só AVISA; instalar é em Configurações > Atualizações."""
         self.v_titulo.setText(t("jp.nova_versao", versao=versao))
-        self.v_sub.setText(t("jp.nada_sem_clique"))
-        self.b_atualizar.setEnabled(True)
-        self.b_atualizar.setText(t("jp.atualizar"))
+        self.v_sub.setText(t("jp.instale_nas_config"))
+        self.b_atualizar.setText(t("jp.ver_atualizacao"))
         self.cartao_versao.show()
 
-    def estado_atualizacao(self, texto, botao=None, habilitado=False):
+    def nota_atualizacao(self, texto):
         self.v_sub.setText(texto)
-        if botao is not None:
-            self.b_atualizar.setText(botao)
-        self.b_atualizar.setEnabled(habilitado)
 
     def definir_historico(self, grupos, atual=None, filtrando=False):
         """grupos: [(chave, [{'id','titulo'}])]."""
@@ -746,7 +743,9 @@ class JanelaPrincipal(QMainWindow):
         l.memoria.connect(lambda: self.abrir_config("memoria"))
         l.probes.connect(lambda: self.abrir_config("probes"))
         l.config.connect(lambda: self.abrir_config("geral"))
-        l.atualizar.connect(self._atualizar_agora)
+        l.atualizar.connect(lambda: self.abrir_config("atualizacoes"))
+        self.config.versao_achada.connect(self._versao_achada)
+        self.config.instalar_atualizacao.connect(self._atualizar_agora)
         self.cabecalho.parar.connect(self.parar)
         self.cabecalho.escolher_modelo.connect(self._menu_modelos)
         c = self.compositor
@@ -1394,8 +1393,7 @@ class JanelaPrincipal(QMainWindow):
             except Exception:
                 nova = None
             if nova:
-                self._nova_versao = nova
-                self.depois(lambda: self.lateral.mostrar_versao(nova["versao"]))
+                self.depois(lambda: self._versao_achada(nova))
             self._garantir_lite()
             self._garantir_modelinhos()
             # 5.2 (F9.5): o Ollama não atualiza modelo sozinho; o Gargantua novo só chega se a pessoa baixar de novo
@@ -1405,6 +1403,13 @@ class JanelaPrincipal(QMainWindow):
                 self.depois(lambda: self.faixa.mostrar(t("modelo.novo", nomes=nomes), t("cfg.gerenciar.atualizar"), "gerenciar"))
 
         threading.Thread(target=trabalho, daemon=True).start()
+
+    def _versao_achada(self, nova):
+        """O detector (ao abrir, a cada 6 h, ou o "Procurar agora" das Configurações) achou uma versão: o cartão da barra
+        lateral avisa e a página Atualizações mostra o botão de instalar."""
+        self._nova_versao = nova
+        self.lateral.mostrar_versao(nova["versao"])
+        self.config.paginas["atualizacoes"].mostrar_versao(nova)
 
     def _garantir_lite(self):
         """25/10 (decisão do Enzo): o Gargantua 2 Lite é obrigatório (a única IA em segundo plano). Quem instalou antes, ou
@@ -1436,7 +1441,9 @@ class JanelaPrincipal(QMainWindow):
         self.depois(lambda: self.faixa.mostrar(t("modelinhos.pronto") if ok else t("modelinhos.erro", erro=erro)))
 
     def _atualizar_agora(self):
+        """Instalar a versão achada: o andamento aparece na página Atualizações (Configurações), onde a pessoa clicou."""
         nova = self._nova_versao
+        pagina = self.config.paginas["atualizacoes"]
         if not nova:
             return
         if nova.get("comando"):        # instalado pelo script (Windows, macOS, outros Linux): o comando vai para a área
@@ -1444,9 +1451,9 @@ class JanelaPrincipal(QMainWindow):
                 plataforma.escrever_area_de_transferencia(nova["comando"])
             except OSError:
                 pass
-            self.lateral.estado_atualizacao(t("jp.comando_atualizar", comando=nova["comando"]), t("jp.atualizar"), True)
+            pagina.estado(t("jp.comando_atualizar", comando=nova["comando"]), t("jp.atualizar"), True)
             return
-        self.lateral.estado_atualizacao(t("jp.conferindo"), t("jp.atualizar"), False)
+        pagina.estado(t("jp.conferindo"), t("jp.atualizar"), False)
         tipo = "appimage" if os.environ.get("APPIMAGE") and "appimage" in nova["arquivos"] else \
             "deb" if "deb" in nova["arquivos"] else next(iter(nova["arquivos"]))
         arquivo = nova["arquivos"][tipo]
@@ -1454,15 +1461,16 @@ class JanelaPrincipal(QMainWindow):
 
         def pronto(ok, motivo):
             if ok:
-                self.lateral.estado_atualizacao(t("jp.atualizado"), t("jp.atualizar"), False)
+                pagina.estado(t("jp.atualizado"), t("jp.atualizar"), False)
+                self.lateral.nota_atualizacao(t("jp.atualizado"))
             else:
                 texto = t(f"jp.motivo.{motivo}") if tars_i18n.t(f"jp.motivo.{motivo}") != f"jp.motivo.{motivo}" else motivo
-                self.lateral.estado_atualizacao(t("jp.atualizar_erro", motivo=texto), t("jp.atualizar"), True)
+                pagina.estado(t("jp.atualizar_erro", motivo=texto), t("jp.atualizar"), True)
 
         def trabalho():
             def andamento(feito, total):
                 pct = int(100 * feito / total) if total else 0
-                self.depois(lambda: self.lateral.estado_atualizacao(t("jp.baixando", pct=pct), None, False))
+                self.depois(lambda: pagina.estado(t("jp.baixando", pct=pct), None, False))
 
             ok, motivo = tars_atualizacao.baixar_verificado(arquivo["url"], destino, arquivo["sha256"], ao_progredir=andamento, git_sha=arquivo.get("git_sha"))
             if ok:

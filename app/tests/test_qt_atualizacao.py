@@ -65,13 +65,32 @@ esperar(lambda: j.lateral.cartao_versao.isVisibleTo(j.lateral), o_que="aviso de 
 assert j._nova_versao is nova
 print("OK: o aviso de atualização aparece vindo de outra thread")
 
-# o clique em Atualizar: baixa, confere, instala e avisa (tudo falso) — os callbacks de outra thread chegam
+# 25/10 (pedido do Enzo): a barra lateral só avisa e leva às Configurações; é lá que se instala
+assert j.lateral.v_sub.text() == t("jp.instale_nas_config") and j.lateral.b_atualizar.text() == t("jp.ver_atualizacao")
+j.lateral.atualizar.emit()
+assert j.pilha.currentIndex() == 2 and j.config.pilha.currentWidget() is j.config.paginas["atualizacoes"]
+pagina = j.config.paginas["atualizacoes"]
+assert pagina.b_instalar.isVisibleTo(pagina) and pagina.b_instalar.text() == t("jp.atualizar")
+assert "06/10 19:10" in pagina.msg.text()
+print("OK: o cartão da barra lateral avisa e leva à página Atualizações, que mostra o botão de instalar")
+
+# o clique em Atualizar da página: baixa, confere, instala e avisa (tudo falso): o andamento aparece na página
 registro = []
 tars_atualizacao.baixar_verificado = lambda url, destino, sha, ao_progredir=None, **k: (ao_progredir and ao_progredir(5, 10), (True, ""))[1]
 tars_atualizacao.instalar_arquivo = lambda destino, **k: (True, "")
 tars_atualizacao.marcar_instalada = lambda x: registro.append(x)
-j._atualizar_agora()
+pagina.b_instalar.click()
 esperar(lambda: registro == ["a" * 40], o_que="instalação concluída")
-esperar(lambda: j.lateral.v_sub.text() == t("jp.atualizado"), o_que="texto de atualizado")
-print("OK: baixar e instalar mostram o andamento e o fim na janela")
+esperar(lambda: pagina.msg.text() == t("jp.atualizado"), o_que="texto de atualizado na página")
+assert not pagina.b_instalar.isEnabled() and j.lateral.v_sub.text() == t("jp.atualizado")
+print("OK: baixar e instalar mostram o andamento e o fim na página Atualizações")
+
+# "Procurar agora" na página: acha, avisa na barra lateral e deixa instalar de lá
+j.lateral.cartao_versao.hide()
+j._nova_versao = None
+pagina.b_instalar.hide()
+pagina._procurar()
+esperar(lambda: j.lateral.cartao_versao.isVisibleTo(j.lateral) and pagina.b_instalar.isVisibleTo(pagina), o_que="procurar nas Configurações")
+assert j._nova_versao is nova and pagina.b_instalar.isEnabled()
+print("OK: procurar nas Configurações avisa na barra lateral e instala de lá")
 j.close()

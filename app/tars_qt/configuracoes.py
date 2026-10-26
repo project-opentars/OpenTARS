@@ -115,6 +115,8 @@ class PaginaConfiguracoes(QWidget):
     rotinas_mudaram = Signal()
     mudou_modo = Signal()
     assistente_mudou = Signal()
+    versao_achada = Signal(object)          # a página Atualizações achou uma versão nova: a janela avisa na barra lateral
+    instalar_atualizacao = Signal()         # o botão Atualizar da página: a janela baixa, confere e instala
     _executar = Signal(object)
 
     def __init__(self, nucleo, voz, historico, ponte):
@@ -2294,6 +2296,8 @@ class PDiagnostico(Pagina):
 # ------------------------------------------------------------
 
 class PAtualizacoes(Pagina):
+    """25/10 (pedido do Enzo): a barra lateral avisa que há versão nova e leva até aqui; procurar e instalar são desta página."""
+
     def __init__(self, cfg):
         super().__init__(t("cfg.atual.titulo"), t("cfg.atual.sub"))
         self.cfg = cfg
@@ -2302,12 +2306,36 @@ class PAtualizacoes(Pagina):
         self.msg.setWordWrap(True)
         self.msg.setProperty("papel", "texto")
         v.addWidget(self.msg)
+        linha = QHBoxLayout()
+        linha.setSpacing(10)
         self.b = _botao(t("cfg.atual.procurar"), "chip", self._procurar)
         self.b.setMaximumWidth(240)
-        v.addWidget(self.b)
+        self.b_instalar = _botao(t("jp.atualizar"), "atualizar", lambda: cfg.instalar_atualizacao.emit())
+        self.b_instalar.setMaximumWidth(240)
+        self.b_instalar.hide()
+        linha.addWidget(self.b)
+        linha.addWidget(self.b_instalar)
+        linha.addStretch(1)
+        v.addLayout(linha)
         v.addWidget(rotulo(t("cfg.atual.nota"), "nota", quebra=True))
         self.adicionar(s)
         self.terminar()
+
+    def mostrar_versao(self, nova):
+        """Há uma versão: diz qual e mostra o botão que instala (ou, se foi instalado por script, copia o comando)."""
+        self.msg.setText(t("jp.comando_atualizar", comando=nova["comando"]) if nova.get("comando")
+                         else t("cfg.atual.nova", versao=nova["versao"]))
+        self.b_instalar.setEnabled(True)
+        self.b_instalar.setText(t("jp.atualizar_copiar") if nova.get("comando") else t("jp.atualizar"))
+        self.b_instalar.show()
+
+    def estado(self, texto, botao=None, habilitado=False):
+        """O andamento da instalação (conferindo, baixando 40%, atualizado, erro) no lugar da frase."""
+        self.msg.setText(texto)
+        if botao is not None:
+            self.b_instalar.setText(botao)
+        self.b_instalar.setEnabled(habilitado)
+        self.b_instalar.show()
 
     def _procurar(self):
         self.b.setEnabled(False)
@@ -2317,9 +2345,9 @@ class PAtualizacoes(Pagina):
             self.b.setEnabled(True)
             if isinstance(r, Exception) or r is None:
                 self.msg.setText(t("cfg.atual.em_dia"))
+                self.b_instalar.hide()
             else:
-                self.msg.setText(t("jp.comando_atualizar", comando=r["comando"]) if r.get("comando")
-                                 else t("cfg.atual.nova", versao=r["versao"]))
+                self.cfg.versao_achada.emit(r)          # a janela guarda a versão, avisa na barra lateral e volta aqui
 
         self.cfg.em_segundo_plano(lambda: tars_atualizacao.procurar_atualizacao(self.cfg.nucleo.VERSAO), pronto)
 
