@@ -1,6 +1,10 @@
 opentars (5.2) unstable; urgency=medium
 
   5.2 Ranger
+  * 26/10: atualizar com o assistente ligado funciona (o app se reinicia sozinho depois de instalar);
+    a voz baixa com barra de progresso; "Mais modelos" marca o que combina com a placa e a memória
+    do computador; a pesquisa pelo SearXNG vem ligada (sem ele, abre no navegador); menos
+    trabalho em segundo plano parado.
   * Windows, macOS e outros Linux (Fedora, Arch, openSUSE): instaladores de um comando, sem
     administrador (uv, Python 3.12 e o Ollama do usuário), com opentars --desinstalar. Testados
     no GitHub Actions (Windows, macOS, Ubuntu) e em contêineres; o Windows passou pelo primeiro

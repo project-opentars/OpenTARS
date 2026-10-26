@@ -345,26 +345,44 @@ def _tem_bibliotecas_placa():
     return (pasta_pacotes() / "nvidia" / "cudnn").is_dir() and (pasta_pacotes() / "nvidia" / "cublas").is_dir()
 
 
-def instalar(idioma, avisar=print):
+def instalar(idioma, avisar=print, progresso=None):
     """Instala as bibliotecas no Python do openTARS, baixa o Kokoro e os
-    modelos do Whisper. Devolve (ok, mensagem)."""
+    modelos do Whisper. Devolve (ok, mensagem). `progresso(fracao | None, texto)` alimenta a barra da janela (26/10):
+    fracao de 0 a 1 do conjunto (o Kokoro, de ~340 MB, é a parte medida em bytes), ou None quando a etapa não tem tamanho
+    conhecido (o pip e o carregamento do Whisper) e a barra fica em movimento."""
+    progresso = progresso or (lambda fracao, texto: None)
     falta = o_que_falta(idioma)
     pacotes = PACOTES if plataforma.sistema() == "linux" else PACOTES + ("sounddevice",)
-    if set(falta) & set(pacotes):
+    lugar = (os.environ.get("TARS_WHISPER_DISPOSITIVO") or "auto").lower()
+    # peso de cada etapa na barra: só entram as que vão rodar (o que já está instalado não conta)
+    pesos = {"libs": 15 if set(falta) & set(pacotes) else 0,
+             "placa": 20 if lugar != "cpu" and placa_serve_pro_whisper() and not _tem_bibliotecas_placa() else 0,
+             "kokoro": 55 if not kokoro_baixado() else 0, "whisper": 10}
+    total, feito = sum(pesos.values()), 0
+
+    def fatia(etapa, parte=None):
+        return (feito + pesos[etapa] * (parte or 0)) / total
+
+    if pesos["libs"]:
+        progresso(None, "pip install " + " ".join(pacotes))
         ok, erro = _pip(pacotes, avisar)
         if not ok:
             return False, erro
-    lugar = (os.environ.get("TARS_WHISPER_DISPOSITIVO") or "auto").lower()
-    if lugar != "cpu" and placa_serve_pro_whisper() and not _tem_bibliotecas_placa():
+        feito += pesos["libs"]
+    if pesos["placa"]:
+        progresso(None, "pip install " + " ".join(PACOTES_PLACA))
         ok, _erro = _pip(PACOTES_PLACA, avisar)  # sem elas, o Whisper fica no processador
         if not ok:
             _config_whisper["placa_falhou"] = True
-    if not kokoro_baixado():
-        ok, erro = baixar_voz(idioma, avisar)
+        feito += pesos["placa"]
+    if pesos["kokoro"]:
+        ok, erro = baixar_voz(idioma, avisar, progresso=lambda parte, texto: progresso(fatia("kokoro", parte), texto))
         if not ok:
             return False, erro
+        feito += pesos["kokoro"]
     config = config_whisper(forcar=True)
     avisar(f"Whisper {config['ativacao'][0]} + {config['pedido'][0]} ({config['pedido'][1]})")
+    progresso(None, f"Whisper {config['pedido'][0]}")
     try:
         Transcritor(papel="ativacao").carregar()
         Transcritor(papel="pedido").carregar()
@@ -376,7 +394,7 @@ def instalar(idioma, avisar=print):
     return True, ""
 
 
-def _baixar(url, caminho, avisar):
+def _baixar(url, caminho, avisar, ao_bytes=None):
     import requests  # só aqui: o resto do módulo não precisa
 
     avisar(f"{caminho.name}...")
@@ -385,9 +403,13 @@ def _baixar(url, caminho, avisar):
     try:
         with requests.get(url, stream=True, timeout=60) as r:
             r.raise_for_status()
+            total, feito = int(r.headers.get("Content-Length") or 0), 0
             with open(temporario, "wb") as f:
                 for bloco in r.iter_content(1 << 16):
                     f.write(bloco)
+                    feito += len(bloco)
+                    if ao_bytes:
+                        ao_bytes(feito, total)
         os.replace(temporario, caminho)
         return True, ""
     except Exception as e:
@@ -398,13 +420,17 @@ def _baixar(url, caminho, avisar):
         return False, f"{caminho.name}: {e}"
 
 
-def baixar_voz(idioma, avisar=print, nome=None):
-    """Baixa o Kokoro (~340 MB, uma vez: serve pra todas as vozes)."""
-    for nome_arquivo, url in KOKORO_ARQUIVOS.items():
-        caminho = pasta_kokoro() / nome_arquivo
-        if caminho.exists() and caminho.stat().st_size > 1000:
-            continue
-        ok, erro = _baixar(url, caminho, avisar)
+def baixar_voz(idioma, avisar=print, nome=None, progresso=None):
+    """Baixa o Kokoro (~340 MB, uma vez: serve pra todas as vozes). `progresso(fracao, texto)`: fração dos bytes dos
+    arquivos que faltam (o `voices` é pequeno; o modelo é quase tudo)."""
+    faltam = [(n, u) for n, u in KOKORO_ARQUIVOS.items()
+              if not ((pasta_kokoro() / n).exists() and (pasta_kokoro() / n).stat().st_size > 1000)]
+    for i, (nome_arquivo, url) in enumerate(faltam):
+        def ao_bytes(feito, total, i=i, nome_arquivo=nome_arquivo):
+            if progresso:
+                parte = ((i + (feito / total if total else 0)) / len(faltam))
+                progresso(parte, f"{nome_arquivo}: {feito / 1e6:.0f} / {total / 1e6:.0f} MB" if total else nome_arquivo)
+        ok, erro = _baixar(url, pasta_kokoro() / nome_arquivo, avisar, ao_bytes)
         if not ok:
             return False, erro
     return True, ""

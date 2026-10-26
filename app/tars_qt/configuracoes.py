@@ -363,7 +363,7 @@ class _CartaoModelo(QFrame):
     """Um modelo da lista: nome, tamanho, o que sabe fazer e um botão. Clicar no cartão também baixa."""
     clicou = Signal()
 
-    def __init__(self, nome, gb, capacidades, destaque=False):
+    def __init__(self, nome, gb, capacidades, destaque=False, aviso=None):
         super().__init__()
         self.setProperty("papel", "cartao-modelo")
         self.setProperty("destaque", destaque)
@@ -388,8 +388,19 @@ class _CartaoModelo(QFrame):
             linha_t.addStretch(1)
             col.addLayout(linha_t)
             col.addWidget(rotulo(t("cfg.modelos.destaque_nota"), "nota", quebra=True))
+        elif aviso == "recomendado":
+            linha_t = QHBoxLayout()
+            linha_t.setSpacing(8)
+            linha_t.addWidget(titulo)
+            selo = QLabel(t("cfg.modelos.bom_pra_ca"))
+            selo.setProperty("papel", "selo-destaque")
+            linha_t.addWidget(selo)
+            linha_t.addStretch(1)
+            col.addLayout(linha_t)
         else:
             col.addWidget(titulo)
+        if aviso == "pesado":
+            col.addWidget(rotulo(t("cfg.modelos.pesado"), "nota", quebra=True))
         col.addWidget(rotulo(" · ".join([mm.tamanho_texto(gb)] + [t(f"cfg.modelos.cap.{c}") for c in capacidades]), "nota"))
         topo.addLayout(col, 1)
         self.botao = _botao("", "chip", self.clicou.emit)
@@ -472,7 +483,7 @@ class _CartaoBonsai(QFrame):
         v.addLayout(topo)
         self.info = rotulo("", "nota", quebra=True)
         v.addWidget(self.info)
-        self.atualizar()
+        self.b_instalar.setEnabled(False)       # 26/10: a conferência da máquina (nvidia-smi, git, disco) só quando a página abre
 
     def atualizar(self, instalando=False):
         pronto = imagem_lib.instalado()
@@ -521,13 +532,21 @@ class PModelos(Pagina):
         self._cancelar = False
         self._instalados = []
         self._ollama_ok = True
+        self.hw = mm.hardware()
+        self.recomendados = set(mm.recomendados(self.hw))
+        placa = f"{self.hw['vram_gb']:.0f} GB" if self.hw["vram_gb"] else t("cfg.modelos.sem_placa")
+        self.adicionar(rotulo(t("cfg.modelos.maquina", placa=placa, ram=f"{self.hw['ram_gb']:.0f} GB"), "nota", quebra=True))
         for grupo, itens in mm.GRUPOS:
             s, v = _secao(t(f"cfg.modelos.g.{grupo}"), t(f"cfg.modelos.g.{grupo}_sub"))
             if grupo == "imagem":
                 self.bonsai = _CartaoBonsai(cfg)
                 v.addWidget(self.bonsai)
+            if grupo in mm.GRUPOS_RECOMENDADOS:             # os que combinam com este computador vêm primeiro
+                itens = sorted(itens, key=lambda i: i[0] not in self.recomendados)
             for tag, nome, gb, capacidades in itens:
-                c = _CartaoModelo(nome, gb, capacidades, destaque=(tag == mm.DESTAQUE))
+                aviso = ("recomendado" if tag in self.recomendados else
+                         "pesado" if grupo in mm.GRUPOS_RECOMENDADOS and mm.avaliar(gb, self.hw) == "pesado" else None)
+                c = _CartaoModelo(nome, gb, capacidades, destaque=(tag == mm.DESTAQUE), aviso=aviso)
                 c.clicou.connect(lambda tag=tag: self._clicou(tag))
                 self.cartoes[tag] = c
                 v.addWidget(c)
@@ -536,6 +555,8 @@ class PModelos(Pagina):
 
     def ao_abrir(self):
         n = self.cfg.nucleo
+        if hasattr(self, "bonsai"):
+            self.bonsai.atualizar()
 
         def trabalho():
             achou = pu.achar_ollama([n.OLLAMA_HOST], tem_comando=None)
@@ -917,6 +938,11 @@ class PVoz(Pagina):
         self.andamento.setProperty("papel", "nota")
         self.andamento.setWordWrap(True)
         v.addWidget(self.andamento)
+        self.barra = QProgressBar()          # 26/10: a barra do download da voz (o Kokoro, de ~340 MB, em bytes)
+        self.barra.setRange(0, 100)
+        self.barra.setTextVisible(False)
+        self.barra.hide()
+        v.addWidget(self.barra)
         self.b_instalar = _botao(t("cfg.voz.instalar"), "primario", self._instalar)
         self.b_instalar.setMaximumWidth(260)
         v.addWidget(self.b_instalar)
@@ -983,11 +1009,25 @@ class PVoz(Pagina):
         self.b_instalar.setEnabled(False)
         self.andamento.setText(t("cfg.voz.instalando"))
 
+        self.barra.setRange(0, 0)            # em movimento até saber o tamanho
+        self.barra.show()
+
+        def andamento(fracao, texto):
+            def mostrar():
+                if fracao is None:
+                    self.barra.setRange(0, 0)
+                else:
+                    self.barra.setRange(0, 100)
+                    self.barra.setValue(int(100 * fracao))
+                self.andamento.setText(f"{int(100 * fracao)}% · {texto}" if fracao is not None else str(texto))
+            self.cfg.depois(mostrar)
+
         def trabalho():
-            return n.instalar_voz(avisar=lambda msg: self.cfg.depois(lambda: self.andamento.setText(str(msg))))
+            return n.instalar_voz(avisar=lambda msg: None, progresso=andamento)
 
         def pronto(r):
             ok, erro = r if not isinstance(r, Exception) else (False, str(r))
+            self.barra.hide()
             self.andamento.setText(t("cfg.voz.instalada") if ok else t("cfg.voz.erro", erro=erro))
             self.ao_abrir()
 

@@ -104,6 +104,7 @@ ti.pode_instalar = lambda: (True, "")
 chamou = []
 ti.instalar = lambda ao_linha: (chamou.append(1), ao_linha("Downloading model"), (True, ""))[2]
 cartao = cfgmod._CartaoBonsai(_Cfg())
+cartao.atualizar()          # a conferência da máquina roda quando a página abre (ao_abrir)
 assert cartao.b_instalar.isVisibleTo(cartao) and not cartao.b_remover.isVisibleTo(cartao)
 cartao.b_instalar.click()
 assert not chamou, "o primeiro clique só arma a confirmação"

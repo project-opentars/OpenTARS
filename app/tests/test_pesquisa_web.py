@@ -44,12 +44,15 @@ threading.Thread(target=servidor.serve_forever, daemon=True).start()
 endereco = f"http://127.0.0.1:{servidor.server_address[1]}"
 nomes = lambda lista: {f["function"]["name"] for f in lista}  # noqa: E731
 
-# 1) desligada por padrão: nada aparece e nada é enviado
+# 1) sem escolha da pessoa a pesquisa vem ligada (26/10); desligada, nada aparece e nada é enviado
+os.remove(os.environ["TARS_ARQUIVO_CONFIG"]) if os.path.exists(os.environ["TARS_ARQUIVO_CONFIG"]) else None
+assert web.config() == {"ligada": True, "endereco": web.ENDERECO_PADRAO}
+web.salvar_config(False)
 assert web.config() == {"ligada": False, "endereco": web.ENDERECO_PADRAO}
 assert "web_search" not in nomes(tars.ferramentas_do_pedido("busca", "pesquisa na internet o preço do ouro"))
 r = tars.executar_ferramenta("web_search", {"query": "ouro"})
 assert not r["sucesso"] and "turned off" in r["mensagem"] and pedidos == [], "desligada: nada é enviado"
-print("OK: desligada por padrão; as ferramentas não aparecem e nada é enviado")
+print("OK: desligada; as ferramentas não aparecem e nada é enviado")
 
 # 2) ligada: só quando o pedido fala de pesquisar, nunca para o Gargantua; o resultado é dado
 web.salvar_config(True, endereco)

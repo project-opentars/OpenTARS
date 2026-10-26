@@ -93,4 +93,19 @@ pagina._procurar()
 esperar(lambda: j.lateral.cartao_versao.isVisibleTo(j.lateral) and pagina.b_instalar.isVisibleTo(pagina), o_que="procurar nas Configurações")
 assert j._nova_versao is nova and pagina.b_instalar.isEnabled()
 print("OK: procurar nas Configurações avisa na barra lateral e instala de lá")
+# 26/10: com o assistente ligado o app fica no ícone ao fechar; atualizado, ele recomeça sozinho (ou avisa, se há trabalho)
+reinicios = []
+j._reiniciar = lambda: reinicios.append(1)
+j._atualizado_em_disco = lambda: True
+os.environ.pop("TARS_SEM_ATALHO")
+j.hide()
+j._checar_ocioso()
+assert reinicios == [1], "atualizado por fora e parado: reinicia sozinho"
+j._reinicio_avisado = False
+j.show()
+j.pilha.setCurrentIndex(0)
+j._checar_ocioso()
+assert reinicios == [1] and j.faixa.destino == "reiniciar" and j.faixa.isVisibleTo(j), "com a janela aberta: só avisa, com o botão"
+os.environ["TARS_SEM_ATALHO"] = "1"
+print("OK: atualizado por fora, o app reinicia sozinho quando parado e avisa (com o botão) quando está em uso")
 j.close()

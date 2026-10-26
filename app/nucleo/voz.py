@@ -125,13 +125,13 @@ def falar_resposta(texto, forcar=False, ao_terminar=None):
     return falador().falar(texto, i18n.idioma_atual(), ao_terminar=ao_terminar)
 
 
-def instalar_voz(avisar=None):
+def instalar_voz(avisar=None, progresso=None):
     avisar = avisar or (lambda msg: print(c(f"[openTARS] {msg}", Cor.CINZA)))
     faltava = o_que_falta_voz()
     duras = [x for x in faltava if x in ("gravador", "tocador")]
     if duras:
         return False, t("voz.precisa_sistema", itens=descrever_falta_voz(duras))
-    ok, erro = voz_lib.instalar(i18n.idioma_atual(), avisar)
+    ok, erro = voz_lib.instalar(i18n.idioma_atual(), avisar, progresso=progresso)
     return ok, ("" if ok else erro)
 
 

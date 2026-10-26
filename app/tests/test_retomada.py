@@ -80,7 +80,7 @@ tars.web_lib.buscar = _quebrado
 abertos.clear()
 tars._pedido_atual["texto"] = "pesquisa o tempo amanhã"
 r = tars.pesquisar_web("tempo amanhã", None)
-assert not r["sucesso"] and not abertos and "Nothing was opened" in r["mensagem"], "SearXNG fora do ar: avisa, não abre"
+assert r["sucesso"] and abertos and "NOT read the results" in r["mensagem"], "SearXNG fora do ar (26/10): abre no navegador, sem fingir que leu"
 tars.web_lib.config = lambda: {"ligada": False, "endereco": "http://x"}
 abertos.clear()
 r = tars.pesquisar_web("x", None)

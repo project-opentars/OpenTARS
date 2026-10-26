@@ -144,3 +144,45 @@ def espaco_necessario(gb):
 def cabe(gb, livre_gb):
     """Cabe no disco? Sem saber o espaço livre (None), deixa tentar: o Ollama avisa se faltar."""
     return livre_gb is None or livre_gb >= espaco_necessario(gb)
+
+
+# 26/10 (pedido do Enzo): os modelos que combinam com o computador
+GRUPOS_RECOMENDADOS = ("geral", "visao", "codigo")      # um recomendado por grupo
+
+
+def hardware(vram_gb=None, ram_gb=None):
+    """{'vram_gb': placa dedicada (0 se não há), 'ram_gb': memória}. Sem argumentos, lê o computador."""
+    if vram_gb is None:
+        try:
+            import tars_primeiro_uso as pu
+            vram_gb = pu._vram_mb() / 1024
+        except Exception:  # noqa: BLE001
+            vram_gb = 0.0
+    if ram_gb is None:
+        try:
+            import psutil
+            ram_gb = psutil.virtual_memory().total / 2 ** 30
+        except Exception:  # noqa: BLE001
+            ram_gb = 8.0
+    return {"vram_gb": vram_gb if vram_gb >= 2.0 else 0.0, "ram_gb": ram_gb}      # menos de 2 GB é vídeo integrado
+
+
+def avaliar(gb, hw):
+    """'otimo' (cabe na placa com folga, ou é pequeno o bastante para o processador), 'ok' (roda, mais devagar) ou 'pesado'.
+    O tamanho do download aproxima a memória usada (já vem quantizado)."""
+    if hw["vram_gb"]:
+        if gb <= hw["vram_gb"] * 0.8:
+            return "otimo"
+    elif gb <= min(hw["ram_gb"] * 0.3, 5.0):
+        return "otimo"
+    return "ok" if gb <= hw["ram_gb"] * 0.5 else "pesado"
+
+
+def recomendados(hw):
+    """Em cada grupo, o maior modelo 'otimo', preferindo os que usam ferramentas e, no empate, os sem raciocínio longo."""
+    achados = []
+    for grupo, itens in GRUPOS:
+        cabem = [i for i in itens if grupo in GRUPOS_RECOMENDADOS and avaliar(i[2], hw) == "otimo"]
+        if cabem:
+            achados.append(max(cabem, key=lambda i: ("tools" in i[3], i[2], "thinking" not in i[3]))[0])
+    return achados

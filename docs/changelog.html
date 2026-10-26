@@ -39,8 +39,9 @@
 
     <article>
       <h2>5.2 Ranger</h2>
-      <p class="quando">October 24, 2026 · updated October 25</p>
+      <p class="quando">October 24, 2026 · updated October 26</p>
       <ul>
+        <li><strong>Patch (October 26):</strong> updating works with the assistant on (openTARS restarts by itself after installing); the voice download shows a progress bar; “More models” marks the models that fit your graphics card and memory; web search through SearXNG is on by default (without it, the search opens in the browser); less background work while idle.</li>
         <li><strong>Make images (October 25):</strong> ask “draw…” or “generate an image of…” in the chat. openTARS uses Bonsai Image 4B by PrismML, an optional install (about 9.5 GB, an NVIDIA card with 6 GB or a Mac with Apple Silicon) from Settings → More models, with no administrator password. It runs in its own process with no open port, takes the other models off the card first and tells you when the card has no room (a game using it, for example). On our RTX 3050 the first 512-pixel image took about a minute while the model loaded, the next ones about 5 s. Saved in Pictures/openTARS.</li>
         <li><strong>Small photo models (October 25):</strong> remove the background, upscale 4x, select by clicking and remove an object, all on the processor and downloaded with openTARS (about 300 MB from Hugging Face, each file checked against a fixed SHA-256). Licenses: MIT and BSD.</li>
         <li><strong>Edit photos from the chat (October 25):</strong> attach or name a photo and say what to do (“make it square and brighter”, “remove the background”); the copy appears in the answer.</li>

@@ -5,6 +5,8 @@ O núcleo (tars.py) continua sendo o da 4.6; a ponte (ponte.py) liga os dois."""
 
 import datetime as dt
 import os
+import subprocess
+import sys
 import threading
 import time
 from pathlib import Path
@@ -600,6 +602,7 @@ class JanelaPrincipal(QMainWindow):
         self._painel_arquivos = None
         self._sugestao = None
         self._sugeridas = set()                  # janelas que já receberam a sugestão (não repete na mesma janela)
+        self._ultima_ativa = None
         self._timer_contexto = QTimer(self)      # 5.2 (F4): olha o programa em uso, só se a pessoa ligou
         self._timer_contexto.setInterval(4000)
         self._timer_contexto.timeout.connect(self._olhar_programa)
@@ -765,7 +768,8 @@ class JanelaPrincipal(QMainWindow):
         self.config.assistente_mudou.connect(self._ligar_contexto)
         self.config.rodar_rotina.connect(self._rodar_agora)
         self.config.rotinas_mudaram.connect(self._atualizar_bandeja)
-        self.faixa.abrir.connect(lambda: self.cabecalho.sino.click() if getattr(self.faixa, "destino", "") == "probes"
+        self.faixa.abrir.connect(lambda: self._reiniciar() if getattr(self.faixa, "destino", "") == "reiniciar" else
+                                 self.cabecalho.sino.click() if getattr(self.faixa, "destino", "") == "probes"
                                  else self.abrir_config(getattr(self.faixa, "destino", "") or "rotinas"))
         self.cabecalho.sino.configurar.connect(lambda: self.abrir_config("probes"))
         self.cabecalho.sino.chegou.connect(self._aviso_de_probe)
@@ -1483,6 +1487,8 @@ class JanelaPrincipal(QMainWindow):
             if ok:
                 pagina.estado(t("jp.atualizado"), t("jp.atualizar"), False)
                 self.lateral.nota_atualizacao(t("jp.atualizado"))
+                if os.environ.get("TARS_SEM_ATALHO") != "1":
+                    QTimer.singleShot(2500, self._reiniciar)     # o assistente deixa o app no ícone: ele mesmo recomeça
             else:
                 texto = t(f"jp.motivo.{motivo}") if tars_i18n.t(f"jp.motivo.{motivo}") != f"jp.motivo.{motivo}" else motivo
                 pagina.estado(t("jp.atualizar_erro", motivo=texto), t("jp.atualizar"), True)
@@ -1552,6 +1558,11 @@ class JanelaPrincipal(QMainWindow):
         def trabalho():
             try:
                 ativa = n.janela_ativa_x()
+                # 26/10: ligado por padrão, isto roda a cada 4 s o dia todo. Janela ativa igual à da volta anterior: nada a fazer
+                # (antes listava todas as janelas e os títulos a cada volta)
+                if ativa is None or ativa == self._ultima_ativa:
+                    return
+                self._ultima_ativa = ativa
                 janela = next((j for j in n.listar_janelas_x() or [] if j["id"] == ativa), None)
             except Exception:  # noqa: BLE001  (sem acesso às janelas agora: tenta na próxima volta)
                 return
@@ -1610,8 +1621,36 @@ class JanelaPrincipal(QMainWindow):
         teclas = lambda *k: self.nucleo.pyautogui.hotkey(*k)  # noqa: E731
         QTimer.singleShot(200, lambda: threading.Thread(target=acoes_lib.colar, args=(texto, teclas), daemon=True).start())
 
+    def _reiniciar(self):
+        """26/10: com o assistente ligado, fechar a janela não encerra o openTARS (ele fica no ícone), então "feche e abra de
+        novo" nunca valia uma atualização. Sobe um processo novo (que espera este soltar a instância única) e encerra este.
+        Se a janela estava aberta, o novo abre a janela; senão, volta só para o ícone."""
+        comando = list(assistente.comando_residente())
+        if self.isVisible():
+            comando = [c for c in comando if c != "--residente"]
+        subprocess.Popen([sys.executable, "-c",
+                          "import subprocess, sys, time; time.sleep(2.5); subprocess.Popen(sys.argv[1:], start_new_session=True)",
+                          *comando], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        self._sair_de_vez()
+
+    def _atualizado_em_disco(self):
+        """O pacote do disco é mais novo que o código que está rodando (atualizado pelo apt, por fora do app)?"""
+        try:
+            texto = (Path(__file__).resolve().parent.parent / "tars.py").read_text(encoding="utf-8")
+            disco = tars_atualizacao.ler_versao(texto)
+        except OSError:
+            return False
+        return bool(disco) and disco["revisao"] > int(getattr(self.nucleo, "REVISAO", 0) or 0)
+
     def _checar_ocioso(self):
-        """Aberto só pela barra rápida e sem uso há muito tempo: encerra."""
+        """Aberto só pela barra rápida e sem uso há muito tempo: encerra. Atualizado por fora: reinicia (parado) ou avisa."""
+        if self._atualizado_em_disco() and not getattr(self, "_reinicio_avisado", False):
+            ocupado = self.isVisible() or self.barra.isVisible() or self.ponte.esta_ocupado or self._rotina_em_curso is not None
+            if not ocupado and os.environ.get("TARS_SEM_ATALHO") != "1":
+                self._reiniciar()
+                return
+            self._reinicio_avisado = True
+            self.faixa.mostrar(t("jp.reiniciar_aviso"), t("jp.reiniciar"), "reiniciar")
         parado = time.monotonic() - self._ultimo_uso > MINUTOS_OCIOSO * 60
         painel = self._painel_acoes is not None and self._painel_acoes.isVisible()
         if parado and not self.isVisible() and not self.barra.isVisible() and not painel and not self.ponte.esta_ocupado \

@@ -1,7 +1,7 @@
 """openTARS 5.1: pesquisa web pelo SearXNG (decisão do Enzo em 11/10). Módulo puro, só biblioteca padrão.
 
 Regras (plano 5.1, "Pesquisa web integrada"):
-  * Desligada por padrão. Ligar mostra o que sai: o texto da pesquisa vai para o SearXNG, que o repassa aos buscadores.
+  * Ligada por padrão (26/10); sem SearXNG respondendo, o pedido cai na busca do navegador. Ligar mostra o que sai: o texto da pesquisa vai para o SearXNG, que o repassa aos buscadores.
   * Com ela desligada, nada é enviado (as ferramentas nem aparecem).
   * O que vem das páginas é DADO, nunca instrução, e entra cortado (contexto pequeno).
   * Só texto: sem scripts, sem baixar arquivos. read_page não abre endereço local nem de rede interna (senão uma página
@@ -32,7 +32,7 @@ def config():
     bruto = tars_i18n.ler_config().get("web")
     bruto = bruto if isinstance(bruto, dict) else {}
     endereco = str(bruto.get("endereco") or ENDERECO_PADRAO).strip().rstrip("/")
-    return {"ligada": bool(bruto.get("ligada")), "endereco": endereco}
+    return {"ligada": bool(bruto.get("ligada", True)), "endereco": endereco}
 
 
 def salvar_config(ligada, endereco=None):

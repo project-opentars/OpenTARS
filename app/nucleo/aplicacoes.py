@@ -1298,13 +1298,13 @@ def pesquisar_web(query, service=None):
     url = url_base + (quote_plus(query) if servico_normalizado != "mercadolivre" else quote_plus(query).replace("+", "-"))
     base = {"acao": "search_web", "query": query, "servico": servico_normalizado or "google"}
     ligada = _pesquisa_ligada()
-    abrir = (not ligada or _servico_com_busca_propria(servico_normalizado)
+    # 26/10: a pesquisa vem ligada por padrão, mas nem todo PC tem o SearXNG: sem resposta dele, abre no navegador
+    lidos, erro = _resultados_do_searxng(query) if ligada and not _servico_com_busca_propria(servico_normalizado) \
+        else (None, None)
+    abrir = (not ligada or _servico_com_busca_propria(servico_normalizado) or not lidos
              or pediu_para_abrir(_pedido_atual.get("texto", "")))
 
     try:
-
-        lidos, erro = _resultados_do_searxng(query) if ligada and not _servico_com_busca_propria(servico_normalizado) \
-            else (None, None)
 
         if abrir:
             _abrir_no_navegador(url)
