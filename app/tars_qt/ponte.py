@@ -71,6 +71,7 @@ class Ponte(QObject):
     ocupado = Signal(bool)
     aprovacao = Signal(object)          # Aprovacao
     iniciado = Signal(dict)             # informações do começo
+    reconectado = Signal()              # o Ollama, que estava fora ao abrir, voltou a responder
     modelos = Signal(list)              # lista pro seletor
     concluido = Signal(str)             # um pedido terminou (texto da resposta, ou "")
     conversa_mudou = Signal()           # o histórico (lista lateral) mudou
@@ -152,6 +153,26 @@ class Ponte(QObject):
                 trabalho()
 
         threading.Thread(target=trabalho_serializado, daemon=True).start()
+
+    def conferir_ollama(self):
+        """26/10: o openTARS sobe com o computador, antes do Ollama (o serviço leva ~20 s). Chamado de tempos em tempos
+        enquanto ele está fora; quando responde, refaz o catálogo (o do início ficou vazio) e avisa a janela."""
+        def trabalho():
+            n = self.nucleo
+            try:
+                if not n.ollama_online():
+                    return
+                n.listar_modelos_instalados(forcar=True)
+                n.catalogar_modelos(forcar=True)
+                try:
+                    n.aquecer_ajudante()
+                except Exception:
+                    pass
+            except Exception:
+                return
+            self._emitir(self.reconectado)
+            self.atualizar_modelos()
+        threading.Thread(target=trabalho, daemon=True).start()
 
     def atualizar_modelos(self):
         """Emite [(rotulo, tag, nuvem)] dos modelos que a pessoa pode escolher na mão."""

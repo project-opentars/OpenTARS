@@ -27,6 +27,8 @@ opentars (5.2) unstable; urgency=medium
     o Gargantua diz que se chama Gargantua e foi desenvolvido pelo Enzo, fundador do openTARS;
     pesquisa dentro de Spotify, Amazon, Wikipedia, GitHub, Maps, Reddit e outros sites; o ícone
     do openTARS no Windows (atalhos e barra de tarefas) e no macOS.
+  * Revisão de 26/10: ao ligar o computador o openTARS abre antes do Ollama; o aviso "Ollama não responde" agora some
+    sozinho quando ele volta (a janela confere a cada 5 s) e o resto (modelos, Lite, atualização) segue.
   * Revisão de 25/10 (5): o aviso de versão nova fica na barra lateral, mas procurar e instalar a atualização é
     em Configurações > Atualizações (o cartão da barra leva até lá).
   * Revisão de 25/10 (4): "Editar uma foto" no lançador e no ícone do assistente (escolher as fotos e abrir o

@@ -302,3 +302,16 @@ assert not getattr(j, "reconstruir", False), "o mesmo idioma não reconstrói"
 
 j.close()
 print("test_qt_principal: OK")
+
+# 26/10: o openTARS abre com o computador antes do Ollama: o aviso "não responde" some sozinho quando ele volta
+j_fora = JanelaPrincipal(tars, historico=historico, capturar_stdout=False)
+j_fora.show()
+esperar(lambda: j_fora._modelos is not None, o_que="início")
+j_fora._ao_iniciado({"online": False, "avisos": [], "n_modelos": 0})
+assert j_fora._avisos_iniciais and j_fora._vigia_ollama.isActive()
+chamadas = []
+j_fora._procurar_atualizacao = lambda: chamadas.append(1)
+j_fora.ponte.reconectado.emit()
+assert not j_fora._vigia_ollama.isActive() and not j_fora._avisos_iniciais and chamadas == [1]
+j_fora.close()
+print("OK: o aviso de Ollama fora some sozinho quando ele volta (o app abre antes dele ao ligar o PC)")

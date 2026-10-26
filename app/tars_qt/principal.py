@@ -997,6 +997,7 @@ class JanelaPrincipal(QMainWindow):
     def _ao_iniciado(self, info):
         if not info.get("online"):
             self._aviso_inicial(t("jp.ollama_fora"))
+            self._vigiar_ollama()
         elif info.get("n_modelos", 0) == 0:
             self._aviso_inicial(t("jp.sem_modelo"))
         for aviso in info.get("avisos", [])[:2]:
@@ -1009,6 +1010,25 @@ class JanelaPrincipal(QMainWindow):
             r.setAlignment(Qt.AlignHCenter)
             r.setStyleSheet("color: #FFD479;")
             self.vazio.layout().insertWidget(self.vazio.layout().count() - 1, r)
+            self._avisos_iniciais = getattr(self, "_avisos_iniciais", []) + [r]
+
+    def _vigiar_ollama(self):
+        """26/10: ao ligar o computador o openTARS abre antes do Ollama e o aviso "Ollama não responde" ficava para sempre.
+        Enquanto ele está fora, olha de novo a cada 5 s; quando volta, o aviso some e o resto (modelos, Lite, atualização) segue."""
+        if getattr(self, "_vigia_ollama", None) is None:
+            self._vigia_ollama = QTimer(self)
+            self._vigia_ollama.timeout.connect(self.ponte.conferir_ollama)
+            self.ponte.reconectado.connect(self._ollama_voltou)
+        self._vigia_ollama.start(5000)
+
+    def _ollama_voltou(self):
+        if getattr(self, "_vigia_ollama", None) is not None:
+            self._vigia_ollama.stop()
+        for r in getattr(self, "_avisos_iniciais", []):
+            r.hide()
+            r.deleteLater()
+        self._avisos_iniciais = []
+        self._procurar_atualizacao()       # o Lite obrigatório, os modelinhos e a versão nova, que não deu para conferir sem o Ollama
 
     def _ao_modelos(self, itens):
         self._modelos = itens
