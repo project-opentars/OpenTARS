@@ -1085,6 +1085,11 @@ def _compactar_pedido_atual(mensagens, inicio):
             total -= len(conteudo) - len(mensagens[i]["content"])
 
 
+# Buscas que só leem: a mesma busca não roda duas vezes no mesmo pedido, e há um teto de buscas por pedido (27/10).
+_LEITURAS_REPETIVEIS = {"search_web", "web_search", "read_page"}
+LIMITE_BUSCAS_POR_PEDIDO = 3
+
+
 def perguntar_modelo(modelo, texto, tarefa=None, multi_etapas=False, anexos=None, retoma=None):
 
     pendentes = []  # ferramentas pedidas e ainda não executadas neste ciclo
@@ -1142,6 +1147,8 @@ def perguntar_modelo(modelo, texto, tarefa=None, multi_etapas=False, anexos=None
     fato_a_lembrar = None if multi_etapas else memoria_lib.intencao_de_lembrar(texto)
     falhas_seguidas = {}          # ferramenta -> falhas desde o último sucesso
     chamadas_que_falharam = {}    # (ferramenta, argumentos) -> motivo
+    chamadas_feitas = {}          # (ferramenta, argumentos) -> deu certo, para leituras repetíveis
+    buscas_feitas = 0
     # 3.0: planejar e conferir
     etapas = _etapas_do_pedido(texto) if multi_etapas else []
     acoes_feitas = 0              # ações (não só olhar) que deram certo DE VERDADE
@@ -1442,6 +1449,14 @@ def perguntar_modelo(modelo, texto, tarefa=None, multi_etapas=False, anexos=None
                     resultado_ferramenta = {"sucesso": False, "mensagem": (
                         f"{nome} is not available for this request (the user did not ask to remember, "
                         "forget or schedule anything). Don't use it.")}
+                elif nome in _LEITURAS_REPETIVEIS and chamadas_feitas.get(chave_chamada):
+                    # Mesma busca, mesmos argumentos, já deu certo neste pedido: o resultado já está na conversa.
+                    resultado_ferramenta = {"sucesso": False, "mensagem": (
+                        "You already ran exactly this search in this request; its result is already in the conversation. "
+                        "Do not search again: answer the user now.")}
+                elif nome in _LEITURAS_REPETIVEIS and buscas_feitas >= LIMITE_BUSCAS_POR_PEDIDO:
+                    resultado_ferramenta = {"sucesso": False, "mensagem": (
+                        "You already searched several times for this request. Answer the user now with what you have.")}
                 elif chave_chamada in chamadas_que_falharam:
                     # Mesma chamada, mesmos argumentos, já falhou neste pedido.
                     resultado_ferramenta = {"sucesso": False, "mensagem": (
@@ -1449,6 +1464,9 @@ def perguntar_modelo(modelo, texto, tarefa=None, multi_etapas=False, anexos=None
                         f"{chamadas_que_falharam[chave_chamada]} Do something different.")}
                 else:
                     resultado_ferramenta = executar_ferramenta(nome, argumentos)
+                    if nome in _LEITURAS_REPETIVEIS:
+                        buscas_feitas += 1
+                        chamadas_feitas[chave_chamada] = bool(resultado_ferramenta.get("sucesso"))
                 pendentes.pop(0)
                 if nome == "take_screenshot":
                     janela_do_print = argumentos.get("window") or None

@@ -31,6 +31,10 @@ assert not cl.vale_conferir("geral", "oi", longa) and not cl.vale_conferir("gera
 assert not cl.vale_conferir("geral", "escreva um poema sobre o mar", longa)
 assert not cl.vale_conferir("geral", "traduz isso para o inglês por favor", longa)
 assert not cl.vale_conferir("geral", "como fazer um loop", longa + "\n```python\nfor i in x: pass\n```")
+assert not cl.vale_conferir("geral", "me escreva um poema sobre o mar", longa)  # 27/10: o "me" fazia a regra falhar
+assert not cl.vale_conferir("geral", "me faça uma piada sobre gatos", longa)
+assert not cl.vale_conferir("geral", "write a poem about the sea", longa)
+assert cl.vale_conferir("geral", "quem escreveu Dom Casmurro?", longa)  # pergunta de fato com verbo parecido
 print("OK: só pergunta de fato respondida em texto")
 
 # 3) o laço do chat, com os turnos do modelo roteirizados
@@ -96,3 +100,23 @@ TURNO_ACAO = {"content": "Pronto, abri o navegador e entrei no GitHub, tudo cert
 r, saida, _ = rodar("abre o navegador e entra no github", [TURNO_ACAO] * 4, True, tarefa="acao")
 assert tars.t("msg.verificando_fato") not in saida and tars.t("msg.pouca_confianca") not in saida
 print("\ntest_confianca: TUDO OK.")
+
+# f) 27/10: a mesma busca não roda duas vezes no pedido, e há um teto de buscas por pedido
+execucoes = []
+tars._pesquisa_ligada = lambda: True
+tars.executar_ferramenta = lambda nome, a: (execucoes.append(json.dumps(a, sort_keys=True)),
+                                           {"sucesso": True, "mensagem": "SUCCESS: searched. Results: nothing found."})[1]
+def busca(q):
+    return {"content": "", "tool_calls": [{"function": {"name": "search_web", "arguments": {"query": q}}}], "logprobs": []}
+def turnos(lista):
+    roteiro = iter(lista)
+    tars._executar_turno_streaming = lambda modelo, mensagens, tools, pensar=True: (next(roteiro), None)
+    tars.conversa = []
+    with contextlib.redirect_stdout(io.StringIO()):
+        return tars.perguntar_modelo("ProjectOpenTARS/Gargantua-2:latest", "quem fundou a empresa Zorvintech Brasil?", tarefa="geral")
+r = turnos([busca("a"), busca("a"), busca("a"), CONFERIDO])
+assert len(execucoes) == 1 and r == CONFERIDO["content"], (execucoes, r)
+execucoes.clear()
+r = turnos([busca("q1"), busca("q2"), busca("q3"), busca("q4"), busca("q5"), CONFERIDO])
+assert len(execucoes) == 3, execucoes
+print("OK: busca repetida não roda de novo, e o pedido para em três buscas")

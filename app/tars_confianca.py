@@ -17,9 +17,13 @@ LIMIAR = -0.25        # média abaixo disso = pouca confiança
 MIN_TOKENS = 8        # resposta curta demais não diz nada ("oi!")
 MIN_CARACTERES = 25
 
-_NAO_E_FATO = re.compile(
-    r"^(escreva|escrev|cri[ae]|invente|poema|historia|conto|musica|traduz|resum|reescrev|corrij|melhor|explique o codigo|"
-    r"write|create|compose|translate|summari[sz]e|rewrite|fix|improve|draft|make up|tell me a (story|joke))", re.I)
+_NAO_E_FATO = re.compile(  # pedido criativo ou de texto, em qualquer posição (antes só valia no começo da frase)
+    r"\b(escreva|escreve|poema|poesia|conto|historia|cancao|musica|letra|verso|rima|piada|crie|cria|invente|inventa|"
+    r"faca|faz|gere|gera|sugira|traduza|traduz|resuma|resume|reescreva|corrija|"
+    r"write|poem|poetry|story|joke|song|lyrics|translate|summari[sz]e|rewrite|fix|improve|draft|make up|tell me)\b", re.I)
+_PERGUNTA = re.compile(  # a forma de pergunta de fato: termina com "?" ou começa com palavra interrogativa
+    r"\?\s*$|^(quem|qual|quais|quando|quanto|quanta|quantos|quantas|onde|por que|porque|o que|que|como|existe|"
+    r"who|what|when|where|which|how|is|are|does|did)\b")
 
 
 def ligado():
@@ -51,7 +55,7 @@ def vale_conferir(tarefa, pedido, resposta):
     if len((resposta or "").strip()) < MIN_CARACTERES or "```" in (resposta or ""):
         return False
     pedido = _sem_acento(pedido)
-    return len(pedido.split()) >= 3 and not _NAO_E_FATO.match(pedido)
+    return len(pedido.split()) >= 3 and _PERGUNTA.search(pedido) is not None and not _NAO_E_FATO.search(pedido)
 
 
 def logprobs_do_pedaco(pedaco):

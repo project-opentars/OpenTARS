@@ -1,6 +1,8 @@
 opentars (5.2) unstable; urgency=medium
 
   5.2 Ranger
+  * 27/10: a conferência pela busca só vale para pergunta de fato: um pedido de poema ou de texto não dispara mais
+    pesquisa na web. Uma busca não roda duas vezes no mesmo pedido, e há um limite de três buscas por pedido.
   * 26/10: atualizar com o assistente ligado funciona (o app se reinicia sozinho depois de instalar);
     a voz baixa com barra de progresso; "Mais modelos" marca o que combina com a placa e a memória
     do computador; a pesquisa pelo SearXNG vem ligada (sem ele, abre no navegador); menos
