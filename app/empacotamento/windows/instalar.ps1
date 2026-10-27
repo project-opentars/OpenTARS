@@ -95,13 +95,33 @@ if (-not $SemOllama) {
     $ollama = Get-Command ollama -ErrorAction SilentlyContinue
     $ollamaExe = Join-Path $env:LOCALAPPDATA "Programs\Ollama\ollama.exe"
     if (-not $ollama -and -not (Test-Path $ollamaExe)) {
-        Dizer "Instalando o Ollama (o instalador oficial, para este usuário)..." "Installing Ollama (the official installer, for this user)..."
+        Dizer "Baixando o Ollama (cerca de 1,5 GB: pode levar alguns minutos, a barra mostra o andamento)..." "Downloading Ollama (about 1.5 GB: it may take a few minutes, the bar shows the progress)..."
         $setup = Join-Path $env:TEMP "OllamaSetup.exe"
-        Invoke-WebRequest -UseBasicParsing -Uri "https://ollama.com/download/OllamaSetup.exe" -OutFile $setup
-        Start-Process -FilePath $setup -ArgumentList "/VERYSILENT", "/NORESTART", "/SUPPRESSMSGBOXES" -Wait
+        $url = "https://ollama.com/download/OllamaSetup.exe"
+        # o curl.exe vem com o Windows 10 e 11 e mostra o andamento; o Invoke-WebRequest não mostra nada neste script
+        if (Get-Command curl.exe -ErrorAction SilentlyContinue) {
+            & curl.exe -L --fail --retry 3 --progress-bar -o $setup $url
+            if ($LASTEXITCODE) { throw "Ollama download failed ($LASTEXITCODE)" }
+        } else {
+            Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $setup
+        }
+        Dizer "Instalando o Ollama (1 a 3 minutos; não precisa clicar em nada)..." "Installing Ollama (1 to 3 minutes; you don't need to click anything)..."
+        # sem -Wait: o instalador abre o Ollama na bandeja no fim, e o -Wait espera esse processo também (ficava parado para sempre)
+        $proc = Start-Process -FilePath $setup -ArgumentList "/VERYSILENT", "/NORESTART", "/SUPPRESSMSGBOXES" -PassThru
+        $inicio = Get-Date
+        while (-not $proc.WaitForExit(5000)) {
+            $seg = [int]((Get-Date) - $inicio).TotalSeconds
+            if ($seg -gt 600) { break }
+            Dizer "  ... instalando o Ollama ($seg s)" "  ... installing Ollama ($seg s)"
+        }
         Remove-Item -Force $setup -ErrorAction SilentlyContinue
         $bandeja = Join-Path $env:LOCALAPPDATA "Programs\Ollama\ollama app.exe"
-        if (Test-Path $bandeja) { Start-Process -FilePath $bandeja }
+        if (Test-Path $ollamaExe) {
+            Dizer "Ollama instalado." "Ollama installed."
+            if (-not (Get-Process "ollama app" -ErrorAction SilentlyContinue) -and (Test-Path $bandeja)) { Start-Process -FilePath $bandeja }
+        } else {
+            Dizer "Não consegui instalar o Ollama. Instale por https://ollama.com/download e abra o openTARS de novo." "Could not install Ollama. Install it from https://ollama.com/download and open openTARS again."
+        }
     } else {
         Dizer "Ollama já instalado." "Ollama already installed."
     }

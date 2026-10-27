@@ -81,7 +81,7 @@ if [ "$SEM_OLLAMA" = 0 ]; then
         dizer "Ollama já instalado." "Ollama already installed."
     else
         dizer "Instalando o Ollama (o app oficial, em ~/Applications)..." "Installing Ollama (the official app, in ~/Applications)..."
-        curl -fsSL https://ollama.com/download/Ollama-darwin.zip -o "$TEMP/ollama.zip"
+        curl -fL# https://ollama.com/download/Ollama-darwin.zip -o "$TEMP/ollama.zip"   # com barra de andamento
         unzip -q "$TEMP/ollama.zip" -d "$HOME/Applications"
     fi
     open -a Ollama >/dev/null 2>&1 || open "$HOME/Applications/Ollama.app" >/dev/null 2>&1 || true
