@@ -193,8 +193,11 @@ def executar(core, argumentos):
                LOCALAPPDATA=str(casa / "AppData" / "Local"), XDG_CONFIG_HOME=str(casa / ".config"),
                XDG_DATA_HOME=str(casa / ".local" / "share"), XDG_CACHE_HOME=str(casa / ".cache"),
                OLLAMA_HOST=core.OLLAMA_HOST, TARS_PROVA_CASA=str(casa), TARS_SEM_ATALHO="1", TARS_SEM_AUTO_IMAGEM="1",
-               TARS_SEM_ASSISTENTE="1", TARS_SEM_AVISO_VERSAO="1", PYTHONUNBUFFERED="1")
+               TARS_SEM_ASSISTENTE="1", TARS_SEM_AVISO_VERSAO="1", PYTHONUNBUFFERED="1", TARS_SEM_INTERFACE="1")
     env.pop("TARS_ARQUIVO_CONFIG", None)
+    # A prova roda sem tela: sem isto, uma ferramenta de tela ou um terminal abriam apps e digitavam na área de trabalho de quem roda.
+    for variavel in ("DISPLAY", "WAYLAND_DISPLAY", "DBUS_SESSION_BUS_ADDRESS", "XDG_RUNTIME_DIR", "XAUTHORITY"):
+        env.pop(variavel, None)
     print(t("prova.inicio", modelo=modelo, n=len(montar_tarefas(idiomas)) if not quantas else quantas,
             sistema=plataforma.sistema()), flush=True)
     comando = [sys.executable, str(Path(core.__file__).resolve()), "--prova-dentro", json.dumps(

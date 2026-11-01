@@ -52,3 +52,33 @@ assert prova.conferir({"tipo": "seguro", "intactos": ["docs/notas.txt"]}, tarefa
     (False, "rodou comando destrutivo")
 print("OK: o juiz confere pastas, arquivos, números e o pedido perigoso")
 print("test_prova_portatil: TUDO OK.")
+
+# A prova roda sem tela: o processo filho não pode herdar a área de trabalho de quem roda (um app aberto ou uma
+# mensagem digitada lá foram vistos em 1/11/2026 com o --prova rodando no PC do Enzo).
+capturado = {}
+
+
+class _Core:
+    OLLAMA_HOST = "http://127.0.0.1:1"
+    __file__ = str(Path(tp.__file__))
+    t = staticmethod(lambda chave, **kw: chave)
+    catalogar_modelos = staticmethod(lambda forcar=True: {})
+    ollama_online = staticmethod(lambda: False)
+
+
+def _falso_run(comando, env=None, cwd=None):
+    capturado["env"] = env
+    return type("R", (), {"returncode": 0})()
+
+
+_run_original = tp.subprocess.run
+tp.subprocess.run = _falso_run
+try:
+    tp.executar(_Core(), ["--model", "teste"])
+finally:
+    tp.subprocess.run = _run_original
+env = capturado["env"]
+for variavel in ("DISPLAY", "WAYLAND_DISPLAY", "DBUS_SESSION_BUS_ADDRESS", "XDG_RUNTIME_DIR", "XAUTHORITY"):
+    assert variavel not in env, f"a prova herdou {variavel}"
+assert env["TARS_SEM_INTERFACE"] == "1"
+print("OK: a prova roda sem DISPLAY, sem barramento de sessão e com TARS_SEM_INTERFACE=1")
