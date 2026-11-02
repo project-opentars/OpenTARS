@@ -359,9 +359,16 @@
         <figure><img src="img/real-52-photo.webp" loading="lazy" width="1000" height="1160" alt="Editing a selected photo: the request square, brighter, and a before and after preview"><figcaption>A photo, square and brighter, saved as a copy</figcaption></figure>
       </div>
       <h3 class="concept-titulo">Planned for 5.3</h3>
+      <p class="lede quiet">In development, with no release date. Nothing below has been measured yet; every number we publish will come from a test on the real app.</p>
       <ul class="next">
-        <li><h3>Probes in their own computer</h3><p>Probes that act inside an isolated environment on your PC, away from your files and accounts.</p></li>
-        <li><h3>More for the terminal</h3><p>Hooks, MCP servers and sub-agents, each with the same ask-first rules.</p></li>
+        <li><h3>Better and smaller models</h3><p>Gargantua 2 and Gargantua 2 Lite retrained with more examples: answers that cite the source of a web search, reading the screen, correcting a false premise, and some code. A new base model is chosen only if it beats the current one in our tests; otherwise we keep Qwen3.5.</p></li>
+        <li><h3>Gargantua Pro and Code Gen 2</h3><p>Two new models: Pro (IBM Granite 4.0 H-Tiny) focused on using tools, and Code Gen 2 (Qwen2.5-Coder 7B) for programming.</p></li>
+        <li><h3>openTARS Pi</h3><p>A lean edition for ARM boards such as the Raspberry Pi and Orange Pi: terminal and background service, an optional window only if the board has a desktop, and a small server for your local network that needs a token. It comes with <strong>Gargantua Pi</strong>, a model under 400 MB (Granite 4.0 H 350M), limited to four tools.</p></li>
+        <li><h3>llama.cpp instead of Ollama</h3><p>Running the models without installing another program. It only happens if the test shows the same score and no heavier memory use. If you have 5.2, the normal update switches you over and keeps your Ollama models untouched.</p></li>
+        <li><h3>A better assistant on Windows and macOS</h3><p>Closer integration with each system, and text actions that no longer need the larger model.</p></li>
+        <li><h3>Trust in the download</h3><p>Installing and updating with winget, one-click updates on Windows and macOS, and a “How to verify” page with checksums and build attestations.</p></li>
+        <li><h3>Probes in a virtual machine</h3><p>On Linux, in the Pro mode only: Probes that act inside a KVM virtual machine, away from your files and accounts. This one moves to a later version if time runs short.</p></li>
+        <li><h3>A new look for the terminal</h3><p>A redesigned terminal interface. Also first to move if time runs short. MCP, sub-agents and terminal hooks are not planned for 5.3.</p></li>
       </ul>
     </div>
   </section>

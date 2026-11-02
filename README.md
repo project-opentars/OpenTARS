@@ -184,7 +184,19 @@ With a local model and web search off, your conversation and screen stay on your
 | 🪐 **Gargantua 2 retrained** | Trained again with the 5.2 examples (saying it does not know, conversation, text actions, answering from search results with the source, Windows and macOS): 73 of 80 everyday tasks, and 68 for the Lite. openTARS tells you when the Gargantua you have is older than the published one |
 | 🧪 **Check it yourself** | `opentars --prova` runs 48 everyday tasks with your model in a temporary folder and saves a report (Gargantua 2 does 46 of 48 on Linux); `opentars --diagnostico` saves a report about your system; `opentars --desinstalar` removes openTARS on any system and asks before deleting your data or models |
 
-**Not in 5.2:** Probes inside an isolated computer, MCP, sub-agents and terminal hooks are planned for 5.3. Voice and the global shortcuts were written for Windows and macOS but have never run there.
+**Not in 5.2:** voice and the global shortcuts were written for Windows and macOS but have never run there. MCP, sub-agents and terminal hooks have no date.
+
+### Planned for 5.3
+
+In development, with no release date. **Nothing here has been measured yet**; the numbers we publish will come from tests on the real app.
+
+- **Better and smaller models.** Gargantua 2 and Gargantua 2 Lite retrained with more examples (answers that cite the source of a web search, reading the screen, correcting a false premise, some code). A new base model is chosen only if it beats the current one in our tests; otherwise we keep Qwen3.5.
+- **Two new models.** *Gargantua Pro* (IBM Granite 4.0 H-Tiny), focused on using tools, and *Gargantua Code Gen 2* (Qwen2.5-Coder 7B), for programming.
+- **openTARS Pi.** A lean edition for ARM boards (Raspberry Pi, Orange Pi): terminal and background service, a window only if the board has a desktop, and a small server for your local network that needs a token. It comes with *Gargantua Pi*, a model under 400 MB (Granite 4.0 H 350M) limited to four tools.
+- **llama.cpp instead of Ollama**, so there is no other program to install. Only if the test shows the same score and no heavier memory use. 5.2 users get it through the normal update, and their Ollama models stay untouched.
+- **A better assistant on Windows and macOS**: closer integration with each system, and text actions that no longer need the larger model.
+- **Trust in the download**: winget, one-click updates on Windows and macOS, and a "How to verify" page with checksums and build attestations.
+- **Probes in a virtual machine** (Linux, Pro mode only, KVM) and **a new look for the terminal**. These two move to a later version if time runs short.
 
 ## What's new in 5.1 Tesseract
 
@@ -221,7 +233,7 @@ With a local model and web search off, your conversation and screen stay on your
 | 🖼️ **Images in the chat** | When the AI answers with a local picture, the window shows it. Only files on your computer are loaded (never web addresses) |
 | ⚠️ **A warning when the AI is unsure** | For plain factual questions, openTARS reads how confident the model was while writing. If it was not, it searches the web first (when search is on) or warns you under the answer. It is a moderate signal, not a lie detector; `TARS_CONFIANCA=0` turns it off |
 
-**Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and MCP and sub-agents in the terminal, are planned for a later version. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
+**Not in 5.1:** running Probes inside an isolated computer (a virtual machine), and MCP and sub-agents in the terminal, were not in 5.1. Web search needs Docker (for `opentars --searxng`) or your own SearXNG.
 
 ## Earlier releases
 
