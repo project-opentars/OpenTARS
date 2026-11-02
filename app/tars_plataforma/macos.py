@@ -35,6 +35,10 @@ def abrir(alvo):
     subprocess.Popen(["open", str(alvo)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
 
 
+def mostrar(caminho):
+    subprocess.Popen(["open", "-R", str(caminho)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+
+
 def teclas_de_colar():
     return ("command", "v")
 

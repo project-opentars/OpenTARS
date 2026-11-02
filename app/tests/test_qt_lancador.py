@@ -16,6 +16,7 @@ from tars_qt import barra_rapida as br  # noqa: E402
 app = QApplication.instance() or QApplication([])
 abertos = []
 br.plataforma.abrir = abertos.append
+br.plataforma.mostrar = lambda c: abertos.append(("mostrar", c))
 br.busca.buscar = lambda frase: [{"caminho": "/casa/Documentos/Contrato de aluguel 2024.pdf", "nome": "Contrato de aluguel 2024.pdf",
                                   "pasta": "/casa/Documentos", "modificado": 1704000000, "trecho": "…O LOCATÁRIO obriga-se…",
                                   "sem_texto": False, "pontos": 9}] if "aluguel" in frase else []
@@ -51,7 +52,7 @@ barra._link(QUrl("opentars-abrir:0"))
 barra._link(QUrl("opentars-pasta:0"))
 barra._link(QUrl("opentars-abrir:7"))              # número que a busca não deu: nada
 barra._link(QUrl("file:///etc/passwd"))            # esquema de fora: o caminho seguro ignora
-assert abertos == ["/casa/Documentos/Contrato de aluguel 2024.pdf", "/casa/Documentos"], abertos
+assert abertos == ["/casa/Documentos/Contrato de aluguel 2024.pdf", ("mostrar", "/casa/Documentos/Contrato de aluguel 2024.pdf")], abertos
 print("OK: a busca roda na barra; Abrir e Mostrar na pasta abrem só o que ela achou")
 
 barra.entrada.setPlainText("planilha de marte")

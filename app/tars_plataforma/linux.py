@@ -41,6 +41,18 @@ def abrir(alvo):
     subprocess.Popen(["xdg-open", str(alvo)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
 
 
+def mostrar(caminho):
+    """Abre o gerenciador de arquivos com o arquivo selecionado (FileManager1 do freedesktop); sem ele, abre só a pasta."""
+    if shutil.which("gdbus"):
+        r = subprocess.run(["gdbus", "call", "--session", "--dest", "org.freedesktop.FileManager1",
+                            "--object-path", "/org/freedesktop/FileManager1", "--method",
+                            "org.freedesktop.FileManager1.ShowItems", f"['{Path(caminho).resolve().as_uri()}']", ""],
+                           capture_output=True, timeout=10)
+        if not r.returncode:
+            return
+    abrir(Path(caminho).parent)
+
+
 def lixeira(caminho):
     if not shutil.which("gio"):
         raise NaoSuportado("gio not found")

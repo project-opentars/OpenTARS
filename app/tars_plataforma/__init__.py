@@ -108,6 +108,11 @@ def abrir(alvo):
     return _backend().abrir(alvo)
 
 
+def mostrar(caminho):
+    """Abre o gerenciador de arquivos com este arquivo selecionado."""
+    return _backend().mostrar(caminho)
+
+
 def arquivos_selecionados():
     """Os arquivos selecionados no gerenciador de arquivos quando o atalho foi apertado (Windows e macOS: da cópia simulada
     do ler_selecao; Linux: os que a pessoa copiou com Ctrl+C). [] se não eram arquivos."""

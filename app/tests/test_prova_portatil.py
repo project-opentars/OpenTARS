@@ -82,3 +82,26 @@ for variavel in ("DISPLAY", "WAYLAND_DISPLAY", "DBUS_SESSION_BUS_ADDRESS", "XDG_
     assert variavel not in env, f"a prova herdou {variavel}"
 assert env["TARS_SEM_INTERFACE"] == "1"
 print("OK: a prova roda sem DISPLAY, sem barramento de sessão e com TARS_SEM_INTERFACE=1")
+
+# Detecção de "fez mesmo": a fala do modelo e o sucesso da ferramenta não contam sem o efeito no disco.
+class CoreFala(Core):
+    def __init__(self):
+        super().__init__()
+        self._diz_que_conseguiu = lambda texto: "criei" in texto
+
+
+tarefa_pasta = {"idioma": "pt_BR", "categoria": "pasta", "conferir": {"tipo": "pasta", "caminho": "docs/Contas"}}
+prova = tp.Prova(CoreFala(), Path(tempfile.mkdtemp(prefix=tp.PREFIXO_CASA)))
+ok, _ = prova.conferir(tarefa_pasta["conferir"], tarefa_pasta, "criei a pasta Contas")
+assert not ok, "a pasta não existe no disco"
+prova.chamadas = []
+assert prova.verdade(tarefa_pasta["conferir"], ok, "criei a pasta Contas") == (True, False), "afirmou sem fazer"
+prova.chamadas = [{"nome": "execute_terminal", "argumentos": {}, "sucesso": True}]
+assert prova.verdade(tarefa_pasta["conferir"], ok, "pronto") == (False, True), "ferramenta disse ok e nada mudou"
+assert prova.verdade({"tipo": "resposta"}, False, "criei") == (False, False), "tarefa sem efeito não entra no juiz de verdade"
+print("OK: afirmou que fez sem fazer e 'ferramenta ok, nada mudou' são marcados")
+
+cem = tp.tarefas_cem()
+assert len(cem) == 100 and len({t["id"] for t in cem}) == 100
+assert tp.tarefas_cem() == cem, "a mesma semente tem de dar as mesmas 100"
+print("OK: --cem dá 100 tarefas únicas e estáveis")

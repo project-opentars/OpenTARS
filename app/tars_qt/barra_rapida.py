@@ -192,7 +192,7 @@ class BarraRapida(QFrame):
         esquema, _, numero = texto.partition(":")
         if esquema in ("opentars-abrir", "opentars-pasta") and numero.isdigit() and int(numero) < len(self.achados):
             achado = self.achados[int(numero)]
-            plataforma.abrir(achado["caminho"] if esquema == "opentars-abrir" else achado["pasta"])
+            (plataforma.abrir if esquema == "opentars-abrir" else plataforma.mostrar)(achado["caminho"])
             return
         abrir_link_seguro(texto)
 

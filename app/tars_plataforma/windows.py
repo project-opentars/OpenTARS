@@ -40,6 +40,10 @@ def abrir(alvo):
     os.startfile(str(alvo))  # noqa: S606  (só existe no Windows)
 
 
+def mostrar(caminho):
+    subprocess.Popen(["explorer", f"/select,{os.path.normpath(str(caminho))}"])
+
+
 def teclas_de_colar():
     return ("ctrl", "v")
 
