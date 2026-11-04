@@ -189,6 +189,25 @@ def aquecer_modelo_da_conversa():
     threading.Thread(target=_pedir, daemon=True).start()
 
 
+_KEEP_ALIVE_EM_SEGUNDO_PLANO = KEEP_ALIVE
+
+
+def manter_modelo_com_janela(aberta):
+    """Janela aberta: o modelo fica na memória e responder não recarrega. Janela escondida (bandeja) ou fechada: volta ao tempo
+    normal, para não gastar memória em segundo plano. TARS_KEEP_ALIVE escolhido à mão continua valendo."""
+    global KEEP_ALIVE
+    if os.environ.get("TARS_KEEP_ALIVE"):
+        return
+    KEEP_ALIVE = "-1" if aberta else _KEEP_ALIVE_EM_SEGUNDO_PLANO
+    # o Ollama guarda o tempo do último pedido: sem este aviso, o modelo carregado com -1 nunca sairia da memória
+    for modelo in (listar_modelos_rodando() or set()) & (modelos_do_tars | ({modelo_atual} if modelo_atual else set())):
+        try:
+            _SESSION.post(OLLAMA_GENERATE_URL, json={"model": modelo, "prompt": "", "keep_alive": KEEP_ALIVE,
+                                                     "options": {"num_ctx": contexto_ia()}}, timeout=TIMEOUT_HTTP_DESCARREGAR)
+        except Exception:
+            pass
+
+
 def descarregar_modelo(modelo):
     """Pede ao Ollama para descarregar um modelo (keep_alive=0).
     Retorna True se a chamada foi aceita — isso NÃO garante que o

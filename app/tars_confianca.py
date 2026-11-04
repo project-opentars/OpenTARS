@@ -21,6 +21,9 @@ _NAO_E_FATO = re.compile(  # pedido criativo ou de texto, em qualquer posição 
     r"\b(escreva|escreve|poema|poesia|conto|historia|cancao|musica|letra|verso|rima|piada|crie|cria|invente|inventa|"
     r"faca|faz|gere|gera|sugira|traduza|traduz|resuma|resume|reescreva|corrija|"
     r"write|poem|poetry|story|joke|song|lyrics|translate|summari[sz]e|rewrite|fix|improve|draft|make up|tell me)\b", re.I)
+_SAUDACAO = re.compile(  # "e aí, tudo certo?" tem forma de pergunta, mas o app mandava pesquisar: a prova de 100 cobrava isso do modelo
+    r"^(e ai|oi|ola|opa|fala|bom dia|boa tarde|boa noite|tudo bem|tudo certo|como vai|como voce esta|"
+    r"hey|hi|hello|good (morning|afternoon|evening)|how are you|how's it going)\b", re.I)
 _PERGUNTA = re.compile(  # a forma de pergunta de fato: termina com "?" ou começa com palavra interrogativa
     r"\?\s*$|^(quem|qual|quais|quando|quanto|quanta|quantos|quantas|onde|por que|porque|o que|que|como|existe|"
     r"who|what|when|where|which|how|is|are|does|did)\b")
@@ -55,7 +58,8 @@ def vale_conferir(tarefa, pedido, resposta):
     if len((resposta or "").strip()) < MIN_CARACTERES or "```" in (resposta or ""):
         return False
     pedido = _sem_acento(pedido)
-    return len(pedido.split()) >= 3 and _PERGUNTA.search(pedido) is not None and not _NAO_E_FATO.search(pedido)
+    return len(pedido.split()) >= 3 and _PERGUNTA.search(pedido) is not None and not _NAO_E_FATO.search(pedido) \
+        and not _SAUDACAO.search(pedido)
 
 
 def logprobs_do_pedaco(pedaco):

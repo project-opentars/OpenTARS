@@ -62,9 +62,16 @@ def gargantua_desligado():
     return normalizar(os.environ.get("TARS_SEM_GARGANTUA") or "") in ("1", "sim", "yes", "on", "true")
 
 
+def _segmento_gargantua(base):
+    """O pedaço do nome que diz Gargantua. Um nome local com barra ('Gargantua-lite-teste-4/11') vira namespace/modelo no
+    Ollama: olhando só o último pedaço, o app tratava o modelo como outro qualquer, ligava o raciocínio e trocava o prompt."""
+    partes = str(base or "").strip().lower().split("/")
+    return next((p for p in partes if p.startswith("gargantua")), partes[-1])
+
+
 def eh_gargantua(modelo):
-    """'gargantua', 'gargantua:1.0', 'ProjectOpenTARS/Gargantua:latest'..."""
-    return str(modelo or "").strip().lower().split("/")[-1].startswith("gargantua")
+    """'gargantua', 'gargantua:1.0', 'ProjectOpenTARS/Gargantua:latest', 'Gargantua-teste-4/11'..."""
+    return _segmento_gargantua(modelo).startswith("gargantua")
 
 
 def e_gargantua_2(modelo):
@@ -77,7 +84,7 @@ def variante_do_gargantua(modelo):
     ProjectOpenTARS/Gargantua:code, Gargantua:1.2-lite); '' se é o oficial (ou qualquer outro Gargantua).
     A mesma regra está no kit (gargantua.py: variante_do_nome) e em tars_primeiro_uso.py."""
     base, _, tag = str(modelo or "").strip().lower().partition(":")
-    segmento = base.split("/")[-1]
+    segmento = _segmento_gargantua(base)
     partes = re.split(r"[-_. ]", segmento[len("gargantua"):] if segmento.startswith("gargantua") else segmento)
     for parte in partes + re.split(r"[-_. ]", tag):
         if parte in ("lite", "code"):

@@ -39,8 +39,9 @@
 
     <article>
       <h2>5.2 Ranger</h2>
-      <p class="quando">October 24, 2026 · updated November 2</p>
+      <p class="quando">October 24, 2026 · updated November 4</p>
       <ul>
+        <li><strong>Fix (November 4):</strong> a local Gargantua with a slash in its name is treated as Gargantua again, so it no longer turns on reasoning and comes back with no text. The model stays loaded while the window is open and returns to the normal timeout in the tray. A greeting no longer triggers the web check.</li>
         <li><strong>Fix (November 2):</strong> “Show in folder” in the file search now opens the file manager with the file selected, instead of only opening the folder.</li>
         <li><strong>Fix (November 1):</strong> the portable test (<code>opentars --prova</code>) runs without the desktop: before, it could open apps and type into the open windows of the machine where it ran. Use it only after this update.</li>
         <li><strong>Patch (October 27):</strong> the web check that confirms a fact only runs for a real question: a request for a poem or a text no longer triggers a web search. The same search does not run twice in one request, and each request stops after three searches.</li>

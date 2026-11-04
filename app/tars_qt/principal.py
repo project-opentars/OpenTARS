@@ -1693,6 +1693,19 @@ class JanelaPrincipal(QMainWindow):
         th.start()
         th.join(timeout=8)
 
+    def _avisar_janela(self, aberta):
+        import threading
+        threading.Thread(target=self.nucleo.manter_modelo_com_janela, args=(aberta,), daemon=True).start()
+
+    def showEvent(self, e):
+        super().showEvent(e)
+        self._avisar_janela(True)
+
+    def hideEvent(self, e):
+        super().hideEvent(e)
+        if not e.spontaneous():      # minimizar é o sistema escondendo: a janela continua aberta
+            self._avisar_janela(False)
+
     def closeEvent(self, e):
         if not self._saindo and self._tray is not None and self._tray.isVisible() and self._fica_na_bandeja():
             e.ignore()          # rotinas ou o assistente ligados: fica na bandeja

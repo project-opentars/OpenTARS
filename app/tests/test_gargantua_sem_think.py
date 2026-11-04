@@ -20,7 +20,7 @@ def falso(payload, *a, **k):
 tars.ollama_request = falso
 tars.carregar_modelo = lambda *a, **k: True        # nunca toca o Ollama de verdade (nem descarrega nada dele)
 for modelo, tem_think in (("ProjectOpenTARS/Gargantua:lite", False), ("ProjectOpenTARS/Gargantua:latest", False),
-                          ("qwen3:4b", True)):
+                          ("Gargantua-lite-teste-4/11:latest", False), ("qwen3:4b", True)):
     capturados.clear()
     tars.conversa.clear()
     tars.modo_modelo, tars.modelo_manual = "MANUAL", modelo
