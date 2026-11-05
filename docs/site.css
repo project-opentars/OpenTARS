@@ -68,6 +68,8 @@ h3 { font-variation-settings: "wdth" 112; font-weight: 700; font-size: 1.2rem; l
 .hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
 @media (max-width: 60rem) { .hero .wrap { grid-template-columns: 1fr; } }
 .hero h1 { font-size: clamp(2.6rem, 6.4vw, 5.2rem); }
+.hero-video { display: block; width: auto; height: min(78vh, 42rem); max-width: 100%; aspect-ratio: 9 / 16; margin-inline: auto; align-self: start; border-radius: 1.25rem; background: var(--slab); box-shadow: 0 0 0 1px var(--rule), 0 30px 60px -30px rgba(0, 0, 0, .6); }
+@media (max-width: 60rem) { .hero-video { order: -1; height: min(52vh, 26rem); } }
 .hero .lede { margin-top: 1.5rem; }
 .actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center; margin-top: 2rem; }
 .btn {

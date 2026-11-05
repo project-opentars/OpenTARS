@@ -20,6 +20,10 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 
 [What's new](#whats-new-in-52-ranger) · [Install](#installation) · [Gargantua](#gargantua-the-official-ai) · [How it works](#how-it-works) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Instagram](https://www.instagram.com/open.tars/)
 
+<br>
+
+<img src="docs/img/demo-617.gif" width="300" alt="617 MB, no GPU: openTARS organizes files and reads the screen, all on the CPU.">
+
 </div>
 
 ## Download and install
@@ -41,7 +45,7 @@ No administrator password on either: everything goes into your user folder. Both
 **Ubuntu, Debian and derivatives:** Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. (Windows, macOS, Fedora, Arch and openSUSE: [one command each, below](#windows-macos-and-other-linux-new-in-52-still-early).) **One command installs everything** (dependencies, Ollama, an isolated Python environment and the Gargantua 2 model, about 1.6 GB):
 
 ```bash
-wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
+wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
 ```
 
 Then open **openTARS** from the application menu (the first time, a short "first steps" window checks Ollama and the model). From a terminal, the same window opens with:
@@ -54,7 +58,7 @@ opentars-gui
 
 | Want to... | Command |
 |---|---|
-| Download the file only | `wget https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb` |
+| Download the file only | `wget https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb` |
 | Install a file you downloaded | `sudo apt install -y --reinstall ./opentars_all.deb` |
 | Update | run the install command again (or use the notice inside the app) |
 | Check the installation | `opentars --autoteste` |
@@ -297,7 +301,7 @@ How well it does it, on screens it never saw in training (synthetic ones, drawn 
 For Ubuntu, Debian, Linux Mint, Zorin OS, Pop!_OS and derivatives. Paste in a terminal:
 
 ```bash
-wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
+wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb && sudo apt install -y --reinstall /tmp/opentars.deb
 ```
 
 That single command installs **everything** openTARS needs, skipping what you already have:
@@ -335,7 +339,7 @@ To pick another chat model at install time, put `TARS_MODELO_CONVERSA=qwen3:14b`
 <details>
 <summary>Prefer to download the file by hand?</summary>
 
-Click [`opentars_all.deb`](https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb) and, in the folder where it was saved (usually `~/Downloads`):
+Click [`opentars_all.deb`](https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb) and, in the folder where it was saved (usually `~/Downloads`):
 
 ```bash
 sudo apt install -y --reinstall ./opentars_all.deb

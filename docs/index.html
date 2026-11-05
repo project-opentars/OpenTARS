@@ -25,12 +25,12 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=3">
+<link rel="stylesheet" href="site.css?v=4">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
  "operatingSystem": "Linux, Windows, macOS", "softwareVersion": "5.2",
  "license": "https://opensource.org/licenses/MIT", "url": "https://project-opentars.github.io/OpenTARS/",
- "downloadUrl": "https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb",
+ "downloadUrl": "https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb",
  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
  "description": "A local AI assistant for Linux, Windows and macOS that opens programs, clicks buttons by name, types and runs commands, on your own machine through Ollama."}
 </script>
@@ -67,13 +67,22 @@
           <button type="button" data-copy="cmdmac-top">Copy</button>
         </div>
         <div class="actions">
-          <a class="btn" href="https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb">Download for Ubuntu and Debian (.deb)</a>
+          <a class="btn" href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb">Download for Ubuntu and Debian (.deb)</a>
           <a class="link" href="#install">Fedora, Arch, openSUSE and details</a>
         </div>
         <p class="facts">Version 5.2 Ranger. Free and open source under the MIT license. For Windows, macOS and Linux; Windows and macOS are new in 5.2 and still early (<a href="#install">what was tested</a>).</p>
       </div>
 
-      <div class="term play" role="img" aria-label="A terminal session: the request “open the calculator and work out 7 + 2”, then four steps that open Calculator and press 7, plus, 2 and equals, then the answer 9.">
+      <video class="hero-video" src="img/demo-617.mp4" poster="img/demo-617-poster.webp" width="720" height="1280" autoplay muted loop playsinline preload="metadata" aria-label="617 MB, no GPU. openTARS organizes files, reads the screen and runs on your CPU."></video>
+      <p class="roles">Gargantua 2 thinks and sees. Murph picks the right model for each request.</p>
+    </div>
+  </div>
+
+  <section class="demo" aria-labelledby="demo-t">
+    <div class="wrap">
+      <h2 id="demo-t" class="visually-hidden">Demo</h2>
+      <div style="max-width:40rem;margin:0 auto clamp(2.5rem,6vw,4rem)">
+        <div class="term play" role="img" aria-label="A terminal session: the request “open the calculator and work out 7 + 2”, then four steps that open Calculator and press 7, plus, 2 and equals, then the answer 9.">
         <span class="line" style="--d:0s"><span class="p">❯ </span><span class="typed ask" style="--n:38">open the calculator and work out 7 + 2</span></span>
         <span class="line" style="--d:2.3s"><span class="dot">●</span> Opening Calculator</span>
         <span class="line res" style="--d:2.9s">  ⎿ <span class="ok">✓</span> 0.4 s</span>
@@ -84,13 +93,7 @@
         <span class="line final" style="--d:5.4s">Done. 7 + 2 = 9, and Calculator is still open.</span>
         <span class="line" style="--d:5.8s"><span class="p">❯ </span><span class="cursor"></span></span>
       </div>
-      <p class="roles">Gargantua 2 thinks and sees. Murph picks the right model for each request.</p>
-    </div>
-  </div>
-
-  <section class="demo" aria-labelledby="demo-t">
-    <div class="wrap">
-      <h2 id="demo-t" class="visually-hidden">Demo</h2>
+      </div>
       <figure class="demo-frame" style="margin-bottom:clamp(2.5rem,6vw,4rem)">
         <video class="demo-video" src="img/launch.mp4" poster="img/launch-poster.webp" width="1920" height="1080" controls playsinline preload="metadata" aria-label="openTARS launch video, 38 seconds, with sound"></video>
         <figcaption>Launch video, 38 seconds, with sound.</figcaption>
@@ -268,7 +271,7 @@
       </div>
       <div class="get">
         <div class="get-main">
-          <a class="btn big" href="https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb">Download opentars_all.deb</a>
+          <a class="btn big" href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb">Download opentars_all.deb</a>
           <dl class="pacote">
             <div><dt>Version</dt><dd>5.2 Ranger</dd></div>
             <div><dt>Size</dt><dd>1.3 MB</dd></div>
@@ -278,7 +281,7 @@
           <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved. To check the download first: <code>sha256sum opentars_all.deb</code> must print the SHA-256 above.</p>
           <h3 class="or">Or paste one line in a terminal</h3>
           <div class="cmd">
-            <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/raw/main/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
+            <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
             <button type="button" data-copy="cmd">Copy</button>
           </div>
           <p class="quiet">Then open openTARS from your app menu. The first run checks Ollama, downloads Gargantua 2 with a progress bar you can pause, and tests it with a quick sum. Updating later keeps your chats and settings.</p>
@@ -408,6 +411,6 @@ document.querySelectorAll('[data-copy]').forEach(function (b) {
   });
 });
 </script>
-<script src="site.js?v=3" defer></script>
+<script src="site.js?v=4" defer></script>
 </body>
 </html>
