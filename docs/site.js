@@ -1,48 +1,91 @@
-// Efeitos de mouse do site: brilho que segue o cursor nos painéis escuros e inclinação leve no terminal e nas capturas.
-// Só com mouse de verdade e sem "reduzir movimento"; no toque e em leitores de tela a página continua igual.
+// openTARS: abas de instalação, copiar, enviar o link do celular, o interruptor de Wi-Fi e os vídeos. Nada aqui fala com terceiros.
 (function () {
-  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  document.documentElement.classList.add('com-mouse');
   var calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var INCLINACAO = 4; // graus no máximo
-  document.querySelectorAll('.term, .model, .tested, .cloud, .shot, .cmd').forEach(function (el) {
-    var inclina = !calmo && (el.classList.contains('term') || el.classList.contains('shot'));
-    var caixa = null, pedido = 0, x = 0, y = 0;
 
-    function aplicar() {
-      pedido = 0;
-      if (!caixa) return;
-      var px = (x - caixa.left) / caixa.width, py = (y - caixa.top) / caixa.height;
-      el.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
-      el.style.setProperty('--my', (py * 100).toFixed(1) + '%');
-      if (inclina) {
-        el.style.setProperty('--ry', ((px - 0.5) * 2 * INCLINACAO).toFixed(2) + 'deg');
-        el.style.setProperty('--rx', ((0.5 - py) * 2 * INCLINACAO).toFixed(2) + 'deg');
-      }
-    }
-    function soltar() {
-      caixa = null;
-      if (pedido) { cancelAnimationFrame(pedido); pedido = 0; }
-      el.classList.remove('sob-mouse');
-      el.style.setProperty('--rx', '0deg');
-      el.style.setProperty('--ry', '0deg');
-      document.removeEventListener('pointermove', seguir);
-      removeEventListener('scroll', soltar);
-    }
-    // Enquanto o mouse está em cima, quem decide se ele saiu é a caixa medida na ENTRADA (painel reto), e não o contorno
-    // inclinado: perto da borda, a inclinação faria o painel "fugir" do cursor e piscar.
-    function seguir(e) {
-      x = e.clientX; y = e.clientY;
-      if (x < caixa.left || x > caixa.right || y < caixa.top || y > caixa.bottom) return soltar();
-      if (!pedido) pedido = requestAnimationFrame(aplicar);
-    }
-    el.addEventListener('pointerenter', function (e) {
-      if (caixa) return;
-      caixa = el.getBoundingClientRect();
-      el.classList.add('sob-mouse');
-      document.addEventListener('pointermove', seguir);
-      addEventListener('scroll', soltar, { passive: true }); // rolando, o painel sai de baixo do mouse: solta
-      seguir(e);
+  // Escala para o monólito cobrir a tela antes de abrir.
+  var mono = document.querySelector('.mono');
+  function medir() {
+    if (!mono || !mono.offsetWidth) return;
+    var alvo = Math.max(innerWidth / mono.offsetWidth, innerHeight / mono.offsetHeight) * 1.12;
+    document.documentElement.style.setProperty('--s', alvo.toFixed(2));
+  }
+  medir();
+  addEventListener('resize', medir);
+
+  // Abas: já abrem no sistema de quem visita.
+  var abas = [].slice.call(document.querySelectorAll('[role="tab"]'));
+  function escolher(aba, foco) {
+    abas.forEach(function (a) {
+      var sim = a === aba;
+      a.setAttribute('aria-selected', sim);
+      a.tabIndex = sim ? 0 : -1;
+      document.getElementById(a.getAttribute('aria-controls')).hidden = !sim;
+    });
+    if (foco) aba.focus();
+  }
+  abas.forEach(function (a, i) {
+    a.addEventListener('click', function () { escolher(a); });
+    a.addEventListener('keydown', function (e) {
+      var passo = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!passo) return;
+      e.preventDefault();
+      escolher(abas[(i + passo + abas.length) % abas.length], true);
     });
   });
+  var ua = navigator.userAgent;
+  var celular = /Android|iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var inicio = /Mac/.test(ua) ? 't-mac' : /Ubuntu|Debian/i.test(ua) ? 't-deb' : /Linux|X11/.test(ua) ? 't-deb' : 't-win';
+  var aba = document.getElementById(inicio);
+  if (aba) escolher(aba);
+
+  // No celular não se instala: oferece mandar o link para o computador.
+  var bloco = document.querySelector('.phone'), get = document.querySelector('.get');
+  if (celular && bloco && get) {
+    bloco.hidden = false;
+    get.hidden = true;
+    var enviar = document.getElementById('enviar'), endereco = 'https://project-opentars.github.io/OpenTARS/';
+    enviar.addEventListener('click', function () {
+      if (navigator.share) {
+        navigator.share({ title: 'openTARS', text: 'Your AI, on your computer.', url: endereco }).catch(function () {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(endereco).then(function () { enviar.textContent = 'Link copied'; });
+      }
+    });
+  }
+
+  // Copiar.
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      navigator.clipboard.writeText(document.getElementById(b.dataset.copy).textContent).then(function () {
+        b.textContent = 'Copied';
+        setTimeout(function () { b.textContent = 'Copy'; }, 1600);
+      }, function () { b.textContent = 'Select it'; });
+    });
+  });
+
+  // Interruptor: desligar o Wi-Fi marca o que continua funcionando.
+  var wifi = document.getElementById('wifi'), secao = document.querySelector('.home'), estado = document.getElementById('wifi-status');
+  if (wifi && secao) {
+    secao.classList.add('armada');
+    secao.querySelectorAll('.still li').forEach(function (li, i) { li.style.setProperty('--i', i); });
+    wifi.addEventListener('click', function () {
+      var ligado = wifi.getAttribute('aria-checked') === 'true';
+      wifi.setAttribute('aria-checked', String(!ligado));
+      secao.classList.toggle('off', ligado);
+      estado.textContent = ligado ? 'Still working.' : 'Go on, try it.';
+    });
+  }
+
+  // Vídeos: só tocam quando aparecem; com "reduzir movimento" ficam parados e com controles.
+  var videos = document.querySelectorAll('video[data-auto]');
+  if (calmo) {
+    videos.forEach(function (v) { v.controls = true; });
+  } else if ('IntersectionObserver' in window) {
+    var olho = new IntersectionObserver(function (itens) {
+      itens.forEach(function (i) {
+        if (i.isIntersecting) { var p = i.target.play(); if (p) p.catch(function () {}); } else { i.target.pause(); }
+      });
+    }, { threshold: .15 });
+    videos.forEach(function (v) { olho.observe(v); });
+  }
 })();

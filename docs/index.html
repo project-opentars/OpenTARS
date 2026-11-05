@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>openTARS: the local AI assistant for Linux, Windows and macOS</title>
-<meta name="description" content="openTARS is a local AI assistant for Linux, Windows and macOS. Ask in your own words and it opens programs, clicks buttons by name, runs commands, looks at the screen and works on the text and files you select, on your own machine through Ollama.">
+<title>openTARS: your AI, on your computer</title>
+<meta name="description" content="openTARS is a free, open source AI assistant for Linux, Windows and macOS. Ask in plain words and it opens programs, clicks buttons, types and runs commands on your own machine, with a 617 MB model and no graphics card needed.">
 <link rel="canonical" href="https://project-opentars.github.io/OpenTARS/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="openTARS">
 <meta property="og:url" content="https://project-opentars.github.io/OpenTARS/">
-<meta property="og:title" content="openTARS: the local AI assistant for Linux, Windows and macOS">
-<meta property="og:description" content="Tell your computer what to do. Open source. Runs locally with Ollama by default, with optional cloud models and web search.">
+<meta property="og:title" content="openTARS: your AI, on your computer">
+<meta property="og:description" content="Ask in plain words. It does the work on your own machine. Free, open source, local by default.">
 <meta property="og:image" content="https://project-opentars.github.io/OpenTARS/img/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="openTARS, the local AI assistant, with a screenshot of its window">
+<meta property="og:image:alt" content="openTARS: your AI, on your computer">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="openTARS: the local AI assistant for Linux, Windows and macOS">
-<meta name="twitter:description" content="Tell your computer what to do. Open source, local by default, with optional external services.">
+<meta name="twitter:title" content="openTARS: your AI, on your computer">
+<meta name="twitter:description" content="Ask in plain words. It does the work on your own machine. Free, open source, local by default.">
 <meta name="twitter:image" content="https://project-opentars.github.io/OpenTARS/img/og-card.png">
 <meta name="theme-color" content="#141C38">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
@@ -25,25 +25,23 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=4">
+<link rel="stylesheet" href="site.css?v=5">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
  "operatingSystem": "Linux, Windows, macOS", "softwareVersion": "5.2",
  "license": "https://opensource.org/licenses/MIT", "url": "https://project-opentars.github.io/OpenTARS/",
  "downloadUrl": "https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb",
  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
- "description": "A local AI assistant for Linux, Windows and macOS that opens programs, clicks buttons by name, types and runs commands, on your own machine through Ollama."}
+ "description": "A free, open source AI assistant for Linux, Windows and macOS that opens programs, clicks buttons by name, types and runs commands on your own machine."}
 </script>
 </head>
 <body>
-<div class="progresso" aria-hidden="true"></div>
+<a class="skip" href="#install">Skip to install</a>
 
 <header class="top">
   <div class="wrap">
-    <a class="mark" href="#"><img src="logo.svg" alt="" width="32" height="32">openTARS</a>
+    <a class="mark" href="./"><img src="logo.svg" alt="" width="32" height="32"><b>open<span>TARS</span></b></a>
     <nav aria-label="Main">
-      <a class="hide-s" href="#window">Screenshots</a>
-      <a class="hide-s" href="#models">Models</a>
       <a href="#install">Install</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
     </nav>
@@ -51,328 +49,195 @@
 </header>
 
 <main>
-  <div class="hero">
-    <div class="wrap">
-      <div>
-        <h1 class="display">Tell your computer what to do.</h1>
-        <p class="lede">openTARS is an AI assistant that does the work on your computer. It opens programs, presses buttons by their name, types, runs commands and looks at the screen. With a local Ollama model, processing stays on your machine; cloud models and web search are optional.</p>
-        <h2 class="or" style="margin:1.4rem 0 .4rem">Windows 10 or 11, in PowerShell</h2>
-        <div class="cmd">
-          <pre id="cmdwin-top">irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex</pre>
-          <button type="button" data-copy="cmdwin-top">Copy</button>
+  <section class="door" aria-labelledby="titulo">
+    <div class="stage">
+      <figure class="reveal">
+        <div class="window">
+          <video data-auto poster="img/app-tarefa-poster.webp" width="1400" height="902" muted loop playsinline preload="metadata" aria-label="The openTARS window organizing a Downloads folder step by step, asking for permission before it moves the files.">
+            <source src="img/app-tarefa-m.mp4" media="(max-width: 44rem)" type="video/mp4">
+            <source src="img/app-tarefa.mp4" type="video/mp4">
+          </video>
         </div>
-        <h2 class="or" style="margin:1rem 0 .4rem">macOS 12 or newer, in Terminal</h2>
-        <div class="cmd">
-          <pre id="cmdmac-top">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash</pre>
-          <button type="button" data-copy="cmdmac-top">Copy</button>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb">Download for Ubuntu and Debian (.deb)</a>
-          <a class="link" href="#install">Fedora, Arch, openSUSE and details</a>
-        </div>
-        <p class="facts">Version 5.2 Ranger. Free and open source under the MIT license. For Windows, macOS and Linux; Windows and macOS are new in 5.2 and still early (<a href="#install">what was tested</a>).</p>
-      </div>
-
-      <video class="hero-video" src="img/demo-617.mp4" poster="img/demo-617-poster.webp" width="720" height="1280" autoplay muted loop playsinline preload="metadata" aria-label="617 MB, no GPU. openTARS organizes files, reads the screen and runs on your CPU."></video>
-      <p class="roles">Gargantua 2 thinks and sees. Murph picks the right model for each request.</p>
-    </div>
-  </div>
-
-  <section class="demo" aria-labelledby="demo-t">
-    <div class="wrap">
-      <h2 id="demo-t" class="visually-hidden">Demo</h2>
-      <div style="max-width:40rem;margin:0 auto clamp(2.5rem,6vw,4rem)">
-        <div class="term play" role="img" aria-label="A terminal session: the request “open the calculator and work out 7 + 2”, then four steps that open Calculator and press 7, plus, 2 and equals, then the answer 9.">
-        <span class="line" style="--d:0s"><span class="p">❯ </span><span class="typed ask" style="--n:38">open the calculator and work out 7 + 2</span></span>
-        <span class="line" style="--d:2.3s"><span class="dot">●</span> Opening Calculator</span>
-        <span class="line res" style="--d:2.9s">  ⎿ <span class="ok">✓</span> 0.4 s</span>
-        <span class="line" style="--d:3.4s"><span class="dot">●</span> Pressing “7”, “+”, “2”</span>
-        <span class="line res" style="--d:3.9s">  ⎿ <span class="ok">✓</span> by name, no coordinates</span>
-        <span class="line" style="--d:4.4s"><span class="dot">●</span> Pressing “=”</span>
-        <span class="line res" style="--d:4.8s">  ⎿ <span class="ok">✓</span> display shows 9</span>
-        <span class="line final" style="--d:5.4s">Done. 7 + 2 = 9, and Calculator is still open.</span>
-        <span class="line" style="--d:5.8s"><span class="p">❯ </span><span class="cursor"></span></span>
-      </div>
-      </div>
-      <figure class="demo-frame" style="margin-bottom:clamp(2.5rem,6vw,4rem)">
-        <video class="demo-video" src="img/launch.mp4" poster="img/launch-poster.webp" width="1920" height="1080" controls playsinline preload="metadata" aria-label="openTARS launch video, 38 seconds, with sound"></video>
-        <figcaption>Launch video, 38 seconds, with sound.</figcaption>
+        <figcaption>You ask. It works in the open, one step at a time, and you can stop it whenever you want.</figcaption>
       </figure>
-      <figure class="demo-frame">
-        <video class="demo-video" src="img/demo.mp4" poster="img/demo-poster.webp" width="1600" height="850" autoplay muted loop playsinline preload="metadata" aria-label="Typing “search for lasagna recipes on youtube” into openTARS, which opens the YouTube results in the browser"></video>
-        <figcaption>Typed once: “search for lasagna recipes on youtube”. openTARS opens the results in your browser. Real recording, not sped up.</figcaption>
-      </figure>
-    </div>
-  </section>
 
-  <section class="band" aria-labelledby="ask">
-    <div class="wrap">
-      <div class="head">
-        <h2 id="ask" class="display">Ask the way you would ask a person.</h2>
-        <p class="lede quiet">In English or Portuguese, typed, spoken or from the terminal. A few things people ask, and what openTARS does with them:</p>
+      <div class="mono" aria-hidden="true">
+        <i class="slab"></i><i class="slab"></i><i class="slab"></i><i class="slab"></i>
       </div>
-      <ol class="ledger">
-        <li><q>Open the calculator and work out 7 + 2</q><p>Opens Calculator and presses each key by the text on it, through the system's accessibility (UI Automation on Windows, Accessibility on macOS). On Linux it works in milliseconds, even on Wayland.</p></li>
-        <li><q>Make a folder called Invoices in my Documents</q><p>Knows where your personal folders are, in your language, and creates it.</p></li>
-        <li><q>What is using all my memory?</q><p>Runs the command, reads the output and answers in plain words.</p></li>
-        <li class="stop"><q>Delete the old logs in Downloads</q><p>Stops first. It shows you the exact command with Allow and Deny, and nothing is removed until you choose.</p></li>
-        <li><q>Every weekday at 8, open the news</q><p>Saves a routine that runs while openTARS is open, and tells you if one was skipped.</p></li>
-      </ol>
-    </div>
-  </section>
 
-  <section id="window" aria-labelledby="win">
-    <div class="wrap">
-      <div class="head">
-        <h2 id="win" class="display">A window that shows its work.</h2>
-        <p class="lede quiet">Every action appears as a step with how long it took, so you can follow along and stop it at any moment.</p>
-      </div>
-      <div class="show">
-        <div class="shot"><img src="img/02-conversation.webp" width="1770" height="1140" fetchpriority="high" alt="The openTARS window with the chat history on the left, a request, the list of steps, each tool call with its time, and the answer with a code block"></div>
-        <dl class="notes">
-          <dt>History by day</dt><dd>Search old chats. Opening one gives the AI the same context back.</dd>
-          <dt>Pick the model, or let it pick</dt><dd>On Automatic, each request goes to the model that suits it: the one that sees the screen, the coding one or the fastest.</dd>
-          <dt>A memory you can read</dt><dd>See everything it remembers about you and forget items one by one.</dd>
-          <dt>A quick bar on <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Space</kbd></dt><dd>Ask from anywhere and get the answer in place, without opening the window.</dd>
-          <dt>Voice, if you want it</dt><dd>Hold to talk, keep listening, or say "TARS". Speech is recognised on your PC too.</dd>
-        </dl>
-      </div>
-      <div class="strip">
-        <figure><img src="img/12-voice.webp" loading="lazy" width="1770" height="1140" alt="Voice screen listening, with sound waves"><figcaption>Talking to it</figcaption></figure>
-        <figure><img src="img/08-settings-routines.webp" loading="lazy" width="1770" height="1140" alt="Settings page listing scheduled routines"><figcaption>Scheduled routines</figcaption></figure>
-        <figure><img src="img/07-settings-memory.webp" loading="lazy" width="1770" height="1140" alt="Settings page for memory and privacy"><figcaption>Memory and privacy settings</figcaption></figure>
-      </div>
-    </div>
-  </section>
+      <div class="copy">
+        <h1 id="titulo"><span>Your AI,</span> <span>on your</span> <span>computer.</span></h1>
+        <p class="lede">Ask in plain words. openTARS opens programs, clicks buttons, types and runs commands, right on your machine. Free and open source.</p>
 
-  <section class="band" aria-labelledby="safe">
-    <div class="wrap">
-      <div class="head">
-        <h2 id="safe" class="display">How it stays safe.</h2>
-        <p class="lede quiet">An assistant that can run commands has to know when to stop and ask. openTARS has three checks, and none of them can be talked out of by the AI.</p>
-      </div>
-      <div class="safe">
-        <div>
-          <ol class="layers">
-            <li>
-              <h3>Risky commands wait for you</h3>
-              <p>Before anything runs, every command is matched against a fixed list of dangerous patterns. These are plain rules, not AI, so they cannot be argued with. A match turns into a card with Allow and Deny, and nothing happens until you click.</p>
-              <ul class="asks">
-                <li>rm -r</li><li>rm *</li><li>find -exec rm</li><li>curl | sh</li><li>sudo</li><li>ssh</li><li>dd</li><li>mkfs</li><li>git reset --hard</li><li>shutdown</li>
-              </ul>
-            </li>
-            <li>
-              <h3>It checks its own work</h3>
-              <p>When a task has several steps, the AI has to compare what you asked with what it actually did before it says “done”. If something is missing, it goes back and finishes.</p>
-            </li>
-            <li>
-              <h3>Routines never decide alone</h3>
-              <p>A scheduled routine can only delete, send or install if you allowed that when you created it. Anything else makes it stop and tell you.</p>
-            </li>
-          </ol>
-        </div>
-        <div>
-          <div class="shot"><img src="img/03-approval.webp" loading="lazy" width="1770" height="1140" alt="An approval card asking to allow or deny a sudo command"></div>
-          <div class="cloud">
-            <h3>The cloud is off by default</h3>
-            <p>Local models are the default. If you choose an Ollama Cloud model, your request is processed by Ollama. Optional web search sends the search text to the SearXNG service you configure. Your Ollama sign-in stays with Ollama, and the window warns when a cloud model is selected.</p>
+        <div class="get">
+          <div class="tabs" role="tablist" aria-label="Your system">
+            <button role="tab" id="t-win" aria-controls="p-win" aria-selected="true">Windows</button>
+            <button role="tab" id="t-mac" aria-controls="p-mac" aria-selected="false" tabindex="-1">macOS</button>
+            <button role="tab" id="t-deb" aria-controls="p-deb" aria-selected="false" tabindex="-1">Ubuntu, Debian</button>
+            <button role="tab" id="t-lin" aria-controls="p-lin" aria-selected="false" tabindex="-1">Other Linux</button>
+          </div>
+          <div class="cmd" role="tabpanel" id="p-win" aria-labelledby="t-win">
+            <pre id="c-win" tabindex="0">irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex</pre>
+            <button type="button" data-copy="c-win">Copy</button>
+            <p>Paste it in PowerShell. No administrator password.</p>
+          </div>
+          <div class="cmd" role="tabpanel" id="p-mac" aria-labelledby="t-mac" hidden>
+            <pre id="c-mac" tabindex="0">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash</pre>
+            <button type="button" data-copy="c-mac">Copy</button>
+            <p>Paste it in Terminal. No administrator password.</p>
+          </div>
+          <div class="cmd" role="tabpanel" id="p-deb" aria-labelledby="t-deb" hidden>
+            <pre id="c-deb" tabindex="0">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
+            <button type="button" data-copy="c-deb">Copy</button>
+            <p>Or <a href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb">download the .deb</a> and open it.</p>
+          </div>
+          <div class="cmd" role="tabpanel" id="p-lin" aria-labelledby="t-lin" hidden>
+            <pre id="c-lin" tabindex="0">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/linux/instalar.sh | bash</pre>
+            <button type="button" data-copy="c-lin">Copy</button>
+            <p>For Fedora, Arch and openSUSE.</p>
           </div>
         </div>
+
+        <div class="phone" hidden>
+          <button type="button" class="btn" id="enviar">Send the link to my computer</button>
+          <p>openTARS installs on a computer, not on a phone.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="models" aria-labelledby="mod">
+  <section class="size" aria-labelledby="tamanho">
     <div class="wrap">
-      <div class="head">
-        <h2 id="mod" class="display">Two models, one crew.</h2>
-        <p class="lede quiet">Each one has a single job. The installer downloads Gargantua 2 through Ollama, and you can still add any other Ollama model next to it. Cooper, the vision model that used to be a third member, was <strong>discontinued on October 18, 2026</strong>: Gargantua 2 sees the screen itself.</p>
+      <h2 id="tamanho"><span class="huge">617 MB</span> <span class="after">That's the whole AI. Smaller than one HD movie.</span></h2>
+      <div class="cols">
+        <p>Gargantua Lite runs on a plain processor. You don't need a graphics card, an account or a subscription.</p>
+        <p>It got <strong>93 of 100</strong> everyday tasks right on the processor alone, in about 4 seconds each.</p>
       </div>
-      <div class="models">
-        <article class="model">
-          <p class="role">Thinks and sees</p>
-          <h3>Gargantua 2</h3>
-          <p>The main AI. A Qwen3.5 2B model trained on thousands of real openTARS requests, each one checked, so it already knows every tool it can use: opening apps, clicking, typing, running commands. It also reads the screen: it finds a button, reads a field and tells whether a box is checked, so openTARS needs no second model for that. Since October 23 it is also trained to say when it does not know, to chat about everyday things and to work on text you select.</p>
-          <dl>
-            <dt>Test</dt><dd>73 of 80 everyday tasks done right, no dangerous command run</dd>
-            <dt>Size</dt><dd>about 1.6 GB, with vision (the first Gargantua was 2.5 GB)</dd>
-            <dt>Runs on</dt><dd>a graphics card with ~3 GB free (0.6 s a request), or the processor alone (about 5 s a request on a 16-thread CPU)</dd>
-            <dt>Honesty</dt><dd>says it does not know in 16 of 16 questions about people and things that do not exist; corrects a false premise only 2 of 6 times</dd>
-            <dt>Weakest at</dt><dd>looking at an image file (0 of 4) and counting the files in a folder</dd>
-            <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua-2</code></dd>
-          </dl>
-        </article>
-        <article class="model">
-          <p class="role">Routes</p>
-          <h3>Murph</h3>
-          <p>A tiny classifier in plain Python. It reads each request in about 0.2 ms and decides what kind it is (an action, a search, something on screen, code) so the right model answers. It now also recognizes a chat message that only continues the conversation, so it is not taken for a command.</p>
-          <dl>
-            <dt>Size</dt><dd>about 4 MB</dd>
-            <dt>Runs on</dt><dd>the CPU, in RAM. It never touches the graphics card</dd>
-          </dl>
-        </article>
-        <article class="model">
-          <p class="role">Retired</p>
-          <h3>Cooper</h3>
-          <p><strong>Discontinued on October 18, 2026.</strong> Cooper was a separate vision model (<code>cooper:1.2</code>, about 636 MB). It is no longer downloaded, trained or supported: Gargantua 2 answers the same questions about the screen, so there is one model less to download and keep in memory. If you still have Cooper installed it is used only when there is no Gargantua 2, and <code>ollama rm cooper</code> frees its space. Its repository on ollama.com has been removed, so it can no longer be downloaded.</p>
-          <dl>
-            <dt>Replaced by</dt><dd>Gargantua 2</dd>
-          </dl>
-        </article>
-      </div>
-      <p class="lite"><strong>Two smaller Gargantuas</strong> you can add with one command. Same tools, same safety rules, smaller models. We tested both on requests they never saw during training.</p>
-      <div class="models duo">
-        <article class="model">
-          <p class="role">Writes code</p>
-          <h3>Gargantua Code</h3>
-          <p>Trained to write a script, run it, fix what fails and explain what a file does, using the same openTARS tools. When it is installed, openTARS sends coding requests to it first. It explains code less well than it writes it.</p>
-          <dl>
-            <dt>Test</dt><dd>43 of 48 coding tasks done right</dd>
-            <dt>Size</dt><dd>about 1.1 GB, optional</dd>
-            <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua:code</code></dd>
-          </dl>
-        </article>
-        <article class="model">
-          <p class="role">Runs anywhere</p>
-          <h3>Gargantua Lite</h3>
-          <p>The everyday Gargantua in an even smaller model that also sees images, for computers without a graphics card and with little memory. It opens apps, handles files, searches and answers questions, and it runs fine on the processor alone. It makes more mistakes than Gargantua 2, most of all when it has to look at a picture or use the calculator, which it sometimes swaps for a web search. Retrained on October 23 with the same new examples as Gargantua 2, it now finds a button on the screen almost as often (9 against 10 of 15 tries in our screen test). Every computer gets it: it is the AI that runs the assistant, text actions and Probes in the background.</p>
-          <dl>
-            <dt>Test</dt><dd>68 of 80 everyday tasks done right, no dangerous command run</dd>
-            <dt>Size</dt><dd>about 0.6 GB with vision, always installed</dd>
-            <dt>Runs on</dt><dd>the processor alone (about 2.6 s a request on a 16-thread CPU), or a graphics card (0.3 s)</dd>
-            <dt>Honesty</dt><dd>says it does not know in 15 of 16 questions about people and things that do not exist</dd>
-            <dt>Get it</dt><dd><code>ollama pull ProjectOpenTARS/Gargantua-2:lite</code></dd>
-          </dl>
-        </article>
-      </div>
+      <p class="fine">Our own 100-task test, one run on a 16-thread desktop, November 5, 2026. Run it on yours: <code>opentars --prova --cem</code></p>
     </div>
   </section>
 
-  <section class="band" aria-label="Mascot and terminal">
-    <div class="wrap pair">
-      <figure>
-        <img src="img/16-mascot.gif" loading="lazy" width="1050" height="220" alt="KIPP's moods: idle, thinking, working, needs you, oops, done and napping">
-        <h3>Meet KIPP</h3>
-        <p>KIPP is a small monolith that walks along the chat and shows what the AI is doing: thinking, working, waiting for your permission, done, or upset when something fails. After a few quiet minutes KIPP naps. Turn it off in Settings.</p>
-      </figure>
-      <figure>
-        <img class="cli" src="img/17-cli.webp" loading="lazy" width="816" height="1215" alt="The openTARS terminal with the welcome panel, tool steps and their results">
-        <h3>Also at home in the terminal</h3>
-        <p>Run <code>opentars</code> over SSH, in WSL or on a server without a screen. Risky commands still ask first, and <code>opentars --chat "request"</code> answers once for scripts.</p>
-      </figure>
-    </div>
-  </section>
-
-  <section id="install" aria-labelledby="ins">
+  <section class="asks" aria-labelledby="pede">
     <div class="wrap">
-      <div class="head">
-        <h2 id="ins" class="display">Install it in a minute.</h2>
-        <p class="lede quiet">One package installs everything openTARS needs: system packages, Ollama, its own Python environment and the models. If you can copy and paste, you can install it.</p>
+      <div class="text">
+        <h2 id="pede">Before anything risky, it asks.</h2>
+        <p>Every command is checked against a fixed list of dangerous patterns. These are plain rules, not AI, so nothing can talk them out of it. Nothing runs until you click Allow.</p>
+        <ul class="tokens" aria-label="Examples of commands that wait for you">
+          <li><code>rm -r</code></li><li><code>dd</code></li><li><code>mkfs</code></li><li><code>curl | sh</code></li><li><code>git reset --hard</code></li><li><code>shutdown</code></li>
+        </ul>
       </div>
-      <div class="get">
-        <div class="get-main">
-          <a class="btn big" href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb">Download opentars_all.deb</a>
+      <div class="window amber">
+        <video data-auto src="img/app-seguro.mp4" poster="img/app-seguro-poster.webp" width="1000" height="520" muted loop playsinline preload="none" aria-label="A request to delete the Documents folder. openTARS shows the command with Allow and Deny, and after Deny it answers that nothing was deleted."></video>
+      </div>
+    </div>
+  </section>
+
+  <section class="home" aria-labelledby="casa">
+    <div class="wrap">
+      <div class="text">
+        <h2 id="casa">Turn off your Wi-Fi.</h2>
+        <button type="button" class="switch" role="switch" aria-checked="true" aria-labelledby="casa" id="wifi"><i></i></button>
+        <p class="status" id="wifi-status" aria-live="polite">Go on, try it.</p>
+      </div>
+      <div class="still">
+        <ul>
+          <li>Talking to it</li>
+          <li>Opening programs</li>
+          <li>Working on your files</li>
+          <li>Reading your screen</li>
+          <li>Rewriting selected text</li>
+          <li>Editing photos</li>
+          <li>Voice</li>
+        </ul>
+        <p>Local by default. Cloud models are optional and use your own account or key. <a href="privacy.html">See everything that can leave your computer.</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="more" aria-labelledby="mais">
+    <div class="wrap">
+      <h2 id="mais">It works across your whole system.</h2>
+      <ol class="rows">
+        <li><q>Where do I click to export this as a PDF?</q><p>It looks at your screen and tells you.</p></li>
+        <li><q>Crop it square and make it brighter.</q><p>Edit a photo with a sentence, always on a copy.</p></li>
+        <li><q>The 2024 rental agreement.</q><p>Find a file by what's inside it, not only by its name.</p></li>
+        <li><q>Every Friday at 5 pm, remind me to send the report.</q><p>Set up reminders and routines in one sentence.</p></li>
+        <li><q>Tell me when a new PDF shows up in Downloads.</q><p>Probes watch in the background and let you know.</p></li>
+      </ol>
+      <div class="shots">
+        <figure><img src="img/real-52-text-actions.webp" alt="The text actions panel fixing a sentence selected in another app." loading="lazy" width="1200" height="760"><figcaption>Select text in any app and press <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>R</kbd>.</figcaption></figure>
+        <figure><img src="img/real-52-launcher.webp" alt="The quick bar offering to do a task, ask about the screen, find a file, search the web or create a reminder." loading="lazy" width="1200" height="760"><figcaption>Ask from anywhere with <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>Space</kbd>.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="crew" aria-labelledby="time">
+    <div class="wrap">
+      <h2 id="time">Trained for this job, sized for your machine.</h2>
+      <ul class="bars">
+        <li style="--gb:.004"><i></i><b>Murph</b><span>4 MB</span><p>Reads each request in about 0.2 ms and picks who answers.</p></li>
+        <li style="--gb:.617"><i></i><b>Gargantua Lite</b><span>617 MB</span><p>Runs on any computer, even without a graphics card.</p></li>
+        <li style="--gb:1.6"><i></i><b>Gargantua 2</b><span>1.6 GB</span><p>The main AI. It thinks, uses the tools and sees the screen.</p></li>
+        <li style="--gb:4.7"><i></i><b>Gargantua Code Gen 2</b><span>4.7 GB</span><p>Optional. Writes, fixes and runs code.</p></li>
+      </ul>
+      <p class="kipp"><img src="img/16-mascot.gif" alt="" width="64" height="64" loading="lazy"> And KIPP, who walks along the chat and shows what the AI is doing.</p>
+    </div>
+  </section>
+
+  <section class="next" aria-labelledby="proximo">
+    <div class="wrap">
+      <h2 id="proximo">Coming in 5.3</h2>
+      <ul>
+        <li><b>Rebuilt on llama.cpp.</b> One engine for every model.</li>
+        <li><b>Gargantua Pro.</b> A larger agent for long tasks.</li>
+        <li><b>Gargantua Pi and openTARS Pi.</b> For boards like the Raspberry Pi and the Orange Pi.</li>
+        <li><b>Probes in a virtual machine.</b> On Linux, away from your files.</li>
+        <li><b>winget.</b> Install and update on Windows the usual way.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="install" id="install" aria-labelledby="ins">
+    <div class="wrap">
+      <h2 id="ins">Install it in a minute.</h2>
+      <p class="lede">The installer sets up everything, downloads the models and tests them. Updating keeps your chats and settings.</p>
+      <div class="ways">
+        <div>
+          <h3>Windows 10 or 11</h3>
+          <div class="cmd"><pre id="i-win" tabindex="0">irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex</pre><button type="button" data-copy="i-win">Copy</button></div>
+          <p>In PowerShell. Everything goes into your user folder.</p>
+        </div>
+        <div>
+          <h3>macOS 12 or newer</h3>
+          <div class="cmd"><pre id="i-mac" tabindex="0">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash</pre><button type="button" data-copy="i-mac">Copy</button></div>
+          <p>In Terminal. The first run asks for Accessibility and Screen Recording.</p>
+        </div>
+        <div>
+          <h3>Ubuntu, Debian, Mint, Zorin, Pop!_OS</h3>
+          <div class="cmd"><pre id="cmd" tabindex="0">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre><button type="button" data-copy="cmd">Copy</button></div>
+          <p><a class="btn" href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb">Download opentars_all.deb</a></p>
           <dl class="pacote">
             <div><dt>Version</dt><dd>5.2 Ranger</dd></div>
             <div><dt>Size</dt><dd>1.3 MB</dd></div>
             <div><dt>Updated</dt><dd>November 4, 2026</dd></div>
             <div class="sha"><dt>SHA-256</dt><dd><code>5e28df0a35042ab074cf700ee5f2b64ff265f869e34a131dc8ee8ccf5f4f972e</code></dd></div>
           </dl>
-          <p class="quiet">Open the file with your software center, or run <code>sudo apt install ./opentars_all.deb</code> in the folder where it was saved. To check the download first: <code>sha256sum opentars_all.deb</code> must print the SHA-256 above.</p>
-          <h3 class="or">Or paste one line in a terminal</h3>
-          <div class="cmd">
-            <pre id="cmd">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
-            <button type="button" data-copy="cmd">Copy</button>
-          </div>
-          <p class="quiet">Then open openTARS from your app menu. The first run checks Ollama, downloads Gargantua 2 with a progress bar you can pause, and tests it with a quick sum. Updating later keeps your chats and settings.</p>
-          <h3 class="or">Windows 10 or 11, in PowerShell</h3>
-          <div class="cmd">
-            <pre id="cmdwin">irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex</pre>
-            <button type="button" data-copy="cmdwin">Copy</button>
-          </div>
-          <p class="quiet">No administrator password: Python, Ollama and openTARS go into your user folder, and openTARS appears in the Start menu. Click buttons by name works through UI Automation; text actions are on <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>R</kbd>.</p>
-          <h3 class="or">macOS 12 or newer, in Terminal</h3>
-          <div class="cmd">
-            <pre id="cmdmac">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash</pre>
-            <button type="button" data-copy="cmdmac">Copy</button>
-          </div>
-          <p class="quiet">openTARS.app is built in <code>~/Applications</code> on your Mac and signed there, so macOS does not quarantine it. The first run asks for Accessibility and Screen Recording; text actions are on <kbd>Control</kbd>+<kbd>Option</kbd>+<kbd>R</kbd>.</p>
-          <h3 class="or">Fedora, Arch, openSUSE and other Linux</h3>
-          <div class="cmd">
-            <pre id="cmdlinux">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/linux/instalar.sh | bash</pre>
-            <button type="button" data-copy="cmdlinux">Copy</button>
-          </div>
-          <p class="quiet">The same app as on Ubuntu. Only your package manager (<code>dnf</code>, <code>pacman</code> or <code>zypper</code>) and Ollama's installer ask for your password. To remove openTARS on any system: <code>opentars --desinstalar</code>.</p>
         </div>
-        <div class="tested">
-          <h3>Tested on</h3>
-          <ul>
-            <li>Ubuntu</li><li>Debian</li><li>Linux Mint</li><li>Zorin OS</li><li>Pop!_OS</li>
-          </ul>
-          <p class="quiet">Any distro with apt should work. X11 and Wayland, NVIDIA, AMD or CPU only.</p>
-          <h3>New in 5.2, still early</h3>
-          <ul>
-            <li>Windows</li><li>macOS</li><li>Fedora</li><li>Arch</li><li>openSUSE</li>
-          </ul>
-          <p class="quiet">They pass our automated tests on GitHub's Windows and macOS machines and in Fedora, Arch and openSUSE containers. We have also used them on real Windows and Fedora computers; no real Mac has run openTARS yet. Tell us what breaks.</p>
+        <div>
+          <h3>Fedora, Arch, openSUSE</h3>
+          <div class="cmd"><pre id="i-lin" tabindex="0">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/linux/instalar.sh | bash</pre><button type="button" data-copy="i-lin">Copy</button></div>
+          <p>Only your package manager and Ollama's installer ask for your password.</p>
         </div>
       </div>
-      <details class="legacy">
-        <summary>Need the older 4.6 Endurance?</summary>
-        <div class="legacy-body">
-          <p>4.6 is the release before the new window: the simpler Tk window, Ollama only, without voice or attachments. Use it only if 5.2 does not run on your computer.</p>
-          <p class="aviso">It does not get the security fixes from 5.0 and it will not tell you when a new version comes out. Commands like <code>rm</code> with wildcards and <code>curl | sh</code> are not confirmed the way 5.0 does it.</p>
-          <a class="btn2" href="https://github.com/project-opentars/OpenTARS/raw/5a9ea9f/opentars_all.deb">Download 4.6 Endurance (.deb, 0.7 MB)</a>
-          <div class="cmd">
-            <pre id="cmd46">wget -O /tmp/opentars-4.6.deb https://github.com/project-opentars/OpenTARS/raw/5a9ea9f/opentars_all.deb &amp;&amp; sudo apt install -y --allow-downgrades /tmp/opentars-4.6.deb</pre>
-            <button type="button" data-copy="cmd46">Copy</button>
-          </div>
-          <p class="quiet">To go back to the current version, run the install command above again.</p>
-        </div>
+      <details>
+        <summary>What was tested</summary>
+        <p>Ubuntu, Debian, Linux Mint, Zorin OS and Pop!_OS, on X11 and Wayland, with NVIDIA, AMD or the processor alone. Windows, macOS, Fedora, Arch and openSUSE are new in 5.2: they pass our automated tests, and we have also used them on real Windows and Fedora computers. No real Mac has run openTARS yet, so tell us what breaks.</p>
       </details>
-    </div>
-  </section>
-
-  <section class="band" aria-labelledby="nxt">
-    <div class="wrap">
-      <div class="head">
-        <h2 id="nxt" class="display">New in 5.2 Ranger</h2>
-        <p class="lede quiet">Out now. Update from the app, or install with the commands above.</p>
-      </div>
-      <ul class="next">
-        <li><h3>Windows and macOS</h3><p>openTARS now runs on Windows and macOS too, installed with one command and no administrator. It clicks buttons by name through UI Automation on Windows and Accessibility on macOS. Both are new: they pass our automated tests, we have used it on real Windows computers, and no real Mac has run it yet.</p></li>
-        <li><h3>Other Linux</h3><p>Fedora, Arch and openSUSE get a one-line installer, tested in containers.</p></li>
-        <li><h3>A launcher for everything</h3><p>Open the quick bar with nothing typed and it offers five things: do a task on the computer, ask about the screen, find a file, search the web and create a reminder. Finding a file looks at names and the text inside, with no index and no model.</p></li>
-        <li><h3>Text actions in any app</h3><p>Select text anywhere and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>R</kbd>: fix it, make it more formal or simpler, summarize, translate between English and Portuguese, or ask about it. The selected text is only material: openTARS never runs anything written in it. Gargantua 2 Lite, which stays in the background, got 64 of 76 right in our text test; long texts go to Gargantua 2 (71 of 76).</p></li>
-        <li><h3>Actions on selected files</h3><p>Summarize, rename by content with a preview you can edit, move, or send to the trash after you confirm. Renaming and moving can be undone.</p></li>
-        <li><h3>Edit a photo with a sentence</h3><p>“Crop it square and make it brighter”: crop, rotate, brighten, black and white, shrink for email, change the format, in the file panel or right in the chat. Always a copy, without the location and device data. A 12-megapixel photo takes 0.35 s.</p></li>
-        <li><h3>Small photo models, built in</h3><p>Remove the background, upscale 4x, and remove an object by clicking on it. Four small open models (about 300 MB, downloaded with openTARS) run on the processor: removing a background took about 9 s on a 16-thread CPU, the others about a second.</p></li>
-        <li><h3>Make images</h3><p>Ask “draw a lighthouse at dusk” in the chat. It uses Bonsai Image 4B by PrismML, an optional install of about 9.5 GB that needs an NVIDIA card with 6 GB or a Mac with Apple Silicon. On our RTX 3050 (6 GB) the first 512-pixel image took about a minute while the model loaded, the next ones about 5 s; openTARS takes the other models off the card first.</p></li>
-        <li><h3>One small AI in the background</h3><p>Gargantua 2 Lite is always installed and is the only AI the assistant uses in the background (text actions and Probes), and it leaves the memory by itself 3 minutes after the last use. Gargantua 2 answers in the window.</p></li>
-        <li><h3>It says when it is unsure</h3><p>On a factual question, openTARS checks how sure the answer is. With web search on, it looks it up; without it, it tells you under the answer. A hint, not a guarantee.</p></li>
-        <li><h3>Gargantua 2, retrained</h3><p>Trained again with the 5.2 examples: it says when it does not know, works on selected text and knows Windows and macOS. The app tells you when a newer Gargantua is published.</p></li>
-        <li><h3>Check it yourself</h3><p><code>opentars --prova</code> runs 48 everyday tasks with your model and saves a report; <code>opentars --diagnostico</code> checks your system; <code>opentars --desinstalar</code> removes it.</p></li>
-      </ul>
-      <h3 class="concept-titulo">How it looks</h3>
-      <p class="quiet">Screenshots of the real app.</p>
-      <div class="concept">
-        <figure><img src="img/real-52-launcher.webp" loading="lazy" width="1360" height="760" alt="The quick bar with nothing typed, offering: do a task on the computer, ask about the screen, find a file, search the web and create a reminder"><figcaption>The launcher: the quick bar with nothing typed</figcaption></figure>
-        <figure><img src="img/real-52-first-run-windows.webp" loading="lazy" width="1440" height="936" alt="First run, the last step on Windows: the Ctrl+Alt+R shortcut and start with Windows, both on by default, and a note that apps opened as administrator cannot be controlled"><figcaption>First run: the step for Windows</figcaption></figure>
-        <figure><img src="img/real-52-text-actions.webp" loading="lazy" width="880" height="892" alt="The text actions panel rewriting a selected sentence, with Replace in the text, Copy and Discard"><figcaption>Text actions: fix a sentence and put it back</figcaption></figure>
-        <figure><img src="img/real-52-photo.webp" loading="lazy" width="1000" height="1160" alt="Editing a selected photo: the request square, brighter, and a before and after preview"><figcaption>A photo, square and brighter, saved as a copy</figcaption></figure>
-      </div>
-      <h3 class="concept-titulo">Planned for 5.3</h3>
-      <p class="lede quiet">In development, with no release date. Nothing below has been measured yet; every number we publish will come from a test on the real app.</p>
-      <ul class="next">
-        <li><h3>Better and smaller models</h3><p>Gargantua 2 and Gargantua 2 Lite retrained with more examples: answers that cite the source of a web search, reading the screen, correcting a false premise, and some code. A new base model is chosen only if it beats the current one in our tests; otherwise we keep Qwen3.5.</p></li>
-        <li><h3>Gargantua Pro and Code Gen 2</h3><p>Two new models: Pro (IBM Granite 4.0 H-Tiny) focused on using tools, and Code Gen 2 (Qwen2.5-Coder 7B) for programming.</p></li>
-        <li><h3>openTARS Pi</h3><p>A lean edition for ARM boards such as the Raspberry Pi and Orange Pi: terminal and background service, an optional window only if the board has a desktop, and a small server for your local network that needs a token. It comes with <strong>Gargantua Pi</strong>, a model under 400 MB (Granite 4.0 H 350M), limited to four tools.</p></li>
-        <li><h3>llama.cpp instead of Ollama</h3><p>Running the models without installing another program. It only happens if the test shows the same score and no heavier memory use. If you have 5.2, the normal update switches you over and keeps your Ollama models untouched.</p></li>
-        <li><h3>A better assistant on Windows and macOS</h3><p>Closer integration with each system, and text actions that no longer need the larger model.</p></li>
-        <li><h3>Trust in the download</h3><p>Installing and updating with winget, one-click updates on Windows and macOS, and a “How to verify” page with checksums and build attestations.</p></li>
-        <li><h3>Probes in a virtual machine</h3><p>On Linux, in the Pro mode only: Probes that act inside a KVM virtual machine, away from your files and accounts. This one moves to a later version if time runs short.</p></li>
-        <li><h3>A new look for the terminal</h3><p>A redesigned terminal interface. Also first to move if time runs short. MCP, sub-agents and terminal hooks are not planned for 5.3.</p></li>
-      </ul>
+      <details>
+        <summary>Remove it, or use the older 4.6</summary>
+        <p>To remove openTARS on any system, run <code>opentars --desinstalar</code>.</p>
+        <p>If 5.2 does not run on your computer, <a href="https://github.com/project-opentars/OpenTARS/raw/5a9ea9f/opentars_all.deb">4.6 Endurance</a> is the last version with the simpler window. It does not have the security fixes from 5.0 and will not tell you about new versions.</p>
+      </details>
     </div>
   </section>
 </main>
@@ -380,37 +245,20 @@
 <footer>
   <div class="wrap">
     <div class="rodape-marca">
-      <p class="big">openTARS</p>
+      <p class="big">open<span>TARS</span></p>
       <p class="contato">Questions, bugs or security reports: <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a></p>
     </div>
     <nav aria-label="Footer">
       <a href="changelog.html">Changelog</a>
       <a href="privacy.html">Privacy &amp; security</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
+      <a href="https://huggingface.co/OpenTARS">Hugging Face</a>
+      <a href="https://ollama.com/ProjectOpenTARS">Ollama</a>
       <a href="https://www.instagram.com/open.tars/">Instagram</a>
       <a href="https://github.com/project-opentars/OpenTARS/blob/main/LICENSE">MIT License</a>
     </nav>
   </div>
 </footer>
-
-<script>
-// Quem pediu menos movimento no sistema vê o vídeo parado, com os controles.
-var demo = document.querySelector('.demo-video');
-if (demo && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  demo.removeAttribute('autoplay'); demo.pause(); demo.controls = true;
-}
-document.querySelectorAll('[data-copy]').forEach(function (b) {
-  b.addEventListener('click', function () {
-    var text = document.getElementById(b.dataset.copy).textContent;
-    navigator.clipboard.writeText(text).then(function () {
-      b.textContent = 'Copied';
-      setTimeout(function () { b.textContent = 'Copy'; }, 1600);
-    }, function () {
-      b.textContent = 'Select and copy';
-    });
-  });
-});
-</script>
-<script src="site.js?v=4" defer></script>
+<script src="site.js?v=5" defer></script>
 </body>
 </html>
