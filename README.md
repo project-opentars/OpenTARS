@@ -26,6 +26,14 @@ With a local Ollama model, processing stays on your machine. Ollama Cloud is opt
 
 </div>
 
+## New: openTARS Pi
+
+A local AI assistant for small boards. Your Raspberry Pi or Orange Pi, in plain words: it runs commands, drives the pins and remembers what you tell it. See **[openTARS Pi](https://github.com/project-opentars/OpenTARS-Pi)**.
+
+```bash
+curl -fsSL https://github.com/project-opentars/OpenTARS-Pi/releases/latest/download/install.sh | bash
+```
+
 ## Download and install
 
 **Windows 10 or 11**, in PowerShell:
@@ -195,8 +203,7 @@ With a local model and web search off, your conversation and screen stay on your
 In development, with no release date. **Nothing here has been measured yet**; the numbers we publish will come from tests on the real app.
 
 - **Better and smaller models.** Gargantua 2 and Gargantua 2 Lite retrained with more examples (answers that cite the source of a web search, reading the screen, correcting a false premise, some code). A new base model is chosen only if it beats the current one in our tests; otherwise we keep Qwen3.5.
-- **Two new models.** *Gargantua Pro* (IBM Granite 4.0 H-Tiny), focused on using tools, and *Gargantua Code Gen 2* (Qwen2.5-Coder 7B), for programming.
-- **openTARS Pi.** A lean edition for ARM boards (Raspberry Pi, Orange Pi): terminal and background service, a window only if the board has a desktop, and a small server for your local network that needs a token. It comes with *Gargantua Pi*, a model under 400 MB (Granite 4.0 H 350M) limited to four tools.
+- **Two new models.** *Gargantua Pro* (Gemma 4 12B), focused on using tools, and *Gargantua Code Gen 2* (Qwen2.5-Coder 7B), for programming.
 - **llama.cpp instead of Ollama**, so there is no other program to install. Only if the test shows the same score and no heavier memory use. 5.2 users get it through the normal update, and their Ollama models stay untouched.
 - **A better assistant on Windows and macOS**: closer integration with each system, and text actions that no longer need the larger model.
 - **Trust in the download**: winget, one-click updates on Windows and macOS, and a "How to verify" page with checksums and build attestations.

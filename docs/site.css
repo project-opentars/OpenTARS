@@ -124,7 +124,7 @@ h1 span { display: block; }
 
 /* os modelos: as mesmas lâminas do logo, com altura proporcional ao tamanho */
 .crew { padding-block: var(--section); }
-.bars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2.5rem); margin: clamp(2.5rem, 6vw, 4rem) 0 0; padding: 0; list-style: none; align-items: end; }
+.bars { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2.5rem); margin: clamp(2.5rem, 6vw, 4rem) 0 0; padding: 0; list-style: none; align-items: end; }
 .bars li { display: grid; grid-template-rows: 26rem auto auto auto; }
 .bars i { align-self: end; display: block; height: max(3px, calc(var(--gb) / 4.7 * 100%)); border-radius: .35rem; background: var(--metal); }
 .bars b { margin-top: 1rem; font-weight: 800; font-stretch: 112%; font-size: 1.2rem; line-height: 1.15; }
@@ -132,6 +132,13 @@ h1 span { display: block; }
 .bars p { margin-top: .4rem; color: var(--steel); font-size: 1rem; line-height: 1.4; }
 .kipp { display: flex; align-items: center; gap: 1rem; margin-top: clamp(2rem, 5vw, 3rem); color: var(--steel); }
 .kipp img { image-rendering: pixelated; flex: none; }
+
+/* openTARS Pi */
+.board { padding-block: var(--section); scroll-margin-top: 3rem; }
+.board .lede { margin-top: 1.2rem; max-width: 46rem; color: var(--steel); }
+.board .cmd { margin-top: 2rem; max-width: 56rem; }
+.board .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1.2rem clamp(1.5rem, 4vw, 3rem); margin: 2rem 0; padding: 0; list-style: none; color: var(--steel); }
+.board .facts b { display: block; color: var(--ink); font-weight: 800; font-stretch: 112%; }
 
 /* 5.3 */
 .next { padding-block: var(--section); background: var(--slab); }

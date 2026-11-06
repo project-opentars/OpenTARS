@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=5">
+<link rel="stylesheet" href="site.css?v=6">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
  "operatingSystem": "Linux, Windows, macOS", "softwareVersion": "5.2",
@@ -42,6 +42,7 @@
   <div class="wrap">
     <a class="mark" href="./"><img src="logo.svg" alt="" width="32" height="32"><b>open<span>TARS</span></b></a>
     <nav aria-label="Main">
+      <a href="#pi">Pi</a>
       <a href="#install">Install</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
     </nav>
@@ -176,11 +177,26 @@
       <h2 id="time">Trained for this job, sized for your machine.</h2>
       <ul class="bars">
         <li style="--gb:.004"><i></i><b>Murph</b><span>4 MB</span><p>Reads each request in about 0.2 ms and picks who answers.</p></li>
+        <li style="--gb:.3"><i></i><b>Gargantua Pi</b><span>300 MB</span><p>Made for small boards, in openTARS Pi.</p></li>
         <li style="--gb:.617"><i></i><b>Gargantua Lite</b><span>617 MB</span><p>Runs on any computer, even without a graphics card.</p></li>
         <li style="--gb:1.6"><i></i><b>Gargantua 2</b><span>1.6 GB</span><p>The main AI. It thinks, uses the tools and sees the screen.</p></li>
         <li style="--gb:4.7"><i></i><b>Gargantua Code Gen 2</b><span>4.7 GB</span><p>Optional. Writes, fixes and runs code.</p></li>
       </ul>
       <p class="kipp"><img src="img/16-mascot.gif" alt="" width="64" height="64" loading="lazy"> And KIPP, who walks along the chat and shows what the AI is doing.</p>
+    </div>
+  </section>
+
+  <section class="board" id="pi" aria-labelledby="placa">
+    <div class="wrap">
+      <h2 id="placa">New: openTARS Pi.</h2>
+      <p class="lede">Your Raspberry Pi or Orange Pi, in plain words. It runs commands, drives the pins and remembers what you tell it. No cloud, no GPU, no account.</p>
+      <div class="cmd"><pre id="i-pi" tabindex="0">curl -fsSL https://github.com/project-opentars/OpenTARS-Pi/releases/latest/download/install.sh | bash</pre><button type="button" data-copy="i-pi">Copy</button></div>
+      <ul class="facts">
+        <li><b>1 GB of RAM</b> is enough. Tested on an Orange Pi Zero 2W.</li>
+        <li><b>0.6 s</b> for board status, files, memory and pins.</li>
+        <li><b>Your yes first.</b> Only commands that just read run on their own.</li>
+      </ul>
+      <p><a class="btn" href="https://github.com/project-opentars/OpenTARS-Pi">See openTARS Pi on GitHub</a></p>
     </div>
   </section>
 
@@ -190,7 +206,6 @@
       <ul>
         <li><b>Rebuilt on llama.cpp.</b> One engine for every model.</li>
         <li><b>Gargantua Pro.</b> A larger agent for long tasks.</li>
-        <li><b>Gargantua Pi and openTARS Pi.</b> For boards like the Raspberry Pi and the Orange Pi.</li>
         <li><b>Probes in a virtual machine.</b> On Linux, away from your files.</li>
         <li><b>winget.</b> Install and update on Windows the usual way.</li>
       </ul>
