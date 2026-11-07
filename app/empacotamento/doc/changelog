@@ -1,3 +1,10 @@
+opentars (5.3) unstable; urgency=medium
+
+  5.3 Tesseract
+  * Em preparo (ainda não publicado): a API do motor mora em tars_motor.py, para a troca do Ollama
+    pelo llama.cpp ter um lugar só; Gargantua Pro e Pi reconhecidos como variantes, com o Pi fora
+    da conversa do app grande (ele tem contrato próprio); Gargantua Code Gen 2 em "Mais modelos".
+
 opentars (5.2) unstable; urgency=medium
 
   5.2 Ranger

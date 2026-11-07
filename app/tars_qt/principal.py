@@ -70,13 +70,6 @@ def _repolir(w):
 # ------------------------------------------------------------
 
 
-def _sem_erro(funcao, *args):
-    """Para threads de fundo cujo erro não tem a quem mostrar (Ollama fora ao abrir, por exemplo)."""
-    try:
-        funcao(*args)
-    except Exception:  # noqa: BLE001
-        pass
-
 class Lateral(QFrame):
     nova = Signal()
     abrir = Signal(str)
@@ -1418,6 +1411,7 @@ class JanelaPrincipal(QMainWindow):
                 nova = None
             if nova:
                 self.depois(lambda: self._versao_achada(nova))
+            self._migrar_motor()
             self._garantir_lite()
             self._garantir_modelinhos()
             # 5.2 (F9.5): o Ollama não atualiza modelo sozinho; o Gargantua novo só chega se a pessoa baixar de novo
@@ -1434,6 +1428,29 @@ class JanelaPrincipal(QMainWindow):
         self._nova_versao = nova
         self.lateral.mostrar_versao(nova["versao"])
         self.config.paginas["atualizacoes"].mostrar_versao(nova)
+
+    def _migrar_motor(self):
+        """5.3 (F9): o motor passa a ser o llama.cpp. Quem vem da 5.2 recebe o llama-server e os Gargantua que já tinha no
+        Ollama (copiados do disco quando o arquivo é o mesmo, senão do Hugging Face); se algo falhar, o app segue no Ollama."""
+        import tars_motor_local as motor
+        if os.environ.get("TARS_SEM_ATALHO") == "1" or os.environ.get("TARS_MOTOR") == "ollama" or os.environ.get("OLLAMA_HOST") \
+                or motor.pronto() or getattr(self, "_migrando", False):
+            return
+        tem = set(pu.modelos_instalados(self.nucleo.OLLAMA_HOST))
+        nomes = [n for n in motor.CATALOGO if n in tem] or ["ProjectOpenTARS/Gargantua-2:lite"]
+        self._migrando = True
+        self.depois(lambda: self.faixa.mostrar(t("motor.preparando")))
+        try:
+            motor.preparar(nomes)
+            endereco = motor.garantir()
+            erro = None if endereco else "llama-server"
+        except (OSError, ValueError) as e:
+            endereco, erro = None, str(e)
+        finally:
+            self._migrando = False
+        if endereco:
+            self.nucleo.OLLAMA_HOST = endereco
+        self.depois(lambda: self.faixa.mostrar(t("motor.pronto") if endereco else t("motor.erro", erro=erro)))
 
     def _garantir_lite(self):
         """25/10 (decisão do Enzo): o Gargantua 2 Lite é obrigatório (a única IA em segundo plano). Quem instalou antes, ou

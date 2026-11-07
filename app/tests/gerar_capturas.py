@@ -245,7 +245,7 @@ try:
     w = JanelaPrimeiroUso()
     w.resize(900, 640)
     w.show()
-    for nome, arquivo in (("idioma", "14-first-run-language"), ("modo", "20-first-run-mode"), ("gargantua", "15-first-run-model"),
+    for nome, arquivo in (("idioma", "14-first-run-language"), ("gargantua", "15-first-run-model"),
                           ("pronto", "16-first-run-done")):
         try:
             w.ir(nome)

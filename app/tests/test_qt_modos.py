@@ -53,28 +53,27 @@ def esperar(cond, segundos=15, o_que=""):
     raise AssertionError(f"tempo esgotado: {o_que}")
 
 
-modos.definir_modo("lite")
+modos.definir_dev(False)
 j = JanelaPrincipal(tars, historico=tars_historico.Historico(os.path.join(CASA, "historico.json")), capturar_stdout=False)
 j.resize(1200, 780)
 j.show()
 esperar(lambda: j._modelos, o_que="modelos")
 cfg = j.config
-assert not j.lateral.lista_w.isVisibleTo(j) and not j.lateral.caixa_busca.isVisibleTo(j), "Lite: sem histórico"
-assert not j.lateral.b_memoria.isVisibleTo(j) and not j.cabecalho.pilula.isVisibleTo(j), "Lite: sem memória e seletor"
+assert j.lateral.lista_w.isVisibleTo(j) and j.lateral.b_memoria.isVisibleTo(j) and j.cabecalho.pilula.isVisibleTo(j), "Base: histórico, memória e seletor"
 assert j.lateral.versao.text() == tars.VERSAO_EXIBIDA
-j.abrir_config("avancado")                        # página escondida no Lite: cai na Geral
+j.abrir_config("avancado")                        # página do dev, com ele desligado: cai na Geral
 assert cfg.pilha.currentWidget() is cfg.paginas["geral"]
 visiveis = {n for n, b in cfg.nav.items() if b.isVisibleTo(cfg)}
-assert visiveis == {"geral", "assistente", "voz", "atualizacoes", "sobre"}, visiveis   # 5.2: o assistente vale em todo modo
-print("OK: o Lite esconde histórico, memória, seletor de modelo e as páginas que não são dele")
+assert {"memoria", "rotinas", "probes", "nuvem"} <= visiveis and not {"avancado", "diagnostico"} & visiveis, visiveis
+print("OK: o Base mostra tudo do dia a dia e esconde ajustes avançados e diagnóstico")
 
-# trocar para Pro pela própria tela
-cfg.paginas["geral"].chips_modo["pro"].click()
-assert modos.modo_atual() == "pro"
+# ligar o dev pela própria tela
+cfg.paginas["geral"].dev.setChecked(True)
+assert modos.modo_atual() == "dev"
 assert not j.lateral.lista_w.isHidden() and not j.lateral.b_memoria.isHidden() and not j.cabecalho.pilula.isHidden()
 visiveis = {n for n, b in cfg.nav.items() if b.isVisibleTo(cfg)}
 assert {"avancado", "diagnostico", "memoria", "rotinas", "nuvem"} <= visiveis, visiveis
-print("OK: trocar para o Pro em Configurações > Geral mostra tudo na hora")
+print("OK: ligar o dev em Configurações > Geral mostra tudo na hora")
 
 # Ajustes avançados: grava o que está na tela
 cfg.ir("avancado")
@@ -88,11 +87,11 @@ a = modos.avancado()
 assert a == {"temperatura": 0.7, "contexto": 16384, "instrucoes": "seja breve",
              "ferramentas_desligadas": ["execute_terminal"]}, a
 assert av.msg.text() and not av.aviso.isVisibleTo(cfg)
-cfg.paginas["geral"].chips_modo["base"].click()
+cfg.paginas["geral"].dev.setChecked(False)
 cfg.ir("geral")
 assert not cfg.nav["avancado"].isVisibleTo(cfg) and modos.avancado()["temperatura"] is None
-cfg.paginas["geral"].chips_modo["pro"].click()
-print("OK: Ajustes avançados gravam e só valem no Pro")
+cfg.paginas["geral"].dev.setChecked(True)
+print("OK: Ajustes avançados gravam e só valem com o dev ligado")
 
 # Diagnóstico: lê as ferramentas do log
 log = os.path.join(CASA, "tars.log")

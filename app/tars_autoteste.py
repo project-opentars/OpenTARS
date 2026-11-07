@@ -64,7 +64,7 @@ class _Relatorio:
 
 def _versao_ollama(core):
     try:
-        r = core._SESSION.get(f"{core.OLLAMA_HOST}/api/version", timeout=core.TIMEOUT_HTTP_CURTO)
+        r = core._SESSION.get(core.motor_lib.url("versao", core.OLLAMA_HOST), timeout=core.TIMEOUT_HTTP_CURTO)
         return r.json().get("version") if r.status_code == 200 else None
     except Exception:
         return None

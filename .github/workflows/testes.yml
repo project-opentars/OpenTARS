@@ -66,6 +66,11 @@ jobs:
           python tests/test_gerenciar_modelos.py
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
+      - name: Motor llama.cpp (5.3) sem modelo
+        run: python tests/test_motor_local.py
+      - name: Motor llama.cpp de verdade (baixa o llama-server e o Lite)
+        env: {TARS_MOTOR_REAL: "1"}
+        run: python tests/test_motor_real.py
 
   janelas:
     # as janelas de verdade (sem tela) no Windows e no macOS, com um Ollama de mentira: o primeiro uso de ponta a ponta, a

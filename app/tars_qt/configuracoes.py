@@ -1,6 +1,6 @@
 """Configurações do openTARS 5.0 (barra lateral de 240 px + páginas), no desenho do mockup "Memória":
-Geral, Voz, Memória e privacidade, Nuvem (opcional), Atualizações e Sobre. 5.1: os modos Lite, Base e Pro escondem
-páginas (tars_modos.py), e o Pro ganha Ajustes avançados e Diagnóstico."""
+Geral, Voz, Memória e privacidade, Nuvem (opcional), Atualizações e Sobre. 5.3: Base para todos; a chave "dev"
+(tars_modos.py) mostra os Ajustes avançados e o Diagnóstico."""
 
 import contextlib
 import html
@@ -217,25 +217,11 @@ class PGeral(Pagina):
     def __init__(self, cfg):
         super().__init__(t("cfg.geral.titulo"), t("cfg.geral.sub"))
         self.cfg = cfg
-        sm, vm = _secao(t("cfg.modo"), t("cfg.modo_sub"))
-        lm = QHBoxLayout()
-        lm.setSpacing(10)
-        self.chips_modo = {}
-        grupo_modo = QButtonGroup(self)
-        grupo_modo.setExclusive(True)
-        for m in modos.MODOS:
-            b = _botao(t(f"modo.{m}.nome"), "chip")
-            b.setMinimumWidth(96)
-            b.setCheckable(True)
-            b.clicked.connect(lambda _=False, x=m: self._trocar_modo(x))
-            grupo_modo.addButton(b)
-            self.chips_modo[m] = b
-            lm.addWidget(b)
-        lm.addStretch(1)
-        vm.addLayout(lm)
-        self.desc_modo = rotulo("", "nota", quebra=True)
-        vm.addWidget(self.desc_modo)
-        self._marcar_modo()
+        sm, vm = _secao(t("cfg.dev"), t("cfg.dev_sub"))
+        self.dev = QCheckBox(t("cfg.dev_ligar"))         # 5.3: Lite, Base e Pro viraram Base + esta chave
+        self.dev.setChecked(modos.dev_ligado())
+        self.dev.toggled.connect(self._trocar_dev)
+        vm.addWidget(self.dev)
         self.adicionar(sm)
 
         s, v = _secao(t("cfg.idioma"), t("cfg.idioma_sub"))
@@ -281,17 +267,11 @@ class PGeral(Pagina):
         self.adicionar(s2)
         self.terminar()
 
-    def _marcar_modo(self):
-        atual = modos.modo_atual()
-        self.chips_modo[atual].setChecked(True)
-        self.desc_modo.setText(t(f"modo.{atual}.desc"))
-
-    def _trocar_modo(self, modo):
-        if modo != modos.modo_atual():
-            modos.definir_modo(modo)
+    def _trocar_dev(self, ligado):
+        if ligado != modos.dev_ligado():
+            modos.definir_dev(ligado)
             self.cfg.aplicar_modo()
             self.cfg.mudou_modo.emit()
-        self._marcar_modo()
 
     def _mascote(self, ligado):
         tars_i18n.salvar_config(mascote=bool(ligado))
@@ -304,7 +284,9 @@ class PGeral(Pagina):
 
     def ao_abrir(self):
         n = self.cfg.nucleo
-        self._marcar_modo()
+        self.dev.blockSignals(True)
+        self.dev.setChecked(modos.dev_ligado())
+        self.dev.blockSignals(False)
         self.mascote.blockSignals(True)             # ele pode ter sido escondido pelo menu do próprio mascote
         self.mascote.setChecked(bool(tars_i18n.ler_config().get("mascote", True)))
         self.mascote.blockSignals(False)
@@ -2239,8 +2221,7 @@ class PAvancado(Pagina):
         self.instrucoes.setPlainText(a["instrucoes"])
         for nome, c in self.caixas.items():
             c.setChecked(nome not in a["ferramentas_desligadas"])
-        modo = modos.modo_atual()
-        self.aviso.setText("" if modo == "pro" else t("cfg.av.so_pro", modo=t(f"modo.{modo}.nome")))
+        self.aviso.setText("" if modos.dev_ligado() else t("cfg.av.so_pro"))
         self.msg.setText("")
 
     def _salvar(self):

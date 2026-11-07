@@ -24,7 +24,7 @@ from tars_qt import configuracoes as cfgmod, tema
 app.setStyleSheet(tema.folha_principal() if hasattr(tema, "folha_principal") else "")
 
 # 1. a lista em si
-tags = mm.todas_as_tags()
+tags = [i[0] for _, itens in mm.GRUPOS for i in itens]
 assert len(tags) == len(set(tags)) and len(tags) >= 55, tags
 assert [g for g, _ in mm.GRUPOS] == ["opentars", "bonsai", "imagem", "geral", "visao", "codigo", "grandes"]
 nossos = [i[0] for g, itens in mm.GRUPOS if g == "opentars" for i in itens]
@@ -58,7 +58,7 @@ print("OK: modelo que só gera imagem fica fora da conversa")
 
 # 4. visível no Base e no Pro, escondido no Lite
 assert not hasattr(mm, "EXTERNOS"), "o Bonsai Image saiu"
-assert "cfg.modelos" in modos.RECURSOS["base"] and "cfg.modelos" in modos.RECURSOS["pro"] and "cfg.modelos" not in modos.RECURSOS["lite"]
+assert "cfg.modelos" in modos.RECURSOS["base"] and "cfg.modelos" in modos.RECURSOS["dev"]
 assert "modelos" in cfgmod.PAGINAS
 print("OK: página no Base e no Pro")
 

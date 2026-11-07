@@ -172,9 +172,8 @@ print("OK: Rodar agora de um Probe com regra fixa não precisa de modelo")
 
 pg._parar_tudo()
 assert not any(x["ativo"] for x in tp.Probes().listar()) and not servico["ligado"]
-cfg.paginas["geral"].chips_modo["lite"].click()
-assert j.lateral.b_probes.isHidden() and j.cabecalho.sino.isHidden() and not cfg.nav["probes"].isVisibleTo(cfg)
-print("OK: Parar tudo desliga tudo, e o Lite esconde os Probes e o sino")
+assert not j.lateral.b_probes.isHidden() and not j.cabecalho.sino.isHidden() and cfg.nav["probes"].isVisibleTo(cfg)
+print("OK: Parar tudo desliga tudo, e o Base (padrão da 5.3) mostra os Probes e o sino")
 j._saindo = True
 j.close()
 

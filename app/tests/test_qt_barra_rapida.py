@@ -143,6 +143,14 @@ assert not j.barra.isVisible() and "Oi pessoal" in j._painel_acoes.trecho.text()
 j._painel_acoes.fechar()
 print("OK: atalho das ações sem seleção abre a barra rápida; com seleção, o painel")
 
+from PySide6.QtCore import Qt as _Qt
+j.barra.mostrar() if hasattr(j.barra, "mostrar") else j.barra.show()
+img = j.barra.grab().toImage()
+assert j.barra.testAttribute(_Qt.WA_TranslucentBackground), "a barra precisa de fundo transparente para ter cantos redondos"
+assert img.pixelColor(1, 1).alpha() == 0 and img.pixelColor(img.width() // 2, img.height() // 2).alpha() == 255, "canto transparente, cartão opaco"
+j.barra.hide()
+print("OK: a barra tem cantos redondos de verdade (07/11: saía quadrada)")
+
 j._saindo = True
 j.close()
 print("test_qt_barra_rapida: OK")

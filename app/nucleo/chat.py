@@ -1649,6 +1649,17 @@ def _gerar_imagem_pelo_chat(texto):
     return _responder_sem_modelo(texto, t("imagem.pronta", arquivo=arquivo.name, pasta=arquivo.parent) + f"\n\n![{o_que}]({arquivo})")
 
 
+def _resolver_sem_modelo(texto):
+    """5.3 (F4): o que sai por regra, sem o modelo (tars_atalhos): estado do PC, memória, contas, arquivos, vários passos e
+    perguntas sobre o mundo pelo SearXNG. None: segue para o modelo. Um erro aqui nunca impede a conversa."""
+    try:
+        import tars_atalhos
+        return tars_atalhos.resolver(texto, sys.modules[__name__])
+    except Exception as e:  # noqa: BLE001
+        logging.warning("atalhos sem modelo falharam: %s", e)
+        return None
+
+
 def processar_mensagem(texto, anexos=None):
     """Um pedido do usuário do começo ao fim: comandos (/modelo,
     /limpar...), escolha do modelo, resposta e salvamento. Usado pelo
@@ -1684,6 +1695,10 @@ def processar_mensagem(texto, anexos=None):
         return gerada
     import tars_imagem
     tars_imagem.parar()        # o Bonsai segura a placa; a conversa (Ollama) precisa dela agora
+    if not anexos:
+        direta = _resolver_sem_modelo(texto)
+        if direta is not None:
+            return _responder_sem_modelo(texto, direta)
 
     # "use a ferramenta", "faz de verdade", "try again": a tarefa e o modelo saem do pedido anterior, que é o que vai ser feito
     retoma = _ultimo_pedido_real() if not anexos and escolha.eh_retomada(normalizar(texto)) else None

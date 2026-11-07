@@ -48,13 +48,13 @@ assert R.descrever_quando(d, t) == t("rot.q_diaria", hora="08:00") and "08:00" i
 assert "seg" in R.descrever_quando(s, t).lower() and "09:30" in R.descrever_quando(s, t)
 
 # --- ações arriscadas ------------------------------------------------------------
-assert R.categoria_do_comando("rm -rf ~/lixo") == "apagar"
-assert R.categoria_do_comando("git push origin main") == "enviar"
-assert R.categoria_do_comando("curl -X POST https://x.org -d a=1") == "enviar"
-assert R.categoria_do_comando("sudo apt install vlc") == "instalar"
-assert R.categoria_do_comando("pip install requests") == "instalar"
-assert R.categoria_do_comando("ls -la ~") is None and R.categoria_do_comando("curl https://x.org") is None
-assert R.categoria_do_comando("git pull") is None
+assert R.categorias_do_comando("rm -rf ~/lixo") == {"apagar"}
+assert R.categorias_do_comando("git push origin main") == {"enviar"}
+assert R.categorias_do_comando("curl -X POST https://x.org -d a=1") == {"enviar"}
+assert R.categorias_do_comando("sudo apt install vlc") == {"instalar"}
+assert R.categorias_do_comando("pip install requests") == {"instalar"}
+assert not R.categorias_do_comando("ls -la ~") and not R.categorias_do_comando("curl https://x.org")
+assert not R.categorias_do_comando("git pull")
 
 # --- fala_de_rotina ----------------------------------------------------------------
 for frase in ("agende uma limpeza todo dia às 8h", "toda segunda abre o jornal", "a cada 30 minutos confere o email",

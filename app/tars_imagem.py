@@ -23,6 +23,7 @@ import time
 from pathlib import Path
 
 import tars_plataforma as plataforma
+import tars_motor as motor
 
 REPOSITORIO = "https://github.com/PrismML-Eng/Bonsai-Image-Demo.git"
 COMMIT = "de1e5c0323e7a0474c68c6cdd075bad4e782fb0e"
@@ -123,10 +124,10 @@ def descarregar_ollama(host, abrir=None):
     import urllib.request
     abrir = abrir or urllib.request.urlopen
     try:
-        with abrir(f"{host}/api/ps", timeout=5) as r:
+        with abrir(motor.url("rodando", host), timeout=5) as r:
             nomes = [m.get("name") for m in json.loads(r.read()).get("models", [])]
         for nome in nomes:
-            pedido = urllib.request.Request(f"{host}/api/generate", data=json.dumps({"model": nome, "keep_alive": 0}).encode(),
+            pedido = urllib.request.Request(motor.url("gerar", host), data=json.dumps({"model": nome, "keep_alive": 0}).encode(),
                                             headers={"Content-Type": "application/json"})
             with abrir(pedido, timeout=30):
                 pass

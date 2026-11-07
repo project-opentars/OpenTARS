@@ -37,6 +37,7 @@ import tars_memoria
 import tars_plataforma as plataforma
 import tars_rotinas
 import tars_web
+import tars_motor as motor
 
 # ------------------------------------------------------------
 # Contrato com o kit de treino (fonte/kit/gargantua.py, seção 1d): igual byte a byte (tests/test_probes.py confere)
@@ -735,9 +736,6 @@ class Probes:
         agora = self.agora()
         return [p for p in self.listar() if p["ativo"] and p.get("proxima") and dt.datetime.fromisoformat(p["proxima"]) <= agora]
 
-    def avisos_hoje(self, p):
-        return int((p.get("avisos") or {}).get(self.agora().date().isoformat(), 0))
-
     def registrar(self, id_, resultado):
         """Guarda o resultado de uma execução. Devolve o aviso a mostrar (dict) ou None (sem aviso, ou teto do dia)."""
         agora = self.agora().replace(microsecond=0)
@@ -988,7 +986,7 @@ def perguntar_ollama(host, modelo, sistema, pedido, esquema=None, cpu=True, time
              "options": {"temperature": 0.1, "num_predict": 600, **({"num_gpu": 0} if cpu else {})}}
     if esquema:
         corpo["format"] = esquema
-    pedido_http = urllib.request.Request(f"{host}/api/chat", data=json.dumps(corpo).encode(),
+    pedido_http = urllib.request.Request(motor.url("conversa", host), data=json.dumps(corpo).encode(),
                                          headers={"Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(pedido_http, timeout=timeout) as r:

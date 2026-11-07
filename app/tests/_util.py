@@ -35,6 +35,7 @@ os.environ.setdefault("TARS_SEM_ATALHO", "1")
 if not os.path.exists(os.environ["TARS_ARQUIVO_CONFIG"]):
     open(os.environ["TARS_ARQUIVO_CONFIG"], "w").write('{"web": {"ligada": false}}')
 os.environ.setdefault("TARS_SEM_MODELINHOS", "1")      # os modelinhos de foto (~300 MB) não se baixam nos testes
+os.environ.setdefault("TARS_SEM_ATALHOS", "1")         # 5.3: as respostas sem modelo têm teste próprio; aqui o pedido vai ao modelo de mentira
 # 5.1: a escolha do Gargantua Lite depende da máquina; os testes fixam o completo (o do Lite pede o dele)
 os.environ.setdefault("TARS_GARGANTUA", "completo")
 # 18/10: o registro das ferramentas também: sem isto, os testes escreviam "open_application app82..." no ~/.tars_log de verdade
@@ -47,6 +48,7 @@ os.environ.setdefault("XDG_CACHE_HOME", tempfile.mkdtemp(prefix="opentars-cache-
 if os.environ.get("TARS_TESTE_OLLAMA_REAL") != "1" and (not os.environ.get("OLLAMA_HOST")
                                                      or os.environ["OLLAMA_HOST"].rstrip("/").endswith(":11434")):
     os.environ["OLLAMA_HOST"] = "http://127.0.0.1:9"
+os.environ.setdefault("TARS_MOTOR", "ollama")      # 5.3: um motor llama.cpp instalado na máquina não entra nos testes
 
 
 def carregar_tars():

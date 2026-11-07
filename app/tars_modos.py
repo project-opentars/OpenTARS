@@ -1,50 +1,61 @@
-"""openTARS 5.1: os três modos da interface (Lite, Base e Pro) e os ajustes avançados do Pro.
+"""openTARS 5.3: um modo só (Base) e a chave "dev", que acrescenta os ajustes avançados e o diagnóstico.
 
+Até a 5.2 havia Lite, Base e Pro; em 07/11 o Enzo decidiu: Base para todo mundo e "dev" nas Configurações.
+Quem usava o Pro atualiza com o dev ligado; quem usava o Lite ou o Base fica no Base.
 Só biblioteca padrão: a janela pergunta aqui o que mostrar, e o núcleo pergunta os ajustes avançados.
-A escolha fica em ~/.config/opentars/config.json ("modo" e "avancado"), o mesmo arquivo do idioma.
-
-- Lite: conversa, microfone, anexos e o básico das configurações. Tudo no automático.
-- Base: Lite + histórico, escolha de modelo, memória, rotinas, Probes e nuvem.
-- Pro: Base + ajustes avançados e diagnóstico.
+A escolha fica em ~/.config/opentars/config.json ("dev", e o "modo" antigo só para migrar).
 """
 
 import tars_i18n
 import tars_primeiro_uso as pu
 
-MODOS = ("lite", "base", "pro")
-PADRAO_INSTALACAO_NOVA = "base"
-PADRAO_ATUALIZACAO = "pro"       # quem já usava a 5.0 não perde nada do que via
+MODOS = ("base", "dev")
 
-_LITE = {"conversa", "microfone", "anexos", "cfg.geral", "cfg.assistente", "cfg.voz", "cfg.atualizacoes", "cfg.sobre"}
-_BASE = _LITE | {"historico", "seletor_modelo", "memoria", "cfg.memoria", "cfg.rotinas", "cfg.probes", "cfg.nuvem", "cfg.modelos", "cfg.gerenciar"}
-_PRO = _BASE | {"cfg.avancado", "cfg.diagnostico"}
-RECURSOS = {"lite": _LITE, "base": _BASE, "pro": _PRO}
+_BASE = {"conversa", "microfone", "anexos", "cfg.geral", "cfg.assistente", "cfg.voz", "cfg.atualizacoes", "cfg.sobre",
+         "historico", "seletor_modelo", "memoria", "cfg.memoria", "cfg.rotinas", "cfg.probes", "cfg.nuvem", "cfg.modelos", "cfg.gerenciar"}
+_DEV = _BASE | {"cfg.avancado", "cfg.diagnostico"}
+RECURSOS = {"base": _BASE, "dev": _DEV}
+_ANTIGOS = {"lite": "base", "pro": "dev"}
 
 CONTEXTOS = (4096, 8192, 16384, 32768)
 TEMPERATURA_MAXIMA = 1.5
 LIMITE_INSTRUCOES = 1500
 
 
+def dev_ligado():
+    config = tars_i18n.ler_config()
+    if isinstance(config.get("dev"), bool):
+        return config["dev"]
+    antigo = config.get("modo")
+    if antigo in ("lite", "base"):
+        return False
+    if antigo == "pro":
+        return True
+    # sem escolha gravada: quem atualizou da 5.0 via tudo (o antigo Pro); instalação nova começa no Base
+    return pu.primeiro_uso_concluido()
+
+
+def definir_dev(ligado):
+    tars_i18n.salvar_config(dev=bool(ligado))
+
+
 def modo_atual():
-    m = tars_i18n.ler_config().get("modo")
-    if m in MODOS:
-        return m
-    # sem escolha gravada: quem atualizou da 5.0 (primeiro uso já feito) fica no Pro; instalação nova, Base
-    return PADRAO_ATUALIZACAO if pu.primeiro_uso_concluido() else PADRAO_INSTALACAO_NOVA
+    return "dev" if dev_ligado() else "base"
 
 
 def definir_modo(modo):
-    if modo not in MODOS:
+    """Compatibilidade: "pro"/"dev" ligam o dev; "lite"/"base" desligam."""
+    if modo not in MODOS and modo not in _ANTIGOS:
         raise ValueError(f"modo desconhecido: {modo}")
-    tars_i18n.salvar_config(modo=modo)
+    definir_dev(_ANTIGOS.get(modo, modo) == "dev")
 
 
 def mostra(recurso, modo=None):
-    return recurso in RECURSOS[modo or modo_atual()]
+    return recurso in RECURSOS[_ANTIGOS.get(modo, modo) or modo_atual()]
 
 
 # ------------------------------------------------------------
-# Ajustes avançados (só valem no Pro; no Lite e no Base tudo fica no automático)
+# Ajustes avançados (só valem com o dev ligado; no Base tudo fica no automático)
 # ------------------------------------------------------------
 
 def _limpar(bruto):
@@ -65,13 +76,13 @@ def _limpar(bruto):
 
 
 def avancado_gravado():
-    """O que está gravado, valha ou não agora (a tela do Pro mostra isso)."""
+    """O que está gravado, valha ou não agora (a tela dos ajustes avançados mostra isso)."""
     return _limpar(tars_i18n.ler_config().get("avancado"))
 
 
 def avancado():
-    """Os ajustes que valem agora: os gravados no Pro; os padrões nos outros modos."""
-    return avancado_gravado() if modo_atual() == "pro" else _limpar({})
+    """Os ajustes que valem agora: os gravados, com o dev ligado; os padrões, no Base."""
+    return avancado_gravado() if dev_ligado() else _limpar({})
 
 
 def salvar_avancado(**mudancas):

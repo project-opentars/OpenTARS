@@ -210,11 +210,3 @@ def ler_modelos(dados):
             ids.append(ident)
     return ids
 
-
-def capacidades_pelo_nome(ident):
-    caps = {"tools"}
-    if _RE_VISAO.search(ident):
-        caps.add("vision")
-    if re.search(r"qwen3|deepseek-r1|qwq|reason|think", ident, re.I):
-        caps.add("thinking")
-    return caps

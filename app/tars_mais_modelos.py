@@ -12,7 +12,7 @@ GRUPOS = (
     ("opentars", (
         ("ProjectOpenTARS/Gargantua-2:lite", "Gargantua 2 Lite", 0.617, ("vision", "tools")),
         ("ProjectOpenTARS/Gargantua-2:latest", "Gargantua 2", 1.6, ("vision", "tools")),
-        ("ProjectOpenTARS/Gargantua:code", "Gargantua Code", 1.1, ("tools",)),
+        ("ProjectOpenTARS/Gargantua-Code-Gen2:code", "Gargantua Code Gen 2", 4.7, ("tools",)),
     )),
     ("bonsai", (
         ("bonsai-2:2b", "Bonsai 2 · 2B", 0.911, ("vision", "tools", "thinking")),
@@ -115,10 +115,6 @@ _APELIDOS = {
     "x/flux2-klein:4b": "x/flux2-klein:latest",
     "x/z-image-turbo": "x/z-image-turbo:latest",
 }
-
-
-def todas_as_tags():
-    return [item[0] for _, itens in GRUPOS for item in itens]
 
 
 def _norma(tag):

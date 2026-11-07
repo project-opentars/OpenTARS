@@ -508,13 +508,6 @@ def modo_print(pedido, formato="text", modelo=None):
     return 0 if ok else 1
 
 
-def comando_cooper(instalar=True):
-    """opentars --cooper: o Cooper foi descontinuado (18/10/2026); o Gargantua 2 enxerga a tela. Só avisa e diz como instalar."""
-    print(c(t("cooper.descontinuado", comando=visao_lib.COMANDO_INSTALAR), Cor.AMARELO))
-    return 0
-
-
-
 # ------------------------------------------------------------
 # Logo no terminal: o monólito do TARS (quatro colunas e a faixa verde, como o ícone) com o nome ao lado.
 # Só aparece num terminal de verdade (não em pipe nem em script) e respeita NO_COLOR.
@@ -626,10 +619,6 @@ def main():
     # 5.1: --searxng prepara a pesquisa web local (Docker) e a liga
     if "--searxng" in argumentos:
         sys.exit(comando_searxng())
-
-    # --cooper: o Cooper foi descontinuado, o comando só avisa
-    if any(a in ("--cooper",) for a in argumentos):
-        sys.exit(comando_cooper())
 
     # 5.1: modo de permissão (perguntar, plano, automático) e qual conversa retomar
     global MODO_PERMISSAO

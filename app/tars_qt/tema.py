@@ -10,7 +10,7 @@ Cantos arredondados (botões 10 px, cartões 12 a 14 px), alvos de pelo menos 44
 import html
 from pathlib import Path
 
-from PySide6.QtCore import QByteArray, QPointF, QRectF, QSize, Qt
+from PySide6.QtCore import QByteArray, QEvent, QObject, QPointF, QRectF, QSize, Qt
 from PySide6.QtGui import QColor, QFont, QFontDatabase, QIcon, QPainter, QPainterPath, QPen, QPixmap
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtSvgWidgets import QSvgWidget
@@ -425,6 +425,32 @@ def rotulo(texto, papel, quebra=False, maximo=None, html_pronto=False):
         fonte.setLetterSpacing(QFont.AbsoluteSpacing, 0.96)   # 0,08 em de 12 px
         r.setFont(fonte)
     return r
+
+
+class _Cartao(QObject):
+    """Pinta o cartão arredondado antes do resto da janela (com fundo transparente o estilo não pinta mais o fundo)."""
+
+    def __init__(self, janela, fundo, borda, raio):
+        super().__init__(janela)
+        self.fundo, self.borda, self.raio = QColor(fundo), QColor(borda), raio
+
+    def eventFilter(self, alvo, evento):
+        if evento.type() == QEvent.Paint:
+            p = QPainter(alvo)
+            p.setRenderHint(QPainter.Antialiasing)
+            p.setPen(QPen(self.borda, 1))
+            p.setBrush(self.fundo)
+            p.drawRoundedRect(QRectF(alvo.rect()).adjusted(0.5, 0.5, -0.5, -0.5), self.raio, self.raio)
+            p.end()
+        return False
+
+
+def janela_arredondada(janela, fundo, borda, raio=16):
+    """Janela sem moldura com cantos arredondados de verdade (07/11: a barra do Ctrl+Alt+Espaço saía quadrada).
+    O border-radius do estilo só arredonda o desenho; sem fundo transparente o sistema preenche o retângulo inteiro por baixo,
+    e com fundo transparente o estilo deixa de pintar o cartão. Então o fundo fica transparente e o cartão é pintado aqui."""
+    janela.setAttribute(Qt.WA_TranslucentBackground, True)
+    janela.installEventFilter(_Cartao(janela, fundo, borda, raio))
 
 
 def aplicar_papel(widget, papel):

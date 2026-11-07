@@ -18,6 +18,7 @@ class CartaoSugestao(QFrame):
 
     def __init__(self):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus)
+        tema.janela_arredondada(self, CORES['fundo'], CORES['borda2'], 14)
         self.setAttribute(Qt.WA_ShowWithoutActivating, True)
         self.setObjectName("cartao-sugestao")
         self.setFixedWidth(LARGURA)

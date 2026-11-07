@@ -28,7 +28,7 @@ def servidor_api():
     dados = nuvem_config()
     if not (dados["ativa"] and dados["endereco"] and dados["chave"]):
         return ""
-    return dados["endereco"].rstrip("/")
+    return api.normalizar_url(dados["endereco"])   # "localhost:1234" escrito à mão não chegava a lugar nenhum
 
 
 def _cabecalhos_api():

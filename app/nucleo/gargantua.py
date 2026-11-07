@@ -80,23 +80,23 @@ def e_gargantua_2(modelo):
 
 
 def variante_do_gargantua(modelo):
-    """'lite' ou 'code' se o nome ou a etiqueta dizem que é uma VARIANTE do Gargantua (gargantua-code,
+    """'lite', 'code', 'pro' ou 'pi' se o nome ou a etiqueta dizem que é uma VARIANTE do Gargantua (gargantua-code,
     ProjectOpenTARS/Gargantua:code, Gargantua:1.2-lite); '' se é o oficial (ou qualquer outro Gargantua).
     A mesma regra está no kit (gargantua.py: variante_do_nome) e em tars_primeiro_uso.py."""
     base, _, tag = str(modelo or "").strip().lower().partition(":")
     segmento = _segmento_gargantua(base)
     partes = re.split(r"[-_. ]", segmento[len("gargantua"):] if segmento.startswith("gargantua") else segmento)
     for parte in partes + re.split(r"[-_. ]", tag):
-        if parte in ("lite", "code"):
+        if parte in ("lite", "code", "pro", "pi"):
             return parte
     return ""
 
 
 def ordem_do_gargantua(tag):
-    """Quem vai na frente quando há vários Gargantua: o Gargantua 2, o oficial antigo, os outros, o Code e por fim o Lite."""
+    """Quem vai na frente quando há vários Gargantua: o Gargantua 2, o oficial antigo, os outros, o Code e o Pro, o Lite e por fim o Pi."""
     variante = variante_do_gargantua(tag)
     if variante:
-        return {"code": 3, "lite": 4}[variante]
+        return {"code": 3, "pro": 3, "lite": 4, "pi": 5}[variante]
     if e_gargantua_2(tag):
         return 0
     return 1 if str(tag).lower().startswith(REPOSITORIO_ANTIGO.lower()) else 2

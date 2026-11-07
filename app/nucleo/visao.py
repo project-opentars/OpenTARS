@@ -76,7 +76,7 @@ def _visao_cabe_junto(tag):
         catalogo = catalogar_modelos()
         meu = (catalogo.get(tag) or {}).get("vram_estimado_gb")
         outros = [m.get("vram_estimado_gb") for m in catalogo.values()
-                  if not visao_lib.e_cooper(m["tag"]) and m.get("categoria") != "embedding"
+                  if m.get("categoria") != "embedding"
                   and m.get("vram_estimado_gb") is not None]
         if not gpu or meu is None or not outros:
             return False

@@ -16,7 +16,6 @@ assert pu.maquina_fraca(vram_mb=2048, ram_mb=16000, threads=2), "poucas threads 
 assert not pu.maquina_fraca(vram_mb=0, ram_mb=16000, threads=8), "sem placa mas com RAM e threads: o 4B"
 os.environ["TARS_GARGANTUA"] = "lite"
 assert pu.maquina_fraca(vram_mb=24000) and pu.gargantua_desta_maquina() == "ProjectOpenTARS/Gargantua-2:lite"
-assert pu.tamanho_gargantua_gb() == pu.TAMANHO_GARGANTUA_LITE_GB
 assert pu.tem_gargantua_desta_maquina(["ProjectOpenTARS/Gargantua:lite"])
 assert pu.tem_gargantua_desta_maquina(["ProjectOpenTARS/Gargantua:latest"]), "o oficial sempre serve"
 assert not pu.tem_gargantua_desta_maquina(["ProjectOpenTARS/Gargantua:code", "qwen3:4b"])

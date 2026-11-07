@@ -14,6 +14,7 @@ import requests
 
 import tars_i18n as i18n
 import tars_plataforma as plataforma
+import tars_motor as motor
 
 NOME_AUTOSTART = "opentars-assistente"
 
@@ -27,7 +28,7 @@ KEEP_ALIVE_OCIOSO = "3m"       # quanto o modelo do assistente fica na memória 
 
 def manter_carregado(host, modelo, carregar, sessao=None):
     """Um pedido sem prompt carrega o modelo por KEEP_ALIVE_OCIOSO (e o Ollama descarrega sozinho) ou descarrega já (0)."""
-    r = (sessao or requests).post(f"{host}/api/generate", json={"model": modelo, "keep_alive": KEEP_ALIVE_OCIOSO if carregar else 0},
+    r = (sessao or requests).post(motor.url("gerar", host), json={"model": modelo, "keep_alive": KEEP_ALIVE_OCIOSO if carregar else 0},
                                   timeout=(5, 180))
     if r.status_code != 200:
         try:

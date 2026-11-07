@@ -582,9 +582,9 @@ _CRITERIOS_MODELO = {
 
 
 def _so_de_conversa(catalogo):
-    """"/modelo o menor", "o de visão"...: só entra modelo que conversa (nem embedding, nem o Cooper)."""
+    """"/modelo o menor", "o de visão"...: só entra modelo que conversa (não embedding)."""
     return {t_: m for t_, m in catalogo.items()
-            if m["categoria"] != "embedding" and not visao_lib.e_cooper(t_) and not m.get("nuvem")}
+            if m["categoria"] != "embedding" and not m.get("nuvem")}
 
 
 def _extremo_por_tamanho(catalogo, menor):

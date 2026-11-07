@@ -220,21 +220,9 @@ def kokoro_baixado():
     return all(a.exists() and a.stat().st_size > 1000 for a in arquivos_kokoro())
 
 
-def arquivo_voz(idioma, nome=None):
-    """O arquivo que precisa existir pra falar: o modelo do Kokoro (o mesmo
-    pra todas as vozes)."""
-    return arquivos_kokoro()[0]
-
-
 def arquivo_voz_piper(idioma):
     familia, codigo, nome, qualidade = VOZES.get(idioma) or VOZES["en"]
     return pasta_dados() / f"{codigo}-{nome}-{qualidade}.onnx"
-
-
-def urls_voz_piper(idioma):
-    familia, codigo, nome, qualidade = VOZES.get(idioma) or VOZES["en"]
-    campos = dict(familia=familia, codigo=codigo, nome=nome, qualidade=qualidade)
-    return URL_VOZ.format(extensao=".onnx", **campos), URL_VOZ.format(extensao=".onnx.json", **campos)
 
 
 IDIOMA_WHISPER = {"en": "en", "pt_BR": "pt"}

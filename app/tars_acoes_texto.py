@@ -18,6 +18,7 @@ import unicodedata
 import requests
 
 import tars_plataforma as plataforma
+import tars_motor as motor
 
 SISTEMA_ACAO_TEXTO = (
     "You are Gargantua, the AI of openTARS. You transform the text the user selected and answer with ONLY the result: "
@@ -95,7 +96,7 @@ def rodar(acao, texto, modelo, host, pergunta=None, ao_pedaco=None, cancelar=Non
     if manter:
         corpo["keep_alive"] = "3m"
     partes = []
-    with sessao.post(f"{host}/api/chat", json=corpo, stream=True, timeout=(5, 300)) as r:
+    with sessao.post(motor.url("conversa", host), json=corpo, stream=True, timeout=(5, 300)) as r:
         if r.status_code != 200:        # o Ollama explica no corpo ("model 'x' not found"); o status sozinho não diz nada
             try:
                 motivo = r.json().get("error")

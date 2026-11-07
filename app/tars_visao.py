@@ -4,8 +4,6 @@ Desde o Gargantua 2 o próprio modelo enxerga: ele responde às perguntas sobre 
 marcado, o que diz um campo) no mesmo formato em que o Cooper respondia, porque o treino de visão do Gargantua 2 usou
 exatamente essas perguntas. Instalar:  ollama pull ProjectOpenTARS/Gargantua-2
 
-(Antes tars_cooper.py; os nomes foram trocados por "visão" em 18/10. `e_cooper` e `MODELO_COOPER` ficam de propósito: servem
-para reconhecer um Cooper antigo que ainda esteja instalado, que só entra como reserva se não houver Gargantua 2.)
 
 Este módulo é puro (sem rede): as perguntas no formato do treino, a leitura das respostas e a conversão de milésimos
 (0-1000 da imagem) em pixels. Quem fala com o Ollama é o núcleo (nucleo/visao.py).
@@ -17,24 +15,16 @@ import re
 
 MODELO_VISAO = os.environ.get("TARS_MODELO_GARGANTUA", "ProjectOpenTARS/Gargantua-2")
 COMANDO_INSTALAR = f"ollama pull {MODELO_VISAO}"
-MODELO_COOPER = "ProjectOpenTARS/cooper:1.2"       # descontinuado: só para reconhecer um Cooper que já esteja instalado
 ESCALA = 1000
 
 TIMEOUT_VISAO = 60
 
 
 def ligado(env=None):
-    """TARS_VISAO=0 desliga a visão da tela (TARS_COOPER=0, o nome antigo, continua valendo)."""
+    """TARS_VISAO=0 desliga a visão da tela."""
     env = os.environ if env is None else env
-    valor = env.get("TARS_VISAO", env.get("TARS_COOPER", "1"))
+    valor = env.get("TARS_VISAO", "1")
     return str(valor).lower() not in ("0", "off", "no", "nao", "não", "false")
-
-
-def e_cooper(tag):
-    """'ProjectOpenTARS/cooper:latest', 'cooper', 'cooper-1.0'... (o nome
-    depois da última barra começa com 'cooper')."""
-    nome = str(tag or "").strip().lower().split(":")[0].split("/")[-1]
-    return nome.startswith("cooper")
 
 
 def e_gargantua_2(tag):
@@ -59,21 +49,9 @@ def olho_valido(tag):
 
 
 def achar_instalado(tags):
-    """A tag do modelo que olha a tela: o Gargantua 2 (o :latest primeiro); sem ele, um Cooper antigo; senão None."""
+    """A tag do modelo que olha a tela: o Gargantua 2 (o :latest primeiro); senão None."""
     g2 = sorted(t for t in tags or [] if olho_valido(t))
-    if g2:
-        return next((t for t in g2 if str(t).lower().endswith(":latest")), g2[0])
-    achados = [t for t in tags or [] if e_cooper(t)]
-    if not achados:
-        return None
-    oficial = MODELO_COOPER.lower()
-    for t in achados:                                           # a versão oficial exata (cooper:1.2) primeiro
-        if str(t).lower() == oficial:
-            return t
-    for t in achados:                                           # depois qualquer etiqueta do mesmo nome (cooper:latest)
-        if str(t).lower().split(":")[0] == oficial.split(":")[0]:
-            return t
-    return sorted(achados)[0]
+    return next((t for t in g2 if str(t).lower().endswith(":latest")), g2[0]) if g2 else None
 
 
 # ------------------------------------------------------------

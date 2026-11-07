@@ -29,7 +29,10 @@ usadas = {}
 for p in fontes_py:
     for m in re.finditer(r"""\bt\(\s*["']([\w.]+)["']""", p.read_text(encoding="utf-8")):
         usadas.setdefault(m.group(1), p.name)
-faltam = {k: arq for k, arq in usadas.items() if k not in pt}
+sys.path.insert(0, str(RAIZ))
+import tars_atalhos_textos  # noqa: E402  (5.3: as frases das respostas sem modelo vivem em módulo próprio, pt e en juntas)
+assert set(tars_atalhos_textos.TEXTOS["pt"]) == set(tars_atalhos_textos.TEXTOS["en"]), "tars_atalhos_textos: pt e en com chaves diferentes"
+faltam = {k: arq for k, arq in usadas.items() if k not in pt and k not in tars_atalhos_textos.TEXTOS["pt"]}
 assert not faltam, f"chaves usadas no código que não existem nos idiomas: {faltam}"
 sys.path.insert(0, str(RAIZ))
 import tars_modos  # noqa: E402

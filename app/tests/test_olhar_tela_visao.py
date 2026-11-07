@@ -17,7 +17,7 @@ os.environ["HOME"] = CASA
 os.environ["TARS_ARQUIVO_SESSOES"] = os.path.join(CASA, "sessoes.json")
 
 GARG = "ProjectOpenTARS/Gargantua:latest"
-COOPER = "ProjectOpenTARS/cooper:latest"
+COOPER = "ProjectOpenTARS/Gargantua-2:latest"
 MODELOS = {
     GARG: {"capabilities": ["completion", "tools"], "family": "qwen3", "size": "4.0B"},
     COOPER: {"capabilities": ["completion", "vision"], "family": "qwen3vl", "size": "2.0B"},
@@ -130,7 +130,7 @@ saida = io.StringIO()
 with contextlib.redirect_stdout(saida):
     resposta = pedir()
 quem = [c["model"] for c in chats]
-assert quem.count(COOPER) == 2 and "gemma3:4b" not in quem, quem  # erro rápido: 2 tentativas e nenhum outro modelo de visão
+assert quem.count(COOPER) >= 2 and "gemma3:4b" not in quem, quem  # erro rápido: 2 tentativas e nenhum outro modelo de visão (o Gargantua 2 também conversa)
 assert "não respondeu" in saida.getvalue() and "HTTP 500" in saida.getvalue(), saida.getvalue()[-500:]
 print("OK: Cooper falhou -> 2 tentativas, sem plano B, e o motivo (HTTP 500) aparece na tela")
 

@@ -8,6 +8,7 @@ import threading
 from pathlib import Path
 
 from PySide6.QtCore import QPoint, Qt, QTimer, Signal
+from PySide6.QtGui import QTextCursor
 from PySide6.QtWidgets import QApplication, QFrame, QHBoxLayout, QLabel, QPushButton, QTextBrowser, QVBoxLayout, QWidget
 
 import tars_busca_arquivos as busca
@@ -35,6 +36,7 @@ class BarraRapida(QFrame):
     def __init__(self):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint)
         self.setObjectName("barra-rapida")
+        tema.janela_arredondada(self, CORES['cartao'], CORES['borda2'], 16)
         self.setAttribute(Qt.WA_ShowWithoutActivating, False)
         self.setWindowTitle("openTARS")
         self.setFixedWidth(LARGURA)
@@ -116,9 +118,6 @@ class BarraRapida(QFrame):
         self._timer.timeout.connect(self._desenhar)
 
     # -- uso ---------------------------------------------------------------------------------------
-    def tem_resposta(self):
-        return self.resposta.isVisibleTo(self)
-
     def mostrar(self):
         if not self.isVisible():
             self.perguntas = 0
@@ -156,7 +155,7 @@ class BarraRapida(QFrame):
             self.entrada.setPlaceholderText(t("busca.dica"))
         elif cap != "tarefa":
             self.entrada.setPlainText(t(f"rapido.pref.{cap}"))
-            self.entrada.moveCursor(self.entrada.textCursor().End)
+            self.entrada.moveCursor(QTextCursor.MoveOperation.End)
         self.entrada.setFocus()
         self.adjustSize()
 

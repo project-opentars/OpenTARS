@@ -30,6 +30,7 @@ class PainelAcoes(QFrame):
 
     def __init__(self, host, modelos_instalados, lite, principal):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        tema.janela_arredondada(self, CORES['fundo'], CORES['borda2'], 16)
         self.setObjectName("painel-acoes")
         self.setWindowTitle("openTARS")
         self.setFixedWidth(LARGURA)

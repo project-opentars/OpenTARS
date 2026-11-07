@@ -25,6 +25,7 @@ import urllib.request
 from pathlib import Path
 
 import tars_plataforma as plataforma
+import tars_motor as motor
 
 MODELO_GARGANTUA = os.environ.get("TARS_MODELO_GARGANTUA", "ProjectOpenTARS/Gargantua-2")   # 18/10: o Gargantua 2 (Qwen3.5 2B, com visão)
 REPOSITORIO_ANTIGO = "ProjectOpenTARS/Gargantua"           # o Gargantua 1.x (Qwen3 4B), que quem já tem continua usando
@@ -36,7 +37,7 @@ MODELO_GARGANTUA_LITE = MODELO_GARGANTUA + ":lite"            # 0,8B com visão,
 TAMANHO_GARGANTUA_LITE_GB = 0.7
 PORTA_OLLAMA = 11434
 
-PASSOS = ("idioma", "modo", "ollama", "nuvem", "gargantua", "teste")
+PASSOS = ("idioma", "ollama", "nuvem", "gargantua", "teste")      # 5.3: o passo "modo" saiu (Base para todos)
 
 
 # ------------------------------------------------------------
@@ -123,7 +124,7 @@ def _obter(url, timeout=3, cabecalhos=None):
 def versao_ollama(host, timeout=2):
     """A versão, se o servidor responde; senão None."""
     try:
-        status, corpo = _obter(f"{host}/api/version", timeout)
+        status, corpo = _obter(motor.url("versao", host), timeout)
         return str(json.loads(corpo).get("version") or "?") if status == 200 else None
     except Exception:
         return None
@@ -209,7 +210,7 @@ def iniciar_ollama(esperar=12, procurar=None):
 
 def modelos_instalados(host):
     try:
-        _, corpo = _obter(f"{host}/api/tags", 4)
+        _, corpo = _obter(motor.url("modelos", host), 4)
         return [str(m.get("name") or m.get("model") or "") for m in json.loads(corpo).get("models", [])]
     except Exception:
         return []
@@ -229,7 +230,7 @@ def e_variante_do_gargantua(modelo):
     base, _, tag = str(modelo or "").strip().lower().partition(":")
     segmento = base.split("/")[-1]
     partes = re.split(r"[-_. ]", segmento[len("gargantua"):] if segmento.startswith("gargantua") else segmento)
-    return any(parte in ("lite", "code") for parte in partes + re.split(r"[-_. ]", tag))
+    return any(parte in ("lite", "code", "pro", "pi") for parte in partes + re.split(r"[-_. ]", tag))
 
 
 def tem_gargantua(modelos):
@@ -291,10 +292,6 @@ def maquina_fraca(vram_mb=None, ram_mb=None, threads=None):
 def gargantua_desta_maquina():
     """O que o primeiro uso baixa aqui: o Gargantua Lite em máquina fraca, o oficial nas outras."""
     return MODELO_GARGANTUA_LITE if maquina_fraca() else MODELO_GARGANTUA
-
-
-def tamanho_gargantua_gb():
-    return TAMANHO_GARGANTUA_LITE_GB if maquina_fraca() else TAMANHO_GARGANTUA_GB
 
 
 def tem_lite(modelos):
@@ -389,7 +386,7 @@ def baixar_modelo(nome, host, ao_progredir=None, cancelado=None, abrir=None):
     baixar de novo retoma de onde parou (o Ollama guarda as camadas prontas)."""
     progresso = Progresso()
     corpo = json.dumps({"model": nome, "stream": True}).encode()
-    pedido = urllib.request.Request(f"{host}/api/pull", data=corpo, headers={"Content-Type": "application/json"})
+    pedido = urllib.request.Request(motor.url("baixar", host), data=corpo, headers={"Content-Type": "application/json"})
     try:
         with (abrir or urllib.request.urlopen)(pedido, timeout=60) as r:
             for linha in r:
@@ -447,7 +444,7 @@ _RE_NUVEM = re.compile(r"(^|[-:])cloud($|[-:])", re.IGNORECASE)
 
 def conta_ollama(host, abrir=None, timeout=4):
     """O nome da conta do ollama.com em que este Ollama entrou (POST /api/me), ou None. Só o nome: o e-mail fica fora."""
-    pedido = urllib.request.Request(f"{host}/api/me", data=b"{}", method="POST", headers={"Content-Type": "application/json"})
+    pedido = urllib.request.Request(motor.url("conta", host), data=b"{}", method="POST", headers={"Content-Type": "application/json"})
     try:
         with (abrir or urllib.request.urlopen)(pedido, timeout=timeout) as r:
             dados = json.loads(r.read() or b"{}")
@@ -496,7 +493,7 @@ def testar_gargantua(host, modelo, enviar=None):
         "messages": [{"role": "user", "content": "Quanto é 2 + 2? Responda só com o número."}],
         "options": {"num_predict": 24, "temperature": 0},
     }).encode()
-    pedido = urllib.request.Request(f"{host}/api/chat", data=corpo, headers={"Content-Type": "application/json"})
+    pedido = urllib.request.Request(motor.url("conversa", host), data=corpo, headers={"Content-Type": "application/json"})
     inicio = time.time()
     try:
         with (enviar or urllib.request.urlopen)(pedido, timeout=180) as r:
