@@ -2,6 +2,7 @@
 modelo e as páginas avançadas; o Pro mostra tudo; trocar o modo em Configurações > Geral muda a janela na hora; as
 páginas Ajustes avançados e Diagnóstico gravam e leem o que devem."""
 import os
+from pathlib import Path
 import sys
 import tempfile
 import time
@@ -139,7 +140,7 @@ ass._salvar_agenda()
 assert tars_integracoes.agendas() == [ics, "https://example.com/agenda.ics"] and "2" in ass.agenda_nota.text()
 ass.notas.setText("/tmp/minhas-notas")
 ass._salvar_notas()
-assert str(tars_integracoes.pasta_de_notas()) == "/tmp/minhas-notas"
+assert tars_integracoes.pasta_de_notas() == Path("/tmp/minhas-notas")
 ass.agenda.setText("")
 ass._salvar_agenda()
 ass.notas.setText("")

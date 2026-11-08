@@ -31,8 +31,11 @@ def _nome_do_motor():
 
 def _pasta_curta():
     """A pasta atual, com ~ no lugar da pasta pessoal."""
-    pasta = os.getcwd()
-    casa = os.path.expanduser("~")
+    try:
+        pasta = os.path.realpath(os.getcwd())          # realpath dos dois lados: no macOS /var é /private/var e o ~ não casava
+    except OSError:                                    # a pasta atual foi apagada: o enfeite não derruba o chat
+        return ""
+    casa = os.path.realpath(os.path.expanduser("~"))
     if pasta == casa or pasta.startswith(casa + os.sep):
         pasta = "~" + pasta[len(casa):]
     return pasta if len(pasta) <= 40 else "…" + pasta[-39:]
@@ -44,7 +47,7 @@ def _ramo_git():
         r = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True, timeout=1.0,
                            cwd=os.getcwd(), env=_env_filho() if "_env_filho" in globals() else None)
         return r.stdout.strip() if r.returncode == 0 else ""
-    except (OSError, subprocess.SubprocessError):
+    except Exception:  # noqa: BLE001  (sem git, ou um teste que troca o subprocess: o enfeite nunca derruba o chat)
         return ""
 
 
