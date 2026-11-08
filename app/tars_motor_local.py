@@ -684,6 +684,7 @@ def servir():
 
     servidor = ThreadingHTTPServer(("127.0.0.1", PORTA), Pedido)
     servidor.daemon_threads = True
+    print(f"motor escutando em {URL}", file=sys.stderr, flush=True)
 
     def vigiar():
         while True:
@@ -727,6 +728,9 @@ def garantir(espera=15):
 
 if __name__ == "__main__":
     if "--servir" in sys.argv:
+        if os.environ.get("TARS_MOTOR_DEPURAR"):          # o CI do macOS: se travar, a pilha vai para o motor.log
+            import faulthandler
+            faulthandler.dump_traceback_later(20, exit=False)
         servir()
     elif "--instalar" in sys.argv:          # baixa o llama-server e os modelos pedidos (ou o 2B e o Lite)
         nomes = [a for a in sys.argv[2:] if not a.startswith("-")] or ["ProjectOpenTARS/Gargantua-2:lite", "ProjectOpenTARS/Gargantua-2:latest"]

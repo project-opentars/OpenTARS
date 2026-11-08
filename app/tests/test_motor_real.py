@@ -12,7 +12,7 @@ if os.environ.get("TARS_MOTOR_REAL") != "1":
     sys.exit(0)
 
 pasta = tempfile.mkdtemp(prefix="opentars-motor-real-")
-os.environ.update(XDG_DATA_HOME=pasta, LOCALAPPDATA=pasta, TARS_MOTOR_PORTA="11496")
+os.environ.update(XDG_DATA_HOME=pasta, LOCALAPPDATA=pasta, TARS_MOTOR_PORTA="11496", TARS_MOTOR_DEPURAR="1")
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import tars_motor_local as m  # noqa: E402
 
@@ -22,6 +22,8 @@ m.preparar([L])
 print("llama-server:", m.binario())
 url = m.garantir(espera=30)
 if not url:
+    import time
+    time.sleep(5)                       # a pilha do faulthandler sai aos 20 s
     for nome in ("motor.log", "llama-server.log"):
         arquivo = m.pasta() / nome
         print(f"--- {arquivo}\n" + (arquivo.read_text(errors="replace")[-3000:] if arquivo.exists() else "(não existe)"))
