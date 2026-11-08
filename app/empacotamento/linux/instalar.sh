@@ -134,6 +134,9 @@ fi
 # edições de foto com modelinho (tirar o fundo, aumentar, remover objeto) ficam de fora
 "$VENV/bin/python3" -m pip install --quiet onnxruntime || dizer "Aviso: o onnxruntime não instala neste Python; tirar o fundo e as outras edições com modelinho ficam desligadas." \
     "Warning: onnxruntime does not install on this Python; background removal and the other model-based photo edits are off."
+# 08/11 (5.3): o cofre de senhas para o e-mail do assistente; sem ele o app roda, só o e-mail fica desligado
+"$VENV/bin/python3" -m pip install --quiet keyring || dizer "Aviso: o keyring não instala neste Python; o e-mail do assistente fica desligado." \
+    "Warning: keyring does not install on this Python; the assistant's email stays off."
 
 # 4. O Ollama, pelo instalador oficial (ele mesmo pede a senha). Sem ele o openTARS abre, mas não tem IA local.
 if [ "$SEM_OLLAMA" = 0 ]; then

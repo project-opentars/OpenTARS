@@ -38,6 +38,11 @@ INSTRUCOES = {
     "para_pt": {"pt_BR": "Traduza o texto para o português.", "en": "Translate the text into Portuguese."},
     "perguntar": {"pt_BR": "Responda à pergunta usando só o texto. Se o texto não trouxer a resposta, diga isso.",
                   "en": "Answer the question using only the text. If the text doesn't say, say so."},
+    "curto": {"pt_BR": "Reescreva o texto de forma mais curta, mantendo as informações importantes.",
+              "en": "Rewrite the text to be shorter, keeping the important information."},
+    "lista": {"pt_BR": "Transforme o texto em uma lista de tópicos curtos.", "en": "Turn the text into a list of short bullet points."},
+    "responder": {"pt_BR": "Escreva uma resposta curta e educada a esta mensagem, dizendo o que a linha Dizer pede.",
+                  "en": "Write a short, polite reply to this message that says what the Say line asks."},
 }
 
 LIMITE_TEXTO = 6000          # caracteres do trecho; mais que isso é cortado (e a janela avisa)
@@ -52,7 +57,8 @@ def pedido(acao, idioma, texto, pergunta=None):
     """A mensagem do usuário, no formato do treino."""
     instrucao = INSTRUCOES[acao][idioma if idioma in ("pt_BR", "en") else "en"]
     if pergunta:
-        instrucao += f"\n{'Pergunta' if idioma == 'pt_BR' else 'Question'}: {pergunta}"
+        rotulo = ("Dizer", "Say") if acao == "responder" else ("Pergunta", "Question")      # 5.3: responder mensagem
+        instrucao += f"\n{rotulo[0] if idioma == 'pt_BR' else rotulo[1]}: {pergunta}"
     return f"{instrucao}\n\n<texto>\n{texto}\n</texto>"
 
 
@@ -90,6 +96,8 @@ def rodar(acao, texto, modelo, host, pergunta=None, ao_pedaco=None, cancelar=Non
           manter=False):
     """Pede ao Ollama e devolve o texto inteiro; `ao_pedaco(trecho)` recebe a resposta enquanto chega. `manter`: o assistente
     está ligado, o modelo fica na memória só por 3 minutos depois do uso (keep_alive "3m") e sai sozinho."""
+    if cancelar and cancelar.is_set():      # a pessoa já trocou de opção: nem pede ao modelo (antes o pedido velho ainda saía)
+        return ""
     sessao = sessao or requests
     corpo = {"model": modelo, "stream": True, "think": False, "messages": mensagens(acao, texto, pergunta, padrao),
              "options": {"temperature": 0.1, "num_predict": 1200}}

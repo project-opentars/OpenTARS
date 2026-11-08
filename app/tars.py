@@ -225,10 +225,11 @@ def _normalizar_ollama_host(valor):
 
 
 OLLAMA_HOST = _normalizar_ollama_host(os.environ.get("OLLAMA_HOST"))
-if not os.environ.get("OLLAMA_HOST") and os.environ.get("TARS_MOTOR") != "ollama":   # 5.3: o motor llama.cpp, se já instalado; senão o Ollama
+if not os.environ.get("OLLAMA_HOST"):   # 5.3: o motor llama.cpp é o padrão (se já instalado); senão, ou se a config de dev escolheu o Ollama, o Ollama
     try:
         import tars_motor_local
-        OLLAMA_HOST = tars_motor_local.garantir() or OLLAMA_HOST
+        if tars_motor_local.escolhido() == "llamacpp":
+            OLLAMA_HOST = tars_motor_local.garantir() or OLLAMA_HOST
     except Exception:
         pass
 
@@ -389,6 +390,7 @@ _CAPACIDADES_RELEVANTES = {"tools", "vision", "thinking"}
 PASTA_NUCLEO = Path(__file__).resolve().parent / "nucleo"
 PARTES_NUCLEO = (
     "registro",
+    "visual",
     "ollama",
     "hardware",
     "aplicacoes",

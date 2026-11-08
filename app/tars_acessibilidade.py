@@ -314,15 +314,15 @@ def achar_janela(pid=None, titulo=None, termos=(), ativa=False, ignorar_pids=())
 # Elementos
 # ------------------------------------------------------------
 
-def _texto_do_no(no, papel):
+def _texto_do_no(no, papel, limite=LIMITE_CHARS_TEXTO):
     Atspi = _modulo()
     if papel in PAPEIS_CAMPO or papel in ("document-text", "paragraph"):
         try:
             if _nativo is not None:
-                return _nativo.texto(no)[:LIMITE_CHARS_TEXTO] or _nome(no)
+                return _nativo.texto(no)[:limite] or _nome(no)
             n = Atspi.Text.get_character_count(no)
             if n:
-                return Atspi.Text.get_text(no, 0, min(n, LIMITE_CHARS_TEXTO))
+                return Atspi.Text.get_text(no, 0, min(n, limite))
         except Exception:
             pass
     return _nome(no)
@@ -611,3 +611,51 @@ def preencher(janela, nome, texto):
     except Exception:
         pass
     return {"sucesso": False, "achou": True, "elemento": rotulo, "precisa_digitar": True}
+
+
+# ------------------------------------------------------------
+# 5.3 (F4+): ler o que a janela mostra, como texto, para perguntar sobre ela SEM imagem (o texto entra no mesmo contrato das
+# ações de texto). Nunca lê campo de senha e não guarda nada.
+# ------------------------------------------------------------
+LIMITE_TEXTO_JANELA = 6000        # caracteres, o mesmo corte das ações de texto
+LIMITE_CHARS_BLOCO = 1500         # um parágrafo ou campo; o resto do bloco é cortado
+
+
+def montar_texto_da_janela(blocos, botoes, limite=LIMITE_TEXTO_JANELA):
+    """Junta os blocos de texto da janela (na ordem de leitura, sem repetir) e, no fim, os nomes dos botões e links, para
+    perguntas como "onde clico para exportar?". Corta no limite."""
+    vistos, partes = set(), []
+    for bloco in blocos:
+        limpo = " ".join(str(bloco or "").split())
+        if limpo and limpo not in vistos:
+            vistos.add(limpo)
+            partes.append(limpo)
+    nomes = []
+    for nome in botoes:
+        limpo = " ".join(str(nome or "").split())[:60]
+        if limpo and limpo not in nomes:
+            nomes.append(limpo)
+    texto = "\n".join(partes)
+    if nomes:
+        texto += ("\n\n" if texto else "") + "Buttons and links: " + ", ".join(nomes[:60])
+    return texto[:limite]
+
+
+def texto_da_janela(pid=None, titulo=None, limite=LIMITE_TEXTO_JANELA):
+    """{"titulo", "app", "texto"} da janela pedida (ou da ativa, sem contar o próprio openTARS), lido pela acessibilidade; None
+    se não há acessibilidade, janela ou texto."""
+    if indisponivel():
+        return None
+    janela = achar_janela(pid=pid, titulo=titulo, ativa=not (pid or titulo), ignorar_pids=(os.getpid(),))
+    if not janela:
+        return None
+    blocos, botoes = [], []
+    for no, papel, nome, _estados, tipo in _itens(janela, forcar=True):
+        if "password" in papel:                     # campo de senha: nem o nome vira texto
+            continue
+        if tipo in ("texto", "campo"):
+            blocos.append(_texto_do_no(no, papel, LIMITE_CHARS_BLOCO))
+        elif tipo == "clicavel" and nome:
+            botoes.append(nome)
+    texto = montar_texto_da_janela(blocos, botoes, limite)
+    return {"titulo": janela["titulo"], "app": janela["app"], "texto": texto} if texto.strip() else None

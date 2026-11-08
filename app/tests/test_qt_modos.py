@@ -93,6 +93,106 @@ assert not cfg.nav["avancado"].isVisibleTo(cfg) and modos.avancado()["temperatur
 cfg.paginas["geral"].dev.setChecked(True)
 print("OK: Ajustes avançados gravam e só valem com o dev ligado")
 
+# Motor de IA (5.3): llama.cpp por padrão; a chave de dev troca para o Ollama e avisa que vale ao reabrir
+import tars_i18n  # noqa: E402
+import tars_motor_local  # noqa: E402
+os.environ.pop("TARS_MOTOR", None)
+av.ao_abrir()
+assert av.motor.currentData() == "llamacpp" and av.motor.isEnabled(), av.motor.currentData()
+av.motor.setCurrentIndex(av.motor.findData("ollama"))
+av._salvar()
+assert tars_i18n.ler_config().get("motor") == "ollama" and tars_motor_local.escolhido() == "ollama"
+assert av.msg.text() == tars_i18n.t("cfg.av.motor_reiniciar")
+av.motor.setCurrentIndex(av.motor.findData("llamacpp"))
+av._salvar()
+assert tars_motor_local.escolhido() == "llamacpp"
+print("OK: a chave de dev troca o motor entre llama.cpp (padrão) e Ollama")
+
+# Busca de arquivos (5.3): o índice local é opcional e desligado por padrão; ligar monta em segundo plano, desligar apaga
+import tars_busca_arquivos  # noqa: E402
+montagens = []
+tars_busca_arquivos.atualizar_indice = lambda *a, **k: montagens.append(1) or {"arquivos": 7, "lidos": 7, "removidos": 0}
+cfg.ir("assistente")
+ass = cfg.paginas["assistente"]
+assert not ass.indice.isChecked() and not tars_busca_arquivos.indice_ligado()
+ass.indice.setChecked(True)
+assert tars_busca_arquivos.indice_ligado()
+for _ in range(100):
+    app.processEvents()
+    if montagens and "7" in ass.indice_nota.text():
+        break
+    time.sleep(0.03)
+assert montagens == [1] and "7" in ass.indice_nota.text(), (montagens, ass.indice_nota.text())
+ass.indice.setChecked(False)
+assert not tars_busca_arquivos.indice_ligado()
+print("OK: o índice de arquivos liga montando em segundo plano e desliga apagando")
+
+# Agenda e notas (5.3): desligadas por padrão; só aceitam arquivo que existe ou link https; vazio desliga
+import tars_integracoes  # noqa: E402
+ics = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_qt_modos.py")        # qualquer arquivo que exista
+assert tars_integracoes.agendas() == [] and tars_integracoes.pasta_de_notas() is None
+ass.agenda.setText("/nao/existe.ics")
+ass._salvar_agenda()
+assert tars_integracoes.agendas() == [] and "/nao/existe.ics" in ass.agenda_nota.text()
+ass.agenda.setText(ics + "; https://example.com/agenda.ics")
+ass._salvar_agenda()
+assert tars_integracoes.agendas() == [ics, "https://example.com/agenda.ics"] and "2" in ass.agenda_nota.text()
+ass.notas.setText("/tmp/minhas-notas")
+ass._salvar_notas()
+assert str(tars_integracoes.pasta_de_notas()) == "/tmp/minhas-notas"
+ass.agenda.setText("")
+ass._salvar_agenda()
+ass.notas.setText("")
+ass._salvar_notas()
+assert tars_integracoes.agendas() == [] and tars_integracoes.pasta_de_notas() is None
+print("OK: agenda e notas: só arquivo que existe ou link https, e vazio desliga")
+
+# E-mail (5.3): a senha só vai para o cofre (aqui um cofre falso), o config guarda só o endereço e os servidores
+import tars_email  # noqa: E402
+cofre_falso = {}
+
+
+class _Cofre:
+    set_password = staticmethod(lambda servico, usuario, senha: cofre_falso.__setitem__((servico, usuario), senha))
+    get_password = staticmethod(lambda servico, usuario: cofre_falso.get((servico, usuario)))
+    delete_password = staticmethod(lambda servico, usuario: cofre_falso.pop((servico, usuario), None))
+
+
+tars_email._cofre = lambda: _Cofre
+assert tars_email.conta() is None
+ass.email_usuario.setText("pessoa@provedor-desconhecido.org")
+ass.email_senha.setText("segredo-123")
+ass._salvar_email()
+assert tars_email.conta() is None and not cofre_falso and "IMAP" in ass.email_nota.text(), "provedor desconhecido pede os servidores e não guarda nada"
+ass.email_usuario.setText("pessoa@gmail.com")
+ass.email_senha.setText("")
+ass._salvar_email()
+assert tars_email.conta() is None and not cofre_falso, "sem senha não liga"
+ass.email_senha.setText("segredo-123")
+ass._salvar_email()
+assert tars_email.conta()["usuario"] == "pessoa@gmail.com" and tars_email.conta()["imap"] == "imap.gmail.com"
+assert cofre_falso == {("openTARS-email", "pessoa@gmail.com"): "segredo-123"} and ass.email_senha.text() == ""
+assert "segredo-123" not in open(os.environ["TARS_ARQUIVO_CONFIG"]).read(), "a senha nunca vai para o config"
+tars_email.testar = lambda *a, **k: "Connection refused"
+ass._testar_email()
+for _ in range(100):
+    app.processEvents()
+    if "refused" in ass.email_nota.text():
+        break
+    time.sleep(0.03)
+assert "Connection refused" in ass.email_nota.text()
+def sem_cofre():
+    raise tars_email.SemCofre("keyring não instalado")
+tars_email._cofre = sem_cofre
+ass.email_usuario.setText("outra@gmail.com")
+ass.email_senha.setText("x")
+ass._salvar_email()
+assert tars_email.conta()["usuario"] == "pessoa@gmail.com" and "keyring" in ass.email_nota.text(), "sem cofre: a conta antiga fica e a tela explica"
+tars_email._cofre = lambda: _Cofre
+ass._desligar_email()
+assert tars_email.conta() is None and not cofre_falso, "desligar esquece a conta e apaga a senha"
+print("OK: e-mail: senha só no cofre, provedor desconhecido pede servidores, sem cofre não guarda, desligar apaga")
+
 # Diagnóstico: lê as ferramentas do log
 log = os.path.join(CASA, "tars.log")
 with open(log, "w", encoding="utf-8") as f:

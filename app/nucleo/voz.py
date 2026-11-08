@@ -61,12 +61,12 @@ def preferencias_voz():
         velocidade = float(dados.get("voz_velocidade") or 1.0)
     except (TypeError, ValueError):
         velocidade = 1.0
-    return {"vozes": vozes, "velocidade": velocidade}
+    return {"vozes": vozes, "velocidade": velocidade, "curta": not dados.get("voz_resposta_completa")}
 
 
 def aplicar_preferencias_voz():
     p = preferencias_voz()
-    voz_lib.configurar(vozes=p["vozes"], velocidade=p["velocidade"], idioma=i18n.idioma_atual())
+    voz_lib.configurar(vozes=p["vozes"], velocidade=p["velocidade"], idioma=i18n.idioma_atual(), curta=p["curta"])
 
 
 def voz_atual(idioma=None):

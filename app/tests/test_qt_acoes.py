@@ -23,6 +23,7 @@ except ImportError:
 import fake_ollama  # noqa: E402
 import tars_acoes_texto as acoes_lib  # noqa: E402
 import tars_assistente as assistente  # noqa: E402
+from tars_i18n import t  # noqa: E402
 import tars_plataforma as plataforma  # noqa: E402
 from tars_qt import fio  # noqa: E402
 from tars_qt.acoes import PainelAcoes  # noqa: E402
@@ -38,6 +39,11 @@ def esperar(condicao, limite=5):
     while time.time() < fim and not condicao():
         QTest.qWait(30)
     return condicao()
+
+
+def pediu(esperado):
+    """Algum pedido ao modelo teve exatamente esta mensagem (um pedido já trocado pode sair logo depois do novo)."""
+    return any(c["messages"][1]["content"] == esperado for m, p, c in servidor.pedidos if p == "/api/chat")
 
 
 def ultimo_chat():
@@ -133,5 +139,36 @@ inicio = plataforma.arquivo_autostart(assistente.NOME_AUTOSTART).read_bytes()   
 assert (b"--residente" in inicio or "--residente".encode("utf-16-le") in inicio) and assistente.inicia_com_sistema()
 assert not assistente.iniciar_com_sistema(False) and not assistente.inicia_com_sistema()
 print("OK: assistente ligado mantém o modelo na memória; início com o sistema sobe com --residente")
+
+# 5.3: texto lido da janela (Perguntar sobre a tela), Responder mensagem, Mais curto e Em tópicos: tudo pelo mesmo contrato
+painel.abrir("Disk C: is 92% full. Free up space: delete temporary files, empty the recycle bin.", aba="perguntar", origem="Storage settings")
+assert painel.aba == "perguntar" and "Storage settings" in painel.trecho.text() and painel.linha_pergunta.isVisibleTo(painel)
+painel.pergunta.setText("Why is it red?")
+painel.rodar()
+assert esperar(lambda: painel.resultado and pediu(acoes_lib.pedido("perguntar", "en", painel.texto, "Why is it red?")))
+print("OK: Perguntar sobre a tela: o painel abre em Perguntar, diz de qual janela veio o texto e usa o contrato de texto")
+
+MENSAGEM = "Oi! Vamos jantar sábado às 20h na casa da Carol?"
+painel.abrir(MENSAGEM)
+painel.escolher_aba("responder")
+assert painel.pergunta.placeholderText() == t("acoes.responder_dica") and not painel.botao_substituir.isVisibleTo(painel)
+painel.pergunta.setText("que topo")
+painel.rodar()
+esperado_resp = acoes_lib.pedido("responder", "pt_BR", MENSAGEM, "que topo")
+assert esperar(lambda: pediu(esperado_resp) and painel.resultado), (painel.resultado, painel.saida.toPlainText())
+assert "\nDizer: que topo\n" in esperado_resp, esperado_resp
+painel._substituir()
+assert painel.isVisible(), "responder nunca cola por cima da mensagem recebida"
+print("OK: Responder mensagem: a frase da pessoa vai na linha Dizer, e o rascunho só se copia (nada é colado por cima)")
+
+painel.abrir(TEXTO)
+painel.escolher_aba("reescrever")
+assert {"curto", "lista"} <= set(painel._botoes_opcao), painel._botoes_opcao.keys()
+painel.escolher_opcao("lista")
+esperado = acoes_lib.pedido("lista", acoes_lib.idioma_do_texto(TEXTO), TEXTO)
+assert esperar(lambda: pediu(esperado)), esperado
+assert esperar(lambda: painel.resultado), "o resultado do pedido novo aparece"
+print("OK: a resposta de um pedido já trocado não sobrescreve o novo")
+print("OK: Mais curto e Em tópicos entram em Reescrever")
 servidor.shutdown()
 print("test_qt_acoes: TUDO OK.")

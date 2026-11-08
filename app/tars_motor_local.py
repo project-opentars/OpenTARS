@@ -236,6 +236,18 @@ def instalados():
     return [n for n in CATALOGO if instalado(n)]
 
 
+def escolhido():
+    """"llamacpp" (padrão) ou "ollama". A variável TARS_MOTOR vale mais que a config (chave "motor", Configurações > Avançado, de dev)."""
+    v = (os.environ.get("TARS_MOTOR") or "").strip().lower()
+    if v not in ("ollama", "llamacpp"):
+        try:
+            import tars_i18n
+            v = str(tars_i18n.ler_config().get("motor", "")).strip().lower()
+        except Exception:
+            v = ""
+    return "ollama" if v == "ollama" else "llamacpp"
+
+
 def pronto():
     """O motor pode servir agora: tem o llama-server e ao menos um modelo."""
     return binario() is not None and bool(instalados())

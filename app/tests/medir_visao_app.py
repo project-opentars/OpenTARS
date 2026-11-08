@@ -16,7 +16,10 @@ from _util import carregar_tars  # noqa: E402
 from PIL import Image  # noqa: E402
 
 tars = carregar_tars()
-modelo = sys.argv[1]
+modelo = sys.argv[1] if ":" in sys.argv[1] else sys.argv[1] + ":latest"   # o catálogo guarda com a etiqueta; sem ela o app não acha as capacidades
+tars.catalogar_modelos()   # como o app ao abrir: sem o catálogo, um modelo que pensa (Qwen3.5) com outro nome gasta a resposta pensando (08/11: 2/40 falso)
+if not tars.e_gargantua_2(modelo):
+    print(f"aviso: '{modelo}' não começa com Gargantua-2: o app usa outras opções de visão para ele. Meça com um nome Gargantua-2* (ollama cp).")
 quantos = int(sys.argv[2]) if len(sys.argv) > 2 else 40
 pasta = Path(os.environ.get("OPENTARS_LAB_DIR") or Path.home() / "opentars-lab") / "cooper" / "dados"
 itens = [json.loads(l) for l in (pasta / "prova.jsonl").read_text(encoding="utf-8").splitlines()]

@@ -218,7 +218,9 @@ def _tratar_comando_do_chat(linha):
 def _linha_de_status():
     modelo = modelo_atual or (modelo_manual if modo_modelo == "MANUAL" else "auto")
     usados = estimar_tokens(conversa)
-    partes = [str(modelo), t("cli.status_contexto", pct=min(100, int(100 * usados / max(1, contexto_ia()))))]
+    partes = [str(modelo).split("/")[-1], t("cli.status_contexto", pct=min(100, int(100 * usados / max(1, contexto_ia()))))]
+    ramo = _ramo_git()
+    partes.append(_pasta_curta() + (f" ⎇ {ramo}" if ramo else ""))
     if MODO_PERMISSAO != "perguntar":
         partes.append(t(f"cli.status_modo.{MODO_PERMISSAO}"))
     if CONTEXTO_PROJETO["caminho"]:
@@ -285,12 +287,16 @@ def _boas_vindas(pedidos):
     else:
         garg = gargantua_instalado() if online else None
         modelo = t("term.modelo_auto") + (f" · {garg.split('/')[-1]}" if garg else "")
-    ollama = (c("●", Cor.VERDE) + " " + t("term.ollama_online", host=OLLAMA_HOST) if online
-              else c("●", Cor.VERMELHO) + " " + t("term.ollama_offline", host=OLLAMA_HOST))
-    linhas = [c("✻ ", Cor.MAGENTA) + c(t("term.bem_vindo"), Cor.NEGRITO), "",
+    nome_motor = _nome_do_motor()
+    motor_linha = (c("●", Cor.VERDE) + " " + nome_motor + " · " + t("term.ollama_online", host=OLLAMA_HOST) if online
+                   else c("●", Cor.VERMELHO) + " " + nome_motor + " · "
+                   + t("term.ollama_offline" if nome_motor == "Ollama" else "term.motor_offline", host=OLLAMA_HOST))
+    ramo = _ramo_git()
+    linhas = [c("✻ ", Cor.MAGENTA) + c(t("term.bem_vindo"), Cor.NEGRITO) + c(f"  {VERSAO_EXIBIDA}", Cor.CINZA), "",
               c("  " + t("chat.dica"), Cor.CINZA), "",
-              c("  " + t("term.rotulo_ollama") + " ", Cor.CINZA) + ollama,
-              c("  " + t("term.rotulo_modelo") + " ", Cor.CINZA) + modelo]
+              c("  " + t("term.rotulo_motor") + " ", Cor.CINZA) + motor_linha,
+              c("  " + t("term.rotulo_modelo") + " ", Cor.CINZA) + modelo,
+              c("  " + t("term.rotulo_pasta") + " ", Cor.CINZA) + _pasta_curta() + (c(f"  ⎇ {ramo}", Cor.CINZA) if ramo else "")]
     if pedidos:
         linhas.append(c("  " + t("term.conversa_carregada", n=pedidos), Cor.CINZA))
     print()
@@ -382,8 +388,9 @@ def _conversar(pedido_unico, retomar=None):
             try:
                 # \001..\002 avisam o readline que as cores não ocupam coluna (senão a edição da linha embaralha)
                 ini, fim = ("\001", "\002") if TEM_READLINE else ("", "")
-                linha = input("\n" + ini + Cor.NEGRITO + Cor.VERDE + fim + "❯ "
-                              + ini + Cor.RESET + fim if interativo else "").strip()
+                if interativo:
+                    print("\n" + _regua(MODO_PERMISSAO))          # 5.3: régua com o modo da conversa, como a barra do opencode
+                linha = input(ini + Cor.NEGRITO + Cor.VERDE + fim + "❯ " + ini + Cor.RESET + fim if interativo else "").strip()
             except EOFError:
                 print()
                 break

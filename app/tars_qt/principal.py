@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (QApplication, QButtonGroup, QFileDialog, QFrame, 
 
 import tars_atalho
 import tars_atualizacao
+import tars_acessibilidade as acess
 import tars_contexto
 import tars_gerenciar_modelos
 import tars_historico
@@ -605,6 +606,7 @@ class JanelaPrincipal(QMainWindow):
         self.barra.parar.connect(self.parar)
         self.barra.abrir_janela.connect(lambda: self.trazer_para_frente("mostrar"))
         self.barra.editar_foto.connect(self._escolher_foto)
+        self.barra.perguntar_tela.connect(self._perguntar_sobre_a_tela)
         self._criar_bandeja()
         self._atalhos = None
         if plataforma.sistema() == "windows":      # no Windows e no macOS o atalho global é escutado pela própria janela
@@ -1433,7 +1435,7 @@ class JanelaPrincipal(QMainWindow):
         """5.3 (F9): o motor passa a ser o llama.cpp. Quem vem da 5.2 recebe o llama-server e os Gargantua que já tinha no
         Ollama (copiados do disco quando o arquivo é o mesmo, senão do Hugging Face); se algo falhar, o app segue no Ollama."""
         import tars_motor_local as motor
-        if os.environ.get("TARS_SEM_ATALHO") == "1" or os.environ.get("TARS_MOTOR") == "ollama" or os.environ.get("OLLAMA_HOST") \
+        if os.environ.get("TARS_SEM_ATALHO") == "1" or motor.escolhido() == "ollama" or os.environ.get("OLLAMA_HOST") \
                 or motor.pronto() or getattr(self, "_migrando", False):
             return
         tem = set(pu.modelos_instalados(self.nucleo.OLLAMA_HOST))
@@ -1544,11 +1546,43 @@ class JanelaPrincipal(QMainWindow):
             self._abrir_painel_arquivos(arquivos)
             return
         if not texto.strip():          # nada selecionado: o atalho vira o lançador (a barra rápida pede qualquer coisa)
+            self._guardar_janela_antes()
             self.barra.mostrar()
             return
         self._abrir_acoes_com(texto)
 
-    def _abrir_acoes_com(self, texto):
+    def _guardar_janela_antes(self):
+        """A janela em foco ANTES de a barra aparecer (depois dela, o foco é da própria barra): é sobre ela que "Perguntar
+        sobre a tela" vai ler. Só o pid e o título; nada é gravado."""
+        n = self.nucleo
+        try:
+            ativa = n.janela_ativa_x()
+            janela = next((j for j in n.listar_janelas_x() or [] if j["id"] == ativa), None) if ativa is not None else None
+        except Exception:  # noqa: BLE001  (sem acesso às janelas agora: cai no print)
+            janela = None
+        self._janela_antes = {"pid": janela.get("pid"), "titulo": janela["titulo"]} if janela and janela.get("pid") != os.getpid() else None
+
+    def _perguntar_sobre_a_tela(self):
+        """5.3 (F4+): lê o texto da janela de antes pela acessibilidade e abre o painel das ações em "Perguntar" (a resposta sai
+        pelo contrato de texto, sem imagem). Sem acessibilidade ou sem texto: volta para a barra com o pedido de tela (o print)."""
+        alvo = getattr(self, "_janela_antes", None) or {}
+
+        def trabalho():
+            try:
+                lido = acess.texto_da_janela(pid=alvo.get("pid"), titulo=alvo.get("titulo")) if alvo else None
+            except Exception:  # noqa: BLE001  (a acessibilidade falhou: o print resolve)
+                lido = None
+            if lido:
+                self.depois(lambda: self._abrir_acoes_com(lido["texto"], aba="perguntar", origem=lido["titulo"] or lido["app"]))
+            else:
+                def voltar():
+                    self.barra.mostrar()
+                    self.barra.entrada.setPlainText(t("rapido.pref.tela"))
+                    self.barra.entrada.moveCursor(QTextCursor.MoveOperation.End)
+                self.depois(voltar)
+        threading.Thread(target=trabalho, daemon=True).start()
+
+    def _abrir_acoes_com(self, texto, aba="reescrever", origem=None):
         if self._painel_acoes is None:
             n = self.nucleo
             garg = n.MODELO_GARGANTUA.split(":")[0]
@@ -1558,7 +1592,7 @@ class JanelaPrincipal(QMainWindow):
                 instalados = []
             self._painel_acoes = PainelAcoes(n.OLLAMA_HOST, instalados, garg + ":lite", garg + ":latest")
             self._painel_acoes.substituir.connect(self._colar_resultado)
-        self._painel_acoes.abrir(texto)
+        self._painel_acoes.abrir(texto, aba=aba, origem=origem)
 
     # -- 5.2 (F4): sugestão pelo programa em uso ------------------------------------------------------------
     def _ligar_contexto(self):
@@ -1677,6 +1711,7 @@ class JanelaPrincipal(QMainWindow):
     def trazer_para_frente(self, comando="mostrar"):
         self._ultimo_uso = time.monotonic()
         if comando == "rapido":
+            self._guardar_janela_antes()
             self.barra.mostrar()
             return
         if comando == "acoes":

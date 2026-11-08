@@ -20,10 +20,13 @@ import tars_acoes_texto as acoes_lib
 import tars_assistente as assistente
 import tars_atalho
 import tars_atualizacao
+import tars_busca_arquivos
 import tars_contexto
+import tars_email
 import tars_gerenciar_modelos as gm
 import tars_i18n
 import tars_imagem as imagem_lib
+import tars_integracoes
 import tars_mais_modelos as mm
 import tars_modos as modos
 import tars_primeiro_uso as pu
@@ -734,6 +737,57 @@ class PAssistente(Pagina):
         v.addWidget(rotulo(t("ctx.nota_config"), "nota", quebra=True))
         self.adicionar(s)
 
+        s, v = _secao(t("cfg.assist.indice_titulo"))
+        self.indice = QCheckBox(t("cfg.assist.indice"))
+        self.indice.toggled.connect(self._indice)
+        v.addWidget(self.indice)
+        self.indice_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.indice_nota)
+        self.adicionar(s)
+
+        s, v = _secao(t("cfg.assist.agenda_titulo"), t("cfg.assist.agenda_sub"))
+        self.agenda = QLineEdit()
+        self.agenda.setPlaceholderText(t("cfg.assist.agenda_dica"))
+        self.agenda.setAccessibleName(t("cfg.assist.agenda_titulo"))
+        v.addWidget(self.agenda)
+        self.agenda_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.agenda_nota)
+        v.addWidget(_botao(t("cfg.assist.salvar"), "chip", self._salvar_agenda))
+        self.adicionar(s)
+
+        s, v = _secao(t("cfg.assist.notas_titulo"), t("cfg.assist.notas_sub"))
+        self.notas = QLineEdit()
+        self.notas.setPlaceholderText(t("cfg.assist.notas_dica"))
+        self.notas.setAccessibleName(t("cfg.assist.notas_titulo"))
+        v.addWidget(self.notas)
+        self.notas_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.notas_nota)
+        v.addWidget(_botao(t("cfg.assist.salvar"), "chip", self._salvar_notas))
+        self.adicionar(s)
+
+        s, v = _secao(t("cfg.assist.email_titulo"), t("cfg.assist.email_sub"))
+        self.email_usuario = QLineEdit()
+        self.email_usuario.setPlaceholderText(t("cfg.assist.email_usuario"))
+        self.email_usuario.setAccessibleName(t("cfg.assist.email_usuario"))
+        self.email_senha = QLineEdit()
+        self.email_senha.setEchoMode(QLineEdit.Password)
+        self.email_senha.setAccessibleName(t("cfg.assist.email_senha"))
+        self.email_imap = QLineEdit()
+        self.email_imap.setPlaceholderText(t("cfg.assist.email_imap"))
+        self.email_smtp = QLineEdit()
+        self.email_smtp.setPlaceholderText(t("cfg.assist.email_smtp"))
+        for campo in (self.email_usuario, self.email_senha, self.email_imap, self.email_smtp):
+            v.addWidget(campo)
+        self.email_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.email_nota)
+        linha_email = QHBoxLayout()
+        linha_email.addWidget(_botao(t("cfg.assist.salvar"), "chip", self._salvar_email))
+        linha_email.addWidget(_botao(t("cfg.assist.email_testar"), "chip", self._testar_email))
+        linha_email.addWidget(_botao(t("cfg.assist.email_desligar"), "link", self._desligar_email))
+        linha_email.addStretch(1)
+        v.addLayout(linha_email)
+        self.adicionar(s)
+
         s, v = _secao(t("cfg.assist.acoes_titulo"), t("cfg.assist.acoes_sub"))
         self.modelo_acoes = rotulo("", "nota", quebra=True)
         v.addWidget(self.modelo_acoes)
@@ -752,11 +806,23 @@ class PAssistente(Pagina):
     def ao_abrir(self):
         modelo = self._modelo()
         for caixa, valor in ((self.ligado, assistente.ligado()), (self.sistema, assistente.inicia_com_sistema()),
-                             (self.contexto, tars_contexto.ligado())):
+                             (self.contexto, tars_contexto.ligado()), (self.indice, tars_busca_arquivos.indice_ligado())):
             caixa.blockSignals(True)
             caixa.setChecked(valor)
             caixa.blockSignals(False)
         self.ligado_nota.setText(t("cfg.assist.ligado_nota", modelo=modelo))
+        self.indice_nota.setText(t("cfg.assist.indice_nota"))
+        self.agenda.setText("; ".join(tars_integracoes.agendas()))
+        self.agenda_nota.setText(t("cfg.assist.agenda_ligada", n=len(tars_integracoes.agendas())) if tars_integracoes.agendas() else t("cfg.assist.desligada"))
+        pasta = tars_integracoes.pasta_de_notas()
+        self.notas.setText(str(pasta) if pasta else "")
+        self.notas_nota.setText(t("cfg.assist.notas_ligada") if pasta else t("cfg.assist.desligada"))
+        conta_email = tars_email.conta()
+        self.email_usuario.setText(conta_email["usuario"] if conta_email else self.email_usuario.text())
+        self.email_imap.setText(conta_email["imap"] if conta_email else self.email_imap.text())
+        self.email_smtp.setText(conta_email["smtp"] if conta_email else self.email_smtp.text())
+        self.email_senha.setPlaceholderText(t("cfg.assist.email_senha_guardada") if conta_email else t("cfg.assist.email_senha"))
+        self.email_nota.setText(t("cfg.assist.email_ligado", usuario=conta_email["usuario"]) if conta_email else t("cfg.assist.desligada"))
         self.modelo_acoes.setText(t("cfg.assist.acoes_modelo", modelo=modelo))
         config = tars_i18n.ler_config()
         registrado = bool(config.get("atalho_acoes_registrado"))
@@ -787,6 +853,72 @@ class PAssistente(Pagina):
         tars_atalho.remover_acoes()
         self.ao_abrir()
         self.cfg.assistente_mudou.emit()
+
+    def _salvar_email(self):
+        """A conta: o endereço e os servidores ficam no config; a senha vai SÓ para o cofre do sistema (nunca para arquivo de texto)."""
+        usuario, senha = self.email_usuario.text().strip(), self.email_senha.text()
+        imap, smtp = self.email_imap.text().strip(), self.email_smtp.text().strip()
+        if not usuario:
+            self._desligar_email()
+            return
+        padrao = tars_email.servidores_do_dominio(usuario)
+        if not ((imap or padrao[0]) and (smtp or padrao[1])):
+            self.email_nota.setText(t("cfg.assist.email_servidores"))
+            return
+        if not senha and not tars_email.ler_senha(usuario):
+            self.email_nota.setText(t("cfg.assist.email_sem_senha"))
+            return
+        try:
+            tars_email.salvar_conta(usuario, senha, imap, smtp)
+        except tars_email.SemCofre:
+            self.email_nota.setText(t("cfg.assist.email_sem_cofre"))
+            return
+        self.email_senha.clear()
+        self.ao_abrir()
+
+    def _testar_email(self):
+        if not tars_email.conta():
+            self.email_nota.setText(t("cfg.assist.email_salvar_antes"))
+            return
+        self.email_nota.setText(t("cfg.assist.email_testando"))
+        self.cfg.em_segundo_plano(tars_email.testar, lambda erro: self.email_nota.setText(
+            t("cfg.assist.email_ok") if erro is None else t("cfg.assist.email_erro", erro=str(erro)[:100])))
+
+    def _desligar_email(self):
+        tars_email.salvar_conta("", "")
+        for campo in (self.email_usuario, self.email_senha, self.email_imap, self.email_smtp):
+            campo.clear()
+        self.ao_abrir()
+
+    def _salvar_agenda(self):
+        """Arquivos .ics ou links (separados por ;). Vazio desliga a agenda. Só leitura: o openTARS nunca altera o calendário."""
+        fontes = [f.strip() for f in self.agenda.text().split(";") if f.strip()]
+        ruins = [f for f in fontes if not (f.lower().startswith(("http://", "https://", "webcal://")) or Path(f).expanduser().is_file())]
+        if ruins:
+            self.agenda_nota.setText(t("cfg.assist.agenda_nao_achei", fonte=ruins[0][:80]))
+            return
+        tars_i18n.salvar_config(agenda_ics=fontes)
+        self.agenda_nota.setText(t("cfg.assist.agenda_ligada", n=len(fontes)) if fontes else t("cfg.assist.desligada"))
+
+    def _salvar_notas(self):
+        """A pasta das notas (Markdown). Vazio desliga. A pasta é criada na primeira nota, se ainda não existir."""
+        pasta = self.notas.text().strip()
+        tars_i18n.salvar_config(notas_pasta=pasta)
+        self.notas_nota.setText(t("cfg.assist.notas_ligada") if pasta else t("cfg.assist.desligada"))
+
+    def _indice(self, ativo):
+        """Liga ou desliga o índice local de arquivos (desligar apaga o arquivo). Ao ligar, monta em segundo plano."""
+        tars_busca_arquivos.ligar_indice(ativo)
+        if not ativo:
+            self.indice_nota.setText(t("cfg.assist.indice_nota"))
+            return
+        self.indice_nota.setText(t("cfg.assist.indice_montando"))
+
+        def pronto(r):
+            self.indice_nota.setText(t("cfg.assist.indice_erro", erro=str(r)[:120]) if isinstance(r, Exception)
+                                     else t("cfg.assist.indice_pronto", n=r["arquivos"]))
+
+        self.cfg.em_segundo_plano(lambda: tars_busca_arquivos.atualizar_indice(), pronto)
 
     def _sugestoes(self, ativo):
         tars_contexto.ligar(ativo)
@@ -935,6 +1067,10 @@ class PVoz(Pagina):
         self.falar.setChecked(n.config_voz()["falar"])
         self.falar.toggled.connect(lambda x: n.salvar_config_voz(falar=x))
         v2.addWidget(self.falar)
+        self.completa = QCheckBox(t("cfg.voz.resposta_completa"))
+        self.completa.setChecked(not n.preferencias_voz().get("curta", True))
+        self.completa.toggled.connect(lambda x: tars_i18n.salvar_config(voz_resposta_completa=bool(x)))
+        v2.addWidget(self.completa)
         linha = QHBoxLayout()
         linha.addWidget(QLabel(t("cfg.voz.voz")))
         self.caixa = QComboBox()
@@ -2189,6 +2325,14 @@ class PAvancado(Pagina):
         v2.addWidget(self.contexto)
         self.adicionar(s2)
 
+        sm, vm = _secao(t("cfg.av.motor"), t("cfg.av.motor_sub"))
+        self.motor = QComboBox()
+        self.motor.setMaximumWidth(260)
+        self.motor.addItem(t("cfg.av.motor_llamacpp"), "llamacpp")
+        self.motor.addItem(t("cfg.av.motor_ollama"), "ollama")
+        vm.addWidget(self.motor)
+        self.adicionar(sm)
+
         s3, v3 = _secao(t("cfg.av.instrucoes"), t("cfg.av.instrucoes_sub"))
         self.instrucoes = QPlainTextEdit()
         self.instrucoes.setFixedHeight(110)
@@ -2219,17 +2363,24 @@ class PAvancado(Pagina):
         self.temperatura.setCurrentIndex(max(0, self.temperatura.findData(a["temperatura"])))
         self.contexto.setCurrentIndex(max(0, self.contexto.findData(a["contexto"])))
         self.instrucoes.setPlainText(a["instrucoes"])
+        import tars_motor_local
+        self.motor.setCurrentIndex(max(0, self.motor.findData(tars_motor_local.escolhido())))
+        self.motor.setEnabled(os.environ.get("TARS_MOTOR") not in ("ollama", "llamacpp"))     # a variável de ambiente manda
         for nome, c in self.caixas.items():
             c.setChecked(nome not in a["ferramentas_desligadas"])
         self.aviso.setText("" if modos.dev_ligado() else t("cfg.av.so_pro"))
         self.msg.setText("")
 
     def _salvar(self):
+        import tars_motor_local
+        mudou_motor = self.motor.isEnabled() and self.motor.currentData() != tars_motor_local.escolhido()
+        if self.motor.isEnabled():
+            tars_i18n.salvar_config(motor=self.motor.currentData())
         modos.salvar_avancado(temperatura=self.temperatura.currentData(), contexto=self.contexto.currentData(),
                               instrucoes=self.instrucoes.toPlainText(),
                               ferramentas_desligadas=[n for n, c in self.caixas.items() if not c.isChecked()])
         self.ao_abrir()
-        self.msg.setText(t("cfg.av.salvo"))
+        self.msg.setText(t("cfg.av.motor_reiniciar") if mudou_motor else t("cfg.av.salvo"))
 
     def _restaurar(self):
         tars_i18n.salvar_config(avancado={})

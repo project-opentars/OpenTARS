@@ -18,8 +18,8 @@ _N = r"(\d+|um|uma|dois|duas|tres|quatro|cinco|seis|sete|oito|nove|dez|quinze|vi
 _PEDE = re.compile(r"^(?:por favor |please |pode |can you )?(?:me lembra|me lembre|lembra-me|me avisa|me avise|avisa-me|remind me|ping me)\b")
 _PEDE_SEM_DUVIDA = re.compile(r"^(?:por favor |please |pode |can you )?(?:me lembra|me lembre|lembra-me|remind me)\b")
 _TIMER = re.compile(r"\b(?:timer|temporizador|cronometro|alarme|alarm)\b")
-_DAQUI = re.compile(r"\b(?:daqui a|daqui|em|dentro de|in|after)\s+" + _N + r"\s*(minutos?|mins?|min|horas?|h|hours?|segundos?|seconds?|s)\b")
-_DURACAO = re.compile(_N + r"[\s-]*(minutos?|mins?|min|minute|horas?|hours?|h|segundos?|seconds?|s)\b")
+_DAQUI = re.compile(r"\b(?:daqui a|daqui|em|dentro de|in|after)\s+" + _N + r"\s*(minutos?|minutes?|mins?|horas?|h|hours?|segundos?|seconds?|s)\b")
+_DURACAO = re.compile(_N + r"[\s-]*(minutos?|minutes?|mins?|horas?|hours?|h|segundos?|seconds?|s)\b")
 _HORA = re.compile(r"\b(?:as|a|at|pras|para as|ao meio)\s*(\d{1,2})(?:[:h](\d{2}))?\s*(?:h|horas)?\s*(am|pm|da manha|da tarde|da noite)?\b|\b(\d{1,2})\s*(am|pm)\b|\b(meio[- ]dia|noon|midnight|meia[- ]noite)\b")
 _AMANHA = re.compile(r"\b(amanha|tomorrow)\b")
 

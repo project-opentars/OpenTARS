@@ -19,7 +19,10 @@ import time
 import unicodedata
 
 import tars_conta
+import tars_email
+import tars_integracoes
 import tars_lembretes
+import tars_midia
 import tars_operacoes as operacoes
 import tars_passos as passos
 import tars_regras_terminal as regras_terminal
@@ -205,10 +208,18 @@ def _plano(pedido, n, idioma, linux):
 
 def _uma_parte(pedido, idioma, core, estado_passos, linux, permitir_mundo=True):
     """(resposta, deu_certo) de uma frase, ou None se é com o modelo."""
+    import tars_plataforma
     n = normalizar(pedido)
-    fala = tars_lembretes.resposta_da_rotina(pedido) or tars_lembretes.agendar(pedido, idioma) or memoria(pedido, n, idioma, core)
+    fala = (tars_lembretes.resposta_da_rotina(pedido) or tars_lembretes.agendar(pedido, idioma) or tars_integracoes.responder(pedido, idioma)
+            or tars_midia.responder(pedido, idioma)
+            or tars_email.responder(pedido, idioma, core)
+            or memoria(pedido, n, idioma, core))
     if fala:
         return fala, True
+    if not linux:                    # 5.3: Windows e macOS: as mesmas frases, executadas direto (volume, brilho, tema, Wi-Fi, bloquear)
+        fala = sistema_frases.responder_outros(n, idioma, tars_plataforma.sistema(), core)
+        if fala:
+            return fala, True
     plano = sistema_frases.plano(n, idioma) if linux else None
     plano = plano or _plano(pedido, n, idioma, linux)
     if plano:

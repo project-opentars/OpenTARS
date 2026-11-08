@@ -329,7 +329,7 @@ class PaginaOllama(Pagina):
     def _achar_motor():
         """5.3 (F9): o motor llama.cpp primeiro; um Ollama que já está aqui também serve."""
         import tars_motor_local as motor
-        if motor.binario() is not None and os.environ.get("TARS_MOTOR") != "ollama":
+        if motor.binario() is not None and motor.escolhido() == "llamacpp":
             endereco = motor.garantir()
             if endereco:
                 return {"instalado": True, "responde": True, "host": endereco, "versao": "llama.cpp " + motor.VERSAO_LLAMA}

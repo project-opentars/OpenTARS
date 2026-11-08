@@ -64,6 +64,17 @@ jobs:
           python tests/test_qt_arquivos.py
           python tests/test_qt_primeiro_uso_sistema.py
           python tests/test_gerenciar_modelos.py
+      - name: Assistente 5.3 (agenda, notas, e-mail, mídia, ações do sistema, voz, índice, terminal), sem modelo e sem rede
+        run: |
+          python tests/test_integracoes.py
+          python tests/test_midia.py
+          python tests/test_acoes_sistema_outros.py
+          python tests/test_email.py
+          python tests/test_busca_indice.py
+          python tests/test_lembretes.py
+          python tests/test_voz_pt.py
+          python tests/test_terminal_visual.py
+          python tests/test_tela_pela_acessibilidade.py
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
       - name: Motor llama.cpp (5.3) sem modelo

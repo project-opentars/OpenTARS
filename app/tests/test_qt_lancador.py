@@ -27,12 +27,28 @@ app.processEvents()
 assert barra.capacidades.isVisibleTo(barra) and len(barra.capacidades.findChildren(br.QPushButton)) == 6
 botoes = {b.accessibleName(): b for b in barra.capacidades.findChildren(br.QPushButton)}
 print("OK: vazia, a barra mostra as capacidades do mock-up e a de editar uma foto")
+alta = barra.height()
+barra.entrada.setPlainText("Set a timer for 10 minutes")
+app.processEvents()
+assert not barra.capacidades.isVisibleTo(barra) and barra.height() < alta - 100, (alta, barra.height())
+barra.entrada.clear()
+barra.hide()
+barra.mostrar()
+app.processEvents()
+print("OK: ao digitar, a lista some e a barra encolhe (antes ficava quadrada, com um vazio)")
 pedidos_foto = []
 barra.editar_foto.connect(lambda: pedidos_foto.append(1))
 botoes[br.t("rapido.cap.foto")].click()
 assert pedidos_foto == [1] and not barra.isVisible(), "Editar uma foto fecha a barra e pede o seletor de fotos"
 barra.mostrar()
 print("OK: Editar uma foto fecha a barra e abre o seletor de fotos do assistente")
+
+pedidos_tela = []
+barra.perguntar_tela.connect(lambda: pedidos_tela.append(1))
+botoes[br.t("rapido.cap.tela")].click()
+assert pedidos_tela == [1] and not barra.isVisible(), "Perguntar sobre a tela fecha a barra e pede o texto da janela"
+barra.mostrar()
+print("OK: Perguntar sobre a tela fecha a barra e pede o texto da janela de antes")
 
 botoes[br.t("rapido.cap.web")].click()
 assert barra.entrada.toPlainText() == br.t("rapido.pref.web") and not barra.capacidades.isVisibleTo(barra)

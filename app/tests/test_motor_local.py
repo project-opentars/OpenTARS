@@ -34,6 +34,28 @@ print("OK: pedido do Ollama vira pedido do llama-server (imagem, ferramentas, op
 assert m._keep_alive(None) == 300 and m._keep_alive(-1) == -1 and m._keep_alive("10m") == 600 and m._keep_alive("0") == 0
 print("OK: keep_alive no formato do Ollama")
 
+# o motor escolhido: llama.cpp por padrão; a config de dev ("motor") troca; a variável de ambiente manda mais que a config
+import tars_i18n  # noqa: E402
+_antes_env, _antes_cfg = os.environ.pop("TARS_MOTOR", None), tars_i18n._config
+try:
+    tars_i18n._config = {}
+    assert m.escolhido() == "llamacpp", "o padrão é o llama.cpp (quem vem da 5.2 é migrado)"
+    tars_i18n._config = {"motor": "ollama"}
+    assert m.escolhido() == "ollama"
+    os.environ["TARS_MOTOR"] = "llamacpp"
+    assert m.escolhido() == "llamacpp", "a variável vale mais que a config"
+    os.environ["TARS_MOTOR"] = "ollama"
+    tars_i18n._config = {}
+    assert m.escolhido() == "ollama"
+    tars_i18n._config = {"motor": "qualquer coisa"}
+    os.environ.pop("TARS_MOTOR")
+    assert m.escolhido() == "llamacpp", "valor desconhecido cai no padrão"
+finally:
+    tars_i18n._config = _antes_cfg
+    if _antes_env is not None:
+        os.environ["TARS_MOTOR"] = _antes_env
+print("OK: motor escolhido: llama.cpp por padrão, Ollama pela config de dev, variável de ambiente manda")
+
 assert not m.pronto() and m.instalados() == [] and m.garantir() is None, "sem motor instalado o app fica no Ollama"
 print("OK: sem llama-server e sem modelo, garantir() devolve None e o app segue no Ollama")
 
