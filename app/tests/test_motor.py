@@ -12,7 +12,7 @@ assert tars_motor.url("modelos", "http://127.0.0.1:11434/") == "http://127.0.0.1
 
 achados = []
 for arquivo in [*RAIZ.glob("*.py"), *RAIZ.glob("nucleo/*.py"), *RAIZ.glob("tars_qt/*.py"), *RAIZ.glob("tars_plataforma/*.py")]:
-    if arquivo.name == "tars_motor.py":
+    if arquivo.name in ("tars_motor.py", "tars_motor_local.py"):      # o motor local é o outro lado dessa API
         continue
     for numero, linha in enumerate(arquivo.read_text(encoding="utf-8").splitlines(), 1):
         if re.search(r"""["'}]/api/[a-z]+""", linha):

@@ -171,7 +171,7 @@ jobs:
       - name: Um Terminal novo (zsh) acha o comando opentars
         run: |
           zsh -ic 'command -v opentars && opentars --version' | tee /tmp/zsh.txt
-          grep -q "5.2" /tmp/zsh.txt
+          grep -q "openTARS 5\." /tmp/zsh.txt
       - name: A janela carrega (sem tela)
         env: {QT_QPA_PLATFORM: offscreen}
         run: cd "$HOME/Library/Application Support/openTARS/app" && "../venv/bin/python3" -c "import tars_qt.principal; print('qt ok')"

@@ -21,6 +21,10 @@ print("variantes:", m.variantes())
 m.preparar([L])
 print("llama-server:", m.binario())
 url = m.garantir(espera=30)
+if not url:
+    for nome in ("motor.log", "llama-server.log"):
+        arquivo = m.pasta() / nome
+        print(f"--- {arquivo}\n" + (arquivo.read_text(errors="replace")[-3000:] if arquivo.exists() else "(não existe)"))
 assert url, "o motor não subiu"
 
 

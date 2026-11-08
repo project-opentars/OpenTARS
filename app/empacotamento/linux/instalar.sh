@@ -129,7 +129,11 @@ if ! "$VENV/bin/python3" -c "import sys" >/dev/null 2>&1; then
         exit 1; }
 fi
 "$VENV/bin/python3" -m pip install --quiet --upgrade pip
-"$VENV/bin/python3" -m pip install --quiet requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime
+"$VENV/bin/python3" -m pip install --quiet requests psutil pyautogui pillow PySide6-Essentials numpy
+# 07/11: o Fedora passou ao Python 3.15 e o onnxruntime ainda não tem pacote para ele; sem ele o app roda, só as
+# edições de foto com modelinho (tirar o fundo, aumentar, remover objeto) ficam de fora
+"$VENV/bin/python3" -m pip install --quiet onnxruntime || dizer "Aviso: o onnxruntime não instala neste Python; tirar o fundo e as outras edições com modelinho ficam desligadas." \
+    "Warning: onnxruntime does not install on this Python; background removal and the other model-based photo edits are off."
 
 # 4. O Ollama, pelo instalador oficial (ele mesmo pede a senha). Sem ele o openTARS abre, mas não tem IA local.
 if [ "$SEM_OLLAMA" = 0 ]; then
