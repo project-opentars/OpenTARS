@@ -682,7 +682,13 @@ def servir():
             else:
                 self._json({"status": "success"})
 
-    servidor = ThreadingHTTPServer(("127.0.0.1", PORTA), Pedido)
+    class Servidor(ThreadingHTTPServer):
+        def server_bind(self):      # o original chama socket.getfqdn(), que no macOS travou mais de 20 s (CI de 07/11)
+            import socketserver
+            socketserver.TCPServer.server_bind(self)
+            self.server_name, self.server_port = "127.0.0.1", self.server_address[1]
+
+    servidor = Servidor(("127.0.0.1", PORTA), Pedido)
     servidor.daemon_threads = True
     print(f"motor escutando em {URL}", file=sys.stderr, flush=True)
 
