@@ -194,6 +194,7 @@ In development, with no date yet.
 - **A closer assistant on Windows and macOS.**
 - **Trust in the download:** winget, one-click updates and a page that shows how to verify what you got.
 - **Probes in a virtual machine,** on Linux, away from your files.
+- **Gargantua 2.5,** next, on Gemma 4 (E2B and E4B): the same tools, and voice that understands your audio directly.
 
 ## Help
 
