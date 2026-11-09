@@ -167,6 +167,37 @@ jobs:
           .\app\empacotamento\windows\instalar.ps1 -Remover
           if (Test-Path "$env:LOCALAPPDATA\openTARS") { throw "não removeu" }
 
+  instalador_exe_windows:
+    # o opentars-setup.exe (Inno Setup, o que o winget instala): compila, instala em silêncio, confere e desinstala
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compilar
+        shell: powershell
+        run: |
+          choco install innosetup -y --no-progress
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /DVersao=5.3 app\empacotamento\windows\opentars.iss
+          if (-not (Test-Path app\dist\opentars-setup.exe)) { throw "o setup não saiu" }
+      - uses: actions/upload-artifact@v4
+        with: { name: opentars-setup, path: app/dist/opentars-setup.exe }
+      - name: Instalar em silêncio (como o winget)
+        shell: powershell
+        run: |
+          $p = Start-Process app\dist\opentars-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SemOllama=1" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "setup saiu com $($p.ExitCode)" }
+          if (-not (Test-Path "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd")) { throw "opentars.cmd não existe" }
+          & "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd" --version
+          if ($LASTEXITCODE -ne 0) { throw "opentars --version falhou" }
+          $arp = Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" | Where-Object { $_.GetValue("DisplayName") -eq "openTARS" }
+          if (-not $arp) { throw "não aparece em Aplicativos instalados" }
+      - name: Desinstalar
+        shell: powershell
+        run: |
+          $u = (Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" | Where-Object { $_.GetValue("DisplayName") -eq "openTARS" }).GetValue("UninstallString")
+          $exe = ($u -replace '^"([^"]+)".*','$1')
+          Start-Process $exe -ArgumentList "/VERYSILENT" -Wait
+          if (Test-Path "$env:LOCALAPPDATA\openTARS") { throw "não removeu" }
+
   instalador_macos:
     runs-on: macos-latest
     steps:

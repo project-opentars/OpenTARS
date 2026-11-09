@@ -114,25 +114,26 @@ def binario():
     return None
 
 
-def _sha256(caminho):
-    h = hashlib.sha256()
+def _sha256(caminho, algoritmo="sha256"):
+    h = hashlib.new(algoritmo)
     with open(caminho, "rb") as f:
         for bloco in iter(lambda: f.read(1 << 20), b""):
             h.update(bloco)
     return h.hexdigest()
 
 
-def baixar(url, destino, sha, ao_progresso=None, tentativas=3):
-    """Baixa com retomada (.parcial), confere o SHA-256 e só então põe no lugar. Levanta ValueError se o hash não bater."""
+def baixar(url, destino, sha, ao_progresso=None, tentativas=3, algoritmo="sha256"):
+    """Baixa com retomada (.parcial), confere o hash (SHA-256; `algoritmo` troca, a imagem do Debian usa SHA-512) e só então põe
+    no lugar. Levanta ValueError se o hash não bater."""
     for tentativa in range(tentativas):        # a conexão que trava no meio retoma do .parcial (visto em 07/11 no GitHub)
         try:
-            return _baixar(url, destino, sha, ao_progresso)
+            return _baixar(url, destino, sha, ao_progresso, algoritmo)
         except (TimeoutError, ConnectionError, urllib.error.URLError):
             if tentativa == tentativas - 1:
                 raise
 
 
-def _baixar(url, destino, sha, ao_progresso):
+def _baixar(url, destino, sha, ao_progresso, algoritmo="sha256"):
     destino = Path(destino)
     destino.parent.mkdir(parents=True, exist_ok=True)
     parcial = destino.with_name(destino.name + ".parcial")
@@ -148,9 +149,9 @@ def _baixar(url, destino, sha, ao_progresso):
                 feito += len(bloco)
                 if ao_progresso:
                     ao_progresso(feito, total)
-    if _sha256(parcial) != sha:
+    if _sha256(parcial, algoritmo) != sha:
         parcial.unlink(missing_ok=True)
-        raise ValueError(f"{destino.name}: SHA-256 check failed")
+        raise ValueError(f"{destino.name}: {algoritmo.upper()} check failed")
     os.replace(parcial, destino)
     return destino
 
