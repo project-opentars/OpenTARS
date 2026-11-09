@@ -7,6 +7,7 @@
 [Setup]
 AppId={{C6BAED4F-7BE2-421A-A5D8-3516502824C6}
 AppName=openTARS
+UninstallDisplayName=openTARS
 AppVersion={#Versao}
 AppPublisher=project-opentars
 AppPublisherURL=https://project-opentars.github.io/OpenTARS/

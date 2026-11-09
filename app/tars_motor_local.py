@@ -46,12 +46,12 @@ _HF = "https://huggingface.co/OpenTARS/{repo}/resolve/main/{arquivo}"
 _PARAMETROS_QWEN = "top_k                          20\ntop_p                          0.8\nrepeat_penalty                 1.05\ntemperature                    0.4"
 CATALOGO = {   # a ficha que o Ollama dava para cada modelo (copiada em 07/11), mais os arquivos do Hugging Face
     "ProjectOpenTARS/Gargantua-2:latest": {
-        "repo": "Gargantua-2", "gguf": ("gargantua-1.2-qwen3.5-2b-Q4_0.gguf", "99b7dd093a609a06bd04b8aebeed76cb2508e0d7ce75d5b7b46083ee8a8dcb7a", 1202486848),
+        "repo": "Gargantua-2", "gguf": ("gargantua-1.2-qwen3.5-2b-Q4_0.gguf", "3f2d450ec96be581d4b05f34eab703d1bd78e9f3e88a69f51e5efb6c5c61a86c", 1202486848),
         "mmproj": ("mmproj-gargantua-qwen3.5-2b-Q8_0.gguf", "3156ce8710040751b6affc151eb66fe225dbe369a4ae51cd6298b1ae74087790", 364663840),
         "capabilities": ["completion", "vision", "tools", "thinking"], "family": "qwen35", "parameter_size": "1.9B", "quantization_level": "Q4_0",
         "parameters": _PARAMETROS_QWEN},
     "ProjectOpenTARS/Gargantua-2:lite": {
-        "repo": "Gargantua-2-Lite", "gguf": ("gargantua-1.2-lite-qwen3.5-0.8b-Q4_0.gguf", "c519103c65de13742ed3fded28aad066d75834dada4c651ce1bbcb87747d9c27", 501452352),
+        "repo": "Gargantua-2-Lite", "gguf": ("gargantua-1.2-lite-qwen3.5-0.8b-Q4_0.gguf", "8736bc95729f047dfcf265e8fdaa8ed611bf9cf30c8d06e79b8e4f0d1cbbf29a", 501452352),
         "mmproj": ("mmproj-gargantua-qwen3.5-0.8b-Q8_0.gguf", "1251de28a9e9c147e81a589d64e67470a5e8aa66a99834bb6902283a4d210519", 115923136),
         "capabilities": ["completion", "vision", "tools", "thinking"], "family": "qwen35", "parameter_size": "752.39M", "quantization_level": "Q4_0",
         "parameters": _PARAMETROS_QWEN},

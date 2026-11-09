@@ -5,6 +5,8 @@ Se não achar o alvo depois de tentar de novo, a missão termina dizendo qual al
 import base64
 import json
 import urllib.request
+
+import tars_motor
 from pathlib import Path
 
 import tars_visao
@@ -15,7 +17,7 @@ MODELO = "ProjectOpenTARS/Gargantua-2:latest"
 def perguntar_ollama(png, pergunta, modelo=MODELO, host="http://127.0.0.1:11434", tempo=60):
     corpo = {"model": modelo, "stream": False, "think": False, "options": {"temperature": 0.0, "num_predict": 64},
              "messages": [{"role": "user", "content": pergunta, "images": [base64.b64encode(Path(png).read_bytes()).decode()]}]}
-    req = urllib.request.Request(host + "/api/chat", json.dumps(corpo).encode(), {"Content-Type": "application/json"})
+    req = urllib.request.Request(tars_motor.url("conversa", host), json.dumps(corpo).encode(), {"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=tempo) as r:
         return json.load(r)["message"]["content"]
 
