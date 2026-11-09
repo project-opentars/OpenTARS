@@ -62,8 +62,9 @@
 
     <article>
       <h2>5.2 Ranger</h2>
-      <p class="quando">October 24, 2026 · updated November 4</p>
+      <p class="quando">October 24, 2026 · updated November 9</p>
       <ul>
+        <li><strong>Gargantua 2 retrained (November 9):</strong> <code>ProjectOpenTARS/Gargantua-2:latest</code> (the 2B) was trained again and handles text actions 76 of 76 times in our test (before: 72 of 76), says it does not know about people and things that do not exist 16 of 16 times inside the app, and corrects a false premise more often. Run <code>ollama pull ProjectOpenTARS/Gargantua-2</code> to get it. The new files are also on <a href="https://huggingface.co/OpenTARS/Gargantua-2">Hugging Face</a>.</li>
         <li><strong>Fix (November 4):</strong> a local Gargantua with a slash in its name is treated as Gargantua again, so it no longer turns on reasoning and comes back with no text. The model stays loaded while the window is open and returns to the normal timeout in the tray. A greeting no longer triggers the web check.</li>
         <li><strong>Fix (November 2):</strong> “Show in folder” in the file search now opens the file manager with the file selected, instead of only opening the folder.</li>
         <li><strong>Fix (November 1):</strong> the portable test (<code>opentars --prova</code>) runs without the desktop: before, it could open apps and type into the open windows of the machine where it ran. Use it only after this update.</li>

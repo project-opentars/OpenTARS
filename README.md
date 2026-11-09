@@ -108,7 +108,7 @@ Other assistants wrap a general model in a long prompt. **Gargantua** was traine
 | | Size | Runs on | In our tests |
 |---|---|---|---|
 | **Gargantua 2 Lite** | 617 MB | any computer, even without a graphics card | 93 of 100 tasks on the CPU alone, 95 with a graphics card |
-| **Gargantua 2** | 1.6 GB | a card with 3 GB free, or 8 GB of RAM | 94 of 100 tasks, the right tool 21 of 21 times, 0.6 s per request on a graphics card |
+| **Gargantua 2** | 1.6 GB | a card with 3 GB free, or 8 GB of RAM | 76 of 76 text actions, the right tool 21 of 21 times, 0.4 s per request on a graphics card |
 | **Gargantua Code Gen 2** | 4.7 GB | optional, for programming | 51 of 60 coding tasks |
 | **[Gargantua Pi](https://huggingface.co/OpenTARS/Gargantua-Pi)** | 300 MB | small boards, in openTARS Pi | tested on an Orange Pi Zero 2W with 1 GB of RAM |
 | **Murph** | 4 MB | always on, no model to load | reads each request in about 0.2 ms and picks who answers |
