@@ -107,11 +107,21 @@ Other assistants wrap a general model in a long prompt. **Gargantua** was traine
 
 | | Size | Runs on | In our tests |
 |---|---|---|---|
-| **Gargantua 2 Lite** | 617 MB | any computer, even without a graphics card | 96 of 100 tasks on the CPU alone |
+| **Gargantua Lite Gen 2** | 617 MB | any computer, even without a graphics card | 96 of 100 tasks on the CPU alone |
 | **Gargantua 2** | 1.6 GB | a card with 3 GB free, or 8 GB of RAM | 76 of 76 text actions, the right tool 21 of 21 times, 0.4 s per request on a graphics card |
 | **Gargantua Code Gen 2** | 4.7 GB | optional, for programming | 51 of 60 coding tasks |
-| **[Gargantua Pi](https://huggingface.co/OpenTARS/Gargantua-Pi)** | 300 MB | small boards, in openTARS Pi | tested on an Orange Pi Zero 2W with 1 GB of RAM |
+| **[Gargantua Pi Gen 1](https://huggingface.co/OpenTARS/Gargantua-Pi)** | 300 MB | small boards, in openTARS Pi | tested on an Orange Pi Zero 2W with 1 GB of RAM |
 | **Murph** | 4 MB | always on, no model to load | reads each request in about 0.2 ms and picks who answers |
+
+### Built on Gemma 4
+
+Our next main models run on Gemma 4, Google's open model family that takes in images and audio.
+
+| | Base | Status |
+|---|---|---|
+| **Gargantua Lite Gen 3** | Gemma 4 E2B · 3.4 GB | trained, in testing. In our first test: 75 of 76 text actions (Lite Gen 2: 60) and 4 made-up answers in 48 questions (Lite Gen 2: 16) |
+| **Gargantua 2.5** | Gemma 4 E4B | in training now |
+| **[Gargantua Pro Gen 1](https://huggingface.co/OpenTARS/Gargantua-Pro)** | Gemma 4 12B · 7.4 GB | on Hugging Face now, in the app in 5.3 |
 
 The tests are ours and run with the real app; the 100-task one checks on disk that the work was really done. Gargantua also says when it does not know: asked about people and things that do not exist, it said so 16 of 16 times. Models are on [ollama.com](https://ollama.com/ProjectOpenTARS/Gargantua-2) and [Hugging Face](https://huggingface.co/OpenTARS), and any other Ollama model works too.
 
@@ -189,12 +199,12 @@ The window, the terminal, the installer and the menu speak **English and Portugu
 In development, with no date yet.
 
 - **Better and smaller models,** retrained with more examples.
-- **Gargantua Pro,** a larger agent for long tasks, on Gemma 4 12B.
+- **Gargantua Pro Gen 1 in the app,** our largest model, on Gemma 4 12B.
 - **llama.cpp,** so there is no other program to install, with the normal update from 5.2.
 - **A closer assistant on Windows and macOS.**
 - **Trust in the download:** winget, one-click updates and a page that shows how to verify what you got.
 - **Probes in a virtual machine,** on Linux, away from your files.
-- **Gargantua 2.5,** next, on Gemma 4 (E2B and E4B): the same tools, and voice that understands your audio directly.
+- **Gargantua Lite Gen 3 and Gargantua 2.5,** on Gemma 4 (E2B and E4B): the same tools, and voice that understands your audio directly.
 
 ## Help
 
