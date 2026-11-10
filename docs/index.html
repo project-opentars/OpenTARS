@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=6">
+<link rel="stylesheet" href="site.css?v=7">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
  "operatingSystem": "Linux, Windows, macOS", "softwareVersion": "5.2",
@@ -172,6 +172,54 @@
     </div>
   </section>
 
+  <section class="gen" id="models" aria-labelledby="geracao">
+    <div class="wrap">
+      <h2 id="geracao">A new generation of AIs.</h2>
+      <p class="lede">Five models, each built for one job and sized for a different machine. The small ones fit a board. The big ones fit a desk.</p>
+      <ul class="cards">
+        <li class="card">
+          <span class="chip on">Available now</span>
+          <h3>Gargantua Pi <small>Gen 1</small></h3>
+          <p class="role">For small boards.</p>
+          <p class="spec">FunctionGemma 270M · 300 MB</p>
+          <p>Runs in openTARS Pi on a Raspberry Pi or an Orange Pi with 1 GB of RAM. No cloud, no GPU, no account.</p>
+          <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-Pi">Get it on Hugging Face</a></p>
+        </li>
+        <li class="card">
+          <span class="chip">Coming next</span>
+          <h3>Gargantua Lite <small>Gen 3</small></h3>
+          <p class="role">Small, quick, made to run anywhere.</p>
+          <p class="spec">Gemma 4 E2B</p>
+          <p>A base that takes in images and audio, tuned for the openTARS tools.</p>
+        </li>
+        <li class="card feature">
+          <span class="chip">Coming next</span>
+          <h3>Gargantua <small>2.5</small></h3>
+          <p class="role">The next main AI.</p>
+          <p class="spec">Gemma 4 E4B</p>
+          <p>Thinks, uses the tools and sees the screen, with voice that understands your audio directly.</p>
+        </li>
+        <li class="card">
+          <span class="chip on">On Hugging Face</span>
+          <h3>Gargantua Pro <small>Gen 1</small></h3>
+          <p class="role">Our largest model.</p>
+          <p class="spec">Gemma 4 12B · 7.4 GB</p>
+          <p>For computers with the room for it. It is on Hugging Face now and comes to the app in 5.3.</p>
+          <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-Pro">Get it on Hugging Face</a></p>
+        </li>
+        <li class="card">
+          <span class="chip on">Available now</span>
+          <h3>Gargantua Code <small>Gen 2</small></h3>
+          <p class="role">Writes, fixes and runs code.</p>
+          <p class="spec">Qwen2.5-Coder 7B · 4.7 GB</p>
+          <p><b>51 of 60</b> coding tasks in our own test, from reading a script to fixing it and running it.</p>
+          <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-Code-Gen2">Get it on Hugging Face</a></p>
+        </li>
+      </ul>
+      <p class="fine">Today openTARS runs Gargantua 2 and Lite Gen 2, below. Everything runs on your computer by default.</p>
+    </div>
+  </section>
+
   <section class="crew" aria-labelledby="time">
     <div class="wrap">
       <h2 id="time">Trained for this job, sized for your machine.</h2>
@@ -206,7 +254,7 @@
       <h2 id="proximo">Coming in 5.3</h2>
       <ul>
         <li><b>Rebuilt on llama.cpp.</b> One engine for every model.</li>
-        <li><b>Gargantua Pro.</b> A larger agent for long tasks.</li>
+        <li><b>Gargantua Pro in the app.</b> Our largest model, built into openTARS.</li>
         <li><b>Probes in a virtual machine.</b> On Linux, away from your files.</li>
         <li><b>winget.</b> Install and update on Windows the usual way.</li>
         <li><b>Gargantua 2.5.</b> Next, on Gemma 4 (E2B and E4B). Voice that understands your audio directly.</li>

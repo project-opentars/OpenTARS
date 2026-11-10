@@ -133,6 +133,31 @@ h1 span { display: block; }
 .kipp { display: flex; align-items: center; gap: 1rem; margin-top: clamp(2rem, 5vw, 3rem); color: var(--steel); }
 .kipp img { image-rendering: pixelated; flex: none; }
 
+
+/* A nova geração de modelos */
+.gen { padding-block: var(--section); scroll-margin-top: 3rem; }
+.gen .lede { margin-top: 1.2rem; max-width: 40rem; color: var(--steel); }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1.2rem; margin: clamp(2rem, 5vw, 3.2rem) 0 0; padding: 0; list-style: none; }
+.card { display: flex; flex-direction: column; gap: .5rem; padding: 1.5rem; border: 1px solid var(--rule); border-radius: .9rem; background: var(--slab); color: var(--steel); }
+.card.feature { border-color: var(--steel); background: var(--paper); }
+.card h3 { margin: .6rem 0 0; color: var(--ink); font-weight: 800; font-stretch: 112%; font-size: 1.5rem; line-height: 1.1; }
+.card h3 small { display: block; margin-top: .25rem; font-size: 1rem; font-weight: 600; color: var(--steel); }
+.card p { margin: 0; line-height: 1.45; font-size: 1rem; }
+.card .role { color: var(--ink); font-weight: 600; }
+.card .spec { font-family: "IBM Plex Mono", monospace; font-size: .9rem; color: var(--steel); }
+.card b { color: var(--ink); font-weight: 800; }
+.card .go { margin-top: auto; padding-top: .8rem; }
+.card .go a { color: var(--ink); font-weight: 600; text-underline-offset: .25em; }
+.chip { align-self: flex-start; padding: .2rem .65rem; border: 1px solid var(--rule); border-radius: 2rem; font-size: .8rem; font-weight: 600; color: var(--steel); }
+.chip.on { border-color: var(--signal); color: var(--signal); }
+.gen .fine { margin-top: 1.8rem; color: var(--steel); font-size: 1rem; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .card { animation: card-chega linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+    @keyframes card-chega { from { opacity: 0; translate: 0 2.4rem; } }
+  }
+}
+
 /* openTARS Pi */
 .board { padding-block: var(--section); scroll-margin-top: 3rem; }
 .board .lede { margin-top: 1.2rem; max-width: 46rem; color: var(--steel); }
