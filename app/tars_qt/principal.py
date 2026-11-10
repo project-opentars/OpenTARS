@@ -1500,11 +1500,12 @@ class JanelaPrincipal(QMainWindow):
 
             ok, motivo = tars_atualizacao.baixar_verificado(arquivo["url"], destino, arquivo["sha256"], ao_progredir=andamento, git_sha=arquivo.get("git_sha"))
             if ok:
+                ids = tars_atualizacao.ids_do_arquivo(destino)    # antes de instalar: o arquivo pode sumir depois
                 ok, motivo = tars_atualizacao.instalar_arquivo(
                     destino, sha256=arquivo.get("sha256", ""), git_sha=arquivo.get("git_sha", ""))
                 if ok:
                     motivo = ""
-                    tars_atualizacao.marcar_instalada(arquivo.get("id") or arquivo["sha256"])
+                    tars_atualizacao.marcar_instalada(arquivo.get("id") or arquivo["sha256"], *ids)
             self.depois(lambda: pronto(ok, motivo))
 
         threading.Thread(target=trabalho, daemon=True).start()

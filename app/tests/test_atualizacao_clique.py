@@ -208,3 +208,27 @@ try:
 finally:
     at.plataforma.sistema = original_sistema
 print("instalado pelo script: avisa com o comando de instalação, só para lançamento posterior: OK")
+
+# --- 10/11: o MESMO .deb chega pelo repositório (hash git) e pela Release (SHA-256); guardar só um dos dois fazia o outro
+# caminho oferecer a atualização para sempre ---
+arq_deb = pasta / "mesmo.deb"
+arq_deb.write_bytes(dados)
+sha_do_arquivo = hashlib.sha256(dados).hexdigest()
+assert at.ids_do_arquivo(arq_deb) == [sha_do_arquivo, blob] and at.ids_do_arquivo(pasta / "nao-existe.deb") == []
+
+
+def _github(u):
+    if "/commits" in u:
+        return [{"commit": {"committer": {"date": "2026-10-06T22:10:00Z"}}}]
+    if u == at.URL_RELEASE:
+        return _rel(digest="sha256:" + sha_do_arquivo)
+    return _repo(u)
+
+
+at.marcar_instalada(blob)    # o que o app guardava: só o hash do caminho que ofereceu
+r = at.procurar_atualizacao("5.0", obter_json=_github, compilado=antes)
+assert r and r["arquivos"]["deb"]["sha256"] == sha_do_arquivo, "só o hash git guardado: a Release oferecia o mesmo arquivo de novo"
+at.marcar_instalada(blob, *at.ids_do_arquivo(arq_deb))    # agora: os dois
+assert at.procurar_atualizacao("5.0", obter_json=_github, compilado=antes) is None, "os dois caminhos reconhecem o arquivo instalado"
+assert at.procurar_atualizacao("5.0", obter_json=_github, compilado=depois) is None
+print("o mesmo .deb pelos dois caminhos: instalado uma vez, não é oferecido de novo: OK")

@@ -153,21 +153,47 @@ def _estado_arquivo():
     return Path(os.environ.get("TARS_ARQUIVO_ATUALIZACAO") or os.path.expanduser("~/.config/opentars/atualizacao.json"))
 
 
-def marcar_instalada(sha256):
-    """Guarda o hash do arquivo que o usuário instalou por aqui (para não oferecer o mesmo de novo)."""
+def marcar_instalada(*ids):
+    """Guarda os identificadores do arquivo que o usuário instalou por aqui (para não oferecer o mesmo de novo). O mesmo .deb
+    chega por dois caminhos, o upload no repositório (hash git) e a Release (SHA-256); guardando só um, o outro caminho achava
+    o arquivo "novo" e oferecia a atualização para sempre (10/11), então vão todos."""
+    ids = [str(i).lower() for i in ids if i]
     try:
         arq = _estado_arquivo()
         arq.parent.mkdir(parents=True, exist_ok=True)
-        arq.write_text(json.dumps({"sha256": str(sha256).lower()}), encoding="utf-8")
+        arq.write_text(json.dumps({"sha256": ids[0] if ids else "", "ids": sorted(set(ids))}), encoding="utf-8")
     except Exception:
         pass
 
 
-def _ultima_instalada():
+def ids_do_arquivo(caminho):
+    """[sha256, hash git] de um arquivo, os dois identificadores com que ele aparece no GitHub; [] se não der para ler."""
     try:
-        return str(json.loads(_estado_arquivo().read_text(encoding="utf-8")).get("sha256") or "")
+        dados = Path(caminho).read_bytes()
     except Exception:
-        return ""
+        return []
+    return [hashlib.sha256(dados).hexdigest(), hashlib.sha1(b"blob %d\0" % len(dados) + dados).hexdigest()]
+
+
+def _ultima_instalada():
+    """Os identificadores já instalados (conjunto)."""
+    try:
+        dados = json.loads(_estado_arquivo().read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    ids = {str(i).lower() for i in dados.get("ids") or []}
+    if dados.get("sha256"):
+        ids.add(str(dados["sha256"]).lower())
+    return ids
+
+
+def _ids_instalados(valor):
+    """`valor` None = o que está guardado; texto ou lista = o que o chamador (os testes) passou."""
+    if valor is None:
+        return _ultima_instalada()
+    if isinstance(valor, str):
+        return {valor.lower()} if valor else set()
+    return {str(i).lower() for i in valor if i}
 
 
 def _epoch(iso):
@@ -238,8 +264,7 @@ def procurar_no_repositorio(obter_json=None, extras=(), compilado=None, ultima=N
     blob = str(arq.get("sha") or "").lower()
     if not url or not host_permitido(url, extras) or not re.fullmatch(r"[0-9a-f]{40}", blob):
         return None
-    instalada = _ultima_instalada() if ultima is None else ultima
-    if blob == instalada:
+    if blob in _ids_instalados(ultima):
         return None
     try:
         commits = obter_json(URL_COMMITS + "&path=" + quote(str(arq.get("name"))))
@@ -297,7 +322,7 @@ def procurar_em_release(versao_local, obter_json=None, obter_texto=None, extras=
         except Exception:
             somas = {}
     meu_pacote = compilado_em() if compilado is None else compilado
-    instalada = _ultima_instalada() if ultima is None else ultima
+    instaladas = _ids_instalados(ultima)
     arquivos, mais_recente = {}, 0.0
     for nome, a in ativos.items():
         tipo = "appimage" if str(nome).endswith(".AppImage") else "deb" if str(nome).endswith(".deb") else None
@@ -309,7 +334,7 @@ def procurar_em_release(versao_local, obter_json=None, obter_texto=None, extras=
             continue
         enviado = _epoch(a.get("created_at") or a.get("updated_at"))
         novo = (nova_versao > local) or (enviado > meu_pacote + 60)
-        if novo and sha != instalada:
+        if novo and sha not in instaladas:
             arquivos[tipo] = {"nome": nome, "url": url, "sha256": sha, "id": sha}
             mais_recente = max(mais_recente, enviado)
     if not arquivos:
