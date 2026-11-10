@@ -198,7 +198,8 @@ def manter_modelo_com_janela(aberta):
     global KEEP_ALIVE
     if os.environ.get("TARS_KEEP_ALIVE"):
         return
-    KEEP_ALIVE = "-1" if aberta else _KEEP_ALIVE_EM_SEGUNDO_PLANO
+    # O número -1, não o texto "-1": o Ollama 0.40.13 recusa "-1" (HTTP 400, 'time: missing unit in duration') e todo pedido falhava.
+    KEEP_ALIVE = -1 if aberta else _KEEP_ALIVE_EM_SEGUNDO_PLANO
     # o Ollama guarda o tempo do último pedido: sem este aviso, o modelo carregado com -1 nunca sairia da memória
     for modelo in (listar_modelos_rodando() or set()) & (modelos_do_tars | ({modelo_atual} if modelo_atual else set())):
         try:

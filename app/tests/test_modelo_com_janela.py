@@ -23,7 +23,8 @@ tars.listar_modelos_rodando = lambda: {"meu-modelo", "de-outro-programa"}
 tars.modelos_do_tars.add("meu-modelo")
 normal = tars.KEEP_ALIVE
 tars.manter_modelo_com_janela(True)
-assert tars.KEEP_ALIVE == "-1" and [p["keep_alive"] for p in Sessao.pedidos] == ["-1"], Sessao.pedidos
+# o número -1, nunca o texto "-1": o Ollama 0.40.13 devolve HTTP 400 ('time: missing unit in duration') para o texto
+assert tars.KEEP_ALIVE == -1 and isinstance(tars.KEEP_ALIVE, int) and [p["keep_alive"] for p in Sessao.pedidos] == [-1], Sessao.pedidos
 assert Sessao.pedidos[0]["model"] == "meu-modelo" and Sessao.pedidos[0]["options"]["num_ctx"] == tars.contexto_ia()
 tars.manter_modelo_com_janela(False)
 assert tars.KEEP_ALIVE == normal and Sessao.pedidos[-1]["keep_alive"] == normal
