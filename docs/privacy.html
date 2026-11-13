@@ -17,7 +17,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=8">
+<link rel="stylesheet" href="site.css?v=9">
 </head>
 <body>
 <header class="top">
@@ -39,7 +39,7 @@
     <article>
       <h2>What stays on your computer</h2>
       <ul>
-        <li>The AI models run locally through Ollama. What you type, say and show is processed on your machine.</li>
+        <li>The AI models run locally on the llama.cpp engine (or on Ollama, if you pick it in the developer settings). What you type, say and show is processed on your machine, including your voice.</li>
         <li>No account, no telemetry and no analytics.</li>
         <li>Your chats, memory and settings are files in your home folder. Settings → Memory &amp; privacy shows what openTARS remembers, forgets items one by one and erases everything.</li>
         <li>The log (<code>~/.tars_log</code>) records the actions taken, in a private folder. It keeps only the length of text typed on your behalf, not the text itself.</li>
@@ -55,7 +55,10 @@
         <li><strong>The update check.</strong> When the window opens and every 6 hours while it stays open, read-only requests to GitHub (<code>api.github.com</code>, <code>raw.githubusercontent.com</code>, <code>github.com</code>) to see if there is a new package. Nothing about you is sent besides the request itself. <code>TARS_SEM_AVISO_VERSAO=1</code> turns it off.</li>
         <li><strong>The model check.</strong> When the window opens and every 6 hours, openTARS asks Ollama's registry (<code>registry.ollama.ai</code>) for the description of the published Gargantua, to tell you when yours is older. Nothing is downloaded until you click Update.</li>
         <li><strong>The cloud, only if you turn it on.</strong> The text you write and the screenshots you ask about go to the provider you chose, with your own key or account. The key is stored only on this computer, never shown, never written to the log and never passed to the commands the AI runs. A cloud model is never picked automatically, and the window warns you when your text goes to a provider.</li>
-        <li><strong>Model downloads.</strong> The installer downloads Gargantua 2 and Gargantua 2 Lite from Ollama, and the four small photo models from Hugging Face (<code>huggingface.co</code>), each one checked against a fixed SHA-256. If you choose to install Bonsai Image 4B, its installer downloads the PrismML program from GitHub, its Python packages and the model from Hugging Face. Images are made on your computer.</li>
+        <li><strong>Model downloads.</strong> The first time it opens, openTARS downloads the llama.cpp engine from GitHub (<code>github.com</code>) and Gargantua 2.5 from Hugging Face (<code>huggingface.co</code>), plus four small photo models, each one checked against a fixed SHA-256 before it is used. Models you add from the store come from Ollama's library.</li>
+        <li><strong>Searching the model store.</strong> When you type in the store's search and ask it to look online, the words go to <code>ollama.com</code> to find models.</li>
+        <li><strong>Calendar, notes and e-mail, only if you turn them on.</strong> A calendar link is downloaded when you ask about your schedule, at most every 15 minutes. E-mail connects to your own mail server with a certificate check; the password stays in your system's keyring, and nothing is sent without your yes.</li>
+        <li><strong>Missions in a virtual machine.</strong> The VM sees none of your files. If you leave its internet on, its web traffic goes through a small proxy that lists every site it visited, and the files it makes only reach your computer if you pick them.</li>
         <li><strong>Websites you ask for.</strong> When you ask openTARS to open or search a site, your browser visits it as usual.</li>
       </ul>
     </article>
@@ -90,6 +93,7 @@
     <nav aria-label="Footer">
       <a href="changelog.html">Changelog</a>
       <a href="privacy.html">Privacy &amp; security</a>
+      <a href="verify.html">Verify your download</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
       <a href="https://huggingface.co/OpenTARS">Hugging Face</a>
       <a href="https://ollama.com/ProjectOpenTARS">Ollama</a>

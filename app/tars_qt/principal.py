@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (QApplication, QButtonGroup, QFileDialog, QFrame, 
 
 import tars_atalho
 import tars_atualizacao
+import tars_acessibilidade as acess
 import tars_contexto
 import tars_gerenciar_modelos
 import tars_historico
@@ -69,13 +70,6 @@ def _repolir(w):
 # Barra lateral
 # ------------------------------------------------------------
 
-
-def _sem_erro(funcao, *args):
-    """Para threads de fundo cujo erro não tem a quem mostrar (Ollama fora ao abrir, por exemplo)."""
-    try:
-        funcao(*args)
-    except Exception:  # noqa: BLE001
-        pass
 
 class Lateral(QFrame):
     nova = Signal()
@@ -612,6 +606,7 @@ class JanelaPrincipal(QMainWindow):
         self.barra.parar.connect(self.parar)
         self.barra.abrir_janela.connect(lambda: self.trazer_para_frente("mostrar"))
         self.barra.editar_foto.connect(self._escolher_foto)
+        self.barra.perguntar_tela.connect(self._perguntar_sobre_a_tela)
         self._criar_bandeja()
         self._atalhos = None
         if plataforma.sistema() == "windows":      # no Windows e no macOS o atalho global é escutado pela própria janela
@@ -1418,6 +1413,7 @@ class JanelaPrincipal(QMainWindow):
                 nova = None
             if nova:
                 self.depois(lambda: self._versao_achada(nova))
+            self._migrar_motor()
             self._garantir_lite()
             self._garantir_modelinhos()
             # 5.2 (F9.5): o Ollama não atualiza modelo sozinho; o Gargantua novo só chega se a pessoa baixar de novo
@@ -1425,8 +1421,20 @@ class JanelaPrincipal(QMainWindow):
             if velhos:
                 nomes = ", ".join(n.split("/")[-1] for n in velhos)
                 self.depois(lambda: self.faixa.mostrar(t("modelo.novo", nomes=nomes), t("cfg.gerenciar.atualizar"), "gerenciar"))
+            elif self._falta_gargantua_25():
+                self.depois(lambda: self.faixa.mostrar(t("g25.oferta"), t("g25.ver"), "modelos"))
 
         threading.Thread(target=trabalho, daemon=True).start()
+
+    def _falta_gargantua_25(self):
+        """5.3: quem veio da 5.2 tem o Gargantua 2 (Qwen). O 2.5 (5,3 GB) não baixa sozinho: a faixa oferece, a cada abertura,
+        até ele estar instalado. Máquina fraca fica com o Lite (que o _garantir_lite já traz)."""
+        if os.environ.get("TARS_SEM_ATALHO") == "1" or pu.maquina_fraca():
+            return False
+        nomes = [str(m).lower() for m in pu.modelos_instalados(self.nucleo.OLLAMA_HOST)]
+        tem_25 = any(n.startswith("projectopentars/gargantua-2.5") and not n.endswith(":lite") for n in nomes)
+        tem_2 = any(n.split(":")[0] == "projectopentars/gargantua-2" and not n.endswith(":lite") for n in nomes)
+        return tem_2 and not tem_25
 
     def _versao_achada(self, nova):
         """O detector (ao abrir, a cada 6 h, ou o "Procurar agora" das Configurações) achou uma versão: o cartão da barra
@@ -1434,6 +1442,29 @@ class JanelaPrincipal(QMainWindow):
         self._nova_versao = nova
         self.lateral.mostrar_versao(nova["versao"])
         self.config.paginas["atualizacoes"].mostrar_versao(nova)
+
+    def _migrar_motor(self):
+        """5.3 (F9): o motor passa a ser o llama.cpp. Quem vem da 5.2 recebe o llama-server e os Gargantua que já tinha no
+        Ollama (copiados do disco quando o arquivo é o mesmo, senão do Hugging Face); se algo falhar, o app segue no Ollama."""
+        import tars_motor_local as motor
+        if os.environ.get("TARS_SEM_ATALHO") == "1" or motor.escolhido() == "ollama" or os.environ.get("OLLAMA_HOST") \
+                or motor.pronto() or getattr(self, "_migrando", False):
+            return
+        tem = set(pu.modelos_instalados(self.nucleo.OLLAMA_HOST))
+        nomes = [n for n in motor.CATALOGO if n in tem] or ["ProjectOpenTARS/Gargantua-2.5:lite"]
+        self._migrando = True
+        self.depois(lambda: self.faixa.mostrar(t("motor.preparando")))
+        try:
+            motor.preparar(nomes)
+            endereco = motor.garantir()
+            erro = None if endereco else "llama-server"
+        except (OSError, ValueError) as e:
+            endereco, erro = None, str(e)
+        finally:
+            self._migrando = False
+        if endereco:
+            self.nucleo.OLLAMA_HOST = endereco
+        self.depois(lambda: self.faixa.mostrar(t("motor.pronto") if endereco else t("motor.erro", erro=erro)))
 
     def _garantir_lite(self):
         """25/10 (decisão do Enzo): o Gargantua 2 Lite é obrigatório (a única IA em segundo plano). Quem instalou antes, ou
@@ -1470,12 +1501,8 @@ class JanelaPrincipal(QMainWindow):
         pagina = self.config.paginas["atualizacoes"]
         if not nova:
             return
-        if nova.get("comando"):        # instalado pelo script (Windows, macOS, outros Linux): o comando vai para a área
-            try:
-                plataforma.escrever_area_de_transferencia(nova["comando"])
-            except OSError:
-                pass
-            pagina.estado(t("jp.comando_atualizar", comando=nova["comando"]), t("jp.atualizar"), True)
+        if nova.get("comando"):        # instalado pelo script (Windows, macOS, outros Linux): roda o instalador de novo
+            self._atualizar_pelo_script(pagina)
             return
         pagina.estado(t("jp.conferindo"), t("jp.atualizar"), False)
         tipo = "appimage" if os.environ.get("APPIMAGE") and "appimage" in nova["arquivos"] else \
@@ -1528,11 +1555,43 @@ class JanelaPrincipal(QMainWindow):
             self._abrir_painel_arquivos(arquivos)
             return
         if not texto.strip():          # nada selecionado: o atalho vira o lançador (a barra rápida pede qualquer coisa)
+            self._guardar_janela_antes()
             self.barra.mostrar()
             return
         self._abrir_acoes_com(texto)
 
-    def _abrir_acoes_com(self, texto):
+    def _guardar_janela_antes(self):
+        """A janela em foco ANTES de a barra aparecer (depois dela, o foco é da própria barra): é sobre ela que "Perguntar
+        sobre a tela" vai ler. Só o pid e o título; nada é gravado."""
+        n = self.nucleo
+        try:
+            ativa = n.janela_ativa_x()
+            janela = next((j for j in n.listar_janelas_x() or [] if j["id"] == ativa), None) if ativa is not None else None
+        except Exception:  # noqa: BLE001  (sem acesso às janelas agora: cai no print)
+            janela = None
+        self._janela_antes = {"pid": janela.get("pid"), "titulo": janela["titulo"]} if janela and janela.get("pid") != os.getpid() else None
+
+    def _perguntar_sobre_a_tela(self):
+        """5.3 (F4+): lê o texto da janela de antes pela acessibilidade e abre o painel das ações em "Perguntar" (a resposta sai
+        pelo contrato de texto, sem imagem). Sem acessibilidade ou sem texto: volta para a barra com o pedido de tela (o print)."""
+        alvo = getattr(self, "_janela_antes", None) or {}
+
+        def trabalho():
+            try:
+                lido = acess.texto_da_janela(pid=alvo.get("pid"), titulo=alvo.get("titulo")) if alvo else None
+            except Exception:  # noqa: BLE001  (a acessibilidade falhou: o print resolve)
+                lido = None
+            if lido:
+                self.depois(lambda: self._abrir_acoes_com(lido["texto"], aba="perguntar", origem=lido["titulo"] or lido["app"]))
+            else:
+                def voltar():
+                    self.barra.mostrar()
+                    self.barra.entrada.setPlainText(t("rapido.pref.tela"))
+                    self.barra.entrada.moveCursor(QTextCursor.MoveOperation.End)
+                self.depois(voltar)
+        threading.Thread(target=trabalho, daemon=True).start()
+
+    def _abrir_acoes_com(self, texto, aba="reescrever", origem=None):
         if self._painel_acoes is None:
             n = self.nucleo
             garg = n.MODELO_GARGANTUA.split(":")[0]
@@ -1542,7 +1601,7 @@ class JanelaPrincipal(QMainWindow):
                 instalados = []
             self._painel_acoes = PainelAcoes(n.OLLAMA_HOST, instalados, garg + ":lite", garg + ":latest")
             self._painel_acoes.substituir.connect(self._colar_resultado)
-        self._painel_acoes.abrir(texto)
+        self._painel_acoes.abrir(texto, aba=aba, origem=origem)
 
     # -- 5.2 (F4): sugestão pelo programa em uso ------------------------------------------------------------
     def _ligar_contexto(self):
@@ -1622,6 +1681,27 @@ class JanelaPrincipal(QMainWindow):
         teclas = lambda *k: self.nucleo.pyautogui.hotkey(*k)  # noqa: E731
         QTimer.singleShot(200, lambda: threading.Thread(target=acoes_lib.colar, args=(texto, teclas), daemon=True).start())
 
+    def _atualizar_pelo_script(self, pagina, popen=subprocess.Popen):
+        """5.3 (F5): um clique. Windows: o PowerShell visível roda o instalador (que fecha este app e reabre no fim). macOS e
+        outros Linux: o script roda escondido, com o registro em ~/.cache, e o app reinicia quando ele termina bem."""
+        argv = tars_atualizacao.argumentos_um_clique()
+        if plataforma.sistema() == "windows":
+            popen(argv, creationflags=0x00000010)          # CREATE_NEW_CONSOLE: a pessoa vê o andamento
+            pagina.estado(t("jp.atualizando_script"), t("jp.atualizar"), False)
+            return
+        registro = Path.home() / ".cache" / "opentars-atualizacao.log"
+        registro.parent.mkdir(parents=True, exist_ok=True)
+        pagina.estado(t("jp.atualizando_script"), t("jp.atualizar"), False)
+
+        def trabalho():
+            with open(registro, "wb") as saida:
+                codigo = popen(argv, stdin=subprocess.DEVNULL, stdout=saida, stderr=subprocess.STDOUT).wait()
+            if codigo == 0:
+                self.depois(self._reiniciar)
+            else:
+                self.depois(lambda: pagina.estado(t("jp.erro_script", arquivo=str(registro)), t("jp.atualizar"), True))
+        threading.Thread(target=trabalho, daemon=True).start()
+
     def _reiniciar(self):
         """26/10: com o assistente ligado, fechar a janela não encerra o openTARS (ele fica no ícone), então "feche e abra de
         novo" nunca valia uma atualização. Sobe um processo novo (que espera este soltar a instância única) e encerra este.
@@ -1661,6 +1741,7 @@ class JanelaPrincipal(QMainWindow):
     def trazer_para_frente(self, comando="mostrar"):
         self._ultimo_uso = time.monotonic()
         if comando == "rapido":
+            self._guardar_janela_antes()
             self.barra.mostrar()
             return
         if comando == "acoes":

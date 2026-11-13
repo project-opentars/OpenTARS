@@ -13,7 +13,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 setup = (RAIZ / "empacotamento" / "setup.sh").read_text(encoding="utf-8")
-inicio = setup.index('MODELO_GARGANTUA="${TARS_MODELO_GARGANTUA:-ProjectOpenTARS/Gargantua-2}"')
+inicio = setup.index('MODELO_GARGANTUA="${TARS_MODELO_GARGANTUA:-ProjectOpenTARS/Gargantua-2.5}"')
 fim = setup.index("# 4. Modelo de conversa")
 bloco = setup[inicio:fim]
 assert "gargantua_segundo_plano" in bloco and "[ -t 1 ]" in bloco

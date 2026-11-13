@@ -72,7 +72,7 @@ class Cfg:
         ao_fim(r)
     def depois(self, f): f()
 
-assert "cfg.gerenciar" in modos.RECURSOS["base"] and "cfg.gerenciar" in modos.RECURSOS["pro"] and "cfg.gerenciar" not in modos.RECURSOS["lite"]
+assert "cfg.gerenciar" in modos.RECURSOS["base"] and "cfg.gerenciar" in modos.RECURSOS["dev"]
 assert "gerenciar" in cfgmod.PAGINAS and cfgmod.PAGINAS.index("gerenciar") == cfgmod.PAGINAS.index("modelos") + 1
 cfg = Cfg(url)
 pg = cfgmod.PGerenciar(cfg)

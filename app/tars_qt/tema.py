@@ -10,7 +10,7 @@ Cantos arredondados (botões 10 px, cartões 12 a 14 px), alvos de pelo menos 44
 import html
 from pathlib import Path
 
-from PySide6.QtCore import QByteArray, QPointF, QRectF, QSize, Qt
+from PySide6.QtCore import QByteArray, QEvent, QObject, QPointF, QRectF, QSize, Qt
 from PySide6.QtGui import QColor, QFont, QFontDatabase, QIcon, QPainter, QPainterPath, QPen, QPixmap
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtSvgWidgets import QSvgWidget
@@ -167,6 +167,7 @@ QFrame#lateral {{ background: {c['lateral']}; border: 0; border-right: 1px solid
 QLabel {{ background: transparent; border: 0; }}
 QLabel[papel="h1"] {{ font-size: 34px; font-weight: 600; }}
 QLabel[papel="texto"] {{ font-size: 16px; color: {c['texto2']}; }}
+QLabel[papel="estado"] {{ font-size: 15px; font-weight: 500; color: {c['texto']}; }}
 QLabel[papel="kicker"] {{ font-family: "{FONTE_MONO}"; font-size: 12px; color: {c['apoio']}; }}
 QLabel[papel="marca"] {{ font-size: 28px; font-weight: 600; }}
 QLabel[papel="slogan"] {{ font-size: 14px; color: {c['apoio']}; }}
@@ -233,9 +234,25 @@ QPlainTextEdit:focus {{ border: 1px solid {c['verde']}; }}
 """ + folha_principal()
 
 
+def _icones_do_qss():
+    """O Qt só põe imagem no indicador do checkbox e na seta do combo por arquivo: grava dois SVG pequenos numa pasta temporária."""
+    import tempfile
+    pasta = Path(tempfile.gettempdir()) / "opentars-tema"
+    try:
+        pasta.mkdir(exist_ok=True)
+        (pasta / "check.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M5.5 11.5l3.8 3.8 7.2-8" '
+                                         'fill="none" stroke="#0A1030" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+        (pasta / "seta.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" '
+                                        f'fill="none" stroke="{CORES["apoio"]}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+    except OSError:
+        return "", ""
+    return (pasta / "check.svg").as_posix(), (pasta / "seta.svg").as_posix()
+
+
 def folha_principal():
     """As regras da janela principal (conversa, barra lateral, compositor, configurações)."""
     c = CORES
+    _check, _seta = _icones_do_qss()
     return f"""
 QFrame#lateral2 {{ background: {c['lateral']}; border: 0; border-right: 1px solid {c['linha']}; }}
 QFrame#cabecalho {{ background: transparent; border: 0; border-bottom: 1px solid {c['linha']}; }}
@@ -346,7 +363,7 @@ QPushButton[papel="segmento-grande"] {{
 }}
 QPushButton[papel="segmento-grande"]:checked {{ background: {c['borda2']}; color: {c['texto']}; font-weight: 500; }}
 QPushButton[papel="nav-config"] {{
-    background: transparent; border: 0; border-radius: 8px; min-height: 44px; padding: 0 12px; text-align: left;
+    background: transparent; border: 0; border-radius: 8px; min-height: 38px; padding: 0 12px; text-align: left;
     font-size: 14px; font-weight: 400; color: {c['texto2']};
 }}
 QPushButton[papel="nav-config"]:hover {{ background: #1A2446; }}
@@ -368,10 +385,20 @@ QMenu::separator {{ height: 1px; background: {c['linha']}; margin: 6px 8px; }}
 QComboBox {{
     background: {c['fundo']}; border: 1px solid {c['borda2']}; border-radius: 8px; min-height: 40px; padding: 0 12px; font-size: 14px;
 }}
-QComboBox QAbstractItemView {{ background: {c['cartao']}; border: 1px solid {c['borda2']}; selection-background-color: {c['destaque']}; }}
+QComboBox:hover {{ border-color: {c['borda3']}; }}
+QComboBox:focus, QComboBox:on {{ border-color: {c['verde']}; }}
+QComboBox::drop-down {{ subcontrol-origin: padding; subcontrol-position: center right; width: 34px; border: 0; background: transparent; }}
+QComboBox::down-arrow {{ image: url({_seta}); width: 12px; height: 12px; }}
+QComboBox QAbstractItemView {{ background: {c['cartao']}; border: 1px solid {c['borda2']}; border-radius: 8px; padding: 4px; outline: 0;
+    selection-background-color: {c['destaque']}; selection-color: {c['texto']}; }}
 QCheckBox {{ font-size: 14px; spacing: 10px; }}
 QCheckBox::indicator {{ width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid {c['borda3']}; background: {c['fundo']}; }}
-QCheckBox::indicator:checked {{ background: {c['verde']}; border-color: {c['verde']}; }}
+QCheckBox::indicator:hover {{ border-color: {c['apoio']}; }}
+QCheckBox::indicator:checked {{ background: {c['verde']}; border-color: {c['verde']}; image: url({_check}); }}
+QCheckBox::indicator:checked:hover {{ background: #74E28E; border-color: #74E28E; }}
+QCheckBox:focus {{ outline: none; }}
+QCheckBox::indicator:focus {{ border-color: {c['verde']}; }}
+QCheckBox:disabled {{ color: {c['mudo']}; }}
 QSlider::groove:horizontal {{ height: 6px; background: {c['lateral']}; border-radius: 3px; }}
 QSlider::sub-page:horizontal {{ background: {c['verde']}; border-radius: 3px; }}
 QSlider::handle:horizontal {{ background: {c['texto']}; width: 20px; height: 20px; margin: -8px 0; border-radius: 10px; }}
@@ -385,7 +412,7 @@ QSlider::handle:horizontal {{ background: {c['texto']}; width: 20px; height: 20p
 # Altura de linha de cada papel, em px (o corpo do mockup usa 1,5 vezes o tamanho da fonte;
 # títulos 1,15). O Qt não tem line-height em QSS, então vai por HTML no próprio rótulo.
 ALTURA_DE_LINHA = {
-    "texto": 24, "slogan": 21, "erro": 21, "alerta": 21,
+    "texto": 24, "estado": 23, "slogan": 21, "erro": 21, "alerta": 21,
     "nota": 20, "mono-claro": 20, "linha": 23,
 }
 
@@ -425,6 +452,32 @@ def rotulo(texto, papel, quebra=False, maximo=None, html_pronto=False):
         fonte.setLetterSpacing(QFont.AbsoluteSpacing, 0.96)   # 0,08 em de 12 px
         r.setFont(fonte)
     return r
+
+
+class _Cartao(QObject):
+    """Pinta o cartão arredondado antes do resto da janela (com fundo transparente o estilo não pinta mais o fundo)."""
+
+    def __init__(self, janela, fundo, borda, raio):
+        super().__init__(janela)
+        self.fundo, self.borda, self.raio = QColor(fundo), QColor(borda), raio
+
+    def eventFilter(self, alvo, evento):
+        if evento.type() == QEvent.Paint:
+            p = QPainter(alvo)
+            p.setRenderHint(QPainter.Antialiasing)
+            p.setPen(QPen(self.borda, 1))
+            p.setBrush(self.fundo)
+            p.drawRoundedRect(QRectF(alvo.rect()).adjusted(0.5, 0.5, -0.5, -0.5), self.raio, self.raio)
+            p.end()
+        return False
+
+
+def janela_arredondada(janela, fundo, borda, raio=16):
+    """Janela sem moldura com cantos arredondados de verdade (07/11: a barra do Ctrl+Alt+Espaço saía quadrada).
+    O border-radius do estilo só arredonda o desenho; sem fundo transparente o sistema preenche o retângulo inteiro por baixo,
+    e com fundo transparente o estilo deixa de pintar o cartão. Então o fundo fica transparente e o cartão é pintado aqui."""
+    janela.setAttribute(Qt.WA_TranslucentBackground, True)
+    janela.installEventFilter(_Cartao(janela, fundo, borda, raio))
 
 
 def aplicar_papel(widget, papel):

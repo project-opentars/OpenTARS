@@ -29,6 +29,7 @@ import requests
 import psutil
 from PIL import Image
 
+import tars_motor as motor_lib
 import tars_i18n as i18n
 from tars_i18n import t
 import tars_acessibilidade as acess
@@ -160,7 +161,7 @@ if SESSAO_GRAFICA == "wayland" and os.environ.get("TARS_YDOTOOL", "1") not in ("
 # CONFIGURAÇÃO
 # ============================================================
 
-VERSAO = "5.2"
+VERSAO = "5.3"
 # 3.0 Miller: o classificador Murph e o modo AUTO.
 # 4.0 Endurance: o Gargantua (IA oficial); Endurance Neo: aviso de versão nova, tarefas longas.
 # 4.5 Endurance: o Cooper (visão da tela), WSL e Linux sem interface gráfica.
@@ -171,11 +172,11 @@ VERSAO = "5.2"
 #     conta do Ollama e pesquisa web pelo SearXNG.
 # 5.2 Ranger: Windows, macOS e outros Linux; o assistente do sistema (lançador, ações de texto, arquivos e fotos);
 #     Gargantua 2 retreinado com os dados da 5.2.
-CODINOME = "Ranger"
+CODINOME = "Tesseract"
 VERSAO_EXIBIDA = f"{VERSAO} {CODINOME}"
 # Endurance Neo: sobe a cada pacote publicado (AAAAMMDDNN). O aviso de versão
 # nova compara com a REVISAO do tars.py do GitHub (tars_atualizacao.py).
-REVISAO = 2026111002
+REVISAO = 2026111301
 
 # Endereço do servidor Ollama — respeita a variável de ambiente padrão
 # do próprio Ollama (OLLAMA_HOST), pra funcionar sem editar o código
@@ -224,11 +225,18 @@ def _normalizar_ollama_host(valor):
 
 
 OLLAMA_HOST = _normalizar_ollama_host(os.environ.get("OLLAMA_HOST"))
+if not os.environ.get("OLLAMA_HOST"):   # 5.3: o motor llama.cpp é o padrão (se já instalado); senão, ou se a config de dev escolheu o Ollama, o Ollama
+    try:
+        import tars_motor_local
+        if tars_motor_local.escolhido() == "llamacpp":
+            OLLAMA_HOST = tars_motor_local.garantir() or OLLAMA_HOST
+    except Exception:
+        pass
 
 
 def _ollama_responde(url, espera=0.8):
     try:
-        return requests.get(f"{url}/api/version", timeout=espera).status_code == 200
+        return requests.get(motor_lib.url("versao", url), timeout=espera).status_code == 200
     except Exception:
         return False
 
@@ -244,11 +252,11 @@ if EM_WSL and not os.environ.get("OLLAMA_HOST") and not _ollama_responde(OLLAMA_
             OLLAMA_HOST, OLLAMA_NO_WINDOWS = _candidato, True
             break
 
-OLLAMA_URL = f"{OLLAMA_HOST}/api/chat"
-OLLAMA_TAGS_URL = f"{OLLAMA_HOST}/api/tags"
-OLLAMA_SHOW_URL = f"{OLLAMA_HOST}/api/show"
-OLLAMA_GENERATE_URL = f"{OLLAMA_HOST}/api/generate"
-OLLAMA_PS_URL = f"{OLLAMA_HOST}/api/ps"
+OLLAMA_URL = motor_lib.url("conversa", OLLAMA_HOST)
+OLLAMA_TAGS_URL = motor_lib.url("modelos", OLLAMA_HOST)
+OLLAMA_SHOW_URL = motor_lib.url("detalhes", OLLAMA_HOST)
+OLLAMA_GENERATE_URL = motor_lib.url("gerar", OLLAMA_HOST)
+OLLAMA_PS_URL = motor_lib.url("rodando", OLLAMA_HOST)
 
 # Quanto tempo cada modelo fica na memória (RAM/VRAM) depois do último uso: o
 # Ollama o descarrega sozinho. Curto = PC fraco liberado mais cedo; o modelo
@@ -273,15 +281,7 @@ MODELO_PADRAO = os.environ.get("TARS_MODELO_PADRAO", "qwen3:0.6b")
 # Neo: o classificador por IA (qwen2.5:0.5b) saiu; quem decide o tipo do
 # pedido é a helper Murph. Os ajudantes das versões antigas, se ainda
 # estiverem instalados, ficam fora da escolha de conversa.
-class _Ajudantes(set):
-    """Modelos que não entram na escolha de conversa: os ajudantes antigos e
-    o Cooper (4.5), que só olha a tela."""
-
-    def __contains__(self, tag):
-        return set.__contains__(self, tag) or visao_lib.e_cooper(tag)
-
-
-MODELOS_AJUDANTES = _Ajudantes({"qwen2.5:0.5b", "gemma3:270m"})
+MODELOS_AJUDANTES = {"qwen2.5:0.5b", "gemma3:270m"}
 
 # ------------------------------------------------------------
 # Timeouts de rede (segundos) — nomeados por propósito, não por valor,
@@ -390,6 +390,7 @@ _CAPACIDADES_RELEVANTES = {"tools", "vision", "thinking"}
 PASTA_NUCLEO = Path(__file__).resolve().parent / "nucleo"
 PARTES_NUCLEO = (
     "registro",
+    "visual",
     "ollama",
     "hardware",
     "aplicacoes",

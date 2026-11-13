@@ -19,6 +19,8 @@ case "$1" in
         fi
 
         bash /usr/share/opentars/setup.sh || true
+        # sem isto cada abertura recompila tudo: quem usa o app não escreve em /usr/share (-12% ao abrir, medido em 06/11)
+        /usr/share/opentars/venv/bin/python3 -m compileall -q -x /venv/ /usr/share/opentars || true
 
         if command -v update-desktop-database >/dev/null 2>&1; then
             update-desktop-database -q /usr/share/applications || true

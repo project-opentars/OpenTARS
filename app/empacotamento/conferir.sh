@@ -42,8 +42,9 @@ fi
 
 echo "== 4/4 REVISAO"
 nova=$(grep -oP '^REVISAO = \K\d+' tars.py)
-publicado="../../opentars_all.deb"
-if [ -f "$publicado" ]; then
+# desde 12/11 os pacotes ficam em pacotes/atual (o mais novo do app é a entrega a superar)
+publicado=$(ls -t ../../pacotes/atual/opentars_*_all.deb ../../opentars_all.deb 2>/dev/null | head -1)
+if [ -n "$publicado" ] && [ -f "$publicado" ]; then
     antiga=$(dpkg-deb -f "$publicado" Version 2>/dev/null | grep -oP '\+\K\d+$' || echo 0)
     if [ "${nova:-0}" -le "${antiga:-0}" ]; then
         problemas+=("REVISAO $nova não é maior que a do opentars_all.deb da entrega ($antiga): suba em tars.py")

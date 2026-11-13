@@ -375,6 +375,9 @@ def _categorizar_modelo(tag, capacidades, parametros_b, familia):
         return "embedding"
     if re.search(r"(^|/)(flux|z-image)", nome):
         return "embedding"
+    # 5.3: o Gargantua Pi tem prompt e 4 ferramentas próprios, do openTARS Pi: com as 19 do app grande ele só atrapalharia.
+    if variante_do_gargantua(tag) == "pi":
+        return "embedding"
     # Ollama antigo não informa capacidades: reconhece pelo nome os modelos
     # de embeddings conhecidos (granite-embedding, nomic-embed-text...).
     if not capacidades and re.search(r"embed|minilm|bge-|paraphrase-multilingual|snowflake-arctic|e5-", nome):
@@ -494,9 +497,8 @@ def modelo_ajudante(catalogo=None):
     um nome fixo que pode nem estar instalado nesta máquina."""
 
     catalogo = catalogo if catalogo is not None else catalogar_modelos()
-    # O Cooper só olha a tela e embedding não conversa: nenhum dos dois resolve nome de app.
-    catalogo = {t_: m for t_, m in catalogo.items()
-                if m["categoria"] != "embedding" and not visao_lib.e_cooper(t_) and not m.get("nuvem")}
+    # Embedding não conversa: não resolve nome de app.
+    catalogo = {t_: m for t_, m in catalogo.items() if m["categoria"] != "embedding" and not m.get("nuvem")}
 
     candidatos = modelos_com_capacidade(catalogo, "tools") or [
         m for m in catalogo.values() if m["categoria"] != "embedding"
@@ -544,8 +546,6 @@ def construir_cadeia_fallback(tarefa, catalogo=None):
     candidatos = [m for m in catalogo.values() if m["categoria"] != "embedding" and not m.get("nuvem")]
     # Os ajudantes não conversam: só entram se não houver mais nada.
     candidatos = [m for m in candidatos if m["tag"] not in MODELOS_AJUDANTES] or candidatos
-    # O Cooper nunca conversa, nem como último recurso (ele só responde sobre prints).
-    candidatos = [m for m in candidatos if not visao_lib.e_cooper(m["tag"])]
     if not candidatos:
         return []
 

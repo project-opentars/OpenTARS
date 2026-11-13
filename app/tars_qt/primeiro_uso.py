@@ -24,7 +24,6 @@ import tars_modelinhos as modelinhos
 import tars_atalho
 import tars_atualizacao
 import tars_i18n
-import tars_modos as modos
 import tars_plataforma as plataforma
 import tars_primeiro_uso as pu
 from tars_i18n import t
@@ -39,7 +38,7 @@ PASSOS = pu.PASSOS + (("sistema",) if plataforma.sistema() in ("windows", "macos
 TOTAL_PASSOS = len(PASSOS)
 
 # nome da tela -> índice do passo na barra lateral (a tela da chave é parte do passo da nuvem)
-PASSO_DA_TELA = {"idioma": 0, "modo": 1, "ollama": 2, "nuvem": 3, "chave": 3, "gargantua": 4, "teste": 5, "sistema": 6,
+PASSO_DA_TELA = {"idioma": 0, "ollama": 1, "nuvem": 2, "chave": 2, "gargantua": 3, "teste": 4, "sistema": 5,
                  "pronto": TOTAL_PASSOS}
 DEPOIS_DO_TESTE = "sistema" if "sistema" in PASSOS else "pronto"
 
@@ -265,26 +264,6 @@ class PaginaIdioma(Pagina):
         self.jan.escolher_idioma(self.codigos[self.grupo.marcado()])
 
 
-class PaginaModo(Pagina):
-    """5.1: Lite, Base ou Pro. Muda depois em Configurações > Geral."""
-    nome = "modo"
-
-    def __init__(self, jan):
-        super().__init__(jan, t("pu.modo.titulo"), t("pu.modo.texto"))
-
-    def construir(self):
-        cartoes = [CartaoOpcao(t(f"modo.{m}.nome"), t(f"modo.{m}.desc")) for m in modos.MODOS]
-        self.grupo = GrupoCartoes(cartoes, modos.MODOS.index(modos.modo_atual()))
-        for c in cartoes:
-            self.corpo.addWidget(c)
-        self.nav.addStretch(1)
-        self.nav.addWidget(botao(t("pu.continuar"), "primario", self.continuar))
-
-    def continuar(self):
-        modos.definir_modo(modos.MODOS[self.grupo.marcado()])
-        self.jan.ir("ollama")
-
-
 class PaginaOllama(Pagina):
     nome = "ollama"
 
@@ -344,7 +323,20 @@ class PaginaOllama(Pagina):
     def procurar(self):
         self.mostrar("procurando")
         sinais = self.jan.sinais
-        threading.Thread(target=lambda: fio.emitir(sinais.ollama, pu.achar_ollama()), daemon=True).start()
+        threading.Thread(target=lambda: fio.emitir(sinais.ollama, self._achar_motor()), daemon=True).start()
+
+    @staticmethod
+    def _achar_motor():
+        """5.3 (F9): o motor llama.cpp primeiro; um Ollama que já está aqui também serve."""
+        import tars_motor_local as motor
+        if motor.binario() is not None and motor.escolhido() == "llamacpp":
+            endereco = motor.garantir()
+            if endereco:
+                return {"instalado": True, "responde": True, "host": endereco, "versao": "llama.cpp " + motor.VERSAO_LLAMA}
+        r = pu.achar_ollama()
+        if r["versao"]:
+            r["versao"] = "Ollama " + r["versao"]
+        return r
 
     def resultado(self, r):
         self.jan.estado["host"] = r["host"]
@@ -358,7 +350,17 @@ class PaginaOllama(Pagina):
     def instalar(self):
         self.mostrar("instalando")
         sinais = self.jan.sinais
-        threading.Thread(target=lambda: fio.emitir(sinais.instalado, *pu.instalar_ollama()), daemon=True).start()
+        threading.Thread(target=lambda: fio.emitir(sinais.instalado, *self._instalar_motor()), daemon=True).start()
+
+    @staticmethod
+    def _instalar_motor():
+        """Baixa o llama-server (~35 MB, SHA-256 conferido, sem senha) e sobe o motor. Devolve (ok, motivo)."""
+        import tars_motor_local as motor
+        try:
+            motor.instalar_binario()
+        except (OSError, ValueError) as e:
+            return False, str(e)
+        return (True, "") if motor.garantir() else (False, "llama-server")
 
     def instalou(self, ok, msg):
         if ok:
@@ -833,7 +835,7 @@ class PaginaPronto(Pagina):
 class JanelaPrimeiroUso(QMainWindow):
     concluido = Signal()
 
-    ORDEM = (PaginaIdioma, PaginaModo, PaginaOllama, PaginaNuvem, PaginaChave, PaginaGargantua, PaginaTeste) + \
+    ORDEM = (PaginaIdioma, PaginaOllama, PaginaNuvem, PaginaChave, PaginaGargantua, PaginaTeste) + \
         ((PaginaSistema,) if "sistema" in PASSOS else ()) + (PaginaPronto,)
 
     def __init__(self):
@@ -940,9 +942,9 @@ class JanelaPrimeiroUso(QMainWindow):
     def escolher_idioma(self, codigo):
         if codigo != tars_i18n.idioma_atual():
             tars_i18n.definir_idioma(codigo)
-        self.atual = "modo"
+        self.atual = "ollama"
         self.montar()
-        self.paginas["modo"].ao_entrar()
+        self.paginas["ollama"].ao_entrar()
 
     def terminar(self):
         pu.marcar_concluido()

@@ -3,15 +3,16 @@
 #   irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex
 #
 # O que faz: baixa o código do app (pasta app/ do repositório), instala o uv (um programa que traz o Python), cria um
-# ambiente Python com as dependências, instala o Ollama se faltar (o instalador oficial, por usuário), cria o atalho
-# no Menu Iniciar e os comandos opentars e opentars-gui. O modelo (Gargantua 2) é baixado na primeira abertura, com barra.
+# ambiente Python com as dependências, cria o atalho
+# no Menu Iniciar e os comandos opentars e opentars-gui. O motor llama.cpp e o modelo (Gargantua 2.5) são baixados na primeira abertura, com barra (-ComOllama instala o Ollama também).
 # Rodar de novo atualiza. Remover:
 #   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1))) -Remover
 # Suas conversas e configurações (em %APPDATA%\opentars) ficam; apague a pasta se quiser.
 param(
     [switch]$Remover,
     [string]$Fonte = "",        # pasta app/ local em vez de baixar (o CI usa)
-    [switch]$SemOllama          # não instala o Ollama (o CI usa)
+    [switch]$SemOllama,         # aceito por compatibilidade (CI, setup.exe): desde a 5.3 o Ollama não entra por padrão
+    [switch]$ComOllama          # 5.3: o motor é o llama.cpp (o app baixa); -ComOllama instala o Ollama também
 )
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"        # a barra do Invoke-WebRequest deixa o download muito lento no 5.1
@@ -87,11 +88,11 @@ if (-not (Test-Path (Join-Path $Venv "Scripts\python.exe"))) {
     & $uvExe venv --python 3.12 $Venv
     if ($LASTEXITCODE) { throw "uv venv failed ($LASTEXITCODE)" }
 }
-& $uvExe pip install --python (Join-Path $Venv "Scripts\python.exe") requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime uiautomation pip
+& $uvExe pip install --python (Join-Path $Venv "Scripts\python.exe") requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime keyring uiautomation pip
 if ($LASTEXITCODE) { throw "uv pip install failed ($LASTEXITCODE)" }
 
-# 3. O Ollama (por usuário). Sem ele o openTARS abre, mas não tem IA local.
-if (-not $SemOllama) {
+# 3. O Ollama (por usuário), só com -ComOllama: desde a 5.3 o app usa o motor llama.cpp, que ele mesmo baixa.
+if ($ComOllama -and -not $SemOllama) {
     $ollama = Get-Command ollama -ErrorAction SilentlyContinue
     $ollamaExe = Join-Path $env:LOCALAPPDATA "Programs\Ollama\ollama.exe"
     if (-not $ollama -and -not (Test-Path $ollamaExe)) {
@@ -146,7 +147,7 @@ $atalho.Description = "openTARS"
 $atalho.IconLocation = (Join-Path $App "empacotamento\windows\opentars.ico") + ",0"      # sem isto o atalho mostra o ícone do pythonw
 $atalho.Save()
 
-Dizer "Pronto. Abra o openTARS pelo Menu Iniciar (na primeira vez ele baixa o Gargantua 2, com barra)." `
-      "Done. Open openTARS from the Start menu (the first time it downloads Gargantua 2, with a progress bar)."
+Dizer "Pronto. Abra o openTARS pelo Menu Iniciar (na primeira vez ele baixa o Gargantua 2.5, com barra)." `
+      "Done. Open openTARS from the Start menu (the first time it downloads Gargantua 2.5, with a progress bar)."
 Dizer "Num terminal NOVO: 'opentars --diagnostico' confere tudo e 'opentars --prova' mede a IA; mande os relatórios que eles salvam." `
       "In a NEW terminal: 'opentars --diagnostico' checks everything and 'opentars --prova' measures the AI; send the reports they save."

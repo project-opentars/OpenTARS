@@ -820,6 +820,44 @@ def _eh_electron(comando):
     return False
 
 
+def comando_com_acessibilidade(argv):
+    """O mesmo comando com a opção que faz o Chromium/Electron montar a árvore de acessibilidade (sem repetir se já tem)."""
+    argv = list(argv)
+    return argv if OPCAO_ACESSIBILIDADE_CHROMIUM in argv else argv[:1] + [OPCAO_ACESSIBILIDADE_CHROMIUM] + argv[1:]
+
+
+def reabrir_com_acessibilidade(pid, esperar=10):
+    """11/11 (F11): um app Electron/Chromium que já estava aberto não expõe seus botões (medido: ligar a acessibilidade da sessão,
+    registrar ouvinte AT-SPI e ligar ScreenReaderEnabled não acordam um app aberto). O único caminho que funciona é abrir de novo
+    com a opção. Fecha o app com SIGTERM (nunca SIGKILL: se ele não sair, desiste) e abre igual, com a opção.
+    Só chamar com a permissão da pessoa (config reabrir_com_acessibilidade). Devolve (ok, mensagem)."""
+    import signal
+    try:
+        argv = [a.decode() for a in open(f"/proc/{pid}/cmdline", "rb").read().split(b"\0") if a]
+        pasta = os.readlink(f"/proc/{pid}/cwd")
+        ambiente = dict(os.environ)
+    except (OSError, UnicodeDecodeError):
+        return False, "could not read the app's command line"
+    if len(argv) == 1 and " " in argv[0]:       # o Chromium reescreve o título do processo: tudo vem numa palavra só
+        # shortcut: separa por espaço, então um argumento com espaço no valor quebra; trocar por leitura do `ps -o args` se aparecer
+        argv = [os.path.realpath(f"/proc/{pid}/exe")] + argv[0].split(" ")[1:]
+    if not argv or not _eh_electron(argv):
+        return False, "not an Electron/Chromium app"
+    try:
+        os.kill(pid, signal.SIGTERM)
+    except OSError as erro:
+        return False, f"could not close it: {erro}"
+    limite = time.time() + esperar
+    while time.time() < limite and os.path.exists(f"/proc/{pid}"):
+        time.sleep(0.2)
+    if os.path.exists(f"/proc/{pid}") and "zombie" not in open(f"/proc/{pid}/status").read().lower():
+        return False, "the app did not close (maybe it is asking to save something); it was left open"
+    ambiente["ACCESSIBILITY_ENABLED"] = "1"
+    subprocess.Popen(comando_com_acessibilidade(argv), cwd=pasta, env=ambiente, stdin=subprocess.DEVNULL,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+    return True, "reopened with accessibility on"
+
+
 # Nomes que são SITES, não programas (18/10: open_application("google") abria o Google Chrome, que só tem "google" no
 # nome). Só vira site quando não há um programa com exatamente esse nome: um Spotify ou Discord instalado continua app.
 _SITES_NAO_APPS = frozenset({"google", "youtube", "gmail", "wikipedia", "reddit", "amazon", "github", "facebook",

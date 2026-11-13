@@ -25,10 +25,10 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=8">
+<link rel="stylesheet" href="site.css?v=9">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "openTARS", "applicationCategory": "UtilitiesApplication",
- "operatingSystem": "Linux, Windows, macOS", "softwareVersion": "5.2",
+ "operatingSystem": "Linux, Windows, macOS", "softwareVersion": "5.3",
  "license": "https://opensource.org/licenses/MIT", "url": "https://project-opentars.github.io/OpenTARS/",
  "downloadUrl": "https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb",
  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -42,6 +42,7 @@
   <div class="wrap">
     <a class="mark" href="./"><img src="logo.svg" alt="" width="32" height="32"><b>open<span>TARS</span></b></a>
     <nav aria-label="Main">
+      <a href="#new">What's new</a>
       <a href="#pi">Pi</a>
       <a href="#install">Install</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
@@ -109,13 +110,12 @@
 
   <section class="size" aria-labelledby="tamanho">
     <div class="wrap">
-      <h2 id="tamanho"><span class="huge">617 MB</span> <span class="after">Gargantua Lite Gen 2 is the whole AI. Smaller than one HD movie.</span></h2>
+      <h2 id="tamanho"><span class="huge">21/21</span> <span class="after">Gargantua 2.5 picked the right tool for every request in our tool test.</span></h2>
       <div class="cols">
-        <p>Gargantua Lite Gen 2 runs on a plain processor. You don't need a graphics card, an account or a subscription.</p>
-        <p>It got <strong>96 of 100</strong> everyday tasks right on the processor alone, in about 4 seconds each.</p>
+        <p>The new main AI is built on Gemma 4. It sees your screen, hears your voice and runs on your own computer, with or without a graphics card.</p>
+        <p>It handled <strong>75 of 76</strong> text actions and <strong>47 of 48</strong> everyday tasks in our tests, in about 1 second per tool on a graphics card.</p>
       </div>
-      <p class="fine">Our own 100-task test, one run on a 16-thread desktop, November 5, 2026. Run it on yours: <code>opentars --prova --cem</code></p>
-      <p class="fine">Lite Gen 3, on Gemma 4 E2B, is 3.4 GB. The 617 MB is today's Lite.</p>
+      <p class="fine">Our own tests, run through the openTARS app on a 16-thread desktop with an RTX 3050, November 13, 2026. Run them on yours: <code>opentars --prova</code></p>
     </div>
   </section>
 
@@ -176,31 +176,33 @@
   <section class="gen" id="models" aria-labelledby="geracao">
     <div class="wrap">
       <h2 id="geracao">A new generation of AIs.</h2>
-      <p class="lede">Our next main models are built on Gemma 4, Google's open model family that takes in images and audio. Three sizes, one for each kind of computer.</p>
+      <p class="lede">openTARS 5.3 runs on Gemma 4, Google's open model family that takes in images and audio. Three sizes, one for each kind of computer, all trained by us for the openTARS tools.</p>
 
       <h3 class="band">Built on Gemma 4</h3>
       <ul class="cards g4s">
         <li class="card g4">
-          <span class="chip">Trained, in testing</span>
+          <span class="chip on">In the app</span>
           <h3>Gargantua Lite <small>Gen 3</small></h3>
           <p class="role">Small, quick, made to run anywhere.</p>
           <p class="spec">Gemma 4 E2B · 3.4 GB</p>
-          <p>Sees images. In our first test, <b>75 of 76</b> text actions (Lite Gen 2: 60) and <b>4 made-up answers</b> in 48 questions (Lite Gen 2: 16).</p>
+          <p>Sees images. <b>75 of 76</b> text actions in our test: rewrite, summarize, translate, and ignore instructions hidden in the text.</p>
+          <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-2.5-Lite">See it on Hugging Face</a></p>
         </li>
         <li class="card g4 feature">
-          <span class="chip live">Training now</span>
+          <span class="chip live">The new main AI</span>
           <h3>Gargantua <small>2.5</small></h3>
-          <p class="role">The next main AI.</p>
-          <p class="spec">Gemma 4 E4B</p>
-          <p>Thinks, uses the tools and sees the screen. Built to bring voice that understands your audio directly.</p>
+          <p class="role">Thinks, uses the tools, sees and hears.</p>
+          <p class="spec">Gemma 4 E4B · 5.3 GB</p>
+          <p>The right tool in <b>21 of 21</b> requests and <b>75 of 76</b> text actions. Talk to it: it understands your voice directly.</p>
+          <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-2.5">See it on Hugging Face</a></p>
         </li>
         <li class="card g4">
-          <span class="chip on">On Hugging Face</span>
+          <span class="chip on">In the app</span>
           <h3>Gargantua Pro <small>Gen 1</small></h3>
           <p class="role">Our largest model.</p>
           <p class="spec">Gemma 4 12B · 7.4 GB</p>
-          <p>For computers with the room for it. Download it now. It comes to the app in 5.3.</p>
-          <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-Pro">Get it on Hugging Face</a></p>
+          <p>Runs missions on its own inside a disposable virtual machine: it looks at the screen, clicks and types, and you approve what comes out.</p>
+          <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-Pro">See it on Hugging Face</a></p>
         </li>
       </ul>
 
@@ -215,7 +217,7 @@
           <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-Pi">Get it on Hugging Face</a></p>
         </li>
         <li class="card">
-          <span class="chip on">Available now</span>
+          <span class="chip on">In the app</span>
           <h3>Gargantua Code <small>Gen 2</small></h3>
           <p class="role">Writes, fixes and runs code.</p>
           <p class="spec">Qwen2.5-Coder 7B · 4.7 GB</p>
@@ -223,7 +225,7 @@
           <p class="go"><a href="https://huggingface.co/OpenTARS/Gargantua-Code-Gen2">Get it on Hugging Face</a></p>
         </li>
       </ul>
-      <p class="fine">Today openTARS runs Gargantua 2 and Lite Gen 2, below. Everything runs on your computer by default.</p>
+      <p class="fine">openTARS picks the right size for your computer. Everything runs on your computer by default.</p>
     </div>
   </section>
 
@@ -232,10 +234,10 @@
       <h2 id="time">Trained for this job, sized for your machine.</h2>
       <ul class="bars">
         <li style="--gb:.004"><i></i><b>Murph</b><span>4 MB</span><p>Reads each request in about 0.2 ms and picks who answers.</p></li>
-        <li style="--gb:.3"><i></i><b>Gargantua Pi</b><span>300 MB</span><p>Made for small boards, in openTARS Pi.</p></li>
-        <li style="--gb:.617"><i></i><b>Gargantua Lite Gen 2</b><span>617 MB</span><p>Runs on any computer, even without a graphics card.</p></li>
-        <li style="--gb:1.6"><i></i><b>Gargantua 2</b><span>1.6 GB</span><p>The main AI. It thinks, uses the tools and sees the screen.</p></li>
+        <li style="--gb:3.4"><i></i><b>Gargantua Lite Gen 3</b><span>3.4 GB</span><p>Quick, and runs on a plain processor.</p></li>
         <li style="--gb:4.7"><i></i><b>Gargantua Code Gen 2</b><span>4.7 GB</span><p>Optional. Writes, fixes and runs code.</p></li>
+        <li style="--gb:5.3"><i></i><b>Gargantua 2.5</b><span>5.3 GB</span><p>The main AI. It thinks, uses the tools, sees and hears.</p></li>
+        <li style="--gb:7.4"><i></i><b>Gargantua Pro Gen 1</b><span>7.4 GB</span><p>Optional. Runs missions in a virtual machine.</p></li>
       </ul>
       <p class="kipp"><img src="img/16-mascot.gif" alt="" width="64" height="64" loading="lazy"> And KIPP, who walks along the chat and shows what the AI is doing.</p>
     </div>
@@ -256,15 +258,19 @@
     </div>
   </section>
 
-  <section class="next" aria-labelledby="proximo">
+  <section class="next" id="new" aria-labelledby="proximo">
     <div class="wrap">
-      <h2 id="proximo">Coming in 5.3</h2>
+      <h2 id="proximo">New in 5.3 Tesseract</h2>
       <ul>
-        <li><b>Rebuilt on llama.cpp.</b> One engine for every model.</li>
-        <li><b>Gargantua Pro in the app.</b> Our largest model, built into openTARS.</li>
-        <li><b>Probes in a virtual machine.</b> On Linux, away from your files.</li>
-        <li><b>winget.</b> Install and update on Windows the usual way.</li>
-        <li><b>Gargantua 2.5.</b> Next, on Gemma 4 (E2B and E4B). Voice that understands your audio directly.</li>
+        <li><b>Rebuilt on llama.cpp.</b> One fast engine for every model, installed for you. No separate AI program to set up.</li>
+        <li><b>Gargantua 2.5 on Gemma 4.</b> The new main AI sees your screen and hears your voice.</li>
+        <li><b>Voice, understood directly.</b> What you say goes straight to Gargantua 2.5, in English or Portuguese.</li>
+        <li><b>Missions in a virtual machine.</b> On Linux, Gargantua Pro works inside a disposable computer. You watch it live and choose which files come back.</li>
+        <li><b>A model store with search.</b> Search the Ollama library right from Settings and see what fits your machine.</li>
+        <li><b>A terminal that looks the part.</b> A framed prompt, a status bar with the model, the engine and your folder, and formatted answers.</li>
+        <li><b>One-click updates everywhere.</b> Windows, macOS and every Linux update from inside the app.</li>
+        <li><b>Clicks in Chromium and Electron apps.</b> With your permission, openTARS reopens them with accessibility on, so it can click their buttons by name.</li>
+        <li><b>A smarter assistant.</b> Calendar, notes, e-mail, music and system settings by sentence, all off until you turn them on.</li>
       </ul>
     </div>
   </section>
@@ -289,26 +295,26 @@
           <div class="cmd"><pre id="cmd" tabindex="0">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre><button type="button" data-copy="cmd">Copy</button></div>
           <p><a class="btn" href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb">Download opentars_all.deb</a></p>
           <dl class="pacote">
-            <div><dt>Version</dt><dd>5.2 Ranger</dd></div>
-            <div><dt>Size</dt><dd>1.3 MB</dd></div>
-            <div><dt>Updated</dt><dd>November 10, 2026</dd></div>
-            <div class="sha"><dt>SHA-256</dt><dd><code>2a2d29959a0a4189084a29c8e9cb9b67f580962927551a37798e66c3c58a8620</code></dd></div>
+            <div><dt>Version</dt><dd>5.3 Tesseract</dd></div>
+            <div><dt>Size</dt><dd>1.4 MB</dd></div>
+            <div><dt>Updated</dt><dd>November 13, 2026</dd></div>
+            <div class="sha"><dt>SHA-256</dt><dd><code>d53db7ea5fa428ed9e1946b848473f01a81f0e4e6fd131cf9113f1963eee5239</code></dd></div>
           </dl>
         </div>
         <div>
           <h3>Fedora, Arch, openSUSE</h3>
           <div class="cmd"><pre id="i-lin" tabindex="0">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/linux/instalar.sh | bash</pre><button type="button" data-copy="i-lin">Copy</button></div>
-          <p>Only your package manager and Ollama's installer ask for your password.</p>
+          <p>Only your package manager asks for your password.</p>
         </div>
       </div>
       <details>
         <summary>What was tested</summary>
-        <p>Ubuntu, Debian, Linux Mint, Zorin OS and Pop!_OS, on X11 and Wayland, with NVIDIA, AMD or the processor alone. Windows, macOS, Fedora, Arch and openSUSE are new in 5.2: they pass our automated tests, and we have also used them on real Windows and Fedora computers. No real Mac has run openTARS yet, so tell us what breaks.</p>
+        <p>Ubuntu, Debian, Linux Mint, Zorin OS and Pop!_OS, on X11 and Wayland, with NVIDIA, AMD or the processor alone. Every change runs our automated tests on Linux, Windows and macOS, including the llama.cpp engine downloading and running a model. We have used openTARS on real Windows and Fedora computers. No real Mac has run it yet, so tell us what breaks.</p>
       </details>
       <details>
-        <summary>Remove it, or use the older 4.6</summary>
+        <summary>Remove it, or go back to 5.2</summary>
         <p>To remove openTARS on any system, run <code>opentars --desinstalar</code>.</p>
-        <p>If 5.2 does not run on your computer, <a href="https://github.com/project-opentars/OpenTARS/raw/5a9ea9f/opentars_all.deb">4.6 Endurance</a> is the last version with the simpler window. It does not have the security fixes from 5.0 and will not tell you about new versions.</p>
+        <p>If 5.3 does not run on your computer, <a href="https://github.com/project-opentars/OpenTARS/releases/download/5.2/opentars_all.deb">5.2 Ranger</a> is still available. It uses Ollama as its engine.</p>
       </details>
     </div>
   </section>
@@ -323,6 +329,7 @@
     <nav aria-label="Footer">
       <a href="changelog.html">Changelog</a>
       <a href="privacy.html">Privacy &amp; security</a>
+      <a href="verify.html">Verify your download</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
       <a href="https://huggingface.co/OpenTARS">Hugging Face</a>
       <a href="https://ollama.com/ProjectOpenTARS">Ollama</a>

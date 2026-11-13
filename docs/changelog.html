@@ -17,7 +17,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=8">
+<link rel="stylesheet" href="site.css?v=9">
 </head>
 <body>
 <header class="top">
@@ -36,6 +36,23 @@
     <h1 class="display">Changelog</h1>
     <p class="lede quiet">What changed in each version of openTARS. Updates install from the same package: your chats and settings are kept.</p>
 
+    <article>
+      <h2>openTARS 5.3 Tesseract</h2>
+      <p class="quando">November 13, 2026</p>
+      <ul>
+        <li><strong>Rebuilt on llama.cpp:</strong> one engine for every model, downloaded by the app the first time it opens, with no password and no separate AI program. Coming from 5.2, your Gargantua models are copied over from Ollama. Ollama stays available in the developer settings.</li>
+        <li><strong>Gargantua 2.5, on Gemma 4:</strong> the new main AI picked the right tool in 21 of 21 requests and handled 75 of 76 text actions in our tests. Gargantua Lite Gen 3 (Gemma 4 E2B) comes along for lighter machines.</li>
+        <li><strong>Voice, understood directly:</strong> with Gargantua 2.5, what you say goes straight to the model, in English or Portuguese. Whisper stays as the backup.</li>
+        <li><strong>Missions in a virtual machine:</strong> on Linux with KVM, Gargantua Pro works inside a disposable computer. A new window in Probes shows its screen live, the steps and every site it visited, and you choose which files come back.</li>
+        <li><strong>Model store with search:</strong> filter the list as you type, or search the whole Ollama library from Settings. Gargantua Pro is in the store.</li>
+        <li><strong>New terminal look:</strong> a framed prompt, a status bar with the model, the engine, the folder and the branch, formatted answers, and the logo when the chat opens.</li>
+        <li><strong>One-click updates on every system:</strong> Windows, macOS and other Linux now update from the Updates page instead of copying a command.</li>
+        <li><strong>A stronger assistant:</strong> calendar (.ics), notes, e-mail, music controls and system settings by sentence on Linux, Windows and macOS. Everything new is off until you turn it on, and e-mail never sends without your yes.</li>
+        <li><strong>Clicks in Chromium and Electron apps:</strong> with your permission, openTARS reopens an app with accessibility on so it can click its buttons by name.</li>
+        <li><strong>Fixes:</strong> phrases like "the game freezes and the screen goes black" no longer lock the screen; "save my file" no longer turns into a memory; e-mail checks the server certificate; a newer model with the same file name now replaces the old one; the installers no longer install Ollama unless you ask.</li>
+        <li><strong>Verify your download:</strong> a new page explains the checksum and the GitHub attestation of each release.</li>
+      </ul>
+    </article>
     <article>
       <h2>openTARS 5.2 Ranger, update of November 10</h2>
       <p class="quando">November 10, 2026</p>
@@ -200,6 +217,7 @@
     <nav aria-label="Footer">
       <a href="changelog.html">Changelog</a>
       <a href="privacy.html">Privacy &amp; security</a>
+      <a href="verify.html">Verify your download</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
       <a href="https://huggingface.co/OpenTARS">Hugging Face</a>
       <a href="https://ollama.com/ProjectOpenTARS">Ollama</a>

@@ -182,7 +182,7 @@ class Ponte(QObject):
             try:
                 catalogo = n.catalogar_modelos()
                 for tag, m in sorted(catalogo.items()):
-                    if m["categoria"] == "embedding" or tag in n.MODELOS_AJUDANTES or n.visao_lib.e_cooper(tag):
+                    if m["categoria"] == "embedding" or tag in n.MODELOS_AJUDANTES:
                         continue
                     itens.append((tag, tag, False))
             except Exception:

@@ -1,6 +1,6 @@
 """Configurações do openTARS 5.0 (barra lateral de 240 px + páginas), no desenho do mockup "Memória":
-Geral, Voz, Memória e privacidade, Nuvem (opcional), Atualizações e Sobre. 5.1: os modos Lite, Base e Pro escondem
-páginas (tars_modos.py), e o Pro ganha Ajustes avançados e Diagnóstico."""
+Geral, Voz, Memória e privacidade, Nuvem (opcional), Atualizações e Sobre. 5.3: Base para todos; a chave "dev"
+(tars_modos.py) mostra os Ajustes avançados e o Diagnóstico."""
 
 import contextlib
 import html
@@ -20,10 +20,13 @@ import tars_acoes_texto as acoes_lib
 import tars_assistente as assistente
 import tars_atalho
 import tars_atualizacao
+import tars_busca_arquivos
 import tars_contexto
+import tars_email
 import tars_gerenciar_modelos as gm
 import tars_i18n
 import tars_imagem as imagem_lib
+import tars_integracoes
 import tars_mais_modelos as mm
 import tars_modos as modos
 import tars_primeiro_uso as pu
@@ -145,6 +148,8 @@ class PaginaConfiguracoes(QWidget):
         """5.1: cada modo mostra só as páginas dele (Lite: o básico; Pro: tudo)."""
         for nome in PAGINAS:
             self.nav[nome].setVisible(modos.mostra(f"cfg.{nome}"))
+        for nome, linha in self.divisores.items():
+            linha.setVisible(modos.mostra(f"cfg.{nome}"))
         atual = next((n for n, p in self.paginas.items() if p is self.pilha.currentWidget()), None)
         if atual and not modos.mostra(f"cfg.{atual}"):
             self.ir("geral")
@@ -164,7 +169,16 @@ class PaginaConfiguracoes(QWidget):
         self.nav = {}
         self.grupo = QButtonGroup(self)
         self.grupo.setExclusive(True)
+        self.divisores = {}
         for nome in PAGINAS:
+            if nome in ("rotinas", "nuvem", "avancado"):         # 11/11: as páginas em grupos (o dia a dia, o que roda sozinho, modelos, o resto)
+                linha = QFrame()
+                linha.setFixedHeight(1)
+                linha.setStyleSheet(f"background: {CORES['linha']}; border: 0; margin: 0 10px;")
+                self.divisores[nome] = linha
+                v.addSpacing(3)
+                v.addWidget(linha)
+                v.addSpacing(3)
             bt = _botao(t(f"cfg.nav.{nome}"), "nav-config", lambda _=False, n=nome: self.ir(n))
             bt.setCheckable(True)
             self.grupo.addButton(bt)
@@ -173,6 +187,7 @@ class PaginaConfiguracoes(QWidget):
         v.addStretch(1)
         cartao = QFrame()
         cartao.setProperty("papel", "aviso-versao")
+        cartao.setMinimumHeight(62)                  # janela baixa: o cartão não se espreme em cima do texto
         cv = QVBoxLayout(cartao)
         cv.setContentsMargins(14, 12, 14, 12)
         cv.setSpacing(2)
@@ -217,25 +232,11 @@ class PGeral(Pagina):
     def __init__(self, cfg):
         super().__init__(t("cfg.geral.titulo"), t("cfg.geral.sub"))
         self.cfg = cfg
-        sm, vm = _secao(t("cfg.modo"), t("cfg.modo_sub"))
-        lm = QHBoxLayout()
-        lm.setSpacing(10)
-        self.chips_modo = {}
-        grupo_modo = QButtonGroup(self)
-        grupo_modo.setExclusive(True)
-        for m in modos.MODOS:
-            b = _botao(t(f"modo.{m}.nome"), "chip")
-            b.setMinimumWidth(96)
-            b.setCheckable(True)
-            b.clicked.connect(lambda _=False, x=m: self._trocar_modo(x))
-            grupo_modo.addButton(b)
-            self.chips_modo[m] = b
-            lm.addWidget(b)
-        lm.addStretch(1)
-        vm.addLayout(lm)
-        self.desc_modo = rotulo("", "nota", quebra=True)
-        vm.addWidget(self.desc_modo)
-        self._marcar_modo()
+        sm, vm = _secao(t("cfg.dev"), t("cfg.dev_sub"))
+        self.dev = QCheckBox(t("cfg.dev_ligar"))         # 5.3: Lite, Base e Pro viraram Base + esta chave
+        self.dev.setChecked(modos.dev_ligado())
+        self.dev.toggled.connect(self._trocar_dev)
+        vm.addWidget(self.dev)
         self.adicionar(sm)
 
         s, v = _secao(t("cfg.idioma"), t("cfg.idioma_sub"))
@@ -268,7 +269,7 @@ class PGeral(Pagina):
         s2, v2 = _secao(t("cfg.ia"), t("cfg.ia_sub"))
         self.estado = QLabel("…")
         self.estado.setWordWrap(True)
-        self.estado.setProperty("papel", "texto")
+        self.estado.setProperty("papel", "estado")
         v2.addWidget(self.estado)
         self.barra = QLabel("")
         self.barra.setProperty("papel", "nota")
@@ -281,17 +282,11 @@ class PGeral(Pagina):
         self.adicionar(s2)
         self.terminar()
 
-    def _marcar_modo(self):
-        atual = modos.modo_atual()
-        self.chips_modo[atual].setChecked(True)
-        self.desc_modo.setText(t(f"modo.{atual}.desc"))
-
-    def _trocar_modo(self, modo):
-        if modo != modos.modo_atual():
-            modos.definir_modo(modo)
+    def _trocar_dev(self, ligado):
+        if ligado != modos.dev_ligado():
+            modos.definir_dev(ligado)
             self.cfg.aplicar_modo()
             self.cfg.mudou_modo.emit()
-        self._marcar_modo()
 
     def _mascote(self, ligado):
         tars_i18n.salvar_config(mascote=bool(ligado))
@@ -304,7 +299,9 @@ class PGeral(Pagina):
 
     def ao_abrir(self):
         n = self.cfg.nucleo
-        self._marcar_modo()
+        self.dev.blockSignals(True)
+        self.dev.setChecked(modos.dev_ligado())
+        self.dev.blockSignals(False)
         self.mascote.blockSignals(True)             # ele pode ter sido escondido pelo menu do próprio mascote
         self.mascote.setChecked(bool(tars_i18n.ler_config().get("mascote", True)))
         self.mascote.blockSignals(False)
@@ -536,8 +533,31 @@ class PModelos(Pagina):
         self.recomendados = set(mm.recomendados(self.hw))
         placa = f"{self.hw['vram_gb']:.0f} GB" if self.hw["vram_gb"] else t("cfg.modelos.sem_placa")
         self.adicionar(rotulo(t("cfg.modelos.maquina", placa=placa, ram=f"{self.hw['ram_gb']:.0f} GB"), "nota", quebra=True))
+        # 11/11: pesquisa na loja (filtra a lista na hora; o botão procura na biblioteca do Ollama)
+        self.busca = QLineEdit()
+        self.busca.setPlaceholderText(t("cfg.modelos.busca_ph"))
+        self.busca.setClearButtonEnabled(True)
+        self.busca.textChanged.connect(self._filtrar)
+        self.busca.returnPressed.connect(self._procurar_web)
+        self.b_web = _botao(t("cfg.modelos.busca_web"), "chip", self._procurar_web)
+        self.b_web.hide()
+        linha_busca = QHBoxLayout()
+        linha_busca.setContentsMargins(0, 0, 0, 0)
+        linha_busca.addWidget(self.busca, 1)
+        linha_busca.addWidget(self.b_web)
+        caixa = QWidget()
+        caixa.setLayout(linha_busca)
+        self.adicionar(caixa)
+        self._secoes = {}
+        self._web_tags = []
+        self.web_secao, self.web_v = _secao(t("cfg.modelos.g.web"), t("cfg.modelos.g.web_sub"))
+        self.web_resultado = rotulo("", "nota", quebra=True)
+        self.web_v.addWidget(self.web_resultado)
+        self.web_secao.hide()
+        self.adicionar(self.web_secao)
         for grupo, itens in mm.GRUPOS:
             s, v = _secao(t(f"cfg.modelos.g.{grupo}"), t(f"cfg.modelos.g.{grupo}_sub"))
+            self._secoes[grupo] = (s, [i[0] for i in itens])
             if grupo == "imagem":
                 self.bonsai = _CartaoBonsai(cfg)
                 v.addWidget(self.bonsai)
@@ -552,6 +572,51 @@ class PModelos(Pagina):
                 v.addWidget(c)
             self.adicionar(s)
         self.terminar()
+
+    def _filtrar(self, texto=""):
+        todos = [i for _, itens in mm.GRUPOS for i in itens]
+        certos = {i[0] for i in mm.filtrar(todos, texto)}
+        for grupo, (secao, tags) in self._secoes.items():
+            for tag in tags:
+                self.cartoes[tag].setVisible(tag in certos)
+            secao.setVisible(any(tag in certos for tag in tags))
+        self.b_web.setVisible(bool(texto.strip()))
+        if not texto.strip():
+            self.web_secao.hide()
+
+    def _procurar_web(self):
+        consulta = self.busca.text().strip()
+        if not consulta:
+            return
+        self.web_resultado.setText(t("cfg.modelos.buscando"))
+        self.web_secao.show()
+        self.cfg.em_segundo_plano(lambda: mm.buscar_biblioteca(consulta), lambda r: self._mostrar_web(r, consulta))
+
+    def _mostrar_web(self, r, consulta):
+        if consulta != self.busca.text().strip():          # a pessoa já mudou a pergunta
+            return
+        for tag in self._web_tags:
+            c = self.cartoes.pop(tag, None)
+            if c:
+                c.setParent(None)
+                c.deleteLater()
+        self._web_tags = []
+        if isinstance(r, Exception):
+            self.web_resultado.setText(t("cfg.modelos.busca_erro"))
+            return
+        self.web_resultado.setText("" if r else t("cfg.modelos.busca_nada"))
+        for achado in r[:12]:
+            for tamanho in (achado["tamanhos"] or ("latest",)):
+                tag = achado["nome"] if tamanho == "latest" else f'{achado["nome"]}:{tamanho}'
+                if tag in self.cartoes:
+                    continue
+                c = _CartaoModelo(tag, 0, achado["capacidades"] or ("text",))
+                c.setToolTip(achado["descricao"])
+                c.clicou.connect(lambda tag=tag: self._clicou(tag))
+                self.cartoes[tag] = c
+                self._web_tags.append(tag)
+                self.web_v.addWidget(c)
+        self._atualizar()
 
     def ao_abrir(self):
         n = self.cfg.nucleo
@@ -588,6 +653,16 @@ class PModelos(Pagina):
             self._cancelar = True
             return
         if self._baixando or not self._ollama_ok:
+            return
+        if tag in self._web_tags and not c.gb and not getattr(c, "_tamanho_tentado", False):
+            c._tamanho_tentado = True                      # resultado da busca: descobre o tamanho antes de baixar
+            c.nota(t("cfg.modelos.calculando"))
+
+            def saber(r):
+                c.gb = 0 if isinstance(r, Exception) or not r else r
+                c.definir_estado("livre")
+                self._clicou(tag)
+            self.cfg.em_segundo_plano(lambda: mm.tamanho_da_tag(tag), saber)
             return
         livre = pu.espaco_livre_gb()
         if not mm.cabe(c.gb, livre):
@@ -725,7 +800,7 @@ class PAssistente(Pagina):
         self.adicionar(s)
 
         s, v = _secao(t("cfg.assist.atalho_titulo"), t("cfg.assist.atalho_sub"))
-        self.atalho = rotulo("", "texto", quebra=True)
+        self.atalho = rotulo("", "estado", quebra=True)
         v.addWidget(self.atalho)
         linha = QHBoxLayout()
         self.b_atalho = _botao(t("cfg.assist.atalho_cadastrar", atalho=tars_atalho.legivel(tars_atalho.ACOES_PADRAO)), "chip",
@@ -745,11 +820,70 @@ class PAssistente(Pagina):
         v.addWidget(rotulo(t("cfg.assist.sistema_nota"), "nota", quebra=True))
         self.adicionar(s)
 
+        s, v = _secao(t("cfg.assist.reabrir_titulo"))
+        self.reabrir = QCheckBox(t("cfg.assist.reabrir"))
+        self.reabrir.setChecked(bool(tars_i18n.ler_config().get("reabrir_com_acessibilidade")))
+        self.reabrir.toggled.connect(lambda ligado: tars_i18n.salvar_config(reabrir_com_acessibilidade=bool(ligado)))
+        v.addWidget(self.reabrir)
+        v.addWidget(rotulo(t("cfg.assist.reabrir_nota"), "nota", quebra=True))
+        self.adicionar(s)
+
         s, v = _secao(t("cfg.assist.ctx_titulo"))
         self.contexto = QCheckBox(t("cfg.assist.ctx"))
         self.contexto.toggled.connect(self._sugestoes)
         v.addWidget(self.contexto)
         v.addWidget(rotulo(t("ctx.nota_config"), "nota", quebra=True))
+        self.adicionar(s)
+
+        s, v = _secao(t("cfg.assist.indice_titulo"))
+        self.indice = QCheckBox(t("cfg.assist.indice"))
+        self.indice.toggled.connect(self._indice)
+        v.addWidget(self.indice)
+        self.indice_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.indice_nota)
+        self.adicionar(s)
+
+        s, v = _secao(t("cfg.assist.agenda_titulo"), t("cfg.assist.agenda_sub"))
+        self.agenda = QLineEdit()
+        self.agenda.setPlaceholderText(t("cfg.assist.agenda_dica"))
+        self.agenda.setAccessibleName(t("cfg.assist.agenda_titulo"))
+        v.addWidget(self.agenda)
+        self.agenda_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.agenda_nota)
+        v.addWidget(_botao(t("cfg.assist.salvar"), "chip", self._salvar_agenda))
+        self.adicionar(s)
+
+        s, v = _secao(t("cfg.assist.notas_titulo"), t("cfg.assist.notas_sub"))
+        self.notas = QLineEdit()
+        self.notas.setPlaceholderText(t("cfg.assist.notas_dica"))
+        self.notas.setAccessibleName(t("cfg.assist.notas_titulo"))
+        v.addWidget(self.notas)
+        self.notas_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.notas_nota)
+        v.addWidget(_botao(t("cfg.assist.salvar"), "chip", self._salvar_notas))
+        self.adicionar(s)
+
+        s, v = _secao(t("cfg.assist.email_titulo"), t("cfg.assist.email_sub"))
+        self.email_usuario = QLineEdit()
+        self.email_usuario.setPlaceholderText(t("cfg.assist.email_usuario"))
+        self.email_usuario.setAccessibleName(t("cfg.assist.email_usuario"))
+        self.email_senha = QLineEdit()
+        self.email_senha.setEchoMode(QLineEdit.Password)
+        self.email_senha.setAccessibleName(t("cfg.assist.email_senha"))
+        self.email_imap = QLineEdit()
+        self.email_imap.setPlaceholderText(t("cfg.assist.email_imap"))
+        self.email_smtp = QLineEdit()
+        self.email_smtp.setPlaceholderText(t("cfg.assist.email_smtp"))
+        for campo in (self.email_usuario, self.email_senha, self.email_imap, self.email_smtp):
+            v.addWidget(campo)
+        self.email_nota = rotulo("", "nota", quebra=True)
+        v.addWidget(self.email_nota)
+        linha_email = QHBoxLayout()
+        linha_email.addWidget(_botao(t("cfg.assist.salvar"), "chip", self._salvar_email))
+        linha_email.addWidget(_botao(t("cfg.assist.email_testar"), "chip", self._testar_email))
+        linha_email.addWidget(_botao(t("cfg.assist.email_desligar"), "link", self._desligar_email))
+        linha_email.addStretch(1)
+        v.addLayout(linha_email)
         self.adicionar(s)
 
         s, v = _secao(t("cfg.assist.acoes_titulo"), t("cfg.assist.acoes_sub"))
@@ -770,11 +904,23 @@ class PAssistente(Pagina):
     def ao_abrir(self):
         modelo = self._modelo()
         for caixa, valor in ((self.ligado, assistente.ligado()), (self.sistema, assistente.inicia_com_sistema()),
-                             (self.contexto, tars_contexto.ligado())):
+                             (self.contexto, tars_contexto.ligado()), (self.indice, tars_busca_arquivos.indice_ligado())):
             caixa.blockSignals(True)
             caixa.setChecked(valor)
             caixa.blockSignals(False)
         self.ligado_nota.setText(t("cfg.assist.ligado_nota", modelo=modelo))
+        self.indice_nota.setText(t("cfg.assist.indice_nota"))
+        self.agenda.setText("; ".join(tars_integracoes.agendas()))
+        self.agenda_nota.setText(t("cfg.assist.agenda_ligada", n=len(tars_integracoes.agendas())) if tars_integracoes.agendas() else t("cfg.assist.desligada"))
+        pasta = tars_integracoes.pasta_de_notas()
+        self.notas.setText(str(pasta) if pasta else "")
+        self.notas_nota.setText(t("cfg.assist.notas_ligada") if pasta else t("cfg.assist.desligada"))
+        conta_email = tars_email.conta()
+        self.email_usuario.setText(conta_email["usuario"] if conta_email else self.email_usuario.text())
+        self.email_imap.setText(conta_email["imap"] if conta_email else self.email_imap.text())
+        self.email_smtp.setText(conta_email["smtp"] if conta_email else self.email_smtp.text())
+        self.email_senha.setPlaceholderText(t("cfg.assist.email_senha_guardada") if conta_email else t("cfg.assist.email_senha"))
+        self.email_nota.setText(t("cfg.assist.email_ligado", usuario=conta_email["usuario"]) if conta_email else t("cfg.assist.desligada"))
         self.modelo_acoes.setText(t("cfg.assist.acoes_modelo", modelo=modelo))
         config = tars_i18n.ler_config()
         registrado = bool(config.get("atalho_acoes_registrado"))
@@ -805,6 +951,72 @@ class PAssistente(Pagina):
         tars_atalho.remover_acoes()
         self.ao_abrir()
         self.cfg.assistente_mudou.emit()
+
+    def _salvar_email(self):
+        """A conta: o endereço e os servidores ficam no config; a senha vai SÓ para o cofre do sistema (nunca para arquivo de texto)."""
+        usuario, senha = self.email_usuario.text().strip(), self.email_senha.text()
+        imap, smtp = self.email_imap.text().strip(), self.email_smtp.text().strip()
+        if not usuario:
+            self._desligar_email()
+            return
+        padrao = tars_email.servidores_do_dominio(usuario)
+        if not ((imap or padrao[0]) and (smtp or padrao[1])):
+            self.email_nota.setText(t("cfg.assist.email_servidores"))
+            return
+        if not senha and not tars_email.ler_senha(usuario):
+            self.email_nota.setText(t("cfg.assist.email_sem_senha"))
+            return
+        try:
+            tars_email.salvar_conta(usuario, senha, imap, smtp)
+        except tars_email.SemCofre:
+            self.email_nota.setText(t("cfg.assist.email_sem_cofre"))
+            return
+        self.email_senha.clear()
+        self.ao_abrir()
+
+    def _testar_email(self):
+        if not tars_email.conta():
+            self.email_nota.setText(t("cfg.assist.email_salvar_antes"))
+            return
+        self.email_nota.setText(t("cfg.assist.email_testando"))
+        self.cfg.em_segundo_plano(tars_email.testar, lambda erro: self.email_nota.setText(
+            t("cfg.assist.email_ok") if erro is None else t("cfg.assist.email_erro", erro=str(erro)[:100])))
+
+    def _desligar_email(self):
+        tars_email.salvar_conta("", "")
+        for campo in (self.email_usuario, self.email_senha, self.email_imap, self.email_smtp):
+            campo.clear()
+        self.ao_abrir()
+
+    def _salvar_agenda(self):
+        """Arquivos .ics ou links (separados por ;). Vazio desliga a agenda. Só leitura: o openTARS nunca altera o calendário."""
+        fontes = [f.strip() for f in self.agenda.text().split(";") if f.strip()]
+        ruins = [f for f in fontes if not (f.lower().startswith(("http://", "https://", "webcal://")) or Path(f).expanduser().is_file())]
+        if ruins:
+            self.agenda_nota.setText(t("cfg.assist.agenda_nao_achei", fonte=ruins[0][:80]))
+            return
+        tars_i18n.salvar_config(agenda_ics=fontes)
+        self.agenda_nota.setText(t("cfg.assist.agenda_ligada", n=len(fontes)) if fontes else t("cfg.assist.desligada"))
+
+    def _salvar_notas(self):
+        """A pasta das notas (Markdown). Vazio desliga. A pasta é criada na primeira nota, se ainda não existir."""
+        pasta = self.notas.text().strip()
+        tars_i18n.salvar_config(notas_pasta=pasta)
+        self.notas_nota.setText(t("cfg.assist.notas_ligada") if pasta else t("cfg.assist.desligada"))
+
+    def _indice(self, ativo):
+        """Liga ou desliga o índice local de arquivos (desligar apaga o arquivo). Ao ligar, monta em segundo plano."""
+        tars_busca_arquivos.ligar_indice(ativo)
+        if not ativo:
+            self.indice_nota.setText(t("cfg.assist.indice_nota"))
+            return
+        self.indice_nota.setText(t("cfg.assist.indice_montando"))
+
+        def pronto(r):
+            self.indice_nota.setText(t("cfg.assist.indice_erro", erro=str(r)[:120]) if isinstance(r, Exception)
+                                     else t("cfg.assist.indice_pronto", n=r["arquivos"]))
+
+        self.cfg.em_segundo_plano(lambda: tars_busca_arquivos.atualizar_indice(), pronto)
 
     def _sugestoes(self, ativo):
         tars_contexto.ligar(ativo)
@@ -932,7 +1144,7 @@ class PVoz(Pagina):
         s, v = _secao(t("cfg.voz.motor"), t("cfg.voz.motor_sub"))
         self.estado = QLabel("")
         self.estado.setWordWrap(True)
-        self.estado.setProperty("papel", "texto")
+        self.estado.setProperty("papel", "estado")
         v.addWidget(self.estado)
         self.andamento = QLabel("")
         self.andamento.setProperty("papel", "nota")
@@ -953,6 +1165,10 @@ class PVoz(Pagina):
         self.falar.setChecked(n.config_voz()["falar"])
         self.falar.toggled.connect(lambda x: n.salvar_config_voz(falar=x))
         v2.addWidget(self.falar)
+        self.completa = QCheckBox(t("cfg.voz.resposta_completa"))
+        self.completa.setChecked(not n.preferencias_voz().get("curta", True))
+        self.completa.toggled.connect(lambda x: tars_i18n.salvar_config(voz_resposta_completa=bool(x)))
+        v2.addWidget(self.completa)
         linha = QHBoxLayout()
         linha.addWidget(QLabel(t("cfg.voz.voz")))
         self.caixa = QComboBox()
@@ -1685,6 +1901,20 @@ class PProbes(Pagina):
         v.addLayout(linha2)
         self.adicionar(s)
 
+        # 1b) 5.3 (F7): missões numa VM descartável, com o Gargantua Pro (só Linux com KVM)
+        s_vm, v_vm = _secao(t("vm.secao"), t("vm.secao_sub"))
+        linha_vm = QHBoxLayout()
+        self.b_vm = _botao(t("vm.abrir"), "primario", self._abrir_vm)
+        self.b_vm.setMinimumWidth(200)
+        linha_vm.addWidget(self.b_vm)
+        linha_vm.addStretch(1)
+        v_vm.addLayout(linha_vm)
+        if os.name == "nt" or not os.path.exists("/proc"):
+            self.b_vm.setEnabled(False)
+            v_vm.addWidget(rotulo(t("vm.so_linux"), "nota", quebra=True))
+        self._janela_vm = None
+        self.adicionar(s_vm)
+
         # 2) o passo a passo
         s2, v2 = _secao(t("probes.nova"), t("probes.nova_sub"))
         v2.addWidget(rotulo(t("probes.passo1"), "kicker"))
@@ -1978,6 +2208,14 @@ class PProbes(Pagina):
         probes_lib.ligar_servico(False)
         self.ao_abrir()
 
+    def _abrir_vm(self):
+        if self._janela_vm is None:
+            from .vm import JanelaVM
+            self._janela_vm = JanelaVM(lambda: self.cfg.nucleo.OLLAMA_HOST)
+        self._janela_vm.show()
+        self._janela_vm.raise_()
+        self._janela_vm.activateWindow()
+
     def _baixar_lite(self):
         n = self.cfg.nucleo
         self.b_lite.setEnabled(False)
@@ -2207,6 +2445,14 @@ class PAvancado(Pagina):
         v2.addWidget(self.contexto)
         self.adicionar(s2)
 
+        sm, vm = _secao(t("cfg.av.motor"), t("cfg.av.motor_sub"))
+        self.motor = QComboBox()
+        self.motor.setMaximumWidth(260)
+        self.motor.addItem(t("cfg.av.motor_llamacpp"), "llamacpp")
+        self.motor.addItem(t("cfg.av.motor_ollama"), "ollama")
+        vm.addWidget(self.motor)
+        self.adicionar(sm)
+
         s3, v3 = _secao(t("cfg.av.instrucoes"), t("cfg.av.instrucoes_sub"))
         self.instrucoes = QPlainTextEdit()
         self.instrucoes.setFixedHeight(110)
@@ -2237,18 +2483,24 @@ class PAvancado(Pagina):
         self.temperatura.setCurrentIndex(max(0, self.temperatura.findData(a["temperatura"])))
         self.contexto.setCurrentIndex(max(0, self.contexto.findData(a["contexto"])))
         self.instrucoes.setPlainText(a["instrucoes"])
+        import tars_motor_local
+        self.motor.setCurrentIndex(max(0, self.motor.findData(tars_motor_local.escolhido())))
+        self.motor.setEnabled(os.environ.get("TARS_MOTOR") not in ("ollama", "llamacpp"))     # a variável de ambiente manda
         for nome, c in self.caixas.items():
             c.setChecked(nome not in a["ferramentas_desligadas"])
-        modo = modos.modo_atual()
-        self.aviso.setText("" if modo == "pro" else t("cfg.av.so_pro", modo=t(f"modo.{modo}.nome")))
+        self.aviso.setText("" if modos.dev_ligado() else t("cfg.av.so_pro"))
         self.msg.setText("")
 
     def _salvar(self):
+        import tars_motor_local
+        mudou_motor = self.motor.isEnabled() and self.motor.currentData() != tars_motor_local.escolhido()
+        if self.motor.isEnabled():
+            tars_i18n.salvar_config(motor=self.motor.currentData())
         modos.salvar_avancado(temperatura=self.temperatura.currentData(), contexto=self.contexto.currentData(),
                               instrucoes=self.instrucoes.toPlainText(),
                               ferramentas_desligadas=[n for n, c in self.caixas.items() if not c.isChecked()])
         self.ao_abrir()
-        self.msg.setText(t("cfg.av.salvo"))
+        self.msg.setText(t("cfg.av.motor_reiniciar") if mudou_motor else t("cfg.av.salvo"))
 
     def _restaurar(self):
         tars_i18n.salvar_config(avancado={})
@@ -2344,7 +2596,7 @@ class PAtualizacoes(Pagina):
         s, v = _secao(t("cfg.atual.versao", versao=cfg.nucleo.VERSAO_EXIBIDA))
         self.msg = QLabel(t("cfg.atual.nunca"))
         self.msg.setWordWrap(True)
-        self.msg.setProperty("papel", "texto")
+        self.msg.setProperty("papel", "estado")
         v.addWidget(self.msg)
         linha = QHBoxLayout()
         linha.setSpacing(10)
@@ -2362,11 +2614,10 @@ class PAtualizacoes(Pagina):
         self.terminar()
 
     def mostrar_versao(self, nova):
-        """Há uma versão: diz qual e mostra o botão que instala (ou, se foi instalado por script, copia o comando)."""
-        self.msg.setText(t("jp.comando_atualizar", comando=nova["comando"]) if nova.get("comando")
-                         else t("cfg.atual.nova", versao=nova["versao"]))
+        """Há uma versão: diz qual e mostra o botão que instala (5.3: quem instalou por script também atualiza com um clique)."""
+        self.msg.setText(t("cfg.atual.nova", versao=nova["versao"]))
         self.b_instalar.setEnabled(True)
-        self.b_instalar.setText(t("jp.atualizar_copiar") if nova.get("comando") else t("jp.atualizar"))
+        self.b_instalar.setText(t("jp.atualizar"))
         self.b_instalar.show()
 
     def estado(self, texto, botao=None, habilitado=False):

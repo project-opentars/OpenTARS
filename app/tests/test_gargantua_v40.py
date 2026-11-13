@@ -22,7 +22,7 @@ for nome in ("gargantua", "gargantua:1.0", "ProjectOpenTARS/Gargantua", "Project
     assert tars.eh_gargantua(nome), nome
 for nome in ("qwen3:4b", "api:gargantua-fake/qwen", "", None, "llama3-gargantuan-helper:1b/x"):
     assert not tars.eh_gargantua(nome), nome
-assert tars.MODELO_GARGANTUA == "ProjectOpenTARS/Gargantua-2"
+assert tars.MODELO_GARGANTUA == "ProjectOpenTARS/Gargantua-2.5"
 print("OK: 'gargantua', 'ProjectOpenTARS/Gargantua:latest'... são o Gargantua; qwen3 não")
 
 # 2. Pastas do usuário no contexto

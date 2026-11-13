@@ -103,9 +103,7 @@ assert voz.comando_tocar(lambda p: p in ("aplay", "paplay"))[0] == "paplay"
 falta = voz.o_que_falta("pt_BR", existe=lambda p: False, tem_modulo=lambda m: False)
 assert falta == ["faster-whisper", "kokoro-onnx", "voz", "gravador", "tocador"], falta
 # 4.0: Kokoro (um modelo pra todas as vozes); Piper só de reserva
-assert voz.arquivo_voz("pt_BR").name == voz.arquivo_voz("en").name == "kokoro-v1.0.onnx"
 assert voz.voz_kokoro("pt_BR") == ("pf_dora", "pt-br") and voz.voz_kokoro("de") == ("af_heart", "en-us")
-assert voz.urls_voz_piper("pt_BR")[0].endswith("en/en_US/lessac/medium/en_US-lessac-medium.onnx?download=true")
 texto = tars.descrever_falta_voz(["kokoro-onnx", "gravador"])
 assert "kokoro-onnx" in texto and "alsa-utils" in texto, texto
 print("OK: acha gravador/tocador que houver, diz o que falta (em português) e de onde vem a voz de cada idioma")

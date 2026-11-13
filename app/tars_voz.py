@@ -175,11 +175,13 @@ URL_VOZ = ("https://huggingface.co/rhasspy/piper-voices/resolve/main/"
 
 # Preferências que o núcleo passa (config.json): voz escolhida por idioma,
 # velocidade (1.0 = normal; 1.2 = 20% mais rápida) e pausa entre frases.
-PREFERENCIAS = {"vozes": {}, "velocidade": 1.0, "pausa": 0.15}
+PREFERENCIAS = {"vozes": {}, "velocidade": 1.0, "pausa": 0.15, "curta": True}
 VELOCIDADE_MIN, VELOCIDADE_MAX = 0.7, 1.6
 
 
-def configurar(vozes=None, velocidade=None, pausa=None, idioma=None):
+def configurar(vozes=None, velocidade=None, pausa=None, idioma=None, curta=None):
+    if curta is not None:
+        PREFERENCIAS["curta"] = bool(curta)
     if idioma is not None:
         _idioma_whisper["l"] = idioma if idioma in IDIOMA_WHISPER else "en"
     if vozes is not None:
@@ -220,21 +222,9 @@ def kokoro_baixado():
     return all(a.exists() and a.stat().st_size > 1000 for a in arquivos_kokoro())
 
 
-def arquivo_voz(idioma, nome=None):
-    """O arquivo que precisa existir pra falar: o modelo do Kokoro (o mesmo
-    pra todas as vozes)."""
-    return arquivos_kokoro()[0]
-
-
 def arquivo_voz_piper(idioma):
     familia, codigo, nome, qualidade = VOZES.get(idioma) or VOZES["en"]
     return pasta_dados() / f"{codigo}-{nome}-{qualidade}.onnx"
-
-
-def urls_voz_piper(idioma):
-    familia, codigo, nome, qualidade = VOZES.get(idioma) or VOZES["en"]
-    campos = dict(familia=familia, codigo=codigo, nome=nome, qualidade=qualidade)
-    return URL_VOZ.format(extensao=".onnx", **campos), URL_VOZ.format(extensao=".onnx.json", **campos)
 
 
 IDIOMA_WHISPER = {"en": "en", "pt_BR": "pt"}
@@ -599,7 +589,9 @@ def parece_chamado(texto):
 # com que ele foi treinado). Se o trecho inteiro é isso, ninguém falou nada.
 _ALUCINACOES = re.compile(
     r"^\W*(thanks? (you )?for watching|subtitles? by.*|please subscribe|(music|applause|laughter|silence)|"
-    r"obrigad[oa] por assistir|legendas? (pela|por|de).*|inscreva-se.*|(música|palmas|risos|silêncio)|"
+    r"obrigad[oa] por (assistir|ouvir|estar aqui)|legendas? (pela|por|de|realizadas?).*|inscreva-se.*|(música|palmas|risos|silêncio)|"
+    r"(se inscreva|inscrevam-se)( no canal)?|deix[ea] (o |seu )?like.*|n[ãa]o se esque[çc]a de (se )?inscrever.*|"
+    r"at[ée] (a pr[óo]xima|o pr[óo]ximo v[ií]deo)|tchau,? tchau|tradu[çc][ãa]o e legendas.*|\[[^\]]{1,30}\]|\([^)]{1,30}\)|"
     r"\.+|♪+)\W*$", re.IGNORECASE)
 
 
@@ -644,7 +636,8 @@ def limpar_para_fala(texto, limite=LIMITE_FALA):
 _FALA = {
     "en": {
         "unidades": {"GB": "gigabytes", "MB": "megabytes", "KB": "kilobytes", "TB": "terabytes", "GHz": "gigahertz",
-                     "MHz": "megahertz", "km": "kilometers", "ms": "milliseconds", "°C": "degrees", "%": "percent"},
+                     "MHz": "megahertz", "km/h": "kilometers per hour", "km": "kilometers", "kg": "kilograms", "cm": "centimeters",
+                     "mm": "millimeters", "ms": "milliseconds", "°C": "degrees", "°F": "degrees Fahrenheit", "%": "percent"},
         "operadores": {"x": "times", "*": "times", "×": "times", "/": "divided by", "÷": "divided by", "+": "plus",
                        "-": "minus", "=": "equals"},
         "meses": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
@@ -654,7 +647,8 @@ _FALA = {
     },
     "pt_BR": {
         "unidades": {"GB": "gigabytes", "MB": "megabytes", "KB": "kilobytes", "TB": "terabytes", "GHz": "gigahertz",
-                     "MHz": "megahertz", "km": "quilômetros", "ms": "milissegundos", "°C": "graus", "%": "por cento"},
+                     "MHz": "megahertz", "km/h": "quilômetros por hora", "km": "quilômetros", "kg": "quilos", "cm": "centímetros",
+                     "mm": "milímetros", "ms": "milissegundos", "°C": "graus", "°F": "graus Fahrenheit", "%": "por cento"},
         "operadores": {"x": "vezes", "*": "vezes", "×": "vezes", "/": "dividido por", "÷": "dividido por",
                        "+": "mais", "-": "menos", "=": "igual a"},
         "meses": ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro",
@@ -675,6 +669,22 @@ def preparar_para_fala(texto, idioma="en"):
     t = texto or ""
     # Caminhos: só o último nome ("/home/sam/Desktop/notes.txt" -> "notes.txt")
     t = re.sub(r"(?:~|/[\w.-]+)(?:/[\w .-]+?)*/([\w.-]+(?: [\w.-]+)?)(?=[\s,.;:!?)]|$)", lambda m: m.group(1), t)
+    if pt:      # dinheiro e horas antes dos milhares (que tiram os pontos): "R$ 1.234,50" e "14h30"
+        def reais(m):
+            inteiro, cent = int(m.group(1).replace(".", "")), m.group(2)
+            fala = f"{inteiro} {'real' if inteiro == 1 else 'reais'}"
+            return fala + (f" e {int(cent.ljust(2, '0'))} centavos" if cent and int(cent.ljust(2, '0')) else "")
+        t = re.sub(r"R\$\s?(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d{1,2}))?", reais, t)
+        t = re.sub(r"\b(\d{1,2})h(\d{2})\b", r"\1 e \2", t)
+        t = re.sub(r"\b(\d{1,2}):(\d{2})\b", r"\1 e \2", t)
+        t = re.sub(r"\b1h\b", "1 hora", t)
+        t = re.sub(r"\b(\d{1,2})h\b", r"\1 horas", t)
+    else:
+        def dolares(m):
+            inteiro, cent = int(m.group(1).replace(",", "")), m.group(2)
+            fala = f"{inteiro} {'dollar' if inteiro == 1 else 'dollars'}"
+            return fala + (f" and {int(cent.ljust(2, '0'))} cents" if cent and int(cent.ljust(2, '0')) else "")
+        t = re.sub(r"\$\s?(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d{1,2}))?", dolares, t)
     t = re.sub(r"\bopenTARS\b", f["marca"], t, flags=re.I)
     t = re.sub(r"\bTARS\b", f["nome"], t)
     # milhares: "1,234" (inglês) e "1.234" (português) viram "1234"
@@ -693,6 +703,25 @@ def preparar_para_fala(texto, idioma="en"):
     for unidade, nome in f["unidades"].items():
         t = re.sub(rf"(?<=\d)\s?{re.escape(unidade)}(?![\w])", f" {nome}", t)
     return re.sub(r"\s{2,}", " ", t).strip()
+
+
+RESTO_NA_TELA = {"en": "The rest is on the screen.", "pt_BR": "O resto está na tela."}
+FALA_CURTA_FRASES, FALA_CURTA_CHARS = 3, 320
+
+
+def encurtar_para_fala(texto, idioma="en", frases=FALA_CURTA_FRASES, maximo=FALA_CURTA_CHARS):
+    """Resposta longa vira as primeiras frases mais "o resto está na tela" (ela continua inteira na tela): ninguém quer ouvir
+    um texto de 700 caracteres. Texto curto passa como está."""
+    partes = [p for p in re.split(r"(?<=[.!?…])\s+", (texto or "").strip()) if p]
+    if len(texto or "") <= maximo or len(partes) <= frases:
+        return texto or ""
+    escolhidas, total = [], 0
+    for parte in partes:
+        if escolhidas and (len(escolhidas) >= frases or total + len(parte) > maximo):
+            break
+        escolhidas.append(parte)
+        total += len(parte) + 1
+    return " ".join(escolhidas) + " " + RESTO_NA_TELA.get(idioma, RESTO_NA_TELA["en"])
 
 
 def dividir_frases(texto, minimo=40, maximo=260):
@@ -803,6 +832,89 @@ class Transcritor:
         self.transcrever(b"\x00\x00" * (TAXA // 2), _idioma_whisper["l"], rapido=True)
 
 
+# 13/11, medido com 6 frases do Kokoro (3 pt, 3 en) no motor, só na CPU: o 2.5 (E4B) transcreveu as 6 (2 a 3,5 s cada); o Lite (E2B)
+# respondeu "Canberra." a "What is the capital of Australia?" em vez de transcrever. Por isso só o 2.5 ouve; só com o Lite, vale o Whisper.
+MODELOS_QUE_OUVEM = ("ProjectOpenTARS/Gargantua-2.5:latest",)
+PALAVRAS_POR_SEGUNDO = 5           # fala rápida dá ~3; bem mais que isso é o modelo respondendo em vez de transcrever
+PEDIDO_TRANSCRICAO = {"en": "Transcribe this audio exactly as spoken, in English. Reply with the transcription only, nothing else.",
+                      "pt": "Transcreva este áudio exatamente como foi falado, em português. Responda só com a transcrição, mais nada."}
+
+
+def wav_de_pcm(audio):
+    """Bytes 16 kHz 16 bits mono viram um arquivo WAV (o formato que o llama-server aceita)."""
+    import io
+    import wave
+    saida = io.BytesIO()
+    with wave.open(saida, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(BYTES_AMOSTRA)
+        w.setframerate(TAXA)
+        w.writeframes(audio)
+    return saida.getvalue()
+
+
+def transcrever_com_gemma(audio, idioma, host, modelo, abrir=None, tempo=60):
+    """Texto do áudio pelo Gargantua 2.5 no motor llama.cpp (campo "audio" do motor). Levanta OSError/ValueError se falhar."""
+    import base64
+    import urllib.request
+    lingua = IDIOMA_WHISPER.get(idioma or _idioma_whisper["l"], "en")
+    corpo = {"model": modelo, "stream": False, "think": False, "options": {"temperature": 0, "num_predict": 200},
+             "messages": [{"role": "user", "content": PEDIDO_TRANSCRICAO.get(lingua, PEDIDO_TRANSCRICAO["en"]),
+                           "audio": [base64.b64encode(wav_de_pcm(audio)).decode()]}]}
+    import tars_motor
+    pedido = urllib.request.Request(tars_motor.url("conversa", host), data=json.dumps(corpo).encode(), headers={"Content-Type": "application/json"})
+    with (abrir or urllib.request.urlopen)(pedido, timeout=tempo) as r:
+        texto = (json.loads(r.read()).get("message") or {}).get("content") or ""
+    texto = texto.strip().strip('"\u201c\u201d').strip()
+    if re.fullmatch(r"[\[(].*[\])]", texto):        # "[silence]", "(inaudible)": nada foi dito
+        return ""
+    if len(texto.split()) > PALAVRAS_POR_SEGUNDO * len(audio) / (TAXA * BYTES_AMOSTRA) + 3:
+        return ""                                     # texto demais para o tempo de fala: o Whisper tenta
+    return "" if e_alucinacao(texto) else texto
+
+
+def _motor_que_ouve():
+    """(endereço, modelo) quando o motor llama.cpp está escolhido, de pé e com um Gargantua 2.5; senão None (vale o Whisper).
+    Só o motor entende o campo "audio": o Ollama o ignoraria e o modelo inventaria uma transcrição."""
+    try:
+        import tars_motor_local as motor
+        if motor.escolhido() != "llamacpp" or not motor.respondendo(0.5):
+            return None
+        modelo = next((m for m in MODELOS_QUE_OUVEM if motor.instalado(m)), None)
+        return (motor.URL, modelo) if modelo else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+class TranscritorGemma:
+    """5.3 (decisão do Enzo, 13/11): o pedido falado vai para o Gargantua 2.5, que ouve o áudio. O Whisper fica de reserva:
+    motor fora, sem modelo que ouve, erro ou resposta vazia. A palavra de ativação ("TARS", rapido=True) continua no Whisper
+    pequeno, que é instantâneo."""
+
+    def __init__(self, reserva, motor=_motor_que_ouve, transcrever=transcrever_com_gemma):
+        self.reserva, self._motor, self._transcrever = reserva, motor, transcrever
+        self.ultimo = "whisper"           # quem transcreveu o último pedido ("gemma" ou "whisper"), para o diagnóstico
+
+    def transcrever(self, audio, idioma=None, dica=None, rapido=False, vocabulario=None):
+        alvo = None if rapido else self._motor()
+        if alvo:
+            try:
+                texto = self._transcrever(audio, idioma, *alvo)
+                if texto:
+                    self.ultimo = "gemma"
+                    return texto
+            except (OSError, ValueError):
+                pass
+        self.ultimo = "whisper"
+        try:
+            return self.reserva.transcrever(audio, idioma, dica=dica, rapido=rapido, vocabulario=vocabulario)
+        except TypeError:                 # transcritor sem vocabulário (testes, versões antigas)
+            return self.reserva.transcrever(audio, idioma)
+
+    def aquecer(self):
+        self.reserva.aquecer()
+
+
 # ------------------------------------------------------------
 # Falar (Kokoro; Piper de reserva)
 # ------------------------------------------------------------
@@ -827,8 +939,10 @@ class Falador:
             if not self._falas:
                 self.falando.clear()
 
-    def falar(self, texto, idioma, esperar=False, ao_terminar=None):
+    def falar(self, texto, idioma, esperar=False, ao_terminar=None, curta=None):
         texto = limpar_para_fala(texto)
+        if (PREFERENCIAS["curta"] if curta is None else curta) and texto:
+            texto = encurtar_para_fala(texto, idioma)
         if not texto:
             return False
         thread = threading.Thread(target=self._falar, args=(texto, idioma, ao_terminar), daemon=True)
@@ -1155,7 +1269,7 @@ class Ouvinte:
         self.ao_estado = ao_estado or (lambda estado: None)
         self.falador = falador
         self._gravar = gravar
-        self._transcritor = transcritor or Transcritor(papel="pedido")
+        self._transcritor = transcritor or TranscritorGemma(Transcritor(papel="pedido"))
         self._ativacao = transcritor_ativacao or Transcritor(papel="ativacao")
         # 4.0: palavras que provavelmente aparecem no pedido (nomes dos apps instalados)
         self._vocabulario = vocabulario or (lambda: [])

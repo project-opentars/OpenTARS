@@ -12,19 +12,15 @@ Provides: tars
 Installed-Size: @TAMANHO@
 Maintainer: Enzo <enzorcasao@gmail.com>
 Homepage: https://github.com/project-opentars/OpenTARS
-Description: 100% local AI assistant for the Linux desktop
- openTARS is an AI assistant that runs entirely on your machine (through
- Ollama), with no cloud. It understands requests in Portuguese and English
- and controls the desktop: opens and closes
- apps, clicks buttons by name, types, searches the web, looks at the screen
- and runs terminal commands.
+Description: local AI assistant for your desktop
+ openTARS is an AI assistant that runs on your own machine. It understands
+ requests in English and Portuguese and works on the desktop: opens and
+ closes apps, clicks buttons by name, types, searches the web, looks at the
+ screen and runs terminal commands, asking before anything risky.
  .
- Its official AI is Gargantua (ollama pull ProjectOpenTARS/Gargantua), a
- small model trained to use openTARS tools, which the installer downloads.
- It also adapts to whatever AI models you already have in Ollama, picking
- the best one for each kind of task. Comes with a window ("opentars-gui"), a
- quick bar opened by a global shortcut ("opentars-gui --rapido") and a
- terminal mode ("opentars --chat") that also works on WSL and on Linux
- without a graphical session. Files (images, text, PDF...) can be attached
- to a request. The optional Cooper model (ollama pull ProjectOpenTARS/cooper)
- helps it look at the screen.
+ Its official AI is Gargantua 2.5 (Gemma 4), trained to use the openTARS
+ tools, which sees images and understands speech. It runs on the llama.cpp
+ engine, downloaded with the models the first time the app opens. Comes with
+ a window ("opentars-gui"), a quick bar opened by a global shortcut, text
+ actions in any app and a terminal mode ("opentars --chat"). Local by
+ default; cloud models are optional and use your own key.

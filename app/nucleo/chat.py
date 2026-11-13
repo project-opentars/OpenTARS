@@ -103,7 +103,7 @@ def _print_em_texto(imagem_b64, pedido, modelo, janela=None, arquivo=None):
             f"'{arquivo}' was loaded, but you cannot see images and the vision model "
             + ("did not answer this time" if visao_instalada() else "is not installed")
             + ". Don't retry. Tell the user plainly that you could not look at the image, and that Gargantua 2 "
-            "is the model that lets you see it (ollama pull ProjectOpenTARS/Gargantua-2). "
+            "is the model that lets you see it (ollama pull ProjectOpenTARS/Gargantua-2.5). "
             f"The user's request was: \"{pedido}\"."
         )
     return (
@@ -463,6 +463,11 @@ def _mensagens_sem_pensar(mensagens):
     return copia
 
 
+# Famílias do Gargantua que obedecem ao think=false e não conhecem o "/no_think" do Qwen3: o Qwen3.5 (2 e Lite de hoje) e o
+# Gemma 4 (Gargantua 2.5, 10/11: o molde do Gemma 4 põe o pensamento vazio sozinho quando enable_thinking é falso).
+_FAMILIAS_THINK_FALSE = ("qwen35", "gemma4")
+
+
 def _familia_do_modelo(modelo):
     """A família que o Ollama informa ('qwen3', 'qwen35', ...). Lê o catálogo se ainda não foi lido: no modo de modelo fixo
     (o da prova do Lab) ele não era, a família vinha vazia, o Gargantua em Qwen3.5 ia sem think=false, pensava em vez de
@@ -490,7 +495,7 @@ def _executar_turno_streaming(modelo, mensagens, tools, pensar=True):
     _carregar_pensa_sem_pedir()
     # o "/no_think" é truque do Qwen3; o Qwen3.5 não conhece e o lê como parte do pedido (17/10: abriu o site "/no_think" e
     # tentou "apt install no_think"). Ele obedece ao think=false.
-    forcar_nothink = (not pensar) and modelo in _PENSA_MESMO_SEM_PEDIR and _familia_do_modelo(modelo) != "qwen35"
+    forcar_nothink = (not pensar) and modelo in _PENSA_MESMO_SEM_PEDIR and _familia_do_modelo(modelo) not in _FAMILIAS_THINK_FALSE
     payload = {
         "model": modelo,
         "messages": _mensagens_sem_pensar(mensagens) if forcar_nothink else mensagens,
@@ -499,7 +504,7 @@ def _executar_turno_streaming(modelo, mensagens, tools, pensar=True):
         "think": bool(pensar),
         "options": {"temperature": temperatura_conversa(), "num_ctx": contexto_ia()},
     }
-    if eh_gargantua(modelo) and not pensar and _familia_do_modelo(modelo) != "qwen35":
+    if eh_gargantua(modelo) and not pensar and _familia_do_modelo(modelo) not in _FAMILIAS_THINK_FALSE:
         # Treinado sem raciocínio: com think=false o molde do .gguf abre a resposta com "<think></think>", que no treino só
         # vinha antes da resposta final em texto, e o modelo respondia sem chamar ferramenta (prova de 14/10/2026).
         # 17/10: o Gargantua em Qwen3.5 é o contrário: o molde dele põe o <think> vazio também antes das ferramentas e o
@@ -831,6 +836,7 @@ _PERGUNTA_DE_IDENTIDADE = re.compile(
     r"who (?:are you|made you|created you|built you|developed you|trained you|is your (?:creator|developer|founder|maker))|"
     r"what(?:'s| is) your name|your (?:name|creator|developer|founder)|who (?:is|are) (?:the )?(?:founder|creator) of opentars|"
     r"(?:fundador|criador|dono|founder|creator) (?:do |da |of )?opentars)\b")
+_PEDE_CALCULADORA = re.compile(r"\b(?:calculadora|calculator)\b")
 _VERBOS_DE_BUSCA = re.compile(r"\b(?:pesquis\w*|busc\w*|procur\w*|search\w*|find|look up|look for|ache|achar)\b")
 
 
@@ -860,6 +866,10 @@ def _contexto_do_pedido(texto, tarefa, multi_etapas, retoma=None):
         linhas.append("About you: your name is Gargantua. You were developed by Enzo, the founder of openTARS, and you run "
                       "inside the openTARS app (openTARS is the app, Gargantua is you). Say so in your own words; never "
                       "name another company or model as your maker.")
+    if _PEDE_CALCULADORA.search(texto_n):
+        # 10/11: o Gemma 4 trocava "quanto é 310 mais 506? usa a calculadora" por search_web (3 de 3); o Lite de 23/10 também
+        linhas.append("The user wants the Calculator app: call open_application with name=\"calculator\" and do the math "
+                      "there. Do not use search_web for it.")
     sites = _sites_citados_na_busca(texto_n)
     if sites:
         linhas.append("To search INSIDE a site, call search_web with query = only the search terms and service = the site "
@@ -1649,6 +1659,17 @@ def _gerar_imagem_pelo_chat(texto):
     return _responder_sem_modelo(texto, t("imagem.pronta", arquivo=arquivo.name, pasta=arquivo.parent) + f"\n\n![{o_que}]({arquivo})")
 
 
+def _resolver_sem_modelo(texto):
+    """5.3 (F4): o que sai por regra, sem o modelo (tars_atalhos): estado do PC, memória, contas, arquivos, vários passos e
+    perguntas sobre o mundo pelo SearXNG. None: segue para o modelo. Um erro aqui nunca impede a conversa."""
+    try:
+        import tars_atalhos
+        return tars_atalhos.resolver(texto, sys.modules[__name__])
+    except Exception as e:  # noqa: BLE001
+        logging.warning("atalhos sem modelo falharam: %s", e)
+        return None
+
+
 def processar_mensagem(texto, anexos=None):
     """Um pedido do usuário do começo ao fim: comandos (/modelo,
     /limpar...), escolha do modelo, resposta e salvamento. Usado pelo
@@ -1684,6 +1705,10 @@ def processar_mensagem(texto, anexos=None):
         return gerada
     import tars_imagem
     tars_imagem.parar()        # o Bonsai segura a placa; a conversa (Ollama) precisa dela agora
+    if not anexos:
+        direta = _resolver_sem_modelo(texto)
+        if direta is not None:
+            return _responder_sem_modelo(texto, direta)
 
     # "use a ferramenta", "faz de verdade", "try again": a tarefa e o modelo saem do pedido anterior, que é o que vai ser feito
     retoma = _ultimo_pedido_real() if not anexos and escolha.eh_retomada(normalizar(texto)) else None

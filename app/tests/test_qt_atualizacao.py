@@ -108,4 +108,43 @@ j._checar_ocioso()
 assert reinicios == [1] and j.faixa.destino == "reiniciar" and j.faixa.isVisibleTo(j), "com a janela aberta: só avisa, com o botão"
 os.environ["TARS_SEM_ATALHO"] = "1"
 print("OK: atualizado por fora, o app reinicia sozinho quando parado e avisa (com o botão) quando está em uso")
+
+# 5.3 (F5): quem instalou por script atualiza com um clique (o instalador roda de novo; o app reinicia no fim)
+assert tars_atualizacao.argumentos_um_clique("linux")[:2] == ["bash", "-c"] and "instalar.sh | bash" in tars_atualizacao.argumentos_um_clique("macos")[2]
+win = tars_atualizacao.argumentos_um_clique("windows")
+assert win[0] == "powershell" and "instalar.ps1 | iex" in win[-1] and "opentars-gui.cmd" in win[-1]
+
+
+class Processo:
+    def __init__(self, codigo):
+        self.codigo = codigo
+
+    def wait(self):
+        return self.codigo
+
+
+reiniciou, rodados = [], []
+j._reiniciar = lambda: reiniciou.append(1)
+pagina = j.config.paginas["atualizacoes"]
+j._atualizar_pelo_script(pagina, popen=lambda argv, **k: rodados.append(argv) or Processo(0))
+esperar(lambda: reiniciou, o_que="reiniciar depois do script")
+assert rodados and pagina.msg.text() == t("jp.atualizando_script")
+j._atualizar_pelo_script(pagina, popen=lambda argv, **k: Processo(1))
+esperar(lambda: "opentars-atualizacao.log" in pagina.msg.text(), o_que="erro do script")
+assert reiniciou == [1]
+print("OK: um clique roda o instalador; terminou bem, o app reinicia; deu erro, a página mostra onde está o registro")
+
+# 5.3: quem veio da 5.2 com o Gargantua 2 (Qwen) recebe a oferta do 2.5; quem já tem o 2.5, ou máquina fraca, não
+import tars_primeiro_uso as pu_  # noqa: E402
+antes = (pu_.modelos_instalados, pu_.maquina_fraca, os.environ.pop("TARS_SEM_ATALHO", None))
+pu_.maquina_fraca = lambda *a, **k: False
+for instalados, espera in ((["ProjectOpenTARS/Gargantua-2:latest", "ProjectOpenTARS/Gargantua-2.5:lite"], True),
+                           (["ProjectOpenTARS/Gargantua-2:latest", "ProjectOpenTARS/Gargantua-2.5:latest"], False),
+                           (["ProjectOpenTARS/Gargantua-2.5:lite"], False)):
+    pu_.modelos_instalados = lambda host, l=instalados: l
+    assert j._falta_gargantua_25() is espera, instalados
+pu_.modelos_instalados, pu_.maquina_fraca = antes[0], antes[1]
+if antes[2] is not None:
+    os.environ["TARS_SEM_ATALHO"] = antes[2]
+print("OK: a faixa oferece o Gargantua 2.5 só a quem tem o Gargantua 2 e ainda não tem o 2.5")
 j.close()

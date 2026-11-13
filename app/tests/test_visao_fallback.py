@@ -14,7 +14,7 @@ _buf = _io.BytesIO()
 _Image.new("RGB", (400, 400), "white").save(_buf, format="PNG")
 PNG = _b64.b64encode(_buf.getvalue()).decode()
 
-COOPER = "ProjectOpenTARS/cooper:latest"
+COOPER = "ProjectOpenTARS/Gargantua-2:latest"
 ERRO_400 = ('Ollama error (400): {"error":"{\\"error\\":{\\"code\\":400,\\"message\\":\\"Multimodal data '
             'provided, but model does not support multimodal requests.\\"}}"}')
 

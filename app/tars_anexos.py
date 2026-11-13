@@ -341,55 +341,12 @@ def montar_bloco(anexos, descricoes=None, limite_total=None):
     return "\n\n".join(partes)
 
 
-def imagens_b64(anexos):
-    return [a.imagem_b64 for a in anexos if a.tipo == "imagem" and a.imagem_b64]
-
-
 # ------------------------------------------------------------
 # Terminal: achar caminhos numa linha ("@arquivo", arrastar e soltar)
 # ------------------------------------------------------------
 
 _ARROBA = re.compile(r"(?<!\S)@(\"[^\"]+\"|'[^']+'|\S+)")
 
-
-def separar_arrobas(linha):
-    """'resuma @notas.txt e @"meu doc.pdf"' -> ('resuma e', ['notas.txt', 'meu doc.pdf']),
-    só dos '@caminho' que existem de fato (o resto continua no texto)."""
-    achados = []
-
-    def troca(m):
-        bruto = m.group(1)
-        if bruto[0] in "\"'" and bruto[-1] == bruto[0]:
-            bruto = bruto[1:-1]
-        if bruto and _existe(normalizar_caminho(bruto)):
-            achados.append(bruto)
-            return ""
-        return m.group(0)
-
-    texto = _ARROBA.sub(troca, linha)
-    return re.sub(r"\s{2,}", " ", texto).strip(), achados
-
-
-def linha_e_so_caminho(linha):
-    """Quem arrasta um arquivo pro terminal cola só o caminho: se a linha
-    inteira (com ou sem aspas) é um arquivo/pasta que existe, devolve-o."""
-    t = str(linha or "").strip()
-    if not t or "\n" in t or len(t) > 1000:
-        return None
-    candidatos = [t]
-    # vários arrastados de uma vez: 'a.png' 'b.txt'
-    entre_aspas = re.findall(r"'([^']+)'|\"([^\"]+)\"", t)
-    if len(entre_aspas) > 1 and not re.sub(r"'[^']*'|\"[^\"]*\"|\s+", "", t):
-        candidatos = [a or b for a, b in entre_aspas]
-    caminhos = []
-    for c in candidatos:
-        if not (c.startswith(("/", "~", "file://", "'", '"', ".")) or ambiente.parece_caminho_windows(c)):
-            return None
-        p = normalizar_caminho(c)
-        if not _existe(p):
-            return None
-        caminhos.append(c)
-    return caminhos
 
 # ------------------------------------------------------------
 # Imagens citadas no texto do pedido ("veja home/pictures/foto.png")

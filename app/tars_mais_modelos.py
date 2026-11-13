@@ -10,9 +10,10 @@ Se um tamanho mudar lá, é aqui que se corrige.
 GRUPOS = (
     # 25/10 (decisão do Enzo): os modelos do openTARS no topo, o Lite primeiro e destacado (é o que fica em segundo plano)
     ("opentars", (
-        ("ProjectOpenTARS/Gargantua-2:lite", "Gargantua 2 Lite", 0.617, ("vision", "tools")),
-        ("ProjectOpenTARS/Gargantua-2:latest", "Gargantua 2", 1.6, ("vision", "tools")),
-        ("ProjectOpenTARS/Gargantua:code", "Gargantua Code", 1.1, ("tools",)),
+        ("ProjectOpenTARS/Gargantua-2.5:lite", "Gargantua Lite Gen 3", 4.4, ("vision", "tools")),
+        ("ProjectOpenTARS/Gargantua-2.5:latest", "Gargantua 2.5", 6.3, ("vision", "tools")),
+        ("ProjectOpenTARS/Gargantua-Pro:pro", "Gargantua Pro Gen 1", 7.6, ("vision", "tools")),
+        ("ProjectOpenTARS/Gargantua-Code-Gen2:code", "Gargantua Code Gen 2", 4.7, ("tools",)),
     )),
     ("bonsai", (
         ("bonsai-2:2b", "Bonsai 2 · 2B", 0.911, ("vision", "tools", "thinking")),
@@ -90,7 +91,7 @@ GRUPOS = (
 )
 
 CAPACIDADES = ("vision", "tools", "thinking", "image", "text")
-DESTAQUE = "ProjectOpenTARS/Gargantua-2:lite"
+DESTAQUE = "ProjectOpenTARS/Gargantua-2.5:lite"
 
 # Etiquetas que o Ollama mostra com outro nome quando o modelo foi baixado sem a tag (o mesmo arquivo).
 _APELIDOS = {
@@ -117,10 +118,6 @@ _APELIDOS = {
 }
 
 
-def todas_as_tags():
-    return [item[0] for _, itens in GRUPOS for item in itens]
-
-
 def _norma(tag):
     tag = tag.strip().lower()
     return tag if ":" in tag else tag + ":latest"
@@ -133,6 +130,8 @@ def instalado(tag, instalados):
 
 
 def tamanho_texto(gb):
+    if not gb:
+        return "?"                        # resultado da pesquisa na biblioteca: o tamanho só se sabe ao clicar
     return f"{round(gb * 1000)} MB" if gb < 1 else f"{gb:.1f} GB"
 
 
@@ -186,3 +185,55 @@ def recomendados(hw):
         if cabem:
             achados.append(max(cabem, key=lambda i: ("tools" in i[3], i[2], "thinking" not in i[3]))[0])
     return achados
+
+
+# ---------------------------------------------------------------- 11/11: pesquisa na loja
+
+def filtrar(itens, consulta):
+    """Os itens (tag, nome, gb, capacidades) em que todas as palavras da consulta aparecem no nome, na tag ou nas capacidades."""
+    palavras = str(consulta or "").lower().split()
+    return [i for i in itens if all(p in " ".join((i[0].split("/")[-1], i[1], *i[3])).lower() for p in palavras)]   # sem o dono: "pro" não casa com ProjectOpenTARS
+
+
+def _http(url, tempo=10):
+    import urllib.request
+    pedido = urllib.request.Request(url, headers={"User-Agent": "openTARS"})
+    with urllib.request.urlopen(pedido, timeout=tempo) as r:
+        return r.read(2_000_000).decode("utf-8", "replace")
+
+
+_CAPACIDADES_CONHECIDAS = ("vision", "tools", "thinking")
+
+
+def buscar_biblioteca(consulta, http=_http):
+    """Procura na biblioteca do Ollama (ollama.com/search). Devolve [{nome, descricao, capacidades, tamanhos}], só o que roda
+    local: modelos "cloud" e de usuário ficam de fora. Falha de rede levanta a exceção do `http`."""
+    import re
+    from urllib.parse import quote
+    pagina = http("https://ollama.com/search?q=" + quote(str(consulta).strip()))
+    achados = []
+    for bloco in pagina.split('<li  class="border-t')[1:]:
+        m = re.search(r'href="/library/([a-z0-9][\w.\-]*)"', bloco)
+        if not m:
+            continue
+        marcas = re.findall(r'>([^<>]{1,24})</span>', bloco)
+        descricao = re.search(r'<p class="[^"]*">([^<]+)</p>', bloco)
+        achados.append({
+            "nome": m.group(1),
+            "descricao": (descricao.group(1).strip() if descricao else ""),
+            "capacidades": tuple(c for c in _CAPACIDADES_CONHECIDAS if c in marcas),
+            "tamanhos": tuple(x for x in marcas if re.fullmatch(r"(e?\d+(\.\d+)?[bm]|latest)", x)),
+        })
+    return achados
+
+
+def tamanho_da_tag(nome_tag, http=_http):
+    """Tamanho do download (GB) de `nome:tag` segundo a página de tags da biblioteca, ou None se não achar."""
+    import re
+    nome, _, tag = nome_tag.partition(":")
+    pagina = http(f"https://ollama.com/library/{nome}/tags")
+    m = re.search(r'href="/library/' + re.escape(nome_tag) + r'"(.{0,900}?)([\d.]+)\s?(GB|MB)', pagina, re.S)
+    if not m:
+        return None
+    valor = float(m.group(2))
+    return valor if m.group(3) == "GB" else valor / 1000

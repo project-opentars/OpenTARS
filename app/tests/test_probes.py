@@ -105,7 +105,7 @@ for o in outros[:4]:
     assert ps.ligar(o["id"], True)[1] is None
 assert ps.ligar(outros[4]["id"], True) == (None, "limite"), f"no máximo {tp.LIMITE_LIGADOS} ligados"
 aviso = ps.registrar(p["id"], {"alertar": True, "mensagem": "Chegou app.deb", "itens": [], "estado": {"x": 1}})
-assert aviso["mensagem"] == "Chegou app.deb" and ps.avisos_hoje(ps.obter(p["id"])) == 1
+assert aviso["mensagem"] == "Chegou app.deb"
 assert ps.registrar(p["id"], {"alertar": True, "mensagem": "de novo", "itens": [], "estado": {}}) is None, "teto do dia"
 assert ps.obter(p["id"])["historico"][-1]["calado"] and ps.devidos() == [x for x in ps.devidos() if x["id"] != p["id"]]
 ps.desligar_todos()

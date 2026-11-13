@@ -111,7 +111,7 @@ tars._capturar_regiao = lambda bbox=None: estado["tela"].crop(bbox) if bbox else
 tars.ESPERA_DEPOIS_CLIQUE_SEG = tars.PAUSA_HOVER_SEG = 0
 tars.PAUSA_SEGURAR_SEG = tars.PAUSA_SOLTAR_SEG = tars.DURACAO_PASSO_ARRASTO_SEG = 0
 tars.acess.indisponivel = lambda: "sem acessibilidade no teste"
-COOPER = "ProjectOpenTARS/cooper:latest"
+COOPER = "ProjectOpenTARS/Gargantua-2:latest"
 
 
 def chat_cooper(modelo, prompt, formato=None, imagens=None, **kw):

@@ -32,7 +32,7 @@ def sem_queda(nome, saida):
 
 
 codigo, saida = rodar(["--version"])
-assert codigo == 0 and "5.2" in saida and "Traceback" not in saida, (codigo, saida)
+assert codigo == 0 and "5.3" in saida and "Traceback" not in saida, (codigo, saida)
 codigo, saida = rodar(["--help"])
 assert codigo == 0 and "--chat" in saida and "Traceback" not in saida, (codigo, saida[-800:])
 print("OK: --version e --help")

@@ -18,18 +18,20 @@ from tars_i18n import t
 from . import fio, icones, tema
 from .tema import CORES
 
-LARGURA = 440
-ABAS = ("reescrever", "resumir", "traduzir", "perguntar")
-OPCOES = {"reescrever": ("corrigir", "formal", "informal"), "traduzir": ("para_en", "para_pt")}
+LARGURA = 520
+ABAS = ("reescrever", "resumir", "traduzir", "perguntar", "responder")
+OPCOES = {"reescrever": ("corrigir", "formal", "informal", "curto", "lista"), "traduzir": ("para_en", "para_pt")}
+COM_LINHA = ("perguntar", "responder")        # abas que pedem uma frase da pessoa (a pergunta; o que dizer na resposta)
 
 
 class PainelAcoes(QFrame):
-    pedaco = Signal(str)
-    terminou = Signal(str, str)        # (texto final, erro)
+    pedaco = Signal(str, object)       # (pedaço, o pedido a que pertence: resposta de um pedido já trocado é ignorada)
+    terminou = Signal(str, str, object)        # (texto final, erro, o pedido)
     substituir = Signal(str)           # quem cola é a janela principal (ela tem o pyautogui do núcleo)
 
     def __init__(self, host, modelos_instalados, lite, principal):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        tema.janela_arredondada(self, CORES['fundo'], CORES['borda2'], 16)
         self.setObjectName("painel-acoes")
         self.setWindowTitle("openTARS")
         self.setFixedWidth(LARGURA)
@@ -141,8 +143,9 @@ class PainelAcoes(QFrame):
         self.terminou.connect(self._terminou)
 
     # -- abrir ------------------------------------------------------------------------------------------
-    def abrir(self, texto):
-        """Mostra o painel para este trecho. Sem trecho, só explica como usar."""
+    def abrir(self, texto, aba="reescrever", origem=None):
+        """Mostra o painel para este trecho. Sem trecho, só explica como usar. `origem`: o título da janela de onde o texto foi lido
+        (5.3, "Perguntar sobre a tela"); `aba`: onde o painel abre."""
         self.texto = str(texto or "").strip()
         self.resultado = ""
         self.saida.clear()
@@ -150,10 +153,11 @@ class PainelAcoes(QFrame):
             self._estado_vazio()
         else:
             resumo = " ".join(self.texto.split())
-            self.trecho.setText(t("acoes.trecho", trecho=resumo[:140] + ("…" if len(resumo) > 140 else "")))
+            self.trecho.setText(t("acoes.da_janela", janela=str(origem)[:60]) if origem
+                                else t("acoes.trecho", trecho=resumo[:140] + ("…" if len(resumo) > 140 else "")))
             if len(self.texto) > acoes_lib.LIMITE_TEXTO:
                 self.trecho.setText(self.trecho.text() + " " + t("acoes.cortado", n=acoes_lib.LIMITE_TEXTO))
-            self.escolher_aba("reescrever")
+            self.escolher_aba(aba)
         self._posicionar()
         self.show()
         self.raise_()
@@ -197,9 +201,10 @@ class PainelAcoes(QFrame):
             self.chips.addWidget(b)
             self._botoes_opcao[opcao] = b
         self.chips.addStretch(1)
-        perguntar = aba == "perguntar"
+        perguntar = aba in COM_LINHA
         self.linha_pergunta.setVisible(perguntar)
-        self.botao_substituir.setVisible(not perguntar)     # perguntar só responde: nada é colado de volta
+        self.pergunta.setPlaceholderText(t("acoes.responder_dica" if aba == "responder" else "acoes.pergunta_dica"))
+        self.botao_substituir.setVisible(not perguntar)     # perguntar e responder só mostram: nada é colado por cima da mensagem
         self.botao_copiar.setVisible(True)
         self.titulo_resultado.setText(t(f"acoes.resultado.{aba}"))
         self.saida.clear()
@@ -224,13 +229,13 @@ class PainelAcoes(QFrame):
 
     # -- o modelo -----------------------------------------------------------------------------------------
     def acao_atual(self):
-        return "perguntar" if self.aba == "perguntar" else self.opcao
+        return self.aba if self.aba in COM_LINHA else self.opcao
 
     def rodar(self):
         if not self.texto:
             return
-        pergunta = self.pergunta.text().strip() if self.aba == "perguntar" else None
-        if self.aba == "perguntar" and not pergunta:
+        pergunta = self.pergunta.text().strip() if self.aba in COM_LINHA else None
+        if self.aba in COM_LINHA and not pergunta:
             return
         self._cancelar.set()
         self._cancelar = threading.Event()
@@ -247,23 +252,27 @@ class PainelAcoes(QFrame):
             erro, texto = "", ""
             try:
                 texto = acoes_lib.rodar(acao, self.texto, modelo, self.host, pergunta=pergunta, cancelar=cancelar, manter=manter,
-                                        ao_pedaco=lambda p: not cancelar.is_set() and fio.emitir(self.pedaco, p))
+                                        ao_pedaco=lambda p: not cancelar.is_set() and fio.emitir(self.pedaco, p, cancelar))
             except Exception as e:  # noqa: BLE001  (Ollama fora, modelo faltando: vira texto na janela)
                 erro = str(e) or type(e).__name__
             if not cancelar.is_set():
-                fio.emitir(self.terminou, texto, erro)
+                fio.emitir(self.terminou, texto, erro, cancelar)
 
         self._fio = threading.Thread(target=trabalho, daemon=True)
         self._fio.start()
 
-    def _acrescentar(self, pedaco):
+    def _acrescentar(self, pedaco, pedido=None):
+        if pedido is not None and pedido is not self._cancelar:      # chegou depois de a pessoa trocar de opção
+            return
         if not self._recebeu:
             self._recebeu = True
             self.saida.clear()
         self.resultado += pedaco
         self.saida.setPlainText(self.resultado)
 
-    def _terminou(self, texto, erro):
+    def _terminou(self, texto, erro, pedido=None):
+        if pedido is not None and pedido is not self._cancelar:
+            return
         if erro:
             self.resultado = ""
             self.saida.setPlainText(t("acoes.erro", erro=erro[:200]))
@@ -282,7 +291,7 @@ class PainelAcoes(QFrame):
             QTimer.singleShot(1500, lambda: self.botao_copiar.setText(t("acoes.copiar")))
 
     def _substituir(self):
-        if self.resultado and self.aba != "perguntar":
+        if self.resultado and self.aba not in COM_LINHA:
             texto = self.resultado
             self.fechar()
             self.substituir.emit(texto)

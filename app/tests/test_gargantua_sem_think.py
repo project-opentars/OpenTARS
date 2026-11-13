@@ -49,6 +49,19 @@ except Exception:
 assert capturados and capturados[0].get("think", "sem o campo") is False, capturados[:1]
 print("OK: o Gargantua em Qwen3.5 vai com think=false")
 
+# 10/11: o Gargantua 2.5 (Gemma 4) vai com think=false, igual ao Qwen3.5
+tars._cache_catalogo["dados"] = {"gargantua-g4-teste": {"familia": "gemma4", "capacidades": ["tools", "vision", "thinking"]}}
+tars._cache_catalogo["ts"] = time.time()
+capturados.clear()
+tars.conversa.clear()
+tars.modo_modelo, tars.modelo_manual = "MANUAL", "gargantua-g4-teste"
+try:
+    tars.processar_mensagem("crie a pasta Fotos em Documentos")
+except Exception:
+    pass
+assert capturados and capturados[0].get("think", "sem o campo") is False, capturados[:1]
+print("OK: o Gargantua 2.5 (Gemma 4) vai com think=false")
+
 # e nunca com o "/no_think" do Qwen3 colado no pedido, mesmo se o app achar que ele pensa sem pedir
 tars._PENSA_MESMO_SEM_PEDIR.add("gargantua-q35-teste")
 capturados.clear()

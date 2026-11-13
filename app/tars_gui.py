@@ -1299,29 +1299,9 @@ class JanelaTars(tk.Tk):
         self._trabalho = threading.Thread(target=alvo, daemon=True)
         self._trabalho.start()
 
-    def _na_ui(self, funcao):
-        """Chamado de outra thread: roda na thread da janela."""
-        self._fila_saida.put(_NaInterface(funcao))
-
     # ------------------------------------------------------------
     # Escolha da IA (um seletor só: Automático ou um modelo)
     # ------------------------------------------------------------
-
-    def _recontar_modelos(self):
-        """Conta de novo os modelos da barra de status."""
-        def alvo():
-            try:
-                catalogo = core.catalogar_modelos(forcar=True)
-                n = sum(1 for m in catalogo.values()
-                        if m["categoria"] != "embedding" and m["tag"] not in core.MODELOS_AJUDANTES)
-            except Exception:
-                return
-
-            def aplicar():
-                self._info["n_modelos"] = n
-                self._atualizar_status(self._info)
-            self._fila_saida.put(_NaInterface(aplicar))
-        threading.Thread(target=alvo, daemon=True).start()
 
     def _modelos_escolhiveis(self):
         # Esta função roda na thread da janela: com a lista já guardada, usa ela (e atualiza em segundo

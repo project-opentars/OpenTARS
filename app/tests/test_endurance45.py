@@ -28,9 +28,9 @@ PASTA = Path(tempfile.mkdtemp(prefix="opentars-anexos-"))
 # ------------------------------------------------------------
 # 1. Versão
 # ------------------------------------------------------------
-assert tars.VERSAO == "5.2" and tars.CODINOME == "Ranger" and tars.VERSAO_EXIBIDA == "5.2 Ranger"
+assert tars.VERSAO == "5.3" and tars.CODINOME == "Tesseract" and tars.VERSAO_EXIBIDA == "5.3 Tesseract"
 assert tars.REVISAO >= 2026100401
-print("OK: versão 5.2 Ranger")
+print("OK: versão 5.3 Tesseract")
 
 # ------------------------------------------------------------
 # 2. Ambiente: WSL, sem interface, caminhos do Windows
@@ -81,25 +81,14 @@ print("OK: ambiente: WSL1/2, WSLg, sem interface, SSH, caminhos do Windows e IP 
 # ------------------------------------------------------------
 # 3. Cooper: nome, perguntas, respostas, milésimos -> pixels
 # ------------------------------------------------------------
-assert coo.MODELO_COOPER == "ProjectOpenTARS/cooper:1.2"       # só para reconhecer um Cooper que já esteja instalado
-assert coo.COMANDO_INSTALAR == "ollama pull ProjectOpenTARS/Gargantua-2", "18/10: quem olha a tela é o Gargantua 2"
-assert coo.achar_instalado(["qwen3:4b", "ProjectOpenTARS/cooper:1.2", "ProjectOpenTARS/Gargantua-2:lite", "ProjectOpenTARS/Gargantua-2:latest"]) == "ProjectOpenTARS/Gargantua-2:latest"
-assert coo.achar_instalado(["ProjectOpenTARS/cooper:1.2", "ProjectOpenTARS/Gargantua-2:lite"]) == "ProjectOpenTARS/Gargantua-2:lite", "o Lite novo (com telas) vence o Cooper antigo"
-assert coo.achar_instalado(["ProjectOpenTARS/Gargantua-2:lite", "ProjectOpenTARS/Gargantua-2:latest"]) == "ProjectOpenTARS/Gargantua-2:latest", "o 2B vem antes do Lite"
+assert coo.COMANDO_INSTALAR == "ollama pull ProjectOpenTARS/Gargantua-2.5", "11/11: quem olha a tela é o Gargantua 2.5"
+assert coo.achar_instalado(["ProjectOpenTARS/Gargantua-2.5:lite", "ProjectOpenTARS/Gargantua-2.5:latest"]) == "ProjectOpenTARS/Gargantua-2.5:latest", "o 2B vem antes do Lite"
 assert coo.achar_instalado(["ProjectOpenTARS/Gargantua:2.0-lite"]) is None, "o Lite 2.0 antigo não foi treinado com telas"
-assert coo.achar_instalado(["ProjectOpenTARS/cooper:1.2", "ProjectOpenTARS/Gargantua:2.0-lite"]) == "ProjectOpenTARS/cooper:1.2"
 os.environ["TARS_VISAO_NO_LITE"] = "1"
 assert coo.achar_instalado(["ProjectOpenTARS/Gargantua:2.0-lite"]) == "ProjectOpenTARS/Gargantua:2.0-lite", "liberado à mão"
 os.environ.pop("TARS_VISAO_NO_LITE")
 assert coo.achar_instalado(["ProjectOpenTARS/Gargantua:1.2-lite", "ProjectOpenTARS/Gargantua:latest"]) is None, "o Gargantua 1.x não enxerga"
-for tag in ("ProjectOpenTARS/cooper:latest", "cooper", "cooper-1.0:latest", "projectopentars/Cooper"):
-    assert coo.e_cooper(tag), tag
-for tag in ("gargantua:latest", "qwen3-vl:2b", "ProjectOpenTARS/Gargantua", "", None):
-    assert not coo.e_cooper(tag), tag
-assert coo.achar_instalado(["qwen3:4b", "cooper-1.0:latest", "ProjectOpenTARS/cooper:latest"]) == "ProjectOpenTARS/cooper:latest"
-assert coo.achar_instalado(["ProjectOpenTARS/cooper:latest", "ProjectOpenTARS/cooper:1.2"]) == "ProjectOpenTARS/cooper:1.2", "o 1.2 vence o antigo"
-assert coo.achar_instalado(["cooper-1.0:latest"]) == "cooper-1.0:latest" and coo.achar_instalado(["qwen3:4b"]) is None
-assert coo.ligado({}) and not coo.ligado({"TARS_COOPER": "0"}) and not coo.ligado({"TARS_COOPER": "off"})
+assert coo.ligado({}) and not coo.ligado({"TARS_VISAO": "0"}) and not coo.ligado({"TARS_VISAO": "off"})
 
 assert coo.tipo_do_alvo("the Save button") == ("button", "Save")
 assert coo.tipo_do_alvo("botão Salvar") == ("button", "Salvar")
@@ -134,7 +123,7 @@ print("OK: Cooper: perguntas no formato do treino, leitura das respostas e milé
 # ------------------------------------------------------------
 # 4. Cooper no núcleo: clique, descrição, e nunca como IA de conversa
 # ------------------------------------------------------------
-COOPER = "ProjectOpenTARS/cooper:latest"
+COOPER = "ProjectOpenTARS/Gargantua-2.5:latest"
 CATALOGO = {
     "qwen3:4b": {"tag": "qwen3:4b", "familia": "qwen3", "categoria": "geral", "parametros_b": 4.0, "capacidades": {"tools"},
                  "capacidades_conhecidas": True, "vram_estimado_gb": 3.0},
@@ -145,12 +134,11 @@ CATALOGO = {
 }
 tars.catalogar_modelos = lambda forcar=False: CATALOGO
 assert tars.visao_instalada() == COOPER
-assert COOPER in tars.MODELOS_AJUDANTES and "cooper" in tars.MODELOS_AJUDANTES and "qwen3:4b" not in tars.MODELOS_AJUDANTES
+assert "qwen3:4b" not in tars.MODELOS_AJUDANTES
 assert "qwen2.5:0.5b" in tars.MODELOS_AJUDANTES
-assert COOPER not in tars.construir_cadeia_fallback("acao"), "o Cooper não conversa"
-os.environ["TARS_COOPER"] = "0"
+os.environ["TARS_VISAO"] = "0"
 assert tars.visao_instalada() is None
-del os.environ["TARS_COOPER"]
+del os.environ["TARS_VISAO"]
 
 perguntas = []
 respostas = {"valor": '{"x": 250, "y": 500}'}
@@ -278,25 +266,13 @@ finally:
 assert pedidos == ["pergunta pelo pipe"]
 print("OK: opentars --chat: pedido, /ajuda, /sair e entrada por pipe")
 
-# --cooper (descontinuado em 18/10: só avisa e diz como instalar o Gargantua 2; não baixa nada)
-rodou = []
-tars.subprocess.run = lambda cmd, **kw: rodou.append(cmd) or type("R", (), {"returncode": 0})()
-saida = io.StringIO()
-try:
-    sys.stdout = saida
-    assert tars.comando_cooper() == 0
-finally:
-    sys.stdout = real_stdout
-assert not rodou and "ollama pull ProjectOpenTARS/Gargantua-2" in saida.getvalue() and "descontinuado" in saida.getvalue(), saida.getvalue()
-print("OK: opentars --cooper avisa que o Cooper foi descontinuado e aponta o Gargantua 2")
-
 # ------------------------------------------------------------
 # 9. Textos nos dois idiomas
 # ------------------------------------------------------------
 base = Path(tars.__file__).parent / "idiomas"
 en, pt = json.loads((base / "en.json").read_text()), json.loads((base / "pt_BR.json").read_text())
 assert set(en) == set(pt), sorted(set(en) ^ set(pt))
-for chave in ("chat.ajuda", "visao.nao_instalado", "cooper.descontinuado", "diag.wsl_sem_ollama",
+for chave in ("chat.ajuda", "visao.nao_instalado", "diag.wsl_sem_ollama",
               "term.onde_conversar_sem_interface", "aviso.modo_sem_interface"):
     assert en[chave] and pt[chave], chave
 assert "--chat" in en["term.ajuda"] and "--cooper" not in pt["term.ajuda"]
@@ -305,7 +281,7 @@ print("OK: textos novos nos dois idiomas")
 print("\nTUDO OK.")
 
 # 4.5.1: Cooper exclusivo (nada de Bonsai/LM Studio de reserva)
-os.environ.pop("TARS_COOPER", None)
+os.environ.pop("TARS_VISAO", None)
 tars.visao_instalada = lambda: COOPER
 _envio = []
 tars._chat_unico = lambda modelo, prompt, **kw: (_envio.append(modelo), "A window with a Save button")[1]

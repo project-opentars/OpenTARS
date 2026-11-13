@@ -216,14 +216,7 @@ def _tratar_comando_do_chat(linha):
 
 
 def _linha_de_status():
-    modelo = modelo_atual or (modelo_manual if modo_modelo == "MANUAL" else "auto")
-    usados = estimar_tokens(conversa)
-    partes = [str(modelo), t("cli.status_contexto", pct=min(100, int(100 * usados / max(1, contexto_ia()))))]
-    if MODO_PERMISSAO != "perguntar":
-        partes.append(t(f"cli.status_modo.{MODO_PERMISSAO}"))
-    if CONTEXTO_PROJETO["caminho"]:
-        partes.append("AGENTS.md")
-    print(c("  " + " · ".join(partes), Cor.CINZA))
+    print(c("  " + " · ".join(_partes_do_status()), Cor.CINZA))
 
 
 def _mostrar_plano():
@@ -285,12 +278,16 @@ def _boas_vindas(pedidos):
     else:
         garg = gargantua_instalado() if online else None
         modelo = t("term.modelo_auto") + (f" · {garg.split('/')[-1]}" if garg else "")
-    ollama = (c("●", Cor.VERDE) + " " + t("term.ollama_online", host=OLLAMA_HOST) if online
-              else c("●", Cor.VERMELHO) + " " + t("term.ollama_offline", host=OLLAMA_HOST))
-    linhas = [c("✻ ", Cor.MAGENTA) + c(t("term.bem_vindo"), Cor.NEGRITO), "",
+    nome_motor = _nome_do_motor()
+    motor_linha = (c("●", Cor.VERDE) + " " + nome_motor + " · " + t("term.ollama_online", host=OLLAMA_HOST) if online
+                   else c("●", Cor.VERMELHO) + " " + nome_motor + " · "
+                   + t("term.ollama_offline" if nome_motor == "Ollama" else "term.motor_offline", host=OLLAMA_HOST))
+    ramo = _ramo_git()
+    linhas = [c("✻ ", Cor.MAGENTA) + c(t("term.bem_vindo"), Cor.NEGRITO) + c(f"  {VERSAO_EXIBIDA}", Cor.CINZA), "",
               c("  " + t("chat.dica"), Cor.CINZA), "",
-              c("  " + t("term.rotulo_ollama") + " ", Cor.CINZA) + ollama,
-              c("  " + t("term.rotulo_modelo") + " ", Cor.CINZA) + modelo]
+              c("  " + t("term.rotulo_motor") + " ", Cor.CINZA) + motor_linha,
+              c("  " + t("term.rotulo_modelo") + " ", Cor.CINZA) + modelo,
+              c("  " + t("term.rotulo_pasta") + " ", Cor.CINZA) + _pasta_curta() + (c(f"  ⎇ {ramo}", Cor.CINZA) if ramo else "")]
     if pedidos:
         linhas.append(c("  " + t("term.conversa_carregada", n=pedidos), Cor.CINZA))
     print()
@@ -376,14 +373,20 @@ def _conversar(pedido_unico, retomar=None):
     if retomar == "escolher":
         _escolher_conversa()
     interativo = sys.stdin.isatty()
+    # 5.3 (F8, só aparência): caixa de entrada do Claude Code com a barra do opencode; sem readline ou sem cor, a régua de antes
+    caixa = interativo and sys.stdout.isatty() and TEM_READLINE and not os.environ.get("NO_COLOR") and os.environ.get("TERM") != "dumb"
     ctrl_c = 0
     try:
         while True:
             try:
                 # \001..\002 avisam o readline que as cores não ocupam coluna (senão a edição da linha embaralha)
                 ini, fim = ("\001", "\002") if TEM_READLINE else ("", "")
-                linha = input("\n" + ini + Cor.NEGRITO + Cor.VERDE + fim + "❯ "
-                              + ini + Cor.RESET + fim if interativo else "").strip()
+                if caixa:
+                    linha = _pedir_na_caixa(ini, fim).strip()
+                else:
+                    if interativo:
+                        print("\n" + _regua(MODO_PERMISSAO))      # 5.3: régua com o modo da conversa, como a barra do opencode
+                    linha = input(ini + Cor.NEGRITO + Cor.VERDE + fim + "❯ " + ini + Cor.RESET + fim if interativo else "").strip()
             except EOFError:
                 print()
                 break
@@ -404,7 +407,7 @@ def _conversar(pedido_unico, retomar=None):
             _executar_pedido_no_terminal(linha)
             _mostrar_plano()
             _guardar_no_historico()
-            if interativo:
+            if interativo and not caixa:             # com a caixa, a barra de estado já vem embaixo dela
                 _linha_de_status()
     finally:
         if ollama_online():
@@ -508,13 +511,6 @@ def modo_print(pedido, formato="text", modelo=None):
     return 0 if ok else 1
 
 
-def comando_cooper(instalar=True):
-    """opentars --cooper: o Cooper foi descontinuado (18/10/2026); o Gargantua 2 enxerga a tela. Só avisa e diz como instalar."""
-    print(c(t("cooper.descontinuado", comando=visao_lib.COMANDO_INSTALAR), Cor.AMARELO))
-    return 0
-
-
-
 # ------------------------------------------------------------
 # Logo no terminal: o monólito do TARS (quatro colunas e a faixa verde, como o ícone) com o nome ao lado.
 # Só aparece num terminal de verdade (não em pipe nem em script) e respeita NO_COLOR.
@@ -598,6 +594,10 @@ def main():
         import tars_prova
         sys.exit(tars_prova.executar(sys.modules[__name__], argumentos))
 
+    if "--missao-vm" in argumentos:                       # 5.3 (F7): missão do Gargantua Pro numa VM descartável
+        import tars_vm_cli
+        sys.exit(tars_vm_cli.executar(OLLAMA_HOST, argumentos, t, instalados=lambda: primeiro_uso.modelos_instalados(OLLAMA_HOST)))
+
     if any(a in ("--desinstalar", "--uninstall") for a in argumentos):
         import tars_desinstalar
         sys.exit(tars_desinstalar.executar(OLLAMA_HOST, t))
@@ -626,10 +626,6 @@ def main():
     # 5.1: --searxng prepara a pesquisa web local (Docker) e a liga
     if "--searxng" in argumentos:
         sys.exit(comando_searxng())
-
-    # --cooper: o Cooper foi descontinuado, o comando só avisa
-    if any(a in ("--cooper",) for a in argumentos):
-        sys.exit(comando_cooper())
 
     # 5.1: modo de permissão (perguntar, plano, automático) e qual conversa retomar
     global MODO_PERMISSAO
@@ -665,6 +661,8 @@ def main():
             palavras.append(arg)
             i += 1
         pedido = " ".join(palavras).strip()
+        if not pedido and sys.stdin.isatty():
+            _mostrar_logo()                  # 5.3: a conversa abre com o logo, como sem argumento
         sys.exit(modo_chat_terminal(pedido_unico=pedido or None, retomar=retomar))
 
     # --voz: fica ouvindo "TARS" e responde falando (nucleo/voz.py)

@@ -58,6 +58,16 @@ def pelo_script():
     return plataforma.sistema() != "linux" or MARCA_SCRIPT.exists()
 
 
+def argumentos_um_clique(sistema=None):
+    """5.3 (F5): o "Atualizar" de quem instalou por script roda o próprio instalador. No Windows abre o PowerShell visível (o
+    instalador fecha o app aberto e o reabre no fim); no macOS e nos outros Linux o script roda escondido e o app reinicia."""
+    sistema = sistema or plataforma.sistema()
+    if sistema == "windows":
+        reabrir = '; & (Join-Path $env:LOCALAPPDATA "openTARS\\bin\\opentars-gui.cmd")'
+        return ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", COMANDO_REINSTALAR["windows"] + reabrir]
+    return ["bash", "-c", "set -o pipefail; " + COMANDO_REINSTALAR[sistema]]
+
+
 def versao_publicada(agora=None, buscar=None, cache=None):
     """A versão publicada (do cache de até 24 h, ou buscada agora), ou None."""
     if _desligado():

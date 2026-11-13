@@ -218,6 +218,16 @@ def _janela_acessivel(nome):
             if alvo is not None:
                 alvo = dict(alvo, aberto_agora=True)
 
+    # 11/11 (F11): app Electron já aberto sem árvore: com a permissão da pessoa, reabre com a acessibilidade ligada e procura de novo
+    if alvo is None and nome and i18n.ler_config().get("reabrir_com_acessibilidade") and not _sem_arvore(nome):
+        janela_x = encontrar_janela_por_nome(nome)
+        if janela_x and janela_x.get("pid"):
+            ok, _ = reabrir_com_acessibilidade(janela_x["pid"])
+            limite = time.time() + (TIMEOUT_JANELA_ACESSIVEL_SEG if ok else 0)
+            while ok and alvo is None and time.time() < limite:
+                time.sleep(0.5)
+                alvo = procurar()
+
     if alvo is None:
         if nome and (aberta_no_x or encontrar_janela_por_nome(nome) is not None):
             _marcar_sem_arvore(nome)

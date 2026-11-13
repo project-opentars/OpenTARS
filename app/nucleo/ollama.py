@@ -80,9 +80,8 @@ def _chat_unico(
         "keep_alive": keep_alive,
         "options": {"temperature": temperatura},
     }
-    if not visao_lib.e_cooper(modelo):
-        # mesmo num_ctx do chat: senão o Ollama recarrega o modelo a cada consulta de bastidor
-        corpo["options"]["num_ctx"] = contexto_ia()
+    # mesmo num_ctx do chat: senão o Ollama recarrega o modelo a cada consulta de bastidor
+    corpo["options"]["num_ctx"] = contexto_ia()
     if opcoes:
         corpo["options"].update(opcoes)
 
@@ -238,7 +237,7 @@ def descarregar_modelo(modelo):
 def ollama_online():
     """O servidor do Ollama responde no endereço configurado?"""
     try:
-        return _SESSION.get(f"{OLLAMA_HOST}/api/version", timeout=TIMEOUT_HTTP_CURTO).status_code == 200
+        return _SESSION.get(motor_lib.url("versao", OLLAMA_HOST), timeout=TIMEOUT_HTTP_CURTO).status_code == 200
     except Exception:
         return False
 

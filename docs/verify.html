@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify your download · openTARS</title>
+<meta name="description" content="How to check that the openTARS package you downloaded is the one we published.">
+<link rel="canonical" href="https://project-opentars.github.io/OpenTARS/verify.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Verify your download · openTARS">
+<meta property="og:description" content="How to check that the openTARS package you downloaded is the one we published.">
+<meta property="og:image" content="https://project-opentars.github.io/OpenTARS/img/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#141C38">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="icon" href="img/icon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=9">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="./"><img src="logo.svg" alt="" width="32" height="32"><b>open<span>TARS</span></b></a>
+    <nav aria-label="Main">
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="./#install">Install</a>
+      <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main class="texto">
+  <div class="wrap">
+    <h1 class="display">Verify your download</h1>
+    <p class="lede quiet">Two quick checks prove the package came from us and was not changed on the way. Both take a few seconds.</p>
+    <article>
+      <h2>1. Compare the checksum</h2>
+      <p>Every release lists the SHA-256 of each file in <code>SHA256SUMS</code>. Download both into the same folder and run:</p>
+      <pre><code>sha256sum -c SHA256SUMS --ignore-missing</code></pre>
+      <p>It should print <code>opentars_all.deb: OK</code>. On macOS use <code>shasum -a 256 -c SHA256SUMS</code>; on Windows, <code>Get-FileHash opentars_all.deb</code> in PowerShell and compare it with the line in the file. The same number is on the <a href="./#install">download section</a> of this site.</p>
+    </article>
+    <article>
+      <h2>2. Check where it was built</h2>
+      <p>Release files carry a GitHub artifact attestation, signed by GitHub Actions in our repository. With the GitHub CLI:</p>
+      <pre><code>gh attestation verify opentars_all.deb --repo project-opentars/OpenTARS</code></pre>
+      <p>A file that was changed after we published it fails this check.</p>
+    </article>
+    <article>
+      <h2>The scripts and the models</h2>
+      <p>The Windows, macOS and Linux install commands download the code from this repository over HTTPS. The models are checked on your computer: openTARS refuses any model file whose SHA-256 does not match the one written in the app. The engine, llama.cpp, is checked the same way.</p>
+    </article>
+    <article>
+      <h2>Something does not match?</h2>
+      <p>Do not install it. Write to <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a> with where you downloaded it from and the checksum you got.</p>
+    </article>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="rodape-marca">
+      <p class="big">open<span>TARS</span></p>
+      <p class="contato">Questions, bugs or security reports: <a href="mailto:projectopentars@gmail.com">projectopentars@gmail.com</a></p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html">Privacy &amp; security</a>
+      <a href="verify.html">Verify your download</a>
+      <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
+      <a href="https://huggingface.co/OpenTARS">Hugging Face</a>
+      <a href="https://ollama.com/ProjectOpenTARS">Ollama</a>
+      <a href="https://www.instagram.com/open.tars/">Instagram</a>
+      <a href="https://github.com/project-opentars/OpenTARS/blob/main/LICENSE">MIT License</a>
+    </nav>
+  </div>
+</footer>
+<script src="site.js?v=5" defer></script>
+</body>
+</html>

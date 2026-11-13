@@ -64,8 +64,25 @@ jobs:
           python tests/test_qt_arquivos.py
           python tests/test_qt_primeiro_uso_sistema.py
           python tests/test_gerenciar_modelos.py
+      - name: Assistente 5.3 (agenda, notas, e-mail, mídia, ações do sistema, voz, índice, terminal), sem modelo e sem rede
+        run: |
+          python tests/test_integracoes.py
+          python tests/test_midia.py
+          python tests/test_acoes_sistema_outros.py
+          python tests/test_email.py
+          python tests/test_busca_indice.py
+          python tests/test_lembretes.py
+          python tests/test_voz_pt.py
+          python tests/test_terminal_visual.py
+          python tests/test_tela_pela_acessibilidade.py
+          python tests/test_voz_gemma.py
       - name: Módulos que não dependem do Linux importam
         run: python -c "import tars_plataforma, tars_prova, tars_i18n, tars_memoria, tars_rotinas, tars_historico, tars_confianca, tars_murph"
+      - name: Motor llama.cpp (5.3) sem modelo
+        run: python tests/test_motor_local.py
+      - name: Motor llama.cpp de verdade (baixa o llama-server e o Lite)
+        env: {TARS_MOTOR_REAL: "1"}
+        run: python tests/test_motor_real.py
 
   janelas:
     # as janelas de verdade (sem tela) no Windows e no macOS, com um Ollama de mentira: o primeiro uso de ponta a ponta, a
@@ -151,6 +168,37 @@ jobs:
           .\app\empacotamento\windows\instalar.ps1 -Remover
           if (Test-Path "$env:LOCALAPPDATA\openTARS") { throw "não removeu" }
 
+  instalador_exe_windows:
+    # o opentars-setup.exe (Inno Setup, o que o winget instala): compila, instala em silêncio, confere e desinstala
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compilar
+        shell: powershell
+        run: |
+          choco install innosetup -y --no-progress
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /DVersao=5.3 app\empacotamento\windows\opentars.iss
+          if (-not (Test-Path app\dist\opentars-setup.exe)) { throw "o setup não saiu" }
+      - uses: actions/upload-artifact@v4
+        with: { name: opentars-setup, path: app/dist/opentars-setup.exe }
+      - name: Instalar em silêncio (como o winget)
+        shell: powershell
+        run: |
+          $p = Start-Process app\dist\opentars-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SemOllama=1" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "setup saiu com $($p.ExitCode)" }
+          if (-not (Test-Path "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd")) { throw "opentars.cmd não existe" }
+          & "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd" --version
+          if ($LASTEXITCODE -ne 0) { throw "opentars --version falhou" }
+          $arp = Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" | Where-Object { $_.GetValue("DisplayName") -eq "openTARS" }
+          if (-not $arp) { throw "não aparece em Aplicativos instalados" }
+      - name: Desinstalar
+        shell: powershell
+        run: |
+          $u = (Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" | Where-Object { $_.GetValue("DisplayName") -eq "openTARS" }).GetValue("UninstallString")
+          $exe = ($u -replace '^"([^"]+)".*','$1')
+          Start-Process $exe -ArgumentList "/VERYSILENT" -Wait
+          if (Test-Path "$env:LOCALAPPDATA\openTARS") { throw "não removeu" }
+
   instalador_macos:
     runs-on: macos-latest
     steps:
@@ -166,7 +214,7 @@ jobs:
       - name: Um Terminal novo (zsh) acha o comando opentars
         run: |
           zsh -ic 'command -v opentars && opentars --version' | tee /tmp/zsh.txt
-          grep -q "5.2" /tmp/zsh.txt
+          grep -q "openTARS 5\." /tmp/zsh.txt
       - name: A janela carrega (sem tela)
         env: {QT_QPA_PLATFORM: offscreen}
         run: cd "$HOME/Library/Application Support/openTARS/app" && "../venv/bin/python3" -c "import tars_qt.principal; print('qt ok')"

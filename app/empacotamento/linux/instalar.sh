@@ -6,9 +6,8 @@
 #
 # O que faz: instala os pacotes do sistema que o openTARS usa pelo gerenciador da distribuição (dnf, pacman, zypper ou
 # apt; é a única parte que pede a senha), baixa o código do app (pasta app/ do repositório) para a pasta do usuário, cria
-# um ambiente Python com o Python do sistema (que enxerga o PyGObject e o tkinter da distribuição), instala o Ollama pelo
-# instalador oficial se faltar, e cria os comandos opentars e opentars-gui em ~/.local/bin e o atalho no menu. O modelo
-# (Gargantua 2) é baixado na primeira abertura, com barra. Rodar de novo atualiza. Remover: "| bash -s -- --remover".
+# um ambiente Python com o Python do sistema (que enxerga o PyGObject e o tkinter da distribuição), e cria os comandos opentars e opentars-gui em ~/.local/bin e o atalho no menu. O motor llama.cpp e o
+# Gargantua 2.5 vêm na primeira abertura (--com-ollama instala o Ollama também). Rodar de novo atualiza. Remover: "| bash -s -- --remover".
 # Suas conversas e configurações (em ~/.config/opentars e ~/.local/share/opentars) ficam; apague as pastas se quiser.
 set -euo pipefail
 
@@ -22,7 +21,7 @@ ICONE="$DADOS/icons/hicolor/scalable/apps/opentars.svg"
 INICIO="${XDG_CONFIG_HOME:-$HOME/.config}/autostart"
 ZIP="https://github.com/project-opentars/OpenTARS/archive/refs/heads/main.zip"
 FONTE=""            # --fonte PASTA: a pasta app/ local em vez de baixar (o CI usa)
-SEM_OLLAMA=0        # --sem-ollama: não instala o Ollama (o CI usa)
+SEM_OLLAMA=1        # 5.3: o motor é o llama.cpp (o app baixa); --com-ollama instala o Ollama também; --sem-ollama fica aceito
 SEM_SISTEMA=0       # --sem-sistema: não instala pacotes do sistema (quem já instalou à mão, ou sem sudo)
 REMOVER=0
 while [ $# -gt 0 ]; do
@@ -30,6 +29,7 @@ while [ $# -gt 0 ]; do
         --remover) REMOVER=1 ;;
         --fonte) FONTE="$2"; shift ;;
         --sem-ollama) SEM_OLLAMA=1 ;;
+        --com-ollama) SEM_OLLAMA=0 ;;
         --sem-sistema) SEM_SISTEMA=1 ;;
     esac
     shift
@@ -134,6 +134,9 @@ fi
 # edições de foto com modelinho (tirar o fundo, aumentar, remover objeto) ficam de fora
 "$VENV/bin/python3" -m pip install --quiet onnxruntime || dizer "Aviso: o onnxruntime não instala neste Python; tirar o fundo e as outras edições com modelinho ficam desligadas." \
     "Warning: onnxruntime does not install on this Python; background removal and the other model-based photo edits are off."
+# 08/11 (5.3): o cofre de senhas para o e-mail do assistente; sem ele o app roda, só o e-mail fica desligado
+"$VENV/bin/python3" -m pip install --quiet keyring || dizer "Aviso: o keyring não instala neste Python; o e-mail do assistente fica desligado." \
+    "Warning: keyring does not install on this Python; the assistant's email stays off."
 
 # 4. O Ollama, pelo instalador oficial (ele mesmo pede a senha). Sem ele o openTARS abre, mas não tem IA local.
 if [ "$SEM_OLLAMA" = 0 ]; then
@@ -169,8 +172,8 @@ sed "s|/usr/bin/opentars-gui|\"$BIN/opentars-gui\"|" "$TEMP/desktop/opentars.des
 cp "$APP/empacotamento/icone/opentars.svg" "$ICONE"
 command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database -q "$(dirname "$ATALHO")" || true
 
-dizer "Pronto. Abra o openTARS pelo menu de aplicativos (na primeira vez ele baixa o Gargantua 2, com barra)." \
-      "Done. Open openTARS from the application menu (the first time it downloads Gargantua 2, with a progress bar)."
+dizer "Pronto. Abra o openTARS pelo menu de aplicativos (na primeira vez ele baixa o Gargantua 2.5, com barra)." \
+      "Done. Open openTARS from the application menu (the first time it downloads Gargantua 2.5, with a progress bar)."
 case ":$PATH:" in *":$BIN:"*) ;; *) dizer "Os comandos ficaram em $BIN; para usar no terminal: export PATH=\"$BIN:\$PATH\"" \
                                            "The commands are in $BIN; to use them in a terminal: export PATH=\"$BIN:\$PATH\"" ;; esac
 dizer "Para conferir e medir: 'opentars --diagnostico' e 'opentars --prova'; mande os relatórios que eles salvam." \

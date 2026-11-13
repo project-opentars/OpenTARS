@@ -23,3 +23,11 @@ for consulta, servico, esperado in (("lofi", "spotify", "https://open.spotify.co
     assert r["url"] == esperado and abertos[-1] == esperado, (r["url"], esperado)
 assert t._resolver_busca("pesquisar lofi no spotify")
 print("test_busca_outros_sites_e_identidade: TUDO OK.")
+
+
+# 10/11: "usa a calculadora" vira dica para abrir o app (o Gemma 4 buscava na web)
+for pedido in ("quanto é 310 mais 506? usa a calculadora", "what is 559 plus 755? use the calculator"):
+    ctx = t._contexto_do_pedido(pedido, "acao", False)
+    assert ctx and 'open_application with name="calculator"' in ctx, (pedido, ctx)
+assert "calculator" not in (t._contexto_do_pedido("oi, tudo bem?", "conversa", False) or "")
+print("OK: pedido com calculadora leva a dica de abrir o app")

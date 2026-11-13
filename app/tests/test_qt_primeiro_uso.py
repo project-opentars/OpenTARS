@@ -69,12 +69,10 @@ def ate_o_fim(j):
 tars_i18n.definir_idioma("pt_BR")
 j = JanelaPrimeiroUso()
 j.show()
-assert j.atual == "idioma" and len(j.paginas) == 8 + ("sistema" in j.paginas)
+assert j.atual == "idioma" and len(j.paginas) == 7 + ("sistema" in j.paginas)   # 5.3: sem o passo do modo
 assert j.windowTitle() == tars_i18n.t("pu.janela")
 j.paginas["idioma"].continuar()                 # mantém português
-assert j.atual == "modo"                         # 5.1: o modo vem logo depois do idioma
-j.paginas["modo"].continuar()                    # Base, já marcado
-assert j.atual == "ollama"
+assert j.atual == "ollama"                       # 5.3: sem o passo do modo, o Ollama vem logo depois do idioma
 esperar(lambda: j.paginas["ollama"].b_continuar.isEnabled(), o_que="Ollama")
 j.paginas["ollama"].b_continuar.click()
 assert j.atual == "nuvem"
@@ -100,8 +98,7 @@ assert "en" in codigos
 j2.paginas["idioma"].grupo.escolher(j2.paginas["idioma"].grupo.cartoes[codigos.index("en")])
 j2.paginas["idioma"].continuar()
 assert tars_i18n.idioma_atual() == "en"
-assert j2.atual == "modo"
-assert j2.paginas["modo"].h1.plano() == tars_i18n.t("pu.modo.titulo")
+assert j2.atual == "ollama"
 assert j2.paginas["ollama"].h1.plano() != pt_titulo
 assert j2.paginas["ollama"].h1.plano() == tars_i18n.t("pu.ollama.titulo")
 j2.close()

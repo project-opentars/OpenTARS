@@ -126,7 +126,7 @@ h1 span { display: block; }
 .crew { padding-block: var(--section); }
 .bars { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2.5rem); margin: clamp(2.5rem, 6vw, 4rem) 0 0; padding: 0; list-style: none; align-items: end; }
 .bars li { display: grid; grid-template-rows: 26rem auto auto auto; }
-.bars i { align-self: end; display: block; height: max(3px, calc(var(--gb) / 4.7 * 100%)); border-radius: .35rem; background: var(--metal); }
+.bars i { align-self: end; display: block; height: max(3px, calc(var(--gb) / 7.4 * 100%)); border-radius: .35rem; background: var(--metal); }
 .bars b { margin-top: 1rem; font-weight: 800; font-stretch: 112%; font-size: 1.2rem; line-height: 1.15; }
 .bars span { font-family: "IBM Plex Mono", monospace; color: var(--steel); font-size: 1rem; }
 .bars p { margin-top: .4rem; color: var(--steel); font-size: 1rem; line-height: 1.4; }
@@ -228,7 +228,7 @@ main.texto { padding: 8rem 0 var(--section); }
   /* no celular as lâminas deitam: comprimento proporcional ao tamanho */
   .bars { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
   .bars li { grid-template-rows: auto; }
-  .bars i { height: 1.4rem; width: max(3px, calc(var(--gb) / 4.7 * 100%)); }
+  .bars i { height: 1.4rem; width: max(3px, calc(var(--gb) / 7.4 * 100%)); }
   .cmd { grid-template-columns: minmax(0, 1fr); }
   .cmd pre, .cmd button[data-copy] { grid-column: 1; }
   .cmd button[data-copy] { min-height: 2.8rem; }

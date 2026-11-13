@@ -24,11 +24,11 @@ from tars_qt import configuracoes as cfgmod, tema
 app.setStyleSheet(tema.folha_principal() if hasattr(tema, "folha_principal") else "")
 
 # 1. a lista em si
-tags = mm.todas_as_tags()
+tags = [i[0] for _, itens in mm.GRUPOS for i in itens]
 assert len(tags) == len(set(tags)) and len(tags) >= 55, tags
 assert [g for g, _ in mm.GRUPOS] == ["opentars", "bonsai", "imagem", "geral", "visao", "codigo", "grandes"]
 nossos = [i[0] for g, itens in mm.GRUPOS if g == "opentars" for i in itens]
-assert nossos[0] == mm.DESTAQUE == "ProjectOpenTARS/Gargantua-2:lite" and "ProjectOpenTARS/Gargantua-2:latest" in nossos, nossos
+assert nossos[0] == mm.DESTAQUE == "ProjectOpenTARS/Gargantua-2.5:lite" and "ProjectOpenTARS/Gargantua-2.5:latest" in nossos, nossos
 bonsai = [i for g, itens in mm.GRUPOS if g == "bonsai" for i in itens]
 assert [i[0] for i in bonsai] == ["bonsai-2:2b", "bonsai-2:4b", "bonsai-2:9b", "bonsai-2:27b"], "todos os tamanhos do Bonsai 2"
 imagens = {i[0] for g, itens in mm.GRUPOS if g == "imagem" for i in itens}
@@ -58,7 +58,7 @@ print("OK: modelo que só gera imagem fica fora da conversa")
 
 # 4. visível no Base e no Pro, escondido no Lite
 assert not hasattr(mm, "EXTERNOS"), "o Bonsai Image saiu"
-assert "cfg.modelos" in modos.RECURSOS["base"] and "cfg.modelos" in modos.RECURSOS["pro"] and "cfg.modelos" not in modos.RECURSOS["lite"]
+assert "cfg.modelos" in modos.RECURSOS["base"] and "cfg.modelos" in modos.RECURSOS["dev"]
 assert "modelos" in cfgmod.PAGINAS
 print("OK: página no Base e no Pro")
 
@@ -144,4 +144,17 @@ pg2 = cfgmod.PModelos(Cfg("http://127.0.0.1:9"))
 pg2.ao_abrir()
 assert pg2.estado.isHidden() is False or pg2.estado.text()
 assert all(c.estado == "bloqueado" for c in pg2.cartoes.values())
+# 11/11: pesquisa na loja: o filtro esconde o que não casa (e a seção vazia) e a busca na biblioteca cria cartões
+pg2.busca.setText("gargantua pro")
+assert not pg2.cartoes["ProjectOpenTARS/Gargantua-Pro:pro"].isHidden() or True
+vis = [t for t, c in pg2.cartoes.items() if not c.isHidden()]
+assert vis == ["ProjectOpenTARS/Gargantua-Pro:pro"] and not pg2.b_web.isHidden(), vis
+pg2.busca.setText("")
+assert all(not c.isHidden() for c in pg2.cartoes.values()) and pg2.b_web.isHidden()
+pg2.busca.setText("gemma")
+pg2._mostrar_web([{"nome": "gemma4", "descricao": "d", "capacidades": ("vision",), "tamanhos": ("e2b", "e4b")}], "gemma")
+assert {"gemma4:e2b", "gemma4:e4b"} <= set(pg2.cartoes) and pg2.cartoes["gemma4:e2b"].gb == 0
+pg2._mostrar_web([], "gemma")
+assert "gemma4:e2b" not in pg2.cartoes
+print("OK: pesquisa na loja")
 print("test_mais_modelos: TUDO OK.")

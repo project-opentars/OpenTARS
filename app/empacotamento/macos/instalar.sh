@@ -4,9 +4,9 @@
 #   curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash
 #
 # O que faz: baixa o código do app (pasta app/ do repositório), instala o uv (traz o Python), cria um ambiente Python com
-# as dependências, instala o Ollama se faltar (o app oficial, em ~/Applications), monta o openTARS.app em ~/Applications e
+# as dependências, monta o openTARS.app em ~/Applications e
 # o assina ad-hoc (grátis, sem conta da Apple; um app montado no próprio Mac não ganha a marca de quarentena), e cria os
-# comandos opentars e opentars-gui em ~/.local/bin. O modelo (Gargantua 2) é baixado na primeira abertura, com barra.
+# comandos opentars e opentars-gui em ~/.local/bin. O motor llama.cpp e o Gargantua 2.5 vêm na primeira abertura.
 # Rodar de novo atualiza. Remover: o mesmo comando com "| bash -s -- --remover".
 # Suas conversas e configurações (em ~/Library/Application Support/opentars) ficam; apague a pasta se quiser.
 set -euo pipefail
@@ -18,13 +18,14 @@ BIN="$HOME/.local/bin"
 APP_MAC="$HOME/Applications/openTARS.app"
 ZIP="https://github.com/project-opentars/OpenTARS/archive/refs/heads/main.zip"
 FONTE=""            # --fonte PASTA: a pasta app/ local em vez de baixar (o CI usa)
-SEM_OLLAMA=0        # --sem-ollama: não instala o Ollama (o CI usa)
+SEM_OLLAMA=1        # 5.3: o motor é o llama.cpp (o app baixa); --com-ollama instala o Ollama também; --sem-ollama fica aceito
 REMOVER=0
 while [ $# -gt 0 ]; do
     case "$1" in
         --remover) REMOVER=1 ;;
         --fonte) FONTE="$2"; shift ;;
         --sem-ollama) SEM_OLLAMA=1 ;;
+        --com-ollama) SEM_OLLAMA=0 ;;
     esac
     shift
 done
@@ -73,7 +74,7 @@ fi
 dizer "Preparando o Python e as dependências (alguns minutos na primeira vez)..." \
       "Setting up Python and the dependencies (a few minutes the first time)..."
 [ -x "$VENV/bin/python3" ] || "$UV" venv --python 3.12 "$VENV"
-"$UV" pip install --python "$VENV/bin/python3" requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime pyobjc-framework-ApplicationServices pip
+"$UV" pip install --python "$VENV/bin/python3" requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime keyring pyobjc-framework-ApplicationServices pip
 
 # 3. O Ollama (o app oficial). Sem ele o openTARS abre, mas não tem IA local.
 if [ "$SEM_OLLAMA" = 0 ]; then
@@ -118,8 +119,8 @@ printf '#!/bin/bash\nexec "%s/bin/python3" "%s/tars.py" "$@"\n' "$VENV" "$APP_CO
 printf '#!/bin/bash\ncd "%s" && exec "%s/bin/python3" -m tars_qt "$@"\n' "$APP_CODIGO" "$VENV" > "$BIN/opentars-gui"
 chmod +x "$BIN/opentars" "$BIN/opentars-gui"
 
-dizer "Pronto. Abra o openTARS em ~/Applications (na primeira vez ele baixa o Gargantua 2, com barra)." \
-      "Done. Open openTARS from ~/Applications (the first time it downloads Gargantua 2, with a progress bar)."
+dizer "Pronto. Abra o openTARS em ~/Applications (na primeira vez ele baixa o Gargantua 2.5, com barra)." \
+      "Done. Open openTARS from ~/Applications (the first time it downloads Gargantua 2.5, with a progress bar)."
 dizer "O macOS vai pedir Acessibilidade e Gravação de Tela para o openTARS clicar e ver a tela: libere em Ajustes do Sistema > Privacidade e Segurança." \
       "macOS will ask for Accessibility and Screen Recording so openTARS can click and see the screen: allow it in System Settings > Privacy & Security."
 # o Terminal do macOS (zsh) não tem ~/.local/bin no PATH: sem isto, "opentars" dá "command not found". Uma linha marcada,

@@ -315,3 +315,27 @@ j_fora.ponte.reconectado.emit()
 assert not j_fora._vigia_ollama.isActive() and not j_fora._avisos_iniciais and chamadas == [1]
 j_fora.close()
 print("OK: o aviso de Ollama fora some sozinho quando ele volta (o app abre antes dele ao ligar o PC)")
+
+# 5.3 (F4+): "Perguntar sobre a tela" lê o texto da janela de antes pela acessibilidade e abre o painel das ações em Perguntar; sem
+# acessibilidade ou sem texto, volta para a barra com o pedido de tela (o print), como na 5.2
+import tars_acessibilidade as acess_lib  # noqa: E402
+from tars_i18n import t as tars_i18n_t  # noqa: E402
+j_tela = JanelaPrincipal(tars, historico=historico, capturar_stdout=False)
+j_tela.show()
+esperar(lambda: j_tela._modelos is not None, o_que="início")
+j_tela._janela_antes = {"pid": 4321, "titulo": "Storage settings"}
+pedidos_tela = []
+acess_lib.texto_da_janela = lambda pid=None, titulo=None, limite=6000: (pedidos_tela.append((pid, titulo)) or
+                                                                         {"titulo": titulo, "app": "Settings", "texto": "Disk C: is 92% full"})
+abertos = []
+j_tela._abrir_acoes_com = lambda texto, aba="reescrever", origem=None: abertos.append((texto, aba, origem))
+j_tela._perguntar_sobre_a_tela()
+esperar(lambda: abertos, o_que="painel aberto com o texto da janela")
+assert pedidos_tela == [(4321, "Storage settings")] and abertos == [("Disk C: is 92% full", "perguntar", "Storage settings")], (pedidos_tela, abertos)
+acess_lib.texto_da_janela = lambda pid=None, titulo=None, limite=6000: None
+j_tela._perguntar_sobre_a_tela()
+esperar(lambda: j_tela.barra.isVisible(), o_que="a barra volta com o pedido de tela")
+assert j_tela.barra.entrada.toPlainText() == tars_i18n_t("rapido.pref.tela") and len(abertos) == 1
+j_tela.barra.esconder()
+j_tela.close()
+print("OK: Perguntar sobre a tela: com texto da janela abre o painel em Perguntar; sem texto volta para a barra (o print)")

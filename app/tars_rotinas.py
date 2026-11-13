@@ -183,12 +183,6 @@ def categorias_do_comando(comando):
     return {nome for nome, padroes in _CATEGORIAS if any(re.search(p, comando, re.IGNORECASE | re.DOTALL) for p in padroes)}
 
 
-def categoria_do_comando(comando):
-    """'apagar' | 'enviar' | 'instalar' | None (a primeira que bate; veja categorias_do_comando)."""
-    achadas = categorias_do_comando(comando)
-    return next((n for n, _ in _CATEGORIAS if n in achadas), None)
-
-
 def autorizado(rotina, comando):
     """A rotina pode rodar este comando arriscado sem perguntar? Só se foi aprovada e TODAS as categorias do
     comando estão na lista (aprovar "apagar" não libera "rm x && git push")."""

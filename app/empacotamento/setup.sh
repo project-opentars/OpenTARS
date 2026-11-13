@@ -20,7 +20,7 @@ MODELO_AJUDANTE="qwen2.5:0.5b"
 MODELO_AJUDANTE_ANTIGO="gemma3:270m"
 DIR_OPENTARS="/usr/share/opentars"
 VENV="$DIR_OPENTARS/venv"
-DEPENDENCIAS=("requests:requests" "psutil:psutil" "pyautogui:pyautogui" "PIL:pillow" "PySide6:PySide6-Essentials" "numpy:numpy" "onnxruntime:onnxruntime")
+DEPENDENCIAS=("requests:requests" "psutil:psutil" "pyautogui:pyautogui" "PIL:pillow" "PySide6:PySide6-Essentials" "numpy:numpy" "onnxruntime:onnxruntime" "keyring:keyring")
 
 # Textos no idioma do sistema: vêm de idiomas/*.json, pelo mesmo módulo
 # que o openTARS usa (tars_i18n.py). Se algo falhar, aparecem as chaves
@@ -100,7 +100,15 @@ modelos_instalados() {
 # em Docker, via Snap...) conta como instalado: instalar outro por cima
 # criaria um segundo serviço brigando pela mesma porta.
 # ------------------------------------------------------------------
-if command -v ollama >/dev/null 2>&1; then
+# 5.3: o motor padrão é o llama.cpp, que o próprio app baixa no primeiro uso (sem senha), junto com o Gargantua 2.5.
+# O Ollama só entra se a pessoa escolher: TARS_MOTOR=ollama, ou "motor": "ollama" na config (Configurações > Avançado).
+USAR_OLLAMA=0
+if [ "${TARS_MOTOR:-}" = "ollama" ] || grep -qs '"motor": *"ollama"' "$HOME/.config/opentars/config.json"; then
+    USAR_OLLAMA=1
+fi
+if [ "$USAR_OLLAMA" != 1 ]; then
+    msg "$(t motor_llamacpp)"
+elif command -v ollama >/dev/null 2>&1; then
     msg "$(t ollama_ja)"
 elif ollama_responde; then
     msg "$(t ollama_existente url="$OLLAMA_URL")"
@@ -222,12 +230,13 @@ servico_pronto=0
 # Recém-instalado, o serviço leva um instante pra subir. Se o Ollama
 # existe mas o serviço está parado (sem systemd, por exemplo), tenta
 # iniciar.
-if ! ollama_responde && command -v systemctl >/dev/null 2>&1 \
+if [ "$USAR_OLLAMA" = 1 ] && ! ollama_responde && command -v systemctl >/dev/null 2>&1 \
         && systemctl list-unit-files ollama.service >/dev/null 2>&1; then
     systemctl start ollama >/dev/null 2>&1 || true
 fi
 
 for _ in $(seq 1 10); do
+    [ "$USAR_OLLAMA" = 1 ] || break          # com o llama.cpp os modelos vêm pelo app (passos 3d e 4 ficam de fora)
     if ollama_responde; then
         servico_pronto=1
         break
@@ -238,7 +247,7 @@ done
 # 3.0.5: nenhum modelo ajudante é baixado. Quem decide o tipo de cada
 # pedido é a helper Murph, que já vem no pacote (modelos/murph.json).
 msg "$(t helper_murph versao="1.0")"
-if [ "$servico_pronto" -eq 0 ]; then
+if [ "$servico_pronto" -eq 0 ] && [ "$USAR_OLLAMA" = 1 ]; then
     aviso "$(t ollama_nao_respondeu url="$OLLAMA_URL")"
     # 4.5: WSL (e contêiner) costuma não ter systemd: o serviço não sobe sozinho
     if em_wsl || ! command -v systemctl >/dev/null 2>&1; then
@@ -253,10 +262,10 @@ fi
 #     Com ele instalado, o passo 4 não baixa outro modelo de conversa.
 #     TARS_SEM_GARGANTUA=1 pula; TARS_MODELO_GARGANTUA=<nome> troca.
 # ------------------------------------------------------------------
-MODELO_GARGANTUA="${TARS_MODELO_GARGANTUA:-ProjectOpenTARS/Gargantua-2}"
+MODELO_GARGANTUA="${TARS_MODELO_GARGANTUA:-ProjectOpenTARS/Gargantua-2.5}"
 
 # 5.1: máquina fraca (sem placa NVIDIA com 4 GB E com até 6 GB de RAM OU menos de 4 threads) recebe o Gargantua Lite
-# (Qwen3.5 0,8B com visão, 0,6 GB, Gargantua-2:lite). TARS_GARGANTUA=lite|completo força. A mesma regra do primeiro uso (tars_primeiro_uso.py).
+# (Gemma 4 E2B com visão e áudio, 4,4 GB, Gargantua-2.5:lite). TARS_GARGANTUA=lite|completo força. A mesma regra do primeiro uso (tars_primeiro_uso.py).
 maquina_fraca() {
     case "${TARS_GARGANTUA:-}" in lite) return 0 ;; completo) return 1 ;; esac
     local vram=0 ram threads
@@ -269,7 +278,7 @@ maquina_fraca() {
     [ "${ram:-99999}" -le 6200 ] || [ "${threads:-4}" -lt 4 ]
 }
 if [ -z "${TARS_MODELO_GARGANTUA:-}" ] && maquina_fraca; then
-    MODELO_GARGANTUA="ProjectOpenTARS/Gargantua-2:lite"
+    MODELO_GARGANTUA="ProjectOpenTARS/Gargantua-2.5:lite"
 fi
 
 gargantua_instalado() {

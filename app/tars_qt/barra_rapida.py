@@ -8,6 +8,7 @@ import threading
 from pathlib import Path
 
 from PySide6.QtCore import QPoint, Qt, QTimer, Signal
+from PySide6.QtGui import QTextCursor
 from PySide6.QtWidgets import QApplication, QFrame, QHBoxLayout, QLabel, QPushButton, QTextBrowser, QVBoxLayout, QWidget
 
 import tars_busca_arquivos as busca
@@ -30,11 +31,13 @@ class BarraRapida(QFrame):
     parar = Signal()
     abrir_janela = Signal()
     arquivos_achados = Signal(object)
+    perguntar_tela = Signal()               # 5.3: "Perguntar sobre a tela": o assistente lê o texto da janela (acessibilidade) e abre o painel
     editar_foto = Signal()                  # 25/10: "Editar uma foto": o assistente abre o seletor e o painel da foto
 
     def __init__(self):
         super().__init__(None, Qt.Tool | Qt.FramelessWindowHint)
         self.setObjectName("barra-rapida")
+        tema.janela_arredondada(self, CORES['cartao'], CORES['borda2'], 16)
         self.setAttribute(Qt.WA_ShowWithoutActivating, False)
         self.setWindowTitle("openTARS")
         self.setFixedWidth(LARGURA)
@@ -116,9 +119,6 @@ class BarraRapida(QFrame):
         self._timer.timeout.connect(self._desenhar)
 
     # -- uso ---------------------------------------------------------------------------------------
-    def tem_resposta(self):
-        return self.resposta.isVisibleTo(self)
-
     def mostrar(self):
         if not self.isVisible():
             self.perguntas = 0
@@ -144,6 +144,7 @@ class BarraRapida(QFrame):
     def _ao_digitar(self):
         if self.entrada.toPlainText().strip() or self.resposta.isVisibleTo(self):
             self.capacidades.hide()
+            self.adjustSize()      # sem isso a barra ficava do tamanho da lista, com um vazio embaixo do pedido
 
     def _escolher(self, cap):
         self.capacidades.hide()
@@ -151,12 +152,16 @@ class BarraRapida(QFrame):
             self.hide()
             self.editar_foto.emit()
             return
+        if cap == "tela":
+            self.hide()
+            self.perguntar_tela.emit()
+            return
         if cap == "arquivo":
             self.modo = "arquivo"
             self.entrada.setPlaceholderText(t("busca.dica"))
         elif cap != "tarefa":
             self.entrada.setPlainText(t(f"rapido.pref.{cap}"))
-            self.entrada.moveCursor(self.entrada.textCursor().End)
+            self.entrada.moveCursor(QTextCursor.MoveOperation.End)
         self.entrada.setFocus()
         self.adjustSize()
 

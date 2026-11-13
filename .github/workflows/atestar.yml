@@ -1,0 +1,30 @@
+# 5.3 (F5): atestado de origem dos arquivos de cada Release (gh attestation verify opentars_all.deb --repo project-opentars/OpenTARS).
+# Roda quando uma Release é publicada ou à mão (com a tag). Só baixa os arquivos da Release e os atesta; não muda nada nela.
+name: atestar
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag da Release"
+        required: true
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+jobs:
+  atestar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar os arquivos da Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          mkdir arquivos
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir arquivos
+          ls -la arquivos
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "arquivos/*"

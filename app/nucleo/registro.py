@@ -434,7 +434,7 @@ class _Girando:
                 quadro = self.QUADROS[i % len(self.QUADROS)]
                 segundos = int(time.time() - self.desde)
                 linha = (f"\r\033[K{Cor.MAGENTA}{quadro}{Cor.RESET} {self.texto}… "
-                         f"{Cor.CINZA}({segundos}s · {t('term.parar')}){Cor.RESET}")
+                         f"{Cor.CINZA}({_tempo_curto(segundos)} · {t('term.parar')}){Cor.RESET}")
                 self.saida.write(linha)
                 self.saida.flush()
                 self.visivel = True
@@ -519,7 +519,9 @@ def _term_resposta(d):
         if d.get("apos_pensamento"):
             print()
         print("\n" + c("● ", Cor.VERDE), end="")
-    print(_recuar(d["texto"]), end="", flush=True)
+        _MD.reiniciar()
+    texto = _MD.alimentar(d["texto"]) if _girando.ligado else d["texto"]      # 5.3: formatado só num terminal de verdade
+    print(_recuar(texto), end="", flush=True)
 
 
 def _term_tempo(d):
@@ -554,7 +556,7 @@ _TERMINAL = {
     "descarregando": _term_descarregando,
     "pensamento": _term_pensamento,
     "resposta": _term_resposta,
-    "fim_stream": lambda d: print(flush=True),
+    "fim_stream": lambda d: print(_recuar(_MD.terminar()) if _girando.ligado else "", flush=True),
     "tempo": _term_tempo,
     "folego": _term_folego,
     "analisando": _term_analisando,

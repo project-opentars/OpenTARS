@@ -7,7 +7,8 @@ import tars_primeiro_uso as pu
 # 1) reconhecer a variante pelo nome OU pela etiqueta
 casos = [("gargantua-code", "code"), ("gargantua-lite:latest", "lite"), ("ProjectOpenTARS/Gargantua:code", "code"),
          ("ProjectOpenTARS/Gargantua:1.2-lite", "lite"), ("ProjectOpenTARS/Gargantua:latest", ""), ("ProjectOpenTARS/Gargantua:1.2", ""),
-         ("gargantua", ""), ("enzo/gargantua-teste:1.0", ""), ("qwen3:4b", ""), ("qwen2.5-coder:7b", ""), ("", ""), (None, "")]
+         ("ProjectOpenTARS/Gargantua-Pro:pro", "pro"), ("gargantua-pro-teste", "pro"), ("ProjectOpenTARS/Gargantua-Pi:250m", "pi"), ("gargantua-pi-teste:latest", "pi"),
+         ("ProjectOpenTARS/Gargantua-Code-Gen2:code", "code"), ("gargantua", ""), ("enzo/gargantua-teste:1.0", ""), ("qwen3:4b", ""), ("qwen2.5-coder:7b", ""), ("", ""), (None, "")]
 for nome, esperado in casos:
     assert tars.variante_do_gargantua(nome) == esperado, (nome, tars.variante_do_gargantua(nome))
     assert pu.e_variante_do_gargantua(nome) == bool(esperado), nome         # a cópia do primeiro uso concorda

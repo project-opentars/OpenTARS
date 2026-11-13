@@ -11,6 +11,7 @@ import urllib.error
 import urllib.request
 
 import tars_primeiro_uso as pu
+import tars_motor as motor
 
 
 def _tamanho_gb(m):
@@ -20,7 +21,7 @@ def _tamanho_gb(m):
 def listar(host, abrir=None):
     """Os modelos instalados, do maior para o menor: [{nome, gb, parametros, quantizacao, familia, data, nuvem, oficial}].
     Levanta OSError se o Ollama não responder."""
-    pedido = urllib.request.Request(f"{host}/api/tags")
+    pedido = urllib.request.Request(motor.url("modelos", host))
     with (abrir or urllib.request.urlopen)(pedido, timeout=6) as r:
         dados = json.loads(r.read())
     saida = []
@@ -50,7 +51,7 @@ def apagar(nome, host, abrir=None):
     """Apaga `nome` do Ollama (DELETE /api/delete). Devolve (ok, erro). Os modelos que outros modelos compartilham
     continuam: o Ollama só remove as camadas que mais ninguém usa."""
     corpo = json.dumps({"model": nome, "name": nome}).encode()      # "name" para os Ollama mais antigos
-    pedido = urllib.request.Request(f"{host}/api/delete", data=corpo, method="DELETE",
+    pedido = urllib.request.Request(motor.url("apagar", host), data=corpo, method="DELETE",
                                     headers={"Content-Type": "application/json"})
     try:
         with (abrir or urllib.request.urlopen)(pedido, timeout=30):
@@ -72,7 +73,7 @@ REGISTRO = "https://registry.ollama.ai/v2/{repositorio}/manifests/{tag}"
 
 def camada_local(nome, host, abrir=None):
     """O digest da camada de pesos do modelo instalado, ou "" se não deu para saber."""
-    pedido = urllib.request.Request(f"{host}/api/show", data=json.dumps({"model": nome}).encode(),
+    pedido = urllib.request.Request(motor.url("detalhes", host), data=json.dumps({"model": nome}).encode(),
                                     headers={"Content-Type": "application/json"})
     with (abrir or urllib.request.urlopen)(pedido, timeout=10) as r:
         achados = re.findall(r"sha256[-:]([0-9a-f]{64})", json.loads(r.read()).get("modelfile") or "")

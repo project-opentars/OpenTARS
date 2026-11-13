@@ -264,7 +264,17 @@ def _abrir_em_janela_de_terminal(comando, nome):
         "Use a non-interactive command instead (for example 'top -bn1' or 'free -h').")}
 
 
+def til_entre_aspas(comando):
+    """O modelo escreve mkdir -p "~/Documentos/Jogos": o bash não expande o ~ entre aspas e cria uma pasta chamada "~" na pasta
+    atual, e a ferramenta ainda diz que deu certo (Gargantua 2.5 em Gemma 4, 10/11: 4 tarefas de pasta da prova de 80). O ~ sai
+    das aspas e o resto fica entre elas (~/"Área de Trabalho/x"): vale no bash e no mini-shell."""
+    comando = re.sub(r'"~/([^"]*)"', r'~/"\1"', comando)
+    comando = re.sub(r"'~/([^']*)'", r"~/'\1'", comando)
+    return re.sub(r'(["\'])~\1', "~", comando)
+
+
 def _executar_terminal_de_fato(comando):
+    comando = til_entre_aspas(comando)
 
     # 5.2: fora do Linux, os comandos de bash que o Gargantua aprendeu rodam no mini-shell em Python (tars_shell), com a
     # saída no formato GNU do treino. No Windows o resto não roda; no macOS vai para o shell do sistema.
@@ -563,7 +573,7 @@ def _mirar_bruto(x=None, y=None, alvo=None, janela=None):
         return ox + nx, oy + ny, como
     if not visao_instalada():
         return None, None, (f"Could not find '{alvo}': it is not in the accessibility tree and no vision model is "
-                            "installed (ollama pull ProjectOpenTARS/Gargantua-2). Pass x/y from a screenshot.")
+                            "installed (ollama pull ProjectOpenTARS/Gargantua-2.5). Pass x/y from a screenshot.")
     return None, None, (f"The vision model could not find '{alvo}' ({motivo_da_falha_da_visao()}). "
                         "Pass x/y from a screenshot.")
 

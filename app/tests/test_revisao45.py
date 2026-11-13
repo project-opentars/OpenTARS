@@ -155,16 +155,14 @@ CAT = {
     "api:bonsai": modelo("api:bonsai", {"tools"}, None),
 }
 CAT["api:bonsai"]["capacidades_conhecidas"] = False
-assert tars.modelo_ajudante(CAT) != COOPER, "o Cooper não resolve nome de app"
 for alvo in ("modelo.menor", "modelo.maior", "modelo.visao", "modelo.tecnico"):
     escolhido = tars._RESOLVEDORES_MODELO[alvo](CAT) if hasattr(tars, "_RESOLVEDORES_MODELO") else None
-    assert escolhido not in (COOPER, "nomic-embed-text:latest"), (alvo, escolhido)
-assert COOPER not in tars.construir_cadeia_fallback("visao", CAT)
+    assert escolhido != "nomic-embed-text:latest", (alvo, escolhido)
 assert tars.construir_cadeia_fallback("acao", CAT)[-1] != "x"
 cadeia = tars.construir_cadeia_fallback("busca", CAT)
 assert cadeia.index("api:bonsai") > cadeia.index("qwen3:8b"), cadeia  # tamanho desconhecido: no fim
 assert tars._estimar_vram_gb(8.2, "BF16") > 15
-print("OK: Cooper e embedding não conversam nem ajudam; tamanho desconhecido vai pro fim; BF16 não é Q4")
+print("OK: embedding não conversa nem ajuda; tamanho desconhecido vai pro fim; BF16 não é Q4")
 
 # modelo que já está na placa responde a conversa curta (sem trocar de modelo)
 tars.catalogar_modelos = lambda forcar=False: CAT

@@ -7,6 +7,9 @@ import zipfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+_base = Path(tempfile.mkdtemp(prefix="opentars-busca-cfg-"))      # a configuração real da pessoa (índice ligado) não pode mudar este teste
+os.environ.update(TARS_ARQUIVO_CONFIG=str(_base / "config.json"), XDG_DATA_HOME=str(_base / "dados"), LOCALAPPDATA=str(_base / "dados"),
+                  XDG_CONFIG_HOME=str(_base / "config"))
 import tars_busca_arquivos as b  # noqa: E402
 
 casa = Path(tempfile.mkdtemp(prefix="opentars-busca-"))

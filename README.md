@@ -9,18 +9,18 @@
 Ask in your own words. openTARS opens programs, clicks buttons, types, finds files, reads the screen and runs commands.<br>
 Local by default, free and open source, with an AI trained just for it.
 
-[![Version 5.2 Ranger](https://img.shields.io/badge/version-5.2%20Ranger-5FD97A?style=flat-square)](#install)
-[![Official AI: Gargantua 2](https://img.shields.io/badge/official%20AI-Gargantua%202-5FD97A?style=flat-square)](#gargantua-an-ai-made-for-this)
+[![Version 5.3 Tesseract](https://img.shields.io/badge/version-5.3%20Tesseract-5FD97A?style=flat-square)](#install)
+[![Official AI: Gargantua 2.5](https://img.shields.io/badge/official%20AI-Gargantua%202.5-5FD97A?style=flat-square)](#gargantua-an-ai-made-for-this)
 [![MIT License](https://img.shields.io/badge/license-MIT-5FD97A?style=flat-square)](LICENSE)
 [![Linux, Windows, macOS](https://img.shields.io/badge/runs%20on-Linux%20%C2%B7%20Windows%20%C2%B7%20macOS-1A2446?style=flat-square)](#where-it-runs)
 [![Languages](https://img.shields.io/badge/languages-EN%20%C2%B7%20PT--BR-1A2446?style=flat-square)](#languages)
 [![Instagram @open.tars](https://img.shields.io/badge/Instagram-@open.tars-E4405F?style=flat-square&logo=instagram&logoColor=white)](https://www.instagram.com/open.tars/)
 
-[Install](#install) · [What it does](#what-it-does) · [Gargantua](#gargantua-an-ai-made-for-this) · [How it works](#how-it-works) · [Safety](#your-computer-your-rules) · [Terminal](#terminal) · [Coming in 5.3](#coming-in-53) · [Website](https://project-opentars.github.io/OpenTARS/)
+[Install](#install) · [What it does](#what-it-does) · [Gargantua](#gargantua-an-ai-made-for-this) · [How it works](#how-it-works) · [Safety](#your-computer-your-rules) · [Terminal](#terminal) · [New in 5.3](#new-in-53-tesseract) · [Website](https://project-opentars.github.io/OpenTARS/)
 
 <br>
 
-<img src="docs/img/demo-617.gif" width="300" alt="617 MB, no GPU: openTARS organizes files and reads the screen, all on the CPU.">
+<img src="docs/img/real-52-launcher.png" width="640" alt="The openTARS quick bar, opened from anywhere: do a task, ask about the screen, find a file, search the web or create a reminder.">
 
 </div>
 
@@ -92,12 +92,14 @@ Then open **openTARS** from your menu. Windows and macOS need no administrator p
 | 📂 **Actions on files** | Summarize, rename by content with a preview you can edit, move, or send to the trash after you confirm |
 | 🖼️ **Photos by sentence** | "Crop it square and make it brighter." Remove the background, upscale 4x, or click an object to remove it. The result is always a new copy |
 | 🎨 **Make images** | "Draw a lighthouse at dusk," with the optional Bonsai Image 4B: about 5 s per 512-pixel image on a 6 GB card, after the first one |
-| 🎙️ **Voice** | Hold to talk, continuous, or the wake word "TARS". Local recognition and speech, in English and Portuguese |
+| 🎙️ **Voice** | Hold to talk, continuous, or the wake word "TARS". Gargantua 2.5 understands what you say directly, in English and Portuguese, with Whisper as the backup |
 | 🛰️ **Probes** | Small watchers in the background that tell you when something matters: a folder, a web page, news, a GitHub project, this computer |
 | ⏰ **Routines and reminders** | "Every day at 8, open the newspaper." Created with a sentence |
 | 🧠 **Memory** | "Remember my browser is Brave." It applies from then on, and you see and erase everything in Settings |
 | 🌐 **Web search** | Reads the results and answers, through your own SearXNG, without opening anything on your screen |
-| 🎚️ **Three modes** | **Lite**, just the chat. **Base**, with history, memory, routines and Probes. **Pro**, with advanced settings and diagnostics |
+| 🖥️ **Missions in a VM** | On Linux, Gargantua Pro works inside a disposable virtual machine. Watch it live and choose which files come back |
+| 📅 **Calendar, notes, e-mail, music** | By sentence, all off until you turn them on. E-mail never sends without your yes |
+| 🛍️ **Model store** | Search the Ollama library from Settings and see what fits your machine |
 
 <p align="center"><img src="docs/img/16-mascot.gif" width="640" alt="KIPP's moods: idle, thinking, working, needs you, oops, done and napping"><br><sub>KIPP walks along the chat and shows what the AI is doing</sub></p>
 
@@ -105,25 +107,18 @@ Then open **openTARS** from your menu. Windows and macOS need no administrator p
 
 Other assistants wrap a general model in a long prompt. **Gargantua** was trained on thousands of requests actually solved inside openTARS and checked one by one: the calculator showed the right sum, the folder existed, nothing was deleted. It already knows the tools, so it acts on the first try, with a short prompt, and it fits on modest hardware.
 
+All of them run on **Gemma 4**, Google's open model family that takes in images and audio, except Code (Qwen2.5-Coder).
+
 | | Size | Runs on | In our tests |
 |---|---|---|---|
-| **Gargantua Lite Gen 2** | 617 MB | any computer, even without a graphics card | 96 of 100 tasks on the CPU alone |
-| **Gargantua 2** | 1.6 GB | a card with 3 GB free, or 8 GB of RAM | 76 of 76 text actions, the right tool 21 of 21 times, 0.4 s per request on a graphics card |
-| **Gargantua Code Gen 2** | 4.7 GB | optional, for programming | 51 of 60 coding tasks |
+| **[Gargantua 2.5](https://huggingface.co/OpenTARS/Gargantua-2.5)** | 5.3 GB | a graphics card, or 16 GB of RAM | the right tool 21 of 21 times, 75 of 76 text actions, 47 of 48 everyday tasks, about 1 s per tool on a graphics card |
+| **[Gargantua Lite Gen 3](https://huggingface.co/OpenTARS/Gargantua-2.5-Lite)** | 3.4 GB | any computer, on the processor alone | 75 of 76 text actions, 48 of 48 everyday tasks |
+| **[Gargantua Pro Gen 1](https://huggingface.co/OpenTARS/Gargantua-Pro)** | 7.4 GB | optional, for missions in a virtual machine | our largest model, on Gemma 4 12B |
+| **[Gargantua Code Gen 2](https://huggingface.co/OpenTARS/Gargantua-Code-Gen2)** | 4.7 GB | optional, for programming | 51 of 60 coding tasks |
 | **[Gargantua Pi Gen 1](https://huggingface.co/OpenTARS/Gargantua-Pi)** | 300 MB | small boards, in openTARS Pi | tested on an Orange Pi Zero 2W with 1 GB of RAM |
 | **Murph** | 4 MB | always on, no model to load | reads each request in about 0.2 ms and picks who answers |
 
-### Built on Gemma 4
-
-Our next main models run on Gemma 4, Google's open model family that takes in images and audio.
-
-| | Base | Status |
-|---|---|---|
-| **Gargantua Lite Gen 3** | Gemma 4 E2B · 3.4 GB | trained, in testing. In our first test: 75 of 76 text actions (Lite Gen 2: 60) and 4 made-up answers in 48 questions (Lite Gen 2: 16) |
-| **Gargantua 2.5** | Gemma 4 E4B | in training now |
-| **[Gargantua Pro Gen 1](https://huggingface.co/OpenTARS/Gargantua-Pro)** | Gemma 4 12B · 7.4 GB | on Hugging Face now, in the app in 5.3 |
-
-The tests are ours and run with the real app; the 100-task one checks on disk that the work was really done. Gargantua also says when it does not know: asked about people and things that do not exist, it said so 16 of 16 times. Models are on [ollama.com](https://ollama.com/ProjectOpenTARS/Gargantua-2) and [Hugging Face](https://huggingface.co/OpenTARS), and any other Ollama model works too.
+The tests are ours and run with the real app, on November 13, 2026; `opentars --prova` runs the everyday tasks on your computer. The models run on the llama.cpp engine that openTARS installs, and are also on [Hugging Face](https://huggingface.co/OpenTARS) and [ollama.com](https://ollama.com/ProjectOpenTARS).
 
 ## How it works
 
@@ -145,7 +140,7 @@ flowchart LR
 
 ## Your computer, your rules
 
-- **Local by default.** With a local model, your conversation and your screen stay on your machine. Ollama Cloud and web search are optional and go only where you point them.
+- **Local by default.** With a local model, your conversation, your voice and your screen stay on your machine. Cloud models and web search are optional and go only where you point them.
 - **It asks first.** Deleting, sending and installing wait for your Allow. It never closes a program with unsaved work.
 - **Routines and Probes stay on a leash.** A routine only does what you allowed when you created it, and a Probe only reads unless you chose an action.
 - **No account, no subscription.** Keys you add stay on this computer and are never shown or logged. It also checks GitHub for updates, and you can turn that off.
@@ -154,7 +149,7 @@ More in the [privacy page](https://project-opentars.github.io/OpenTARS/privacy.h
 
 ## Terminal
 
-`opentars` opens the chat right in the terminal, on a desktop or over SSH, with steps you can follow, a spinner and a status line. Risky commands ask first.
+`opentars` opens the chat right in the terminal, on a desktop or over SSH: you type in a framed prompt with a status bar under it (model, engine, folder and git branch), follow each step as it runs, and read formatted answers. Risky commands ask first.
 
 <img src="docs/img/17-cli.png" width="620" alt="The openTARS terminal: the logo, the welcome panel, a plan, tool steps with their results and the spinner">
 
@@ -194,24 +189,25 @@ More in the [privacy page](https://project-opentars.github.io/OpenTARS/privacy.h
 
 The window, the terminal, the installer and the menu speak **English and Portuguese**. Switch in the window or with `opentars --idioma pt_BR`. To add your language, copy `app/idiomas/en.json`, translate the values and send a pull request: it shows up in the menu by itself.
 
-## Coming in 5.3
+## New in 5.3 Tesseract
 
-In development, with no date yet.
-
-- **Better and smaller models,** retrained with more examples.
-- **Gargantua Pro Gen 1 in the app,** our largest model, on Gemma 4 12B.
-- **llama.cpp,** so there is no other program to install, with the normal update from 5.2.
-- **A closer assistant on Windows and macOS.**
-- **Trust in the download:** winget, one-click updates and a page that shows how to verify what you got.
-- **Probes in a virtual machine,** on Linux, away from your files.
-- **Gargantua Lite Gen 3 and Gargantua 2.5,** on Gemma 4 (E2B and E4B): the same tools, and voice that understands your audio directly.
+- **Rebuilt on llama.cpp.** One fast engine for every model, installed by the app the first time it opens. No separate AI program, no password. Ollama stays available in the developer settings.
+- **Gargantua 2.5 on Gemma 4.** The new main AI sees your screen and hears your voice.
+- **Voice, understood directly.** What you say goes straight to Gargantua 2.5.
+- **Missions in a virtual machine.** On Linux with KVM, Gargantua Pro works in a disposable computer, from a new window in Probes.
+- **A model store with search.**
+- **A terminal that looks the part.**
+- **One-click updates on Windows, macOS and every Linux.**
+- **Clicks in Chromium and Electron apps,** reopened with accessibility on when you allow it.
+- **Calendar, notes, e-mail, music and system settings by sentence,** on Linux, Windows and macOS.
+- **[Verify your download](https://project-opentars.github.io/OpenTARS/verify.html)** with the checksum and the GitHub attestation of each release.
 
 ## Help
 
 - **Something is off?** Run `opentars --diagnostico` and send us the report it saves, by [opening an issue](https://github.com/project-opentars/OpenTARS/issues) or at projectopentars@gmail.com.
-- **"Ollama offline":** on Linux, `sudo systemctl start ollama`. If it runs elsewhere, set `OLLAMA_HOST`.
+- **The AI does not answer:** `opentars --diagnostico` checks the llama.cpp engine and the models, and says what is missing.
 - **A shortcut does nothing:** `opentars --atalho` shows what is registered, and `opentars --atalho ctrl+alt+o` picks another.
-- **Clicking by name misses an app's buttons:** open that app through openTARS, which turns on accessibility for Electron apps like Discord and VS Code. On Wayland, an Xorg session gives clicks by position.
+- **Clicking by name misses an app's buttons:** open that app through openTARS, or turn on "Let openTARS reopen an app so it can click its buttons" in Settings → Assistant, for Chromium and Electron apps. On Wayland, an Xorg session gives clicks by position.
 
 ## For developers
 
