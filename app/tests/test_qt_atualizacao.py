@@ -126,12 +126,20 @@ class Processo:
 reiniciou, rodados = [], []
 j._reiniciar = lambda: reiniciou.append(1)
 pagina = j.config.paginas["atualizacoes"]
+import tars_qt.principal as principal_mod  # noqa: E402
+sistema_antes = principal_mod.plataforma.sistema
+principal_mod.plataforma.sistema = lambda: "windows"      # Windows: abre o PowerShell visível e não espera (o instalador fecha o app)
+j._atualizar_pelo_script(pagina, popen=lambda argv, **k: rodados.append((argv, k)) or Processo(0))
+assert rodados[-1][0][0] == "powershell" and rodados[-1][1].get("creationflags") == 0x10 and not reiniciou
+principal_mod.plataforma.sistema = lambda: "linux"        # macOS e outros Linux: o script roda escondido e o app reinicia
+rodados.clear()
 j._atualizar_pelo_script(pagina, popen=lambda argv, **k: rodados.append(argv) or Processo(0))
 esperar(lambda: reiniciou, o_que="reiniciar depois do script")
 assert rodados and pagina.msg.text() == t("jp.atualizando_script")
 j._atualizar_pelo_script(pagina, popen=lambda argv, **k: Processo(1))
 esperar(lambda: "opentars-atualizacao.log" in pagina.msg.text(), o_que="erro do script")
 assert reiniciou == [1]
+principal_mod.plataforma.sistema = sistema_antes
 print("OK: um clique roda o instalador; terminou bem, o app reinicia; deu erro, a página mostra onde está o registro")
 
 # 5.3: quem veio da 5.2 com o Gargantua 2 (Qwen) recebe a oferta do 2.5; quem já tem o 2.5, ou máquina fraca, não
