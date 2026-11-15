@@ -583,7 +583,7 @@ def resolver_hf(repo, http=_http):
     repositório não tem um GGUF de um arquivo só. Falha de rede levanta a exceção do `http`."""
     import json
     import re
-    if not re.fullmatch(r"[\w.-]+/[\w.-]+", str(repo)):
+    if not re.fullmatch(r"[A-Za-z0-9][\w.-]*/[A-Za-z0-9][\w.-]*", str(repo)):
         raise ValueError(f"invalid repository: {repo}")
     escolha = escolher_arquivos(json.loads(http(f"{_HF_API}/{repo}/tree/main")))
     if not escolha:

@@ -81,12 +81,12 @@
           <div class="cmd" role="tabpanel" id="p-win" aria-labelledby="t-win">
             <pre id="c-win" tabindex="0">irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex</pre>
             <button type="button" data-copy="c-win">Copy</button>
-            <p>Paste it in PowerShell. No administrator password.</p>
+            <p>Paste it in PowerShell, or <a href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars-setup.exe">download the installer</a>. No administrator password.</p>
           </div>
           <div class="cmd" role="tabpanel" id="p-mac" aria-labelledby="t-mac" hidden>
             <pre id="c-mac" tabindex="0">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash</pre>
             <button type="button" data-copy="c-mac">Copy</button>
-            <p>Paste it in Terminal. No administrator password.</p>
+            <p>Paste it in Terminal, or download the app for <a href="https://github.com/project-opentars/OpenTARS/releases/latest/download/openTARS-macos-arm64.dmg">Apple Silicon</a> or <a href="https://github.com/project-opentars/OpenTARS/releases/latest/download/openTARS-macos-x86_64.dmg">Intel</a>.</p>
           </div>
           <div class="cmd" role="tabpanel" id="p-deb" aria-labelledby="t-deb" hidden>
             <pre id="c-deb" tabindex="0">wget -O /tmp/opentars.deb https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars_all.deb &amp;&amp; sudo apt install -y --reinstall /tmp/opentars.deb</pre>
@@ -266,7 +266,9 @@
         <li><b>Gargantua 2.5 on Gemma 4.</b> The new main AI sees your screen and hears your voice.</li>
         <li><b>Voice, understood directly.</b> What you say goes straight to Gargantua 2.5, in English or Portuguese.</li>
         <li><b>Missions in a virtual machine.</b> On Linux, Gargantua Pro works inside a disposable computer. You watch it live and choose which files come back.</li>
-        <li><b>A model store with search.</b> Search the Ollama library right from Settings and see what fits your machine.</li>
+        <li><b>Native apps for Windows and macOS.</b> Python, Qt and the llama.cpp engine come inside. One install, nothing else to download but the model.</li>
+        <li><b>A model store on Hugging Face.</b> Hand-picked models from Qwen, Gemma, Mistral and more, or search thousands of GGUF models. Every file is checked by SHA-256 before it runs.</li>
+        <li><b>Fits your graphics card.</b> The engine sizes each model to your GPU memory and falls back to the processor on its own.</li>
         <li><b>A terminal that looks the part.</b> A framed prompt, a status bar with the model, the engine and your folder, and formatted answers.</li>
         <li><b>One-click updates everywhere.</b> Windows, macOS and every Linux update from inside the app.</li>
         <li><b>Clicks in Chromium and Electron apps.</b> With your permission, openTARS reopens them with accessibility on, so it can click their buttons by name.</li>
@@ -283,12 +285,12 @@
         <div>
           <h3>Windows 10 or 11</h3>
           <div class="cmd"><pre id="i-win" tabindex="0">irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex</pre><button type="button" data-copy="i-win">Copy</button></div>
-          <p>In PowerShell. Everything goes into your user folder.</p>
+          <p>In PowerShell, or <a href="https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars-setup.exe">download opentars-setup.exe</a>. Everything goes into your user folder.</p>
         </div>
         <div>
           <h3>macOS 12 or newer</h3>
           <div class="cmd"><pre id="i-mac" tabindex="0">curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash</pre><button type="button" data-copy="i-mac">Copy</button></div>
-          <p>In Terminal. The first run asks for Accessibility and Screen Recording.</p>
+          <p>In Terminal, or get the .dmg for <a href="https://github.com/project-opentars/OpenTARS/releases/latest/download/openTARS-macos-arm64.dmg">Apple Silicon</a> or <a href="https://github.com/project-opentars/OpenTARS/releases/latest/download/openTARS-macos-x86_64.dmg">Intel</a>. The first run asks for Accessibility and Screen Recording.</p>
         </div>
         <div>
           <h3>Ubuntu, Debian, Mint, Zorin, Pop!_OS</h3>
@@ -332,7 +334,6 @@
       <a href="verify.html">Verify your download</a>
       <a href="https://github.com/project-opentars/OpenTARS">GitHub</a>
       <a href="https://huggingface.co/OpenTARS">Hugging Face</a>
-      <a href="https://ollama.com/ProjectOpenTARS">Ollama</a>
       <a href="https://www.instagram.com/open.tars/">Instagram</a>
       <a href="https://github.com/project-opentars/OpenTARS/blob/main/LICENSE">MIT License</a>
     </nav>

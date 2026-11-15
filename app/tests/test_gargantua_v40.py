@@ -155,7 +155,7 @@ tars.catalogar_modelos = lambda forcar=False: {}
 saida = io.StringIO()
 with contextlib.redirect_stdout(saida):
     tars.main()
-assert "ollama pull ProjectOpenTARS/Gargantua" in saida.getvalue(), saida.getvalue()
+assert "opentars --setup" in saida.getvalue(), saida.getvalue()
 print("OK: '/modelo gargantua' acha o oficial; --version mostra o Gargantua (ou como baixar)")
 
 # 7. 5.2: fora do Linux vai o prompt neutro dos dados da 5.2 (só a palavra "Linux" sai); no Linux, byte a byte o do treino

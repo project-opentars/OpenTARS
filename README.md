@@ -34,11 +34,15 @@ One command. It sets up everything, downloads the models and tests them.
 irm https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/windows/instalar.ps1 | iex
 ```
 
+Or download [opentars-setup.exe](https://github.com/project-opentars/OpenTARS/releases/latest/download/opentars-setup.exe).
+
 **macOS 12 or newer**, in Terminal:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/project-opentars/OpenTARS/main/app/empacotamento/macos/instalar.sh | bash
 ```
+
+Or download the app for [Apple Silicon](https://github.com/project-opentars/OpenTARS/releases/latest/download/openTARS-macos-arm64.dmg) or [Intel](https://github.com/project-opentars/OpenTARS/releases/latest/download/openTARS-macos-x86_64.dmg).
 
 **Ubuntu, Debian, Mint, Zorin, Pop!_OS:**
 
@@ -99,7 +103,7 @@ Then open **openTARS** from your menu. Windows and macOS need no administrator p
 | 🌐 **Web search** | Reads the results and answers, through your own SearXNG, without opening anything on your screen |
 | 🖥️ **Missions in a VM** | On Linux, Gargantua Pro works inside a disposable virtual machine. Watch it live and choose which files come back |
 | 📅 **Calendar, notes, e-mail, music** | By sentence, all off until you turn them on. E-mail never sends without your yes |
-| 🛍️ **Model store** | Search the Ollama library from Settings and see what fits your machine |
+| 🛍️ **Model store** | Hand-picked models on Hugging Face, or search thousands of GGUF models; every file checked by SHA-256 |
 
 <p align="center"><img src="docs/img/16-mascot.gif" width="640" alt="KIPP's moods: idle, thinking, working, needs you, oops, done and napping"><br><sub>KIPP walks along the chat and shows what the AI is doing</sub></p>
 
@@ -191,11 +195,12 @@ The window, the terminal, the installer and the menu speak **English and Portugu
 
 ## New in 5.3 Tesseract
 
-- **Rebuilt on llama.cpp.** One fast engine for every model, installed by the app the first time it opens. No separate AI program, no password. Ollama stays available in the developer settings.
+- **Rebuilt on llama.cpp.** One fast engine for every model, installed by the app the first time it opens. No separate AI program, no password.
 - **Gargantua 2.5 on Gemma 4.** The new main AI sees your screen and hears your voice.
 - **Voice, understood directly.** What you say goes straight to Gargantua 2.5.
 - **Missions in a virtual machine.** On Linux with KVM, Gargantua Pro works in a disposable computer, from a new window in Probes.
-- **A model store with search.**
+- **Native apps for Windows and macOS,** with Python, Qt and the engine inside.
+- **A model store on Hugging Face,** with search and SHA-256 checks.
 - **A terminal that looks the part.**
 - **One-click updates on Windows, macOS and every Linux.**
 - **Clicks in Chromium and Electron apps,** reopened with accessibility on when you allow it.

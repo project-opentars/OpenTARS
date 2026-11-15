@@ -318,7 +318,7 @@ def _arquivo_valido(item):
 
 def ficha_valida(ficha):
     import re
-    return (isinstance(ficha, dict) and isinstance(ficha.get("repo"), str) and re.fullmatch(r"[\w.-]+/[\w.-]+", ficha["repo"]) is not None
+    return (isinstance(ficha, dict) and isinstance(ficha.get("repo"), str) and re.fullmatch(r"[A-Za-z0-9][\w.-]*/[A-Za-z0-9][\w.-]*", ficha["repo"]) is not None
             and _arquivo_valido(ficha.get("gguf")) and (ficha.get("mmproj") is None or _arquivo_valido(ficha["mmproj"])))
 
 

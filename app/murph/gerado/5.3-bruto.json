@@ -1,1 +1,5052 @@
-[]
+[
+[
+"Me dá uma olhada no que está na tela, por favor?",
+"visao",
+"pt_BR"
+],
+[
+"O popup de erro sumiu, você viu?",
+"visao",
+"pt_BR"
+],
+[
+"Pode clicar naquele botão de salvar configurações?",
+"visao",
+"pt_BR"
+],
+[
+"A tela está preta de novo, o que deu?",
+"visao",
+"pt_BR"
+],
+[
+"Me diz o texto que aparece naquele pop-up de validação.",
+"visao",
+"pt_BR"
+],
+[
+"Olha aqui, o calendário abriu, qual dia está selecionado?",
+"visao",
+"pt_BR"
+],
+[
+"Você consegue ler o que está escrito na aba aberta?",
+"visao",
+"pt_BR"
+],
+[
+"Me dá um print do que está na tela, com o relógio e a bateria.",
+"visao",
+"pt_BR"
+],
+[
+"O formulário de cadastro abriu, qual campo está com foco?",
+"visao",
+"pt_BR"
+],
+[
+"Vê se aquele ícone de upload está visível, e o nome do arquivo.",
+"visao",
+"pt_BR"
+],
+[
+"A tela está com aquele erro 404 de novo, me diz o texto.",
+"visao",
+"pt_BR"
+],
+[
+"Abri a planilha de vendas, o que está escrito na célula A1?",
+"visao",
+"pt_BR"
+],
+[
+"Olha aqui, o site está mostrando um aviso de manutenção.",
+"visao",
+"pt_BR"
+],
+[
+"Me confirma se aquele botão 'Continuar' está ativo.",
+"visao",
+"pt_BR"
+],
+[
+"A janela de configurações abriu, mostra a seção 'Privacidade'.",
+"visao",
+"pt_BR"
+],
+[
+"Vê se o sistema exibe o saldo atual na caixa de notas.",
+"visao",
+"pt_BR"
+],
+[
+"Me diz o conteúdo da caixa de diálogo que surgiu.",
+"visao",
+"pt_BR"
+],
+[
+"A tela ficou em branco, há alguma mensagem de erro?",
+"visao",
+"pt_BR"
+],
+[
+"O widget de calendário abriu, qual mês está exibido?",
+"visao",
+"pt_BR"
+],
+[
+"Pode me descrever o que está no canto superior direito?",
+"visao",
+"pt_BR"
+],
+[
+"Me dá uma olhada nessa página de erro, qual o código?",
+"visao",
+"pt_BR"
+],
+[
+"Nossa, a janela de login deu um erro. Me diz a mensagem.",
+"visao",
+"pt_BR"
+],
+[
+"Vê se o calendário está aberto e qual o dia de hoje.",
+"visao",
+"pt_BR"
+],
+[
+"A tela piscou, apareceu algum aviso sobre memória?",
+"visao",
+"pt_BR"
+],
+[
+"Abri o painel e vi um pop-up de sucesso. Qual o texto?",
+"visao",
+"pt_BR"
+],
+[
+"O navegador abriu uma aba de ajuda. Me diz o título.",
+"visao",
+"pt_BR"
+],
+[
+"Me dá o texto exato que aparece no cabeçalho da planilha.",
+"visao",
+"pt_BR"
+],
+[
+"A tela abriu o painel de notas, qual é o título?",
+"visao",
+"pt_BR"
+],
+[
+"Olha aqui, o relógio mudou. Me diz a hora e se há sinal.",
+"visao",
+"pt_BR"
+],
+[
+"Vê se há um aviso de atualização no canto superior.",
+"visao",
+"pt_BR"
+],
+[
+"Me avisa qual aba está aberta agora, eu não consigo ver.",
+"visao",
+"pt_BR"
+],
+[
+"O site abriu um aviso de cookies. Me diz a mensagem.",
+"visao",
+"pt_BR"
+],
+[
+"Me mostra o que está escrito na parte inferior da tela.",
+"visao",
+"pt_BR"
+],
+[
+"Vê se o campo de senha está visível e se está vazio.",
+"visao",
+"pt_BR"
+],
+[
+"Abriu a caixa de diálogo de confirmação. Qual o texto?",
+"visao",
+"pt_BR"
+],
+[
+"Me dá um print do que está aberto, incluindo a barra de tarefas.",
+"visao",
+"pt_BR"
+],
+[
+"Olha aqui, o sistema está pedindo uma senha de administrador.",
+"visao",
+"pt_BR"
+],
+[
+"Vê se a foto de perfil está carregada e qual o nome exibido.",
+"visao",
+"pt_BR"
+],
+[
+"A tela de vendas mostrou um aviso de estoque baixo.",
+"visao",
+"pt_BR"
+],
+[
+"Me diz o que está escrito no pop-up de erro de conexão.",
+"visao",
+"pt_BR"
+],
+[
+"A caixa de diálogo de sucesso abriu, me avisa o conteúdo.",
+"visao",
+"pt_BR"
+],
+[
+"Vê se o calendário tem algum evento marcado para amanhã.",
+"visao",
+"pt_BR"
+],
+[
+"O gerenciador de tarefas abriu, me diz quantos processos estão abertos.",
+"visao",
+"pt_BR"
+],
+[
+"Me diz o que o pop-up sobre configurações de segurança está mostrando.",
+"visao",
+"pt_BR"
+],
+[
+"A página de vendas abriu, o que o carrinho está exibindo?",
+"visao",
+"pt_BR"
+],
+[
+"Abriu um pop-up de pagamento. Vê se o saldo exibido está correto.",
+"visao",
+"pt_BR"
+],
+[
+"Me diz a mensagem que aparece quando o campo está vazio.",
+"visao",
+"pt_BR"
+],
+[
+"Olha aqui, a janela de download mostrou o progresso em 66%.",
+"visao",
+"pt_BR"
+],
+[
+"Me avisa se há algum ícone de notificação vermelho no canto.",
+"visao",
+"pt_BR"
+],
+[
+"A tela ficou sem sinal, qual é a mensagem de erro?",
+"visao",
+"pt_BR"
+],
+[
+"Vê se o menu de abas está colapsado e qual a aba ativa.",
+"visao",
+"pt_BR"
+],
+[
+"A planilha abriu e há um aviso de proteção de senha. Me diz o texto.",
+"visao",
+"pt_BR"
+],
+[
+"Me dá uma olhada na caixa de busca, vê o que está escrito.",
+"visao",
+"pt_BR"
+],
+[
+"O navegador abriu uma janela de pop-up para baixar um arquivo. Me diz o título.",
+"visao",
+"pt_BR"
+],
+[
+"Vê se a tela mostra o nome do último arquivo baixado.",
+"visao",
+"pt_BR"
+],
+[
+"O sistema abriu uma janela de aviso de bateria baixa, qual a porcentagem?",
+"visao",
+"pt_BR"
+],
+[
+"Abriu uma nota no gerenciador, me diz o texto e o título.",
+"visao",
+"pt_BR"
+],
+[
+"A tela está exibindo um pop-up de \"sem internet\".",
+"visao",
+"pt_BR"
+],
+[
+"look at the screen and tell me the first two tabs open, ok?",
+"visao",
+"en"
+],
+[
+"can you read what that popup says, the one about the password?",
+"visao",
+"en"
+],
+[
+"look right, the bottom right corner, see what the battery icon is showing?",
+"visao",
+"en"
+],
+[
+"the word count on this doc, what is it exactly?",
+"visao",
+"en"
+],
+[
+"look at the open window labeled “calendar” and tell me the date.",
+"visao",
+"en"
+],
+[
+"show me what the search bar is populated with, please.",
+"visao",
+"en"
+],
+[
+"check the tab that says “notes” and read the last line written there.",
+"visao",
+"en"
+],
+[
+"open this tab and tell me the bold text.",
+"visao",
+"en"
+],
+[
+"look where the mouse pointer is right now and tell me which element it's over.",
+"visao",
+"en"
+],
+[
+"can you write down the numbers in the blue box under the chart?",
+"visao",
+"en"
+],
+[
+"say what the subtitle below the main heading is.",
+"visao",
+"en"
+],
+[
+"tell me the name of the file that is currently open in the background.",
+"visao",
+"en"
+],
+[
+"look in the address bar and write the first three parts of the URL.",
+"visao",
+"en"
+],
+[
+"open the calculator and tell me the result of 12 * 7.",
+"visao",
+"en"
+],
+[
+"look at the list of icons on the desktop, what is the name of the fifth one?",
+"visao",
+"en"
+],
+[
+"peek at the message from John: what time did he send it?",
+"visao",
+"en"
+],
+[
+"the progress bar is showing what percentage, and the text next to it?",
+"visao",
+"en"
+],
+[
+"check the right panel, under “comments,” what is the second one saying?",
+"visao",
+"en"
+],
+[
+"look at the main form and copy the value from the “email” field.",
+"visao",
+"en"
+],
+[
+"tell me the spelling of the word that’s highlighted in red.",
+"visao",
+"en"
+],
+[
+"open the browser history and read the last two sites I visited.",
+"visao",
+"en"
+],
+[
+"what’s the visible text inside the “file name” field right now?",
+"visao",
+"en"
+],
+[
+"open the chat window on the left and read the last message from “bot”.",
+"visao",
+"en"
+],
+[
+"look at the keyboard shortcut suggestion under ‘Edit’ and tell me the letters.",
+"visao",
+"en"
+],
+[
+"tell me the title of the article open in the background tab.",
+"visao",
+"en"
+],
+[
+"open the clipboard contents and paste it here, so i can see what it is.",
+"visao",
+"en"
+],
+[
+"peek at the list of recent files and tell me the date of the newest one.",
+"visao",
+"en"
+],
+[
+"look at the little text below the graph and tell me the axis label.",
+"visao",
+"en"
+],
+[
+"open the folder named “downloads” and show me the contents.",
+"visao",
+"en"
+],
+[
+"the timer is counting down from what, and how much time is left?",
+"visao",
+"en"
+],
+[
+"can you tell me the value of the slider that is currently set?",
+"visao",
+"en"
+],
+[
+"read the text in the small, non-editable box at the top of the message.",
+"visao",
+"en"
+],
+[
+"tell me the text under “Sender” in the pop up email.",
+"visao",
+"en"
+],
+[
+"look at the toggle switch near the top: what is its current state (on/off)?",
+"visao",
+"en"
+],
+[
+"open the app settings and tell me the last selected profile name.",
+"visao",
+"en"
+],
+[
+"what number is shown in the counter next to the bell icon?",
+"visao",
+"en"
+],
+[
+"tell me the content of the text box labeled “Subject” in the compose window.",
+"visao",
+"en"
+],
+[
+"look at the bottom of the screen, what is the status bar showing?",
+"visao",
+"en"
+],
+[
+"open the spreadsheet named “jan_sales” and tell me the value in cell B4.",
+"visao",
+"en"
+],
+[
+"can you copy the text in the bold blue header row?",
+"visao",
+"en"
+],
+[
+"look at the section titled “Summary” and tell me the first bullet point.",
+"visao",
+"en"
+],
+[
+"the button that is disabled says which text?",
+"visao",
+"en"
+],
+[
+"open the browser settings and tell me the default homepage address.",
+"visao",
+"en"
+],
+[
+"read the first line of the document that appears when I open the cursor anywhere.",
+"visao",
+"en"
+],
+[
+"tell me which tab is currently selected in the tab bar.",
+"visao",
+"en"
+],
+[
+"look at the list of open windows and list their titles from left to right.",
+"visao",
+"en"
+],
+[
+"¿podés ver lo que está en la pantalla? Vuelva a mostrarlo en el chat.",
+"visao",
+"es"
+],
+[
+"¿qué aparece en la ventana? No veo bien el mensaje.",
+"visao",
+"es"
+],
+[
+"Oye, mira la pantalla. ¿se abrió el popup de error?",
+"visao",
+"es"
+],
+[
+"Disáme lo que está ahí, porfa. ¿qué dice exactamente?",
+"visao",
+"es"
+],
+[
+"¿pudiste ver el calendario? ¿hay algo marcado para mañana?",
+"visao",
+"es"
+],
+[
+"Necesito saber el texto que sale cuando me sale el popup de conexión.",
+"visao",
+"es"
+],
+[
+"¿podés leer lo que dice el mensaje que apareció en la esquina?",
+"visao",
+"es"
+],
+[
+"Abre la pantalla del navegador y decime qué pop up sale.",
+"visao",
+"es"
+],
+[
+"Mira en la pestaña de pagos, ¿qué error de saldo aparece?",
+"visao",
+"es"
+],
+[
+"¿hay algún mensaje de notificación que se haya quedado pegado?",
+"visao",
+"es"
+],
+[
+"Ayuda, el error de la página me bloqueó, ¿podés leer el texto que salió?",
+"visao",
+"es"
+],
+[
+"¿qué me está diciendo la terminal en este momento? Abrila.",
+"visao",
+"es"
+],
+[
+"Dime lo que dice el contador, ¿a cuánto llegó?",
+"visao",
+"es"
+],
+[
+"El mensaje de abajo: ¿qué dice el footer?",
+"visao",
+"es"
+],
+[
+"Se me pinchó el mouse, ¿puedes ver qué icono de la barra de tareas cambió?",
+"visao",
+"es"
+],
+[
+"Abre el mail de Gmail, ¿hay alguna notificación en rojo?",
+"visao",
+"es"
+],
+[
+"Necesito saber el texto exacto del botón que salió.",
+"visao",
+"es"
+],
+[
+"Oye, ¿podés abrir el gestor de tareas y decirme qué proceso está fallando?",
+"visao",
+"es"
+],
+[
+"Mira la hoja de cálculo, ¿qué número aparece en la celda A1?",
+"visao",
+"es"
+],
+[
+"El popup de cookies me salió, decime el texto exacto para aceptar.",
+"visao",
+"es"
+],
+[
+"Abrí la ventana de mensajes y decime quién me mandó el último.",
+"visao",
+"es"
+],
+[
+"Est-ce que tu peux regarder l'écran ? Je voudrais savoir ce qui s'affiche, d'accord ?",
+"visao",
+"fr"
+],
+[
+"Regarde l'écran, je te parle de l'onglet qui est ouvert à gauche, tout en bas.",
+"visao",
+"fr"
+],
+[
+"J'ai besoin de regarder le menu déroulant pour choisir la date, tu peux cliquer dessus ?",
+"visao",
+"fr"
+],
+[
+"Va sur l'onglet \"paramètres\" dans le coin en haut à droite et dis-moi ce qu'il y a.",
+"visao",
+"fr"
+],
+[
+"Ouais, tu vois le pop-up avec le message d'erreur ? Ça dit que le mot de passe est faux.",
+"visao",
+"fr"
+],
+[
+"Le bouton \"valider\" sous le formulaire, tu peux me dire qu'il est bleu ?",
+"visao",
+"fr"
+],
+[
+"Je ne vois pas ce qu'on dit. Est-ce que j'ai besoin de zoomer ou autre chose ?",
+"visao",
+"fr"
+],
+[
+"Peux-tu lire le texte qui est écrit dans la zone de commentaires ? Il commence par \"Rappel\".",
+"visao",
+"fr"
+],
+[
+"L'icône de la batterie en haut à droite : est-ce qu'elle affiche 80 % ou autre chose ?",
+"visao",
+"fr"
+],
+[
+"Regarde la barre d'adresse en haut : l'URL est bien \"site.com/profil\" ?",
+"visao",
+"fr"
+],
+[
+"Dis-moi ce qu'il y a dans la première colonne du tableau, la colonne marquée \"Statut\".",
+"visao",
+"fr"
+],
+[
+"Je ne clique pas : je veux juste savoir ce qui s'affiche quand je passe la souris sur l'image.",
+"visao",
+"fr"
+],
+[
+"Tu pourrais m'indiquer quel onglet est actif, celui qui a un soulignement en bas ?",
+"visao",
+"fr"
+],
+[
+"J'ai fermé la fenêtre, elle ne se voit plus. Peux-tu vérifier si elle est toujours là ?",
+"visao",
+"fr"
+],
+[
+"Dis-moi le texte exact qui s'affiche pour la notification de succès.",
+"visao",
+"fr"
+],
+[
+"Regarde dans le coin supérieur gauche. Y a un petit message qui vient de défiler.",
+"visao",
+"fr"
+],
+[
+"L'onglet en dessous de la fenêtre principale, ça s'appelle \"préférences\" ?",
+"visao",
+"fr"
+],
+[
+"Est-ce que l'icône de l'horloge indique le bon fuseau horaire, en fait ?",
+"visao",
+"fr"
+],
+[
+"Pardon, je n'ai pas cliqué encore. Regarde ce qui est là avant de cliquer sur l'achat.",
+"visao",
+"fr"
+],
+[
+"Tu peux voir le nombre de messages dans la boîte de réception ? Est-ce que c'est 36 ?",
+"visao",
+"fr"
+],
+[
+"Könntest du sehen was aufm Bildschirm?",
+"visao",
+"de"
+],
+[
+"Mir ist da was blöd geklickt.",
+"visao",
+"de"
+],
+[
+"Schau mal auf dem rechten Bildschirm oben rechts, die Uhrzeit, was steht da?",
+"visao",
+"de"
+],
+[
+"Hey, der Navigator zeigt einen Fehler 404. Kannst du sagen was das heißt?",
+"visao",
+"de"
+],
+[
+"Kannst du bitte das Fenster mit den E-mails öffnen?",
+"visao",
+"de"
+],
+[
+"Helpsch mal, ich krieg keinen bildschirm gepasst.",
+"visao",
+"de"
+],
+[
+"Was sagt der Kalender grad? Ist eine neue hin?",
+"visao",
+"de"
+],
+[
+"Könntest du das Popup mit dem Passwort ändern nachsehen?",
+"visao",
+"de"
+],
+[
+"Bitte klick auf den Button \"Einstellungen\" in der oberen leiste.",
+"visao",
+"de"
+],
+[
+"Kannst du gucken was für ein tab gerade offen ist?",
+"visao",
+"de"
+],
+[
+"Der fehler aufm display, wie viel Uhr is das?",
+"visao",
+"de"
+],
+[
+"Schau mal hier, das nächste e-mail. Was ist in der betreffzeile?",
+"visao",
+"de"
+],
+[
+"Kann ich das einzeichenfeld unten, auf die einkaufsliste, leerstellen?",
+"visao",
+"de"
+],
+[
+"Was für eine warnung kommt von unter?",
+"visao",
+"de"
+],
+[
+"Sag mir bitte, was ich auf dem display sehe.",
+"visao",
+"de"
+],
+[
+"Konnte den kasten mit „fehlgeschlagen“ lesen?",
+"visao",
+"de"
+],
+[
+"Wo genau steht jetzt der fehler? Ich sehe nur einen kasten.",
+"visao",
+"de"
+],
+[
+"Kannst du bitte das icon für „downloads“ anklicken?",
+"visao",
+"de"
+],
+[
+"Lueg mal aufm bildschirm, unter dem vorzeichen „„“ was für ein text steht?",
+"visao",
+"de"
+],
+[
+"Könntest du das seitenende sehen und berichten was es enthält?",
+"visao",
+"de"
+],
+[
+"Pra me ajudar com um script Python pra processar um CSV? Não tá rodando certo.",
+"codigo",
+"pt_BR"
+],
+[
+"Vou te passar o código aqui. Dá uma olhada e me diz o que tá bugando.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse regex tá pegando mais dados do que deveria. Alguma dica?",
+"codigo",
+"pt_BR"
+],
+[
+"Me explica como faço um loop em Python que só soma par.",
+"codigo",
+"pt_BR"
+],
+[
+"Me passa um exemplo de query SQL pra selecionar nomes que começam com 'A'.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse trecho de JS tá dando erro de sintaxe. Dá pra corrigir?",
+"codigo",
+"pt_BR"
+],
+[
+"Como eu crio uma API simples em Python/Flask pra salvar algo em um banco?",
+"codigo",
+"pt_BR"
+],
+[
+"Meu script de planilha tá travando na função de busca. Onde tá o erro?",
+"codigo",
+"pt_BR"
+],
+[
+"Não sei fazer de conta que o valor é nulo. Me ajuda com o pandas?",
+"codigo",
+"pt_BR"
+],
+[
+"Esse trecho de código pra converter JSON para objeto não funciona aqui.",
+"codigo",
+"pt_BR"
+],
+[
+"Preciso de um script pra iterar sobre uns arquivos e renomear com data.",
+"codigo",
+"pt_BR"
+],
+[
+"Me diz qual a melhor biblioteca pra lidar com datas em Python.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse comando de terminal pra listar arquivos por data tá errado?",
+"codigo",
+"pt_BR"
+],
+[
+"Preciso de ajuda pra debugar esse bloco de código. Ele deve parar aqui.",
+"codigo",
+"pt_BR"
+],
+[
+"Qual a diferença entre `let` e `const` em JavaScript?",
+"codigo",
+"pt_BR"
+],
+[
+"Me mostra como abrir o terminal e instalar uma dependência via pip.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse regex pra validar e-mail tá falhando em alguns casos. Me corrige.",
+"codigo",
+"pt_BR"
+],
+[
+"Devo usar transação ou commit pra salvar esses dados em massa?",
+"codigo",
+"pt_BR"
+],
+[
+"Me ajuda a criar um *hook* no GitHub Actions pra testar a cada push.",
+"codigo",
+"pt_BR"
+],
+[
+"Não entendi essa parte de *scope* aqui. Pode me explicar com exemplo?",
+"codigo",
+"pt_BR"
+],
+[
+"Esse SQL tá buscando tudo, mas eu só quero o máximo de 5 registros.",
+"codigo",
+"pt_BR"
+],
+[
+"Preciso de um exemplo de *caching* em uma API simples.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse código tá aberto pra modificar, mas não sei a lógica. Dá uma explicação?",
+"codigo",
+"pt_BR"
+],
+[
+"Onde tá o erro aqui? Ele deveria calcular a média ponderada.",
+"codigo",
+"pt_BR"
+],
+[
+"Me passa a sintaxe de uma chamada assíncrona em Python, de preferência com `asyncio`.",
+"codigo",
+"pt_BR"
+],
+[
+"Preciso de ajuda pra trocar esse trecho de loop for por uma list comprehension.",
+"codigo",
+"pt_BR"
+],
+[
+"Não consigo abrir a biblioteca de ambiente virtual. Qual o comando certo?",
+"codigo",
+"pt_BR"
+],
+[
+"Me explica por que esse bloco está gerando um `KeyError`.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse código tá chamando a API de merda de novo. Precisa de tratamento de erro.",
+"codigo",
+"pt_BR"
+],
+[
+"Me ajuda a escrever um *seletor CSS* que pega o botão principal?",
+"codigo",
+"pt_BR"
+],
+[
+"Qual a melhor prática pra conectar e fechar a conexão com o banco?",
+"codigo",
+"pt_BR"
+],
+[
+"Esse `try/except` tá pegando qualquer coisa, inclusive a mensagem de erro.",
+"codigo",
+"pt_BR"
+],
+[
+"Me passa um exemplo de *boilerplate* pra *setup* de testes unitários.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse script tá com erro de *indentação* (Python). Dá pra corrigir?",
+"codigo",
+"pt_BR"
+],
+[
+"Preciso de ajuda pra entender esse *pattern* de design que tem aqui.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse trecho de JavaScript tá deixando de fora os valores nulos. Como filtro?",
+"codigo",
+"pt_BR"
+],
+[
+"Devo usar `psycopg2` ou `SQLAlchemy` para conectar? O que é melhor?",
+"codigo",
+"pt_BR"
+],
+[
+"Esse `SELECT DISTINCT` tá me dando resultados errados. Posso usar `GROUP BY`?",
+"codigo",
+"pt_BR"
+],
+[
+"Como eu faço um *wrapper* pra medir o tempo de execução de uma função em Python?",
+"codigo",
+"pt_BR"
+],
+[
+"Me explica o que é *monkey patching* com um exemplo simples.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse trecho de código está de alguma forma vazando memória?",
+"codigo",
+"pt_BR"
+],
+[
+"Não sei qual biblioteca de *web scraping* usar, de preferência algo simples.",
+"codigo",
+"pt_BR"
+],
+[
+"Me mostra como passar argumentos de linha de comando para um script Python.",
+"codigo",
+"pt_BR"
+],
+[
+"Qual a melhor forma de *versionar* e *testar* essa biblioteca localmente?",
+"codigo",
+"pt_BR"
+],
+[
+"Esse código só imprime o valor, mas preciso formatar com duas casas decimais.",
+"codigo",
+"pt_BR"
+],
+[
+"Me passa um exemplo de *decorator* simples em Python que mede o tempo.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse SQL tá retornando *timestamps* e eu só quero a data.",
+"codigo",
+"pt_BR"
+],
+[
+"Onde o problema? O loop tá quebrando antes de chegar ao final.",
+"codigo",
+"pt_BR"
+],
+[
+"Me explica a diferença entre `list` e `tuple` em Python de novo.",
+"codigo",
+"pt_BR"
+],
+[
+"Esse código tá chamando a API de merda e sem tratamento. Dá pra melhorar?",
+"codigo",
+"pt_BR"
+],
+[
+"Me ajuda a fazer um *mock* de uma chamada HTTP pra testes unitários.",
+"codigo",
+"pt_BR"
+],
+[
+"Não sei a sintaxe exata pra fazer um *select count distinct* em SQL.",
+"codigo",
+"pt_BR"
+],
+[
+"Qual a melhor forma de lidar com *ambiente* e segredos em um container Docker?",
+"codigo",
+"pt_BR"
+],
+[
+"Esse *array* tá sendo lido como *string*. Dá pra converter pra inteiro?",
+"codigo",
+"pt_BR"
+],
+[
+"Esse bloco de código está errado, o `if` deve ser `elif`.",
+"codigo",
+"pt_BR"
+],
+[
+"Como eu faço uma *query* que exiba a data *máxima* para cada grupo?",
+"codigo",
+"pt_BR"
+],
+[
+"Me diz qual biblioteca é boa pra fazer *parsing* de CSV de forma robusta.",
+"codigo",
+"pt_BR"
+],
+[
+"Preciso de ajuda pra trocar um *for* for an *range* por algo mais pythônico.",
+"codigo",
+"pt_BR"
+],
+[
+"Need to write a python script that reads a csv file and calculates the average. Help me with the code please?",
+"codigo",
+"en"
+],
+[
+"Could you explain what a generator function does in python and provide an example?",
+"codigo",
+"en"
+],
+[
+"I'm stuck on this regex: it needs to match an email but doesn't seem to be capturing the whole thing.",
+"codigo",
+"en"
+],
+[
+"Can you show me how to connect to a postgres db from python using psycopg2? I can't get past the connection stage.",
+"codigo",
+"en"
+],
+[
+"Write a simple javascript function that reverses a string and ignore the case.",
+"codigo",
+"en"
+],
+[
+"My script keeps throwing a KeyError on the dict access. I used try-except and it still crashes. What could be the problem?",
+"codigo",
+"en"
+],
+[
+"I need a SQL query to select all users who registered in the last 30 days and order by name ascending.",
+"codigo",
+"en"
+],
+[
+"Can you convert this regex to look for phone numbers with optional hyphens? e.g., 555-123-4567 or 5551234567",
+"codigo",
+"en"
+],
+[
+"write a for loop that prints the fibonacci sequence up to n, starting with 1 and 1.",
+"codigo",
+"en"
+],
+[
+"How do i correctly handle asynchronous calls in python? I'm mixing await with regular calls and it fails half the time.",
+"codigo",
+"en"
+],
+[
+"Need a class for simple rate limiting based on IP address and a time window. Any library i should use?",
+"codigo",
+"en"
+],
+[
+"explain the difference between an inner join and a left join with a simple query example.",
+"codigo",
+"en"
+],
+[
+"I'm trying to parse a json string in python and it gives a json.decoder.JSONDecodeError. My string looks correct.",
+"codigo",
+"en"
+],
+[
+"Can you write a simple bash script that zipping a folder named 'build' into build.zip?",
+"codigo",
+"en"
+],
+[
+"need to refactor this nested if-else chain into a dictionary lookup or switch statement. it's unreadable now.",
+"codigo",
+"en"
+],
+[
+"i'm getting a segmentation fault in c++, but only sometimes. any debugging tips for race conditions?",
+"codigo",
+"en"
+],
+[
+"show me how to make a client for google sheets api using the python google-api-python-client.",
+"codigo",
+"en"
+],
+[
+"i've got a list of dictionaries and i want to group them by a certain key, say 'department'. how to do that in python?",
+"codigo",
+"en"
+],
+[
+"write a jquery snippet to hide an element with class 'loader' when an ajax call finishes successfully.",
+"codigo",
+"en"
+],
+[
+"i want to generate a unique slug from a given title string, removing special chars and replacing spaces with hyphens.",
+"codigo",
+"en"
+],
+[
+"python requests is timing out when calling an external api. where should i set the timeout value?",
+"codigo",
+"en"
+],
+[
+"I need a regular expression to validate an alphanumeric password of at least 8 characters with a capital and a number.",
+"codigo",
+"en"
+],
+[
+"SQL query to count distinct emails from a table called 'users' and return the result with a label.",
+"codigo",
+"en"
+],
+[
+"Can you help me debug this function? it's supposed to sum a list, but it only adds the first two elements.",
+"codigo",
+"en"
+],
+[
+"i'm using typescript and need a type definition for a shape that is a string or a number. how do i write that?",
+"codigo",
+"en"
+],
+[
+"write a basic express route that handles a GET request to /users/:id and returns a json object with the user's data.",
+"codigo",
+"en"
+],
+[
+"Can you show me how to use the optional chaining operator in typescript? i keep forgetting when i can use it.",
+"codigo",
+"en"
+],
+[
+"I have a function that calls an api and sometimes fails. how do i wrap it in a try-except block correctly and handle the HTTP status code?",
+"codigo",
+"en"
+],
+[
+"write a simple python class called calculator with add, subtract, multiply, and divide methods.",
+"codigo",
+"en"
+],
+[
+"need a sql query to update the 'status' column to 'inactive' for all users whose last login date is older than 90 days.",
+"codigo",
+"en"
+],
+[
+"Can you explain the concept of a closure in javascript and provide a practical example?",
+"codigo",
+"en"
+],
+[
+"i'm dealing with nulls a lot in python and i keep getting an AttributeError. how can i check if a variable is null safely?",
+"codigo",
+"en"
+],
+[
+"write a python script that reads a file line by line, filters out empty lines, and writes the result to a new file.",
+"codigo",
+"en"
+],
+[
+"How to split a string by multiple delimiters like comma, semicolon, and space?",
+"codigo",
+"en"
+],
+[
+"Need a regex that matches a standard US phone number format: (555) 555-1234.",
+"codigo",
+"en"
+],
+[
+"help me with this for loop; it's supposed to go from 0 to 10 but stops at 2.",
+"codigo",
+"en"
+],
+[
+"i need to connect to a redis instance from python and increment a key 'counter' atomically.",
+"codigo",
+"en"
+],
+[
+"write a function that takes a list of integers and returns a dictionary mapping each integer to its square.",
+"codigo",
+"en"
+],
+[
+"can you write a simple unit test for a python function called 'add' using unittest?",
+"codigo",
+"en"
+],
+[
+"i'm stuck on multiprocessing in python. what are the differences between process, inter-process communication, and a queue?",
+"codigo",
+"en"
+],
+[
+"need a query to group by the first letter of the last name and count the number of employees in that group.",
+"codigo",
+"en"
+],
+[
+"write a simple jquery selector that finds all inputs with the name attribute 'email'.",
+"codigo",
+"en"
+],
+[
+"typescript class structure for handling multiple form inputs and validating their type before submission.",
+"codigo",
+"en"
+],
+[
+"show me the syntax for type-guarding in typescript: isInteger or isArray.",
+"codigo",
+"en"
+],
+[
+"Can you demonstrate how to use promises with async/await in vanilla javascript for fetch calls?",
+"codigo",
+"en"
+],
+[
+"I want to create a reusable config module in typescript that loads environment variables and provides typed constants.",
+"codigo",
+"en"
+],
+[
+"write a script that uses the built-in 'os' module to check if the current directory is a network mount or a local drive.",
+"codigo",
+"en"
+],
+[
+"help me fix this lambda function: it's supposed to multiply the elements but only squares them.",
+"codigo",
+"en"
+],
+[
+"write a simple express route that accepts a POST request with json data and returns 201.",
+"codigo",
+"en"
+],
+[
+"How do I read a file in python with a guaranteed close even if an exception occurs?",
+"codigo",
+"en"
+],
+[
+"can you give me a list of common python exceptions related to file handling and what they mean?",
+"codigo",
+"en"
+],
+[
+"need a regex to match a date in YYYY-MM-DD format, allowing hyphens or slashes.",
+"codigo",
+"en"
+],
+[
+"write a simple python class with a __repr__ and __str__ method for better debugging.",
+"codigo",
+"en"
+],
+[
+"what's the best way to pass configuration from environment variables into a typed settings object in typescript?",
+"codigo",
+"en"
+],
+[
+"how to correctly use Optional<T> and ? for properties in typescript without losing type safety?",
+"codigo",
+"en"
+],
+[
+"// show me the correct way to call this with async/await",
+"codigo",
+"en"
+],
+[
+"# i keep getting an IndexError here, want to know why?",
+"codigo",
+"en"
+],
+[
+"// needs type checking for 'user.email' being a string",
+"codigo",
+"en"
+],
+[
+"¿podrías explicarme en pocas palabras qué hace el script de Python que me pasaste?",
+"codigo",
+"es"
+],
+[
+"Je galère avec ce script python, tu peux regarder et dire ce qui plante ?",
+"codigo",
+"fr"
+],
+[
+"Tu peux me montrer comment faire une requête sql qui compte les noms sans doublon ?",
+"codigo",
+"fr"
+],
+[
+"Ça me bloque sur la regex, il faut qu'elle attrape des emails en français, tu vois ?",
+"codigo",
+"fr"
+],
+[
+"Comment j'convertis ce code java en python ?",
+"codigo",
+"fr"
+],
+[
+"Python, comment je fais pour lire le contenu d'un fichier et afficher les dernières lignes ?",
+"codigo",
+"fr"
+],
+[
+"J'ai ce bloc de code en javascript, tu peux m'expliquer ligne par ligne ce qu'il fait ?",
+"codigo",
+"fr"
+],
+[
+"Ça ne marche pas, la boucle tourne deux fois de trop. Tu vois d'où vient l'erreur ?",
+"codigo",
+"fr"
+],
+[
+"Je veux récupérer tous les posts dont le like > 10, en utilisant l'api facebook.",
+"codigo",
+"fr"
+],
+[
+"Peux-tu me générer une fonction en python qui calcule la factorielle d'un entier ?",
+"codigo",
+"fr"
+],
+[
+"Ce select, ça retourne des valeurs null là où il ne devrait pas. Peux-tu vérifier ?",
+"codigo",
+"fr"
+],
+[
+"Je dois écrire une fonction en py qui filtre une liste de dictionnaires selon une clé et une valeur.",
+"codigo",
+"fr"
+],
+[
+"SQL : comment faire un join sur deux tables sans connaître les clés ?",
+"codigo",
+"fr"
+],
+[
+"L'api de ce service renvoie du json mais je n'arrive pas à extraire ce champ précis, comment faire ?",
+"codigo",
+"fr"
+],
+[
+"Il faut écrire une expression régulière qui valide un code postal français et un numéro de téléphone.",
+"codigo",
+"fr"
+],
+[
+"Tu peux simplifier ce passage de code en py pour que ce soit plus pythonique ?",
+"codigo",
+"fr"
+],
+[
+"J'ai ce bout de javascript qui affiche une alerte en boucle, comment l'arrêter ?",
+"codigo",
+"fr"
+],
+[
+"SQL. Combien de `LEFT JOIN` puis `INNER JOIN` est raisonnable ?",
+"codigo",
+"fr"
+],
+[
+"Est-ce que cette fonction de typescript gère bien le cas où la liste est vide ?",
+"codigo",
+"fr"
+],
+[
+"Tu peux me montrer un exemple de `try...except` en python pour gérer une erreur de fichier ?",
+"codigo",
+"fr"
+],
+[
+"Rappelez-moi comment on calcule la distance eucldéenne entre deux points en py.",
+"codigo",
+"fr"
+],
+[
+"Ich muss hier ein kleines script schreiben, das alle die teile aus dem text nimmt, was nach dem einpunkt kommt und sie in kleine buchstabe umwandelt. kannst das mal checken?",
+"codigo",
+"de"
+],
+[
+"dein code für die mainlille, die daten aus der api holt, läuft auf irgendeiner eingabe mit einem 404 fehler. könntest du mal sehen, was da schiefgeht?",
+"codigo",
+"de"
+],
+[
+"habe hier ein regex, das postcodes aus dem text extrahiert. kann es auch noch e-mails finden?",
+"codigo",
+"de"
+],
+[
+"wie krieg ich in python den wert aus der 4. spalte der dataframe?",
+"codigo",
+"de"
+],
+[
+"das sql query für die summe der betraggruppe im letzten quartal funktioniert nicht. was fehlt?",
+"codigo",
+"de"
+],
+[
+"kannst du mir den folgenden javascript code in php umschreiben?",
+"codigo",
+"de"
+],
+[
+"was ist der bessere weg: promise oder async/await? erklärs kurz am besten mit einem kleinem beispiel.",
+"codigo",
+"de"
+],
+[
+"habe hier ein kleines script zu arduino. kann mir sagen, was es macht?",
+"codigo",
+"de"
+],
+[
+"wollte grad wissen, wie ich eine verilog funktion importiere, ist das in verilog in general so?",
+"codigo",
+"de"
+],
+[
+"kannst du mir vor mal erklären, was hier genau mit der closure passiert?",
+"codigo",
+"de"
+],
+[
+"die variable x soll an den werten 1, 2, 3, 4, 5 iterieren. der aktuelle loop geht nur bis 4.",
+"codigo",
+"de"
+],
+[
+"was ist der untermann für `GROUP BY` in sql?",
+"codigo",
+"de"
+],
+[
+"hier ein klein problem: das script muss immer dann failen, wenn die ladezeit über 2 sekunden liegt. wie füge ich das ein?",
+"codigo",
+"de"
+],
+[
+"habe mal einen api-call, der immer fehlschlägt. die response kommt als 503 service unavailable, obwohl der endpoint offen sein sollte. wie debaue ich das richtig ab?",
+"codigo",
+"de"
+],
+[
+"kannst du mir das englische json in deutsches format übersetzen?",
+"codigo",
+"de"
+],
+[
+"habe diesen regex zum extrahieren von dates: `(\\d{4})-(\\d{2})-(\\d{2})` , aber er nimmt auch die von dir. wie fix?",
+"codigo",
+"de"
+],
+[
+"was sind die vorteile von docker-compose für kleine anwendungen?",
+"codigo",
+"de"
+],
+[
+"ich hab ein klein problem mit asygnc/await, wo die variable, die ich nach dem await nutzen will, schon aus dem scope raus ist. was tue ich falsch?",
+"codigo",
+"de"
+],
+[
+"könntest du den folgenden regex besser machen: `[a-zA-Z0-9._]+@[a-zA-Z0-9._]+\\.[a-zA-Z]{2}` ? er nehmte auch mehr.",
+"codigo",
+"de"
+],
+[
+"mir fehlt hier die initialisierung in c++. ich hab das objekt `c` erstellt, aber die member-variablen bleiben unberührt. wie korrigiere ich das?",
+"codigo",
+"de"
+],
+[
+"Esse comando de listar processos está mostrando o que você realmente quer ver? Me diz qual o comando exato e a distro.",
+"tecnico",
+"pt_BR"
+],
+[
+"u can help with my system config?",
+"tecnico",
+"en"
+],
+[
+"I keep getting a disk write error, what could be wrong?",
+"tecnico",
+"en"
+],
+[
+"My network connection keeps dropping, I need a fix.",
+"tecnico",
+"en"
+],
+[
+"l need to install the latest firefox, where do i get it?",
+"tecnico",
+"en"
+],
+[
+"window open a terminal and show me all installed packages.",
+"tecnico",
+"en"
+],
+[
+"what is the command to restart the bluetooth service?",
+"tecnico",
+"en"
+],
+[
+"i am on macos, how do i check my system uptime?",
+"tecnico",
+"en"
+],
+[
+"the wifi password keeps being forgotten, what is the cause?",
+"tecnico",
+"en"
+],
+[
+"can you tell me how to mount a new usb drive?",
+"tecnico",
+"en"
+],
+[
+"list all running processes and their memory usage.",
+"tecnico",
+"en"
+],
+[
+"windows 11 can't find the wifi network.",
+"tecnico",
+"en"
+],
+[
+"my touchpad isnt working after the update, help.",
+"tecnico",
+"en"
+],
+[
+"how do i adjust the brightness settings on a laptop?",
+"tecnico",
+"en"
+],
+[
+"l want to see the contents of the hidden .config folder.",
+"tecnico",
+"en"
+],
+[
+"list all directories in the current path.",
+"tecnico",
+"en"
+],
+[
+"what are the system requirements for flutter?",
+"tecnico",
+"en"
+],
+[
+"how to make a folder recursive and visible?",
+"tecnico",
+"en"
+],
+[
+"terminal is showing an unknown command: 'ps'.",
+"tecnico",
+"en"
+],
+[
+"list all mounted filesystems, please.",
+"tecnico",
+"en"
+],
+[
+"which windows service manages network adapters?",
+"tecnico",
+"en"
+],
+[
+"need to check if the system clock is accurate.",
+"tecnico",
+"en"
+],
+[
+"macbook thinks i cant connect to wifi, reset?",
+"tecnico",
+"en"
+],
+[
+"l need to enable sudo password expiration.",
+"tecnico",
+"en"
+],
+[
+"how do i view the last 5 lines of a file?",
+"tecnico",
+"en"
+],
+[
+"i cant list files in that folder, permission issue?",
+"tecnico",
+"en"
+],
+[
+"what is the best package manager for python 3?",
+"tecnico",
+"en"
+],
+[
+"show me all active connections on port 80.",
+"tecnico",
+"en"
+],
+[
+"terminal is full of garbage, how to clear it?",
+"tecnico",
+"en"
+],
+[
+"mac is only showing a little bit of the screen, scale?",
+"tecnico",
+"en"
+],
+[
+"help, I cant see the bottom right corner of the display.",
+"tecnico",
+"en"
+],
+[
+"list all installed drivers for the sound card.",
+"tecnico",
+"en"
+],
+[
+"what was the last service to fail, show me logs.",
+"tecnico",
+"en"
+],
+[
+"i need to check if the partition is full.",
+"tecnico",
+"en"
+],
+[
+"terminal needs to know the password, i dont want it to show.",
+"tecnico",
+"en"
+],
+[
+"how to find the root directory from here?",
+"tecnico",
+"en"
+],
+[
+"help, my cursor is flashing but nothing happens.",
+"tecnico",
+"en"
+],
+[
+"what command shows all env vars?",
+"tecnico",
+"en"
+],
+[
+"list installed apt packages related to networking.",
+"tecnico",
+"en"
+],
+[
+"macos terminal is showing a popup that i know about.",
+"tecnico",
+"en"
+],
+[
+"tell me how to check if a file exists and isn't empty.",
+"tecnico",
+"en"
+],
+[
+"show me the network interface list and their IPs.",
+"tecnico",
+"en"
+],
+[
+"this terminal window keeps closing, what is wrong?",
+"tecnico",
+"en"
+],
+[
+"i need to create a symlink named 'logs' to '/var/log'.",
+"tecnico",
+"en"
+],
+[
+"list all user groups on this machine.",
+"tecnico",
+"en"
+],
+[
+"how to check the time zone from the terminal?",
+"tecnico",
+"en"
+],
+[
+"l need to update all installed packages.",
+"tecnico",
+"en"
+],
+[
+"show the contents of /etc/hosts and explain it.",
+"tecnico",
+"en"
+],
+[
+"what are the command arguments for ls?",
+"tecnico",
+"en"
+],
+[
+"list all files in /tmp and the owner.",
+"tecnico",
+"en"
+],
+[
+"the network monitor shows 100% usage but nothing transfers.",
+"tecnico",
+"en"
+],
+[
+"help with power settings, make the laptop sleep after 10 mins.",
+"tecnico",
+"en"
+],
+[
+"list all mounted disks and their sizes.",
+"tecnico",
+"en"
+],
+[
+"i typed a command that failed, show me what i might have done wrong.",
+"tecnico",
+"en"
+],
+[
+"what is the standard folder for app data on windows?",
+"tecnico",
+"en"
+],
+[
+"list the top 5 cpu consuming processes.",
+"tecnico",
+"en"
+],
+[
+"tell me how to check if a service is running and which one it is.",
+"tecnico",
+"en"
+],
+[
+"i need to know which port is being used by my web server.",
+"tecnico",
+"en"
+],
+[
+"macos can't see the external monitor, fix it.",
+"tecnico",
+"en"
+],
+[
+"list all systemd units that are disabled.",
+"tecnico",
+"en"
+],
+[
+"help list the contents of a directory recursively.",
+"tecnico",
+"en"
+],
+[
+"what is the command to switch directory by absolute path?",
+"tecnico",
+"en"
+],
+[
+"i can't ping google, is the wifi really working?",
+"tecnico",
+"en"
+],
+[
+"show me the memory usage for each program.",
+"tecnico",
+"en"
+],
+[
+"list all system time and date settings.",
+"tecnico",
+"en"
+],
+[
+"Oye, ¿me puedes decir por qué el wifi de repente anda lento? Es el laptop.",
+"tecnico",
+"es"
+],
+[
+"Necesito pasar la contraseña de la red, ¿por dónde hago eso?",
+"tecnico",
+"es"
+],
+[
+"No entra el mouse. ¿me puedes ayudar a revisar la configuración de bluetooth?",
+"tecnico",
+"es"
+],
+[
+"Me bajó el sistema operativo y no sé cómo volver a conectar el disco externo.",
+"tecnico",
+"es"
+],
+[
+"¿Qué comando uso en terminal para ver los servicios que están corriendo ahora mismo?",
+"tecnico",
+"es"
+],
+[
+"Creo que hay un error con el driver de la tarjeta gráfica, ¿cómo lo reviso?",
+"tecnico",
+"es"
+],
+[
+"Me pide la contraseña otra vez y yo sé que no la cambié, ayuda.",
+"tecnico",
+"es"
+],
+[
+"El programa de notas se cierra solo, me toca guardar todo de nuevo, ¿qué hago?",
+"tecnico",
+"es"
+],
+[
+"Busco que no me deja abrir las fotos, del disco D: ¿hay algún permiso que falte?",
+"tecnico",
+"es"
+],
+[
+"Tengo que hacer un backup de la carpeta de descargas, ¿qué script o comando usar en linux?",
+"tecnico",
+"es"
+],
+[
+"¿Alguna idea de por qué no me está cargando la barra de tareas en windows 10?",
+"tecnico",
+"es"
+],
+[
+"Se apagó y en la pantalla ponía \"Error de hardware\", ¿me toca reiniciar o es algo más?",
+"tecnico",
+"es"
+],
+[
+"Quiero desinstalar la app de notas, pero no encuentro el botón, ¿por dónde empiezo?",
+"tecnico",
+"es"
+],
+[
+"Oye, me está faltando la letra G en el teclado, ¿es de configuración o del hardware?",
+"tecnico",
+"es"
+],
+[
+"Necesito que se reinicie el servicio de red, ¿cuál es el comando exacto?",
+"tecnico",
+"es"
+],
+[
+"La particion está de solo lectura, me sale en el gestor de discos, ¿cómo la cambio?",
+"tecnico",
+"es"
+],
+[
+"Me está dando error de acceso a la memoria, ¿puede ser el programa o la memoria física?",
+"tecnico",
+"es"
+],
+[
+"Tengo que crear un usuario nuevo para que otro cuente con acceso, ¿me dices los pasos?",
+"tecnico",
+"es"
+],
+[
+"Me sale que el paquete librería no está instalado y yo lo necesito de urgente.",
+"tecnico",
+"es"
+],
+[
+"¿Hay que actualizar los permisos del directorio de inicio o es algo más sencillo?",
+"tecnico",
+"es"
+],
+[
+"j'ai un écho de l'heure, j'ai redémarre le PC et ça continue. tu vois quoi ?",
+"tecnico",
+"fr"
+],
+[
+"ce programme plante sans arrêt depuis 2h. l'aide pour le debug ?",
+"tecnico",
+"fr"
+],
+[
+"comment j'active wifi sur la tablette, en anglais ça s'appelle ?",
+"tecnico",
+"fr"
+],
+[
+"le gestionnaire de périphériques affiche un point d'exclamation pour la carte son. y a un driver ?",
+"tecnico",
+"fr"
+],
+[
+"mon disque C: est plein mais je ne vois pas ce qui prend de la place. aide pour voir l'usage réel",
+"tecnico",
+"fr"
+],
+[
+"un paquet manque en dépendance pour faire tourner ce script python. comment installer ça proprement ?",
+"tecnico",
+"fr"
+],
+[
+"je ne vois plus mes fichiers de ce dossier, et je ne suis pas root. comment les retrouver ?",
+"tecnico",
+"fr"
+],
+[
+"le terminal affiche une erreur de permission pour le service ssh. que dois-je vérifier ?",
+"tecnico",
+"fr"
+],
+[
+"j'ai ajouté un nouveau disque dur en usb et il n'apparaît pas dans la gestion des disques. comment ucf ?",
+"tecnico",
+"fr"
+],
+[
+"ce répertoire n'existe pas même si j'ai fait `mkdir`. l'espace est vide.",
+"tecnico",
+"fr"
+],
+[
+"il faut configurer cette variable d'environnement pour que le client puisse parler au serveur.",
+"tecnico",
+"fr"
+],
+[
+"comment récupérer le dernier mot tapé dans le terminal sans `history` ?",
+"tecnico",
+"fr"
+],
+[
+"je ne me connecte pas au wifi du bureau. le mot de passe est bon. le routeur est ok.",
+"tecnico",
+"fr"
+],
+[
+"pour l'mac, le gestionnaire de profil, il faut changer quoi pour les paramètres de l'heure ?",
+"tecnico",
+"fr"
+],
+[
+"j'ai besoin d'une commande bash pour lister les processus qui consomment le plus de cpu et de ram.",
+"tecnico",
+"fr"
+],
+[
+"mon PC fait un bruit bizarre, genre un disque qui va mal. dois-je redémarrer ou vérifier les logs ?",
+"tecnico",
+"fr"
+],
+[
+"dans le terminal, je ne comprends pas ce qu'est le pseudo-terminal. peux m'expliquer ça simplement ?",
+"tecnico",
+"fr"
+],
+[
+"je ne vois pas le menu \"préférences\" pour les paramètres de l'affichage, où est-ce que ça se cache ?",
+"tecnico",
+"fr"
+],
+[
+"le compte de l'utilisateur n'a plus les droits en écriture sur le dossier de son home. comment debloquer ?",
+"tecnico",
+"fr"
+],
+[
+"le plug-in de gestion de la batterie ne fonctionne pas depuis la mise à jour, il affiche 100%. que faire ?",
+"tecnico",
+"fr"
+],
+[
+"Krieg Linux dazu, dass ich die neue soundkarte sehe?",
+"tecnico",
+"de"
+],
+[
+"Mein wifi lädt nicht, neustartte schon zweimal.",
+"tecnico",
+"de"
+],
+[
+"macos verliert die forbindelse ständig, hilf mir mal.",
+"tecnico",
+"de"
+],
+[
+"windows update bricht alles kaputt, was mache ich?",
+"tecnico",
+"de"
+],
+[
+"wie kriege ich die folge wieder, ich hatte gerade den passwort-befehl offen.",
+"tecnico",
+"de"
+],
+[
+"was ist der pfad zu homeserice/config?",
+"tecnico",
+"de"
+],
+[
+"mein grafikkartentreiber ist veraltet, wie teste ich das?",
+"tecnico",
+"de"
+],
+[
+"könntest du mir den befehl zum erstellen eines neuen cd-ordflders geben?",
+"tecnico",
+"de"
+],
+[
+"die kugel läuft nicht, ist es ein hdd oder ein ssd?",
+"tecnico",
+"de"
+],
+[
+"wie ändere ich die zeitzone über die kommandoshell?",
+"tecnico",
+"de"
+],
+[
+"ich kann meine usb-stick nicht sehen, wie finde ich den?",
+"tecnico",
+"de"
+],
+[
+"geht bei mir kein netzwerk, auf dem mac und win. was ist die ursache?",
+"tecnico",
+"de"
+],
+[
+"zeigt mein terminal eine fehlermeldung, wie muss ich die auslesen?",
+"tecnico",
+"de"
+],
+[
+"finde nicht, wie kriege ich alle laufenden dienste mit ps?",
+"tecnico",
+"de"
+],
+[
+"mein windows 10 geht nicht mehr, der systemprozessor stürzt.",
+"tecnico",
+"de"
+],
+[
+"macosc ssh nicht, was ist die ips adrresse?",
+"tecnico",
+"de"
+],
+[
+"muss ich bluetooth neu verbinden, die maus geht nicht, auch nicht im menü.",
+"tecnico",
+"de"
+],
+[
+"wie erhöhe ich die speicherlimit fuer ein bestimmtes programm?",
+"tecnico",
+"de"
+],
+[
+"ist es ein problem mit dem kerneloader, oder nur mit der umgebungs-variablen?",
+"tecnico",
+"de"
+],
+[
+"ich suche nach der einstellunsg fuer den diskomount in gnome.",
+"tecnico",
+"de"
+],
+[
+"abrir o app de notas e salvar o que eu escrevi aqui.",
+"acao",
+"pt_BR"
+],
+[
+"me lembra de comprar pão e leite e cria a lista no app de compras, tá?",
+"acao",
+"pt_BR"
+],
+[
+"abre o bloco de notas e coloca “lembrar de ligar para o joão” em negrito.",
+"acao",
+"pt_BR"
+],
+[
+"fecha o whatsapp e desliga a notificação de mensagens.",
+"acao",
+"pt_BR"
+],
+[
+"ajusta o brilho pra 50% e o modo escuro no site do facebook, tá?",
+"acao",
+"pt_BR"
+],
+[
+"abre a pasta “trabalho” no explorer e me mostra os arquivos de fotos.",
+"acao",
+"pt_BR"
+],
+[
+"ponte o som pra 3 e desativa o filtro de microfone, por favor.",
+"acao",
+"pt_BR"
+],
+[
+"me expõe a pasta “download” e me deleta tudo que é temporário.",
+"acao",
+"pt_BR"
+],
+[
+"abre o calendário e marca uma reunião com a joana para segunda às 14h.",
+"acao",
+"pt_BR"
+],
+[
+"fecha todos os programas abertos e bloqueia o computador por 5 minutos.",
+"acao",
+"pt_BR"
+],
+[
+"abrir o google docs e criar um novo arquivo chamado “notas de hoje”.",
+"acao",
+"pt_BR"
+],
+[
+"me mostra a pasta de documentos do meu nome, dentro de “trabalho”.",
+"acao",
+"pt_BR"
+],
+[
+"desbloqueia a tela e abre o app do mail, o de trabalho.",
+"acao",
+"pt_BR"
+],
+[
+"toca o play de música no spotify e abre a playlist “muscar” (sem nome).",
+"acao",
+"pt_BR"
+],
+[
+"me diz que arquivos eu criei hoje e apaga os lembretes repetidos.",
+"acao",
+"pt_BR"
+],
+[
+"fecha o programa de notas e salva o que eu escrevi de novo, certo?",
+"acao",
+"pt_BR"
+],
+[
+"abre o explorador e me mostra todos os arquivos de texto que tenho.",
+"acao",
+"pt_BR"
+],
+[
+"abrir o painel de controle e mudar o plano de fundo pra paisagem.",
+"acao",
+"pt_BR"
+],
+[
+"me mostra todos os arquivos da pasta “download” e deleta os .txt.",
+"acao",
+"pt_BR"
+],
+[
+"por favor fecha o whatsapp e me avisa que foi feito.",
+"acao",
+"pt_BR"
+],
+[
+"dá para abrir o painel de notas e colocar “comprar vacina” com lembrete?",
+"acao",
+"pt_BR"
+],
+[
+"passa o volume pro 2 e fecha o app de música que tá aberto agora.",
+"acao",
+"pt_BR"
+],
+[
+"abre o calendário e mostra os eventos da próxima semana, em ordem.",
+"acao",
+"pt_BR"
+],
+[
+"me mostra os arquivos que eu baixei hoje, na pasta de downloads.",
+"acao",
+"pt_BR"
+],
+[
+"fecha o whatsapp e o explorador e me avisa que liberou memória.",
+"acao",
+"pt_BR"
+],
+[
+"abrir a galeria e me mostra as fotos de hoje, em ordem crescente.",
+"acao",
+"pt_BR"
+],
+[
+"me mostra a pasta de documentos e copia tudo para a nuvem, tá?",
+"acao",
+"pt_BR"
+],
+[
+"abre a aba do navegador e busca “melhor horário pra me encontrar”, ok?",
+"acao",
+"pt_BR"
+],
+[
+"desbloqueia e abre o app de música, toca a última playlist.",
+"acao",
+"pt_BR"
+],
+[
+"me mostra a pasta “arquivos para apagar” e deleta tudo que for .mp3.",
+"acao",
+"pt_BR"
+],
+[
+"abre o explorador e me mostra a pasta com fotos de 2023.",
+"acao",
+"pt_BR"
+],
+[
+"me coloca em modo escuro e fecha o painel de controle, por favor.",
+"acao",
+"pt_BR"
+],
+[
+"abrir o app de mensagens e me mostra os grupos que eu criei.",
+"acao",
+"pt_BR"
+],
+[
+"abre o editor de fotos e me mostra as imagens que tenho na pasta “fotos”.",
+"acao",
+"pt_BR"
+],
+[
+"me mostra o sistema de arquivos e apaga tudo que é temporário.",
+"acao",
+"pt_BR"
+],
+[
+"abre o app de planilha e me mostra os dados da aba “dezembro”.",
+"acao",
+"pt_BR"
+],
+[
+"fecha o navegador e me mostra o uso de memória depois.",
+"acao",
+"pt_BR"
+],
+[
+"abre o app do calendário e me exibe os dias livres na próxima semana.",
+"acao",
+"pt_BR"
+],
+[
+"me mostra a pasta de notas e abre o arquivo chamado “ideias”.",
+"acao",
+"pt_BR"
+],
+[
+"abrir o explorador e criar uma pasta chamada “fotos 2024” na raiz.",
+"acao",
+"pt_BR"
+],
+[
+"me lembra de comprar pão e leite e cria a lista no app de compras, tá?",
+"acao",
+"pt_BR"
+],
+[
+"fecha o programa de notas e salva o que eu escrevi de novo, certo?",
+"acao",
+"pt_BR"
+],
+[
+"abre o painel de tarefas e me mostra os que estão pendentes, em vermelho.",
+"acao",
+"pt_BR"
+],
+[
+"desbloqueia o pc e me exibe os arquivos da pasta “download” e “notas”.",
+"acao",
+"pt_BR"
+],
+[
+"hey open spotify and turn volume down a bit, pls",
+"acao",
+"en"
+],
+[
+"open the notes app and put my shopping list there",
+"acao",
+"en"
+],
+[
+"can you close discord and check if it saved the message",
+"acao",
+"en"
+],
+[
+"show me folder a and folder b side by side",
+"acao",
+"en"
+],
+[
+"open the notes app and type write the minutes from the last meeting",
+"acao",
+"en"
+],
+[
+"dim the screen a little, it's too bright",
+"acao",
+"en"
+],
+[
+"open spotify and play the first album",
+"acao",
+"en"
+],
+[
+"turn on dark mode for all the apps",
+"acao",
+"en"
+],
+[
+"lock the screen for 5 minutes",
+"acao",
+"en"
+],
+[
+"open the calculator and multiply 12 by 15",
+"acao",
+"en"
+],
+[
+"delete the temp files folder, can you?",
+"acao",
+"en"
+],
+[
+"open files/photos/2023 and show me all the pictures",
+"acao",
+"en"
+],
+[
+"show me all the open tabs in the browser and close the last one",
+"acao",
+"en"
+],
+[
+"open folder downloads and create a subfolder called notes",
+"acao",
+"en"
+],
+[
+"open the word processor and open the document ‘ideas.docx’",
+"acao",
+"en"
+],
+[
+"dim the screen to 30% and turn on dark mode",
+"acao",
+"en"
+],
+[
+"open the calendar and add a meeting at 3 pm today",
+"acao",
+"en"
+],
+[
+"open calculator and show me the sine of pi",
+"acao",
+"en"
+],
+[
+"open the folder called work and show me the latest file",
+"acao",
+"en"
+],
+[
+"can you find the file called agenda in the documents folder and open it",
+"acao",
+"en"
+],
+[
+"open spotify and play some jazz, volume 5",
+"acao",
+"en"
+],
+[
+"open the folder ‘projects’ and list all the documents inside",
+"acao",
+"en"
+],
+[
+"open the calculator and calculate e^2",
+"acao",
+"en"
+],
+[
+"open files/music and play the album that was last opened",
+"acao",
+"en"
+],
+[
+"show me everything open right now and close half of it",
+"acao",
+"en"
+],
+[
+"open the system settings and go to the power management tab",
+"acao",
+"en"
+],
+[
+"open the folder ‘rec’ and delete everything inside it",
+"acao",
+"en"
+],
+[
+"turn off sound and open the file ‘reminder.txt’",
+"acao",
+"en"
+],
+[
+"open spotify and play my workout playlist",
+"acao",
+"en"
+],
+[
+"open notes and remind me to call mom tonight",
+"acao",
+"en"
+],
+[
+"show me the folder where my photos from last weekend are",
+"acao",
+"en"
+],
+[
+"open the app that handles my reminders and open ‘buy groceries’",
+"acao",
+"en"
+],
+[
+"open and close the terminal window three times",
+"acao",
+"en"
+],
+[
+"open spotify and play the playlist named ‘morning vibes’",
+"acao",
+"en"
+],
+[
+"show me the open folders and put them in alphabetical order",
+"acao",
+"en"
+],
+[
+"open settings and change the brightness to 50%",
+"acao",
+"en"
+],
+[
+"open the folder ‘work’ and tell me the size of all the files",
+"acao",
+"en"
+],
+[
+"open spotify and play the album ‘lo-fi beats’",
+"acao",
+"en"
+],
+[
+"dim the screen and lock it for 1 minute",
+"acao",
+"en"
+],
+[
+"open the folder ‘temp’ and list the files newer than today",
+"acao",
+"en"
+],
+[
+"open files/documents and show me ‘ideas.docx’",
+"acao",
+"en"
+],
+[
+"open spotify and play the first song of the album",
+"acao",
+"en"
+],
+[
+"turn the volume down to 2 and open discord",
+"acao",
+"en"
+],
+[
+"open folder downloads and open the latest csv file",
+"acao",
+"en"
+],
+[
+"show me which apps are using the most memory and close the biggest one",
+"acao",
+"en"
+],
+[
+"open notes and write “need to check email”",
+"acao",
+"en"
+],
+[
+"open spotify and play the playlist ‘chill’",
+"acao",
+"en"
+],
+[
+"can you open and close the folder ‘temp’ to refresh it?",
+"acao",
+"en"
+],
+[
+"open the calculator and open the file ‘list.txt’ inside it",
+"acao",
+"en"
+],
+[
+"open folder ‘music’ and sort files by date modified",
+"acao",
+"en"
+],
+[
+"¿Abres el explorador de archivos porfa?",
+"acao",
+"es"
+],
+[
+"Pon modo oscuro y súbeme el brillo un toque.",
+"acao",
+"es"
+],
+[
+"Bajá el volumen y cerrá Discord.",
+"acao",
+"es"
+],
+[
+"¿Puedes guardar esto en la carpeta de documentos?",
+"acao",
+"es"
+],
+[
+"Me urge ver los archivos de la foto del 22.",
+"acao",
+"es"
+],
+[
+"Abrime el calendario y poné la vista de semana.",
+"acao",
+"es"
+],
+[
+"Desbloquéame la compu, se me pasó la contraseña.",
+"acao",
+"es"
+],
+[
+"Borrá el archivo de texto que está en la carpeta temporal.",
+"acao",
+"es"
+],
+[
+"Abrí el gestor de tareas y cerrá todo lo que no use.",
+"acao",
+"es"
+],
+[
+"Cambiale el fondo a gris oscuro, che.",
+"acao",
+"es"
+],
+[
+"Guardame de sesión y cerrá el navegador.",
+"acao",
+"es"
+],
+[
+"¿Podrías crear la carpeta de proyectos 2024?",
+"acao",
+"es"
+],
+[
+"Desenchufame de WiFi y poné el icono de desconectado.",
+"acao",
+"es"
+],
+[
+"Poné el volumen en 3 y el modo de sonido en música.",
+"acao",
+"es"
+],
+[
+"Necesito cerrar todos los procesos que estén abiertos.",
+"acao",
+"es"
+],
+[
+"Me muero de hambre, ¿abría de la de lunch y poné la alarma?",
+"acao",
+"es"
+],
+[
+"Guardá todo y cerrá el editor de código por favor.",
+"acao",
+"es"
+],
+[
+"Poné pantalla en negro y bloqueá la PC por 5 minutos.",
+"acao",
+"es"
+],
+[
+"Abrí Excel y el archivo de ventas de marzo.",
+"acao",
+"es"
+],
+[
+"Voy a dejar la compu, cerrá todo y poné en suspensión.",
+"acao",
+"es"
+],
+[
+"ok ouvre le dossier du projet et mets-moi un rappel dans 15 minutes",
+"acao",
+"fr"
+],
+[
+"rappelle-moi ce que j'avais fait hier",
+"acao",
+"fr"
+],
+[
+"clois l'appli de sms s'il te plaît",
+"acao",
+"fr"
+],
+[
+"cherche le fichier notes.txt dans mes documents",
+"acao",
+"fr"
+],
+[
+"baisse le volume de moitié",
+"acao",
+"fr"
+],
+[
+"faute de frappe pour 'documents'",
+"acao",
+"fr"
+],
+[
+"où est la sauvegarde de mes photos de ce matin",
+"acao",
+"fr"
+],
+[
+"aide-moi à trouver le dossier du dernier mois",
+"acao",
+"fr"
+],
+[
+"des fois ça ne marche pas",
+"acao",
+"fr"
+],
+[
+"le dossier des photos est où?",
+"acao",
+"fr"
+],
+[
+"fais-moi le mode sombre",
+"acao",
+"fr"
+],
+[
+"change l'heure affichée en bas à 13h",
+"acao",
+"fr"
+],
+[
+"il faut fermer l'app de mail en priorité",
+"acao",
+"fr"
+],
+[
+"je dois supprimer ce dossier de photos",
+"acao",
+"fr"
+],
+[
+"aide moi à libérer de la place en supprimant les vieux fichiers",
+"acao",
+"fr"
+],
+[
+"le plan est sauvegardé où?",
+"acao",
+"fr"
+],
+[
+"rappelle-moi ce que je voulais faire",
+"acao",
+"fr"
+],
+[
+"mets une alarme dans 5 minutes",
+"acao",
+"fr"
+],
+[
+"ouvre youtube et joue la playlist \"chill",
+"acao",
+"fr"
+],
+[
+"bidouille les réglages de l'affichage",
+"acao",
+"fr"
+],
+[
+"he öffnet bitte den browser und ich soll die seite google.de aufrufen",
+"acao",
+"de"
+],
+[
+"mach das jetzt bitte",
+"acao",
+"de"
+],
+[
+"dein kalender ist voll? seh ich da etwas frei am nachmittag?",
+"acao",
+"de"
+],
+[
+"mach dark mode an bitte ich sehe kaum was",
+"acao",
+"de"
+],
+[
+"den smart speaker aktivieren und die woche spielen",
+"acao",
+"de"
+],
+[
+"mach hier die ordner namens arbeitsblatte zu",
+"acao",
+"de"
+],
+[
+"ich brauche die datei mit dem thema vorlesen und die ordner namens fotos.de löschen",
+"acao",
+"de"
+],
+[
+"mach das lauter, die musik ist zu leise",
+"acao",
+"de"
+],
+[
+"neustart des komputers bitte ich finde nichts",
+"acao",
+"de"
+],
+[
+"wohnungsnummer 3 und die datei vorlesen",
+"acao",
+"de"
+],
+[
+"kannst du mir zeigen wie ich das dateiordner benennen kann",
+"acao",
+"de"
+],
+[
+"mach die helligkeit etwas runter",
+"acao",
+"de"
+],
+[
+"schließe das programm für excel und die datei damit",
+"acao",
+"de"
+],
+[
+"ich muss den vorleser für die folien einschalten",
+"acao",
+"de"
+],
+[
+"mach das tastaturlicht an ich seh nichts",
+"acao",
+"de"
+],
+[
+"ich habe eine datei namens teil1 ich soll die in den ordner für kunden verschieben",
+"acao",
+"de"
+],
+[
+"ne hörgerät an und spiel die playlister lieder auf",
+"acao",
+"de"
+],
+[
+"bitte schalte das volumen für die nächsten 10 minuten auf 3",
+"acao",
+"de"
+],
+[
+"sag mir die verordnung für datenschutzrechte bitte",
+"acao",
+"de"
+],
+[
+"deaktiviere das tastaturlicht und schließe die datei vor mir",
+"acao",
+"de"
+],
+[
+"me diz o tempo pra hoje aqui em sp, com a previsão de chuva?",
+"busca",
+"pt_BR"
+],
+[
+"abre o google pra ver as notícias de tecnologia de agora",
+"busca",
+"pt_BR"
+],
+[
+"mete o despertador pra tocar amanhã às 8h e me lembra de tomar água",
+"busca",
+"pt_BR"
+],
+[
+"google search pra ver o placar do jogo de ontem do flamengo",
+"busca",
+"pt_BR"
+],
+[
+"qual o preço atual do iphone 15 aqui no site da amazon? me avisa se tá em promoção",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa no google por \"últimas notícias de economia\" e me mostra os três primeiros links",
+"busca",
+"pt_BR"
+],
+[
+"abre o youtube e me procura vídeos de receitas de bolo de laranja",
+"busca",
+"pt_BR"
+],
+[
+"como faço pra ver o relógio do mundo? me mostra o fuso de tokyo e london agora",
+"busca",
+"pt_BR"
+],
+[
+"toca o rádio de notícias? abria alguma coisa boa de esportes",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa no google os horários de funcionamento do shopp, de segunda a sexta",
+"busca",
+"pt_BR"
+],
+[
+"me mostra o cotação do dólar e do real contra o dólar agora",
+"busca",
+"pt_BR"
+],
+[
+"abre o google pra ver quem tá liderando a tabela da nba",
+"busca",
+"pt_BR"
+],
+[
+"busca no google por \"próximos lançamentos de jogos de videogame",
+"busca",
+"pt_BR"
+],
+[
+"google search para ver o clima de hoje em como, estado de sp",
+"busca",
+"pt_BR"
+],
+[
+"abre o youtube e busca \"melhores músicas de 2023",
+"busca",
+"pt_BR"
+],
+[
+"me dá o link do último artigo de tecnologia que saiu no the verge",
+"busca",
+"pt_BR"
+],
+[
+"ajuda a abrir o site do pix pra eu consultar meu saldo?",
+"busca",
+"pt_BR"
+],
+[
+"mostra o resultado do último jogo de basquete que aconteceu",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa no google \"previsão de chuva para o fim de semana",
+"busca",
+"pt_BR"
+],
+[
+"google search notícias de \"crise energética\" com o link da primeira fonte",
+"busca",
+"pt_BR"
+],
+[
+"abrir o spotify e buscar a playlist \"chill vibes",
+"busca",
+"pt_BR"
+],
+[
+"google search de \"preço da gasolina hoje\" em qualquer posto de caixa",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e pesquisar \"tempo em carioca\" pra eu me programar",
+"busca",
+"pt_BR"
+],
+[
+"me mostra na internet os preços dos ingressos para o show da anitta",
+"busca",
+"pt_BR"
+],
+[
+"busca no google por \"notícias recentes de política\" e abre o primeiro artigo",
+"busca",
+"pt_BR"
+],
+[
+"me diz a hora atual de sydney? abria algum relógio de fuso horário na tela?",
+"busca",
+"pt_BR"
+],
+[
+"google search de \"liberdade, rio de janeiro\" com mapa e horários",
+"busca",
+"pt_BR"
+],
+[
+"abre o google e me mostra a cotação do bitcoin agora",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa no google \"próximos filmes de estreia\" e me lista os títulos",
+"busca",
+"pt_BR"
+],
+[
+"abre o youtube e busca \"melhores momentos de futebol\" com filtro de dia",
+"busca",
+"pt_BR"
+],
+[
+"me diz se chove hoje em sp? preciso levar guarda chuva, me avisa com o google",
+"busca",
+"pt_BR"
+],
+[
+"google search \"previsão do tempo\" e abre o mapa com a temperatura de tudo",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e procurar \"últimas notícias de energia\" com data e hora",
+"busca",
+"pt_BR"
+],
+[
+"me mostra o que tá acontecendo no youtube hoje? abria uma busca geral",
+"busca",
+"pt_BR"
+],
+[
+"google search de \"preço do dólar na hora\" e me mostra no gráfico",
+"busca",
+"pt_BR"
+],
+[
+"abre o google e me exibe a previsão do tempo para amanhã com temperatura e chuva",
+"busca",
+"pt_BR"
+],
+[
+"me mostra no google os horários de funcionamento do museu de arte de hoje",
+"busca",
+"pt_BR"
+],
+[
+"pesquisa no google por \"últimas notas de juros\" e me mostra a tabela",
+"busca",
+"pt_BR"
+],
+[
+"abre o google e me avisa o placar de futebol de agora?",
+"busca",
+"pt_BR"
+],
+[
+"me diz o tempo e o que tá acontecendo na internet com google",
+"busca",
+"pt_BR"
+],
+[
+"google search \"dólar hoje cotação\" e abre no navegador",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e me mostra a previsão do tempo do próximo fuso horário",
+"busca",
+"pt_BR"
+],
+[
+"busca no google por \"ingressos para o festival de música mais próximo",
+"busca",
+"pt_BR"
+],
+[
+"abre o google e me mostra os resultados da busca por \"notícias de esportes\" de agora",
+"busca",
+"pt_BR"
+],
+[
+"google search de \"horários de ônibus\" com o mapa da cidade e o relógio atual",
+"busca",
+"pt_BR"
+],
+[
+"me diz a previsão de chuva para os próximos dias com google search",
+"busca",
+"pt_BR"
+],
+[
+"google search \"liberdade rio de janeiro\" e me mostra o mapa com o horário",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e me exibe o tempo atual de tokyo?",
+"busca",
+"pt_BR"
+],
+[
+"me mostra no google \"últimas notícias de economia\" com link e título",
+"busca",
+"pt_BR"
+],
+[
+"busca no google por \"preço da gasolina hoje\" e me avisa o valor por litro",
+"busca",
+"pt_BR"
+],
+[
+"google search \"clima em sp\" com a temperatura atual e a previsão de horas",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e me mostra os resultados de \"jogos de ontem\" de basquete",
+"busca",
+"pt_BR"
+],
+[
+"google search \"previsão de temperatura\" com o mapa e a hora atual",
+"busca",
+"pt_BR"
+],
+[
+"me diz o preço do iphone 15 pro max de agora? pesquisa no google",
+"busca",
+"pt_BR"
+],
+[
+"google search \"últimas notícias de tecnologia\" e mostra o artigo mais recente",
+"busca",
+"pt_BR"
+],
+[
+"abre o google e me mostra os horários de funcionamento da farmácia mais próxima de agora",
+"busca",
+"pt_BR"
+],
+[
+"busca no google por \"placar da copa do mundo hoje\" e o relógio atual",
+"busca",
+"pt_BR"
+],
+[
+"google search \"tempo em sydney\" com temperatura e previsão de horas",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e me mostra a cotação do dólar hoje com gráficos",
+"busca",
+"pt_BR"
+],
+[
+"google search \"previsão de chuva\" e exibe o mapa com a temperatura de tudo",
+"busca",
+"pt_BR"
+],
+[
+"me dá o preço atual do dólar e do euro? google search e o relógio",
+"busca",
+"pt_BR"
+],
+[
+"google search \"últimos resultados de basquete\" com a data e o placar",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e exibe no topo a notícia mais quente de agora?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"horário do museu de arte\" e o mapa com o relógio",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e me mostra o tempo e o clima de rio de janeiro agora?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"cotação do bitcoin\" e mostra no gráfico com a hora e data",
+"busca",
+"pt_BR"
+],
+[
+"google search \"previsão de hoje\" e mostra o mapa com a temperatura de tudo",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e me diz o preço do ingresso do cinema de agora?",
+"busca",
+"pt_BR"
+],
+[
+"google search de \"últimos jogos de futebol\" com o placar e o relógio",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e mostra o tempo em londres com a temperatura e a previsão de chuva?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"notícias de última hora\" e me exibe os três primeiros artigos",
+"busca",
+"pt_BR"
+],
+[
+"me mostra no google \"preço da gasolina\" com o valor por litro e o posto mais próximo?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"horário de funcionamento da biblioteca\" com o mapa e o relógio",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e exibe a temperatura e o clima de sp agora?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"próximos lançamentos de jogos\" com a data e o relógio",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e mostra o tempo em cairo, eg, de agora?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"cotação do euro\" e exibe o valor por dólar com gráficos",
+"busca",
+"pt_BR"
+],
+[
+"me dá o tempo atual de boavista, dentro de sp? pesquisa no google",
+"busca",
+"pt_BR"
+],
+[
+"google search \"próximos eventos de tecnologia\" e me mostra a lista com datas",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e mostra o placar de basquete de agora?",
+"busca",
+"pt_BR"
+],
+[
+"google search de \"previsão de chuva\" e exibe o mapa com a temperatura de tudo",
+"busca",
+"pt_BR"
+],
+[
+"me diz o preço atual do iphone 13 de agora? google search",
+"busca",
+"pt_BR"
+],
+[
+"google search \"notícias de esportes\" e me mostra os títulos mais recentes com o relógio",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e exibe o tempo de tokyo agora com temperatura e previsão de chuva?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"cotação do dólar e do euro\" e me exibe o valor do dia com o relógio",
+"busca",
+"pt_BR"
+],
+[
+"google search \"tempo em porto alegre\" com a temperatura e a previsão de horas",
+"busca",
+"pt_BR"
+],
+[
+"abrir o google e mostra o preço do ticket do cinema de agora?",
+"busca",
+"pt_BR"
+],
+[
+"google search \"próximos jogos de basquete\" com a data e o placar",
+"busca",
+"pt_BR"
+],
+[
+"google search \"liberdade rio de janeiro\" e me mostra o mapa com o horário e o tempo atual?",
+"busca",
+"pt_BR"
+],
+[
+"Hey, can you check the weather for tomorrow?",
+"busca",
+"en"
+],
+[
+"Google what time the post office opens today.",
+"busca",
+"en"
+],
+[
+"Show me today's top headlines about tech.",
+"busca",
+"en"
+],
+[
+"Search for tickets to the Knicks game tonight.",
+"busca",
+"en"
+],
+[
+"Wikipedia, what's the current price of bitcoin?",
+"busca",
+"en"
+],
+[
+"Hey AI, look it up: new iPhone release date.",
+"busca",
+"en"
+],
+[
+"How many people are live-streaming the soccer game now?",
+"busca",
+"en"
+],
+[
+"Check if the store is open, it's 8pm.",
+"busca",
+"en"
+],
+[
+"Can you search Google for \"Starbucks hours on 5th\"?",
+"busca",
+"en"
+],
+[
+"What's the score for the Yankees right now?",
+"busca",
+"en"
+],
+[
+"Hey, look up the lyrics to the last song that played at the bar.",
+"busca",
+"en"
+],
+[
+"Need to know the best way to get there from here, google maps.",
+"busca",
+"en"
+],
+[
+"I bet the Knicks are going to win tonight, can you look it up?",
+"busca",
+"en"
+],
+[
+"Google the time the Super Bowl starts in EST.",
+"busca",
+"en"
+],
+[
+"I want the news headlines about inflation, search for me.",
+"busca",
+"en"
+],
+[
+"Hey, what's the weather in London, uk?",
+"busca",
+"en"
+],
+[
+"Could you tell me the current temperature?",
+"busca",
+"en"
+],
+[
+"Can you google the train schedule to grand central?",
+"busca",
+"en"
+],
+[
+"Hey, look up the reviews for the new restaurant downtown.",
+"busca",
+"en"
+],
+[
+"Need today's weather forecast, plse check google.",
+"busca",
+"en"
+],
+[
+"Search youtube for the latest video from my favorite channel.",
+"busca",
+"en"
+],
+[
+"What time does the nearest coffee shop close?",
+"busca",
+"en"
+],
+[
+"Hey, google, what's the traffic like right now?",
+"busca",
+"en"
+],
+[
+"I need today's stock price for apple.",
+"busca",
+"en"
+],
+[
+"Show me the top google search results for \"best pizza\".",
+"busca",
+"en"
+],
+[
+"Google the opening hours of the art museum.",
+"busca",
+"en"
+],
+[
+"Check the Wikipedia for the current record holder in that event.",
+"busca",
+"en"
+],
+[
+"Hey, open the google weather forecast for this zipcode.",
+"busca",
+"en"
+],
+[
+"Can you tell me the latest search for the election results?",
+"busca",
+"en"
+],
+[
+"Youtube search for the new season trailer, ok?",
+"busca",
+"en"
+],
+[
+"What's the current temperature in california?",
+"busca",
+"en"
+],
+[
+"Hey google, check the store's closing time today.",
+"busca",
+"en"
+],
+[
+"Can you search for the current box office numbers?",
+"busca",
+"en"
+],
+[
+"What's the score of the nba game in asia?",
+"busca",
+"en"
+],
+[
+"Google the time the next bus comes.",
+"busca",
+"en"
+],
+[
+"Can you tell me the weather in tokyo, jap?",
+"busca",
+"en"
+],
+[
+"Look up the current time and date from another timezone.",
+"busca",
+"en"
+],
+[
+"Hey, check google for any breaking news right now.",
+"busca",
+"en"
+],
+[
+"Need the price of 2 liter coke, search amazon for me.",
+"busca",
+"en"
+],
+[
+"What is the best way to find the nearest japanese restaurant?",
+"busca",
+"en"
+],
+[
+"Show me the top google search results for \"iphone 15\".",
+"busca",
+"en"
+],
+[
+"Google the current weather in paris, france.",
+"busca",
+"en"
+],
+[
+"Hey, can you tell me today's temperature?",
+"busca",
+"en"
+],
+[
+"I need the live score of the tennis match in wimb.",
+"busca",
+"en"
+],
+[
+"Youtube, show me all the live streams for gaming today.",
+"busca",
+"en"
+],
+[
+"Check the weather in sydney for tomorrow.",
+"busca",
+"en"
+],
+[
+"Hey, what's the google search result for \"free online course\"?",
+"busca",
+"en"
+],
+[
+"Cómo está el tiempo en Madrid hoy?",
+"busca",
+"es"
+],
+[
+"Busca la cota de bitcoin en este momento.",
+"busca",
+"es"
+],
+[
+"Dame las últimas noticias de tecnología, de vereda.",
+"busca",
+"es"
+],
+[
+"YouTube me puede mostrar la hora de la transmisión del partido?",
+"busca",
+"es"
+],
+[
+"¿Cuánto cuesta el vuelo a CDMX con maleta hoy?",
+"busca",
+"es"
+],
+[
+"Necesito saber las horas de apertura del museo del prado mañana.",
+"busca",
+"es"
+],
+[
+"Búscame los resultados de la Champions League de la primera vuelta.",
+"busca",
+"es"
+],
+[
+"¿Qué hay de nuevo con la IA de generación de texto?",
+"busca",
+"es"
+],
+[
+"Google Maps me puede decir el tráfico por aquí?",
+"busca",
+"es"
+],
+[
+"Buscame el precio de acciones de coca cola ahora.",
+"busca",
+"es"
+],
+[
+"Me faltó de calcular la tarifa de la luz de este mes.",
+"busca",
+"es"
+],
+[
+"¿Hay alguna protesta planeada en el centro de la ciudad?",
+"busca",
+"es"
+],
+[
+"Qué fecha es el lanzamiento del nuevo juego de nintendo?",
+"busca",
+"es"
+],
+[
+"¿Puedes decirme la hora local de Tokio?",
+"busca",
+"es"
+],
+[
+"Necesito buscarme recetas de panqueques para hoy.",
+"busca",
+"es"
+],
+[
+"Dime si hay riesgo de lluvia para la tarde.",
+"busca",
+"es"
+],
+[
+"Búscalos en la web de viajes para ver precios de hoteles.",
+"busca",
+"es"
+],
+[
+"¿Me puedes decir la cota de dólares frente al peso hoy?",
+"busca",
+"es"
+],
+[
+"Busca qué tiendas de ropa abrieron ya en la calle?",
+"busca",
+"es"
+],
+[
+"¿Necesitas recordarme el clima para el fin de semana?",
+"busca",
+"es"
+],
+[
+"Quel est le match de foot de ce soir ?",
+"busca",
+"fr"
+],
+[
+"Heute die BVB-Elf oder was ist eigentlich das Spielprogramm?",
+"busca",
+"de"
+],
+[
+"Was ist grad los, hab Bock auf Nachrichten und Preise für was?",
+"busca",
+"de"
+],
+[
+"sag mir mal die uhrzeit für den kino-start heute",
+"busca",
+"de"
+],
+[
+"wetter, bitte für berlin und wie lange?",
+"busca",
+"de"
+],
+[
+"was ist die nächste veranstaltung in berlin",
+"busca",
+"de"
+],
+[
+"klappern die tiendas de moda o wie lange sind sie offen?",
+"busca",
+"de"
+],
+[
+"google die youtube-videos zu 3d-animationen",
+"busca",
+"de"
+],
+[
+"hey, check mal die verfassung der eu, soll was Neues dabei sein",
+"busca",
+"de"
+],
+[
+"sag mit google die währungskurse von yen zu euro",
+"busca",
+"de"
+],
+[
+"was ist der veröffentlichungsdatum vom neuen jogo?",
+"busca",
+"de"
+],
+[
+"kannst du mir zeigen wie ich die wikipedia vom iphone zeige?",
+"busca",
+"de"
+],
+[
+"wie viel kostet ein liter von milch und was ist de aktuelle bundesrakete?",
+"busca",
+"de"
+],
+[
+"was ist die nba beilergebnisse?",
+"busca",
+"de"
+],
+[
+"suche die besten kinderfilme 2024 youtube",
+"busca",
+"de"
+],
+[
+"gib mir die aktuelleren bundes-wahlnommeren",
+"busca",
+"de"
+],
+[
+"die beste internet-adresse für was is de vorzeit?",
+"busca",
+"de"
+],
+[
+"mach 'ne suche nach den topp 5 teuersten was?",
+"busca",
+"de"
+],
+[
+"die uhrzeit in new york",
+"busca",
+"de"
+],
+[
+"hat der bayer 2 getore heute",
+"busca",
+"de"
+],
+[
+"google die neuesten bundes-hochohltar-preise",
+"busca",
+"de"
+],
+[
+"bom dia, tudo bem com você?",
+"simples",
+"pt_BR"
+],
+[
+"oi, me fala uma música animada de rock!",
+"simples",
+"pt_BR"
+],
+[
+"você me ajuda a lembrar o que eu tinha perdido?",
+"simples",
+"pt_BR"
+],
+[
+"o dia tá pesado aqui, me dá uma piada de preferência de dados.",
+"simples",
+"pt_BR"
+],
+[
+"como foi sua noite?",
+"simples",
+"pt_BR"
+],
+[
+"ai me conta, o que você realmente é?",
+"simples",
+"pt_BR"
+],
+[
+"preciso de uma ideia de janta rápida e barata, sem glúten.",
+"simples",
+"pt_BR"
+],
+[
+"obrigado demais, resolveu meu dia.",
+"simples",
+"pt_BR"
+],
+[
+"bom, vou dar um descanso. valeu pela conversa.",
+"simples",
+"pt_BR"
+],
+[
+"até amanhã, tá?",
+"simples",
+"pt_BR"
+],
+[
+"ai estava aqui pesquisando sobre inteligência artificial.",
+"simples",
+"pt_BR"
+],
+[
+"o que você prefere, café ou chá?",
+"simples",
+"pt_BR"
+],
+[
+"precisa de alguma coisa, me avisa.",
+"simples",
+"pt_BR"
+],
+[
+"bom dia! ☀️",
+"simples",
+"pt_BR"
+],
+[
+"me dá um resumo de ChatGPT em 2 parágrafos, de preferência com exemplos.",
+"simples",
+"pt_BR"
+],
+[
+"muito obrigado pela ajuda! 🙏",
+"simples",
+"pt_BR"
+],
+[
+"anda com a gente.",
+"simples",
+"pt_BR"
+],
+[
+"ai me fala de algo que ninguém sabe, uma curiosidade boa.",
+"simples",
+"pt_BR"
+],
+[
+"com licença, posso te perguntar de algo que você sabe?",
+"simples",
+"pt_BR"
+],
+[
+"você consegue me ajudar com uma planilha, mas sem mostrar a fórmula?",
+"simples",
+"pt_BR"
+],
+[
+"preciso de uma música pra animar a festa.",
+"simples",
+"pt_BR"
+],
+[
+"me dá um exemplo de como ficaria um e-mail formal de pedido de aumento?",
+"simples",
+"pt_BR"
+],
+[
+"tudo certo por aqui, e você?",
+"simples",
+"pt_BR"
+],
+[
+"precisa de café, porque eu tô com sono.",
+"simples",
+"pt_BR"
+],
+[
+"me diz um fato sobre a história recente.",
+"simples",
+"pt_BR"
+],
+[
+"você fala português bem ou de outro lugar?",
+"simples",
+"pt_BR"
+],
+[
+"me lembra o que eu pedi agora?",
+"simples",
+"pt_BR"
+],
+[
+"estou precisando de uma receita de bolinho de chocolate.",
+"simples",
+"pt_BR"
+],
+[
+"ai me ajuda a escrever um texto pra convidar um amigo pra sair?",
+"simples",
+"pt_BR"
+],
+[
+"até mais, me dá um alô quando puder.",
+"simples",
+"pt_BR"
+],
+[
+"ajuda aqui com um texto, tá dando dó de escrever.",
+"simples",
+"pt_BR"
+],
+[
+"me dá a previsão do tempo pra hoje à noite.",
+"simples",
+"pt_BR"
+],
+[
+"pra falar sobre o clima, tá tudo bem com você?",
+"simples",
+"pt_BR"
+],
+[
+"sem grana hoje, me dá uma dica de série boa de graça.",
+"simples",
+"pt_BR"
+],
+[
+"ai me diz algo que eu não sei, mas que é fácil de lembrar.",
+"simples",
+"pt_BR"
+],
+[
+"você consegue conversar por áudio, ou só por texto?",
+"simples",
+"pt_BR"
+],
+[
+"me conta que você não tá lendo isso de uma planilha.",
+"simples",
+"pt_BR"
+],
+[
+"me dá uma frase de efeito pra me motivar hoje.",
+"simples",
+"pt_BR"
+],
+[
+"me diz de um livro que foi lançado esse ano.",
+"simples",
+"pt_BR"
+],
+[
+"bom dia! o sol tá lindo lá. ☀️",
+"simples",
+"pt_BR"
+],
+[
+"me dá o nome de 3 coisas que não têm peso na terra.",
+"simples",
+"pt_BR"
+],
+[
+"até logo!",
+"simples",
+"pt_BR"
+],
+[
+"valeu por tudo, foi ótimo conversar.",
+"simples",
+"pt_BR"
+],
+[
+"bom dia! preciso de ajuda pra lembrar o que eu ia te perguntar.",
+"simples",
+"pt_BR"
+],
+[
+"me indica um podcast de história?",
+"simples",
+"pt_BR"
+],
+[
+"ai preciso de 5 argumentos pra defender que o café é melhor.",
+"simples",
+"pt_BR"
+],
+[
+"você já viu o filme Oppenheimer? me diz o que foi a minha pergunta.",
+"simples",
+"pt_BR"
+],
+[
+"me dá de preferência de data e hora.",
+"simples",
+"pt_BR"
+],
+[
+"precisa de uma música relaxante para estudar?",
+"simples",
+"pt_BR"
+],
+[
+"bom dia! hoje é dia de plantar, tô animado.",
+"simples",
+"pt_BR"
+],
+[
+"ai me diz 2 palavras que quase todo mundo erra na ortografia.",
+"simples",
+"pt_BR"
+],
+[
+"ajuda aqui com a lista de tarefas, tá ficando confuso.",
+"simples",
+"pt_BR"
+],
+[
+"bate aqui pra ver se tá tudo certo.",
+"simples",
+"pt_BR"
+],
+[
+"hey, are you there?",
+"simples",
+"en"
+],
+[
+"hi, how’s today going?",
+"simples",
+"en"
+],
+[
+"quick question: can you tell me what the weather is like in london?",
+"simples",
+"en"
+],
+[
+"thanks! that really helped with the email.",
+"simples",
+"en"
+],
+[
+"you’re actually pretty good at this, kinda impressive.",
+"simples",
+"en"
+],
+[
+"need help with the slides i just created.",
+"simples",
+"en"
+],
+[
+"how did you come up with that idea? it’s brilliant.",
+"simples",
+"en"
+],
+[
+"can you give me an example of a good christmas sweater?",
+"simples",
+"en"
+],
+[
+"just finished work, feeling tired.",
+"simples",
+"en"
+],
+[
+"btw, do you know the time in tokyo?",
+"simples",
+"en"
+],
+[
+"what was i just typing?",
+"simples",
+"en"
+],
+[
+"my cat just walked across the keyboard, so i can’t type",
+"simples",
+"en"
+],
+[
+"remember that list i made earlier?",
+"simples",
+"en"
+],
+[
+"hey, need a quick reminder about calling mary tomorrow.",
+"simples",
+"en"
+],
+[
+"say hi to my work calendar for me.",
+"simples",
+"en"
+],
+[
+"thank you so much! that solved everything.",
+"simples",
+"en"
+],
+[
+"what’s the point of all this?",
+"simples",
+"en"
+],
+[
+"can you look at this text and make it sound more formal?",
+"simples",
+"en"
+],
+[
+"list some fun activities for a rainy day.",
+"simples",
+"en"
+],
+[
+"hmm, i wonder what you'd say about that?",
+"simples",
+"en"
+],
+[
+"goodbye! talk to you later.",
+"simples",
+"en"
+],
+[
+"are you available to chat, or are you busy?",
+"simples",
+"en"
+],
+[
+"what are your limits?",
+"simples",
+"en"
+],
+[
+"you never get tired of these requests?",
+"simples",
+"en"
+],
+[
+"send a reminder to drink some water in 15 minutes.",
+"simples",
+"en"
+],
+[
+"can i speak to you about something personal?",
+"simples",
+"en"
+],
+[
+"how come i keep asking you the same thing?",
+"simples",
+"en"
+],
+[
+"tell me a joke that isn't about coffee.",
+"simples",
+"en"
+],
+[
+"good morning! make my day better.",
+"simples",
+"en"
+],
+[
+"i'm thinking of taking a nap; let me know when you wake up.",
+"simples",
+"en"
+],
+[
+"need a recipe for something quick and healthy.",
+"simples",
+"en"
+],
+[
+"you’re like a magic search engine, but smarter.",
+"simples",
+"en"
+],
+[
+"tell me one interesting thing about the ocean.",
+"simples",
+"en"
+],
+[
+"help me pick a nickname for my new puppy.",
+"simples",
+"en"
+],
+[
+"what time does the post office close today?",
+"simples",
+"en"
+],
+[
+"that didn't work, can you try another answer?",
+"simples",
+"en"
+],
+[
+"goodnight, talk tomorrow.",
+"simples",
+"en"
+],
+[
+"who made you?",
+"simples",
+"en"
+],
+[
+"just wanted to say thanks.",
+"simples",
+"en"
+],
+[
+"i forgot what i needed to ask, write it down for me.",
+"simples",
+"en"
+],
+[
+"that was a lot, let's take a breath.",
+"simples",
+"en"
+],
+[
+"lol, i think i typed this wrong.",
+"simples",
+"en"
+],
+[
+"hi, can you remind me what i just asked you?",
+"simples",
+"en"
+],
+[
+"just testing, don't tell anyone i asked you this.",
+"simples",
+"en"
+],
+[
+"btw, i am feeling kinda anxious, maybe a playlist?",
+"simples",
+"en"
+],
+[
+"oh hey, you're here!",
+"simples",
+"en"
+],
+[
+"thanks for the reminder, i actually did it.",
+"simples",
+"en"
+],
+[
+"what exactly are you, an app or an AI?",
+"simples",
+"en"
+],
+[
+"lmao, you told me that already.",
+"simples",
+"en"
+],
+[
+"tell me something i don't know.",
+"simples",
+"en"
+],
+[
+"Hola! ¿Cómo te va hoy? 😊",
+"simples",
+"es"
+],
+[
+"Salut! Ça va ?",
+"simples",
+"fr"
+],
+[
+"Moin! Wie geht's?",
+"simples",
+"de"
+],
+[
+"Hey, du da?",
+"simples",
+"de"
+],
+[
+"Danke dir!",
+"simples",
+"de"
+],
+[
+"A b c, brauch was.",
+"simples",
+"de"
+],
+[
+"Name, was machst du?",
+"simples",
+"de"
+],
+[
+"Mhmmm, nicht so.",
+"simples",
+"de"
+],
+[
+"Danke für die help!",
+"simples",
+"de"
+],
+[
+"Du bist echt gut.",
+"simples",
+"de"
+],
+[
+"Könntest du das kurz erklären?",
+"simples",
+"de"
+],
+[
+"Brauch eine Idee für X.",
+"simples",
+"de"
+],
+[
+"Gib mir drei Beispiele.",
+"simples",
+"de"
+],
+[
+"Ich bin gerade ziemlich müde.",
+"simples",
+"de"
+],
+[
+"Kannst du noch was tun?",
+"simples",
+"de"
+],
+[
+"Bye, mach's gut!",
+"simples",
+"de"
+],
+[
+"Wie ist das Wetter bei dir?",
+"simples",
+"de"
+],
+[
+"Welche Uhrzeit ist es?",
+"simples",
+"de"
+],
+[
+"Länger als 20 Wörter.",
+"simples",
+"de"
+],
+[
+"Mach weiter so.",
+"simples",
+"de"
+],
+[
+"me explica cera de açúcar, beleza?",
+"geral",
+"pt_BR"
+],
+[
+"historia da invenção da roda de 3 parágrafos.",
+"geral",
+"pt_BR"
+],
+[
+"qual a fórmula de energia? e me diz um exemplo.",
+"geral",
+"pt_BR"
+],
+[
+"me conta uns de piada sem piada.",
+"geral",
+"pt_BR"
+],
+[
+"preciso de um texto pra pedir aumento, formal mas direto.",
+"geral",
+"pt_BR"
+],
+[
+"deixa eu resumir o livro \"1984\" em 5 frases.",
+"geral",
+"pt_BR"
+],
+[
+"como faço pra lembrar de mais nomes?",
+"geral",
+"pt_BR"
+],
+[
+"escreve um poema curto sobre chuva na cidade.",
+"geral",
+"pt_BR"
+],
+[
+"me dá 3 ideias de bolo de fubá.",
+"geral",
+"pt_BR"
+],
+[
+"o que causa a mudança de estação? me explica de um jeito simples.",
+"geral",
+"pt_BR"
+],
+[
+"qual o melhor horário pra me acordar?",
+"geral",
+"pt_BR"
+],
+[
+"me cola a letra de \"O Bê\" de Gil.",
+"geral",
+"pt_BR"
+],
+[
+"ajuda com a concordância do verbo \"precisar\" no futuro?",
+"geral",
+"pt_BR"
+],
+[
+"me ajuda a me organizar pro dia?",
+"geral",
+"pt_BR"
+],
+[
+"qual a origem do dado de 5 números?",
+"geral",
+"pt_BR"
+],
+[
+"preciso que me crie um texto pra avisar que vou atrasar 10 minutos.",
+"geral",
+"pt_BR"
+],
+[
+"me explica a teoria da relatividade em termos de tempo e espaço.",
+"geral",
+"pt_BR"
+],
+[
+"deixa eu saber a data exata da independência do Brasil.",
+"geral",
+"pt_BR"
+],
+[
+"me manda um meme de piada sem graça, tipo um de texto.",
+"geral",
+"pt_BR"
+],
+[
+"qual a fórmula química do sal de cozinha?",
+"geral",
+"pt_BR"
+],
+[
+"me conta 3 fatos curiosos sobre o sono.",
+"geral",
+"pt_BR"
+],
+[
+"qual o melhor programa para editar fotos no celular?",
+"geral",
+"pt_BR"
+],
+[
+"me ajuda a aprender a falar inglês no dia a dia?",
+"geral",
+"pt_BR"
+],
+[
+"me gera 5 títulos de artigo sobre produtividade.",
+"geral",
+"pt_BR"
+],
+[
+"o que são megabytes e gigabytes na prática?",
+"geral",
+"pt_BR"
+],
+[
+"dá um exemplo de hipérbole em uma frase.",
+"geral",
+"pt_BR"
+],
+[
+"me ajuda a escrever um texto sobre saúde mental?",
+"geral",
+"pt_BR"
+],
+[
+"qual a diferença entre IA e machine learning de um jeito fácil?",
+"geral",
+"pt_BR"
+],
+[
+"me diz a que número se refere o símbolo de pi.",
+"geral",
+"pt_BR"
+],
+[
+"preciso de uma lista de compras com frutas e leite.",
+"geral",
+"pt_BR"
+],
+[
+"pode me dar uns conselhos pra estudar melhor?",
+"geral",
+"pt_BR"
+],
+[
+"me ensina a falar \"hello how are you\" de 3 formas.",
+"geral",
+"pt_BR"
+],
+[
+"me mostra o uso do ponto e vírgula.",
+"geral",
+"pt_BR"
+],
+[
+"qual a função da clorofila na planta?",
+"geral",
+"pt_BR"
+],
+[
+"deixa eu saber o que é viés de confirmação.",
+"geral",
+"pt_BR"
+],
+[
+"me crie um roteiro de 3 passos pra começar a correr.",
+"geral",
+"pt_BR"
+],
+[
+"me diz 5 palavras que eu posso usar pra me expressar melhor.",
+"geral",
+"pt_BR"
+],
+[
+"como se fala \"quanto custa\" em inglês?",
+"geral",
+"pt_BR"
+],
+[
+"preciso de um texto curto de 3 frases para agradecer.",
+"geral",
+"pt_BR"
+],
+[
+"qual a importância do sono de 7 a 9 horas?",
+"geral",
+"pt_BR"
+],
+[
+"me ajuda com sinônimo de \"alegre\" que não seja \"contenta\".",
+"geral",
+"pt_BR"
+],
+[
+"pode listar 3 alimentos que vêm de grãos?",
+"geral",
+"pt_BR"
+],
+[
+"preciso de uma frase em português que se usa muito, mas que está errada.",
+"geral",
+"pt_BR"
+],
+[
+"qual a função da tireoide e como ela conversa com a hipófise?",
+"geral",
+"pt_BR"
+],
+[
+"me diz qual a capital do Canadá.",
+"geral",
+"pt_BR"
+],
+[
+"me passa um texto de 3 linhas pra avisar que me encontro em outro lugar.",
+"geral",
+"pt_BR"
+],
+[
+"deixa eu saber a data de hoje e o dia da semana.",
+"geral",
+"pt_BR"
+],
+[
+"preciso de ajuda com um texto que fala que me sentiu mal hoje.",
+"geral",
+"pt_BR"
+],
+[
+"qual o símbolo universal de \"sem bateria\"?",
+"geral",
+"pt_BR"
+],
+[
+"me explica o que é o efeito fotoelétrico.",
+"geral",
+"pt_BR"
+],
+[
+"me crie uma planilha com nomes de meses e o número de dias.",
+"geral",
+"pt_BR"
+],
+[
+"me mostra 2 exemplos de uso de negação no português.",
+"geral",
+"pt_BR"
+],
+[
+"dá uma frase de exemplo de quando devo usar \"se\" ou \"se\".",
+"geral",
+"pt_BR"
+],
+[
+"me diz a melhor forma de se hidratar de dia.",
+"geral",
+"pt_BR"
+],
+[
+"qual o processo de fotossíntese? fala o que entra e o que sai.",
+"geral",
+"pt_BR"
+],
+[
+"me crie um exemplo de frase que usa mais de um pronome relativo.",
+"geral",
+"pt_BR"
+],
+[
+"me explica o efeito estufa de forma simples, como se fosse para criança.",
+"geral",
+"pt_BR"
+],
+[
+"qual a ordem de preferência de uso de vírgula para separar orações?",
+"geral",
+"pt_BR"
+],
+[
+"me dá a lista de planetas do sol em ordem.",
+"geral",
+"pt_BR"
+],
+[
+"preciso de um texto de 4 frases explicando que o prazo mudou.",
+"geral",
+"pt_BR"
+],
+[
+"qual o nome do período em que o dia e a noite duram o mesmo tempo?",
+"geral",
+"pt_BR"
+],
+[
+"deixa eu saber a que período o ano começa no calendário gregoriano?",
+"geral",
+"pt_BR"
+],
+[
+"me conta 3 exemplos de verbos irregulares em português.",
+"geral",
+"pt_BR"
+],
+[
+"qual o uso do hífen em palavras compostas tipo \"pão-de-ló\"?",
+"geral",
+"pt_BR"
+],
+[
+"me explica o que é inflação em termos de dinheiro e preço.",
+"geral",
+"pt_BR"
+],
+[
+"qual a função da curva de aprendizado em um gráfico?",
+"geral",
+"pt_BR"
+],
+[
+"me diz 5 exemplos de adjetivo de cor.",
+"geral",
+"pt_BR"
+],
+[
+"Wha's the deal with general knowledge?",
+"geral",
+"en"
+],
+[
+"¿sabes por qué el cielo es azul?",
+"geral",
+"es"
+],
+[
+"Salut, tu connais le principe de la relativité générale en gros ?",
+"geral",
+"fr"
+],
+[
+"Explique-moi la différence entre la mémoire à court et à long terme avec un exemple concret.",
+"geral",
+"fr"
+],
+[
+"Je dois écrire un mail à mon boss pour lui rappeler le dossier X, tu peux me faire un brouillon ?",
+"geral",
+"fr"
+],
+[
+"Tu sais qui a inventé l'imprimerie ? Et en quelle année ?",
+"geral",
+"fr"
+],
+[
+"Donne-moi trois idées de recettes rapides avec des légumes.",
+"geral",
+"fr"
+],
+[
+"Écris un poème de quatre lignes sur l'automne, avec un ton mélancolique.",
+"geral",
+"fr"
+],
+[
+"C'est quoi le rôle exact de l'ADN ? Pourrais me donner une analogie simple ?",
+"geral",
+"fr"
+],
+[
+"Tu peux me résumer les points clés du livre « l’homme qui s’appelait Barnabé » ?",
+"geral",
+"fr"
+],
+[
+"Je cherche un bon livre de SF, tu as des recommandations pour commencer ?",
+"geral",
+"fr"
+],
+[
+"Quelle est la date exacte de la chute du mur de Berlin ?",
+"geral",
+"fr"
+],
+[
+"Aide-moi à structurer un exposé sur le cycle de l'eau pour le lycée.",
+"geral",
+"fr"
+],
+[
+"Je suis bloqué sur une phrase pour mon roman, je peux l'améliorer ?",
+"geral",
+"fr"
+],
+[
+"Quelle est la signification du signe « π » ? Et son importance en mathématiques ?",
+"geral",
+"fr"
+],
+[
+"Donne-moi un exemple de blague de style « je rentre dans un bar et... ».",
+"geral",
+"fr"
+],
+[
+"Tu me dis que l’équateur est un cercle ou une ligne en latitude ? (en fait c’est quoi ?)",
+"geral",
+"fr"
+],
+[
+"Est-ce que tu peux me générer une liste de 10 mots anglais courants avec leur traduction française ?",
+"geral",
+"fr"
+],
+[
+"Quels sont les principaux composants de l’air ambiant et en quelle proportion ?",
+"geral",
+"fr"
+],
+[
+"J’aimerais qu’on crée ensemble une petite histoire de science-fiction, commence par deux phrases.",
+"geral",
+"fr"
+],
+[
+"Je n’arrive pas à comprendre l’algorithme de tri rapide, tu peux m’expliquer ça pas à pas ?",
+"geral",
+"fr"
+],
+[
+"Fais-moi une petite liste de choses à faire ce weekend (courses, sport, culture).",
+"geral",
+"fr"
+],
+[
+"Wie erklärst du mir die kwantenevel? (gerne mit einem Beispiel)",
+"geral",
+"de"
+],
+[
+"Bitte fasse in zwei Sätzen die Hauptidee der Relativitätstheorie zusammen.",
+"geral",
+"de"
+],
+[
+"Schreib ein kurzes Lied über den Frühling, im Stil von Nena.",
+"geral",
+"de"
+],
+[
+"Wie funktionierte die Revolution von 1848 eigentlich? Ich habe nur die Namen gelernt.",
+"geral",
+"de"
+],
+[
+"Gib mir ein paar Ideen für einen Podcast über die Geschichte der Musik.",
+"geral",
+"de"
+],
+[
+"Erkläre mir das Konzept von der Künstlichen Intelligenz, so als würde ich es meiner Kind nennen.",
+"geral",
+"de"
+],
+[
+"Welche waren die treibenden Faktoren, die das Ende des Zweiten Weltkriegs herbeigeführt haben?",
+"geral",
+"de"
+],
+[
+"Kannst du ein Beispiel für einen Shakespeare-Verstoss literaturwissenschaftlich erklären?",
+"geral",
+"de"
+],
+[
+"Lass uns mal über die Rolle des Ökosystems im Klimawandel sprechen.",
+"geral",
+"de"
+],
+[
+"Wie viele Sterne hat die Milchstraße ungefähr? Und was ist das für eine Messung?",
+"geral",
+"de"
+],
+[
+"Ich muss eine E-Mail an meinen Kollegen schreiben, dass ich morgen keinen zugange. Könntest du das formulieren?",
+"geral",
+"de"
+],
+[
+"Gib mir eine kurze Zusammenfassung des Buches „1984“ von Orwell.",
+"geral",
+"de"
+],
+[
+"Was war die Hauptbedeutung des Internet in den 90ern?",
+"geral",
+"de"
+],
+[
+"Was ist der Zusammenhang zwischen den „Heisenberg-Unschärferelationen“ und der Quantenphysik?",
+"geral",
+"de"
+],
+[
+"Wie erkläre ich jemandem, der gar nichts von Physik versteht, das Prinzip der Energieerhaltung?",
+"geral",
+"de"
+],
+[
+"Ich brauche 3 Ideen für den Anfang einer Geschichte über eine Zeitmaschine, eher im Sci-fi Stil.",
+"geral",
+"de"
+],
+[
+"Wie viel waren ungefähr die Einwohner in Rom vor dem großen Brand?",
+"geral",
+"de"
+],
+[
+"Was ist der Unterschied zwischen DNA und RNA? Ein einfaches Beispiel bitte.",
+"geral",
+"de"
+],
+[
+"Kannst du einen kurzen, lustigen Text schreiben über das Leben eines Büroelefanten?",
+"geral",
+"de"
+],
+[
+"Dein besten Freund hat mir erzählt, dass die Sonne im Herbst kleiner wird. Was ist da falsch?",
+"geral",
+"de"
+]
+]

@@ -1,4 +1,4 @@
-"""11/11: a pesquisa da loja de modelos (filtro local e biblioteca do Ollama), sem rede."""
+"""A pesquisa da loja de modelos (filtro local; desde 14/11 a busca e a escolha do arquivo no Hugging Face), sem rede."""
 import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import tars_mais_modelos as mm
@@ -9,19 +9,22 @@ assert [i[0] for i in mm.filtrar(itens, "gargantua pro")] == ["ProjectOpenTARS/G
 assert all("vision" in i[3] for i in mm.filtrar(itens, "vision"))
 assert mm.filtrar(itens, "zzzz") == [] and len(mm.filtrar(itens, "")) == len(itens)
 
-PAGINA = '''<ul><li  class="border-t-[0.5px] border-line first:border-t-0">
-<a href="/library/gemma4" class="x"><h2 title="gemma4"><span >gemma4</span></h2><span>4w</span>
-<span class="a">vision</span><span class="a">tools</span><span class="a">audio</span><span class="a">cloud</span>
-<p class="mt-1 line-clamp-2">Gemma 4 models are designed for agents.</p>
-<span>29M</span><span>51 tags</span><span>e2b</span><span>e4b</span><span>12b</span></a></li>
-<li  class="border-t-[0.5px] border-line"><a href="/library/tinyllama"><span>tinyllama</span>
-<p class="x">A tiny one.</p><span>1.1b</span></a></li></ul>'''
-r = mm.buscar_biblioteca("gemma", http=lambda url: PAGINA)
-assert [x["nome"] for x in r] == ["gemma4", "tinyllama"], r
-assert r[0]["capacidades"] == ("vision", "tools") and r[0]["tamanhos"] == ("e2b", "e4b", "12b"), r[0]
-assert r[0]["descricao"].startswith("Gemma 4") and r[1]["tamanhos"] == ("1.1b",)
+import json  # noqa: E402
+BUSCA = [{"id": "unsloth/gemma-4-E2B-it-GGUF", "downloads": 9, "likes": 1}, {"id": "semdono"}]
+r = mm.buscar_hf("gemma 4", http=lambda url: json.dumps(BUSCA) if "filter=gguf" in url and "search=gemma%204" in url else "[]")
+assert r == [{"repo": "unsloth/gemma-4-E2B-it-GGUF", "downloads": 9, "likes": 1}], r
 
-TAGS = '<a href="/library/gemma4:e2b" class="x"><span>gemma4:e2b</span></a><span>862c9e801351</span> • 4.6GB - 7.5GB • 128K'
-assert mm.tamanho_da_tag("gemma4:e2b", http=lambda url: TAGS) == 4.6
-assert mm.tamanho_da_tag("gemma4:zzz", http=lambda url: TAGS) is None
+lfs = lambda n, t, h="a": {"type": "file", "path": n, "size": t, "lfs": {"oid": h * 64, "size": t}}  # noqa: E731
+ARVORE = [lfs("g-Q8_0.gguf", 8), lfs("g-Q4_K_M.gguf", 4, "b"), lfs("mmproj-F16.gguf", 1, "c"), {"type": "file", "path": "README.md"}]
+INFO = {"gguf": {"chat_template": "{% if tools %}{{ tools }}{% endif %}", "architecture": "gemma4"}}
+http = lambda url: json.dumps(ARVORE if url.endswith("/tree/main") else INFO)  # noqa: E731
+nome, ficha, gb, caps = mm.resolver_hf("unsloth/gemma-4-E2B-it-GGUF", http=http)
+assert nome == "hf.co/unsloth/gemma-4-E2B-it-GGUF:Q4_K_M" and ficha["gguf"] == ["g-Q4_K_M.gguf", "b" * 64, 4]
+assert ficha["mmproj"] == ["mmproj-F16.gguf", "c" * 64, 1] and caps == ("vision", "tools") and ficha["family"] == "gemma4"
+for ruim in ("a/b/c", "../x", "sem-barra"):
+    try:
+        mm.resolver_hf(ruim, http=http)
+        raise AssertionError(ruim)
+    except ValueError:
+        pass
 print("TUDO OK.")

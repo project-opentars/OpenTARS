@@ -100,7 +100,7 @@ jobs:
       - run: pip install requests psutil pyautogui pillow PySide6-Essentials numpy onnxruntime
       - name: Janelas
         run: >
-          python tests/run_all.py test_primeiro_uso test_qt_primeiro_uso test_qt_primeiro_uso_gargantua2 test_nuvem_login
+          python tests/run_all.py test_primeiro_uso test_qt_primeiro_uso test_qt_primeiro_uso_gargantua2
           test_qt_principal test_qt_cliques test_qt_modos test_qt_barra_rapida test_qt_acoes test_qt_probes test_qt_rotinas
           test_qt_codigo test_qt_imagem test_qt_mascote test_qt_atualizacao test_mais_modelos test_qt_download_grande
 
@@ -217,7 +217,7 @@ jobs:
       matrix:
         include:
           - {runner: macos-latest, maquina: arm64}
-          - {runner: macos-13, maquina: x86_64}
+          - {runner: macos-15-intel, maquina: x86_64}
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4

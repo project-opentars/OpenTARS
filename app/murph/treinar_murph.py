@@ -24,7 +24,8 @@ def amostras():
     ger = [(f, c) for f, c, _ in json.load(open(os.path.join(AQUI, "gerado_limpo.json"), encoding="utf-8"))]
     novas = os.path.join(AQUI, "gerado", "5.3.json")       # 14/11: as frases novas (gerar_5_3.py), já filtradas contra as provas
     if os.path.exists(novas):
-        ger += [(f, c) for f, c, _ in json.load(open(novas, encoding="utf-8"))]
+        so = set(filter(None, os.environ.get("MURPH_CLASSES_NOVAS", "").split(",")))      # recorte por classe (comparar_5_3)
+        ger += [(f, c) for f, c, _ in json.load(open(novas, encoding="utf-8")) if not so or c in so]
     return treino() + ger
 
 

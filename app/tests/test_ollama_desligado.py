@@ -17,7 +17,7 @@ tars.construir_cadeia_fallback = lambda tarefa, catalogo=None: ["qwen3:0.6b", "q
 tars._modelo_carregado_atual = None if hasattr(tars, "_modelo_carregado_atual") else None
 
 resposta = tars.perguntar_modelo("qwen3:0.6b", "Find lasagna recipe videos on YouTube", tarefa="busca")
-assert "not responding" in resposta and "systemctl start ollama" in resposta, resposta
+assert "not responding" in resposta and "opentars --diagnostico" in resposta, resposta
 print("OK: Ollama desligado -> diz que o Ollama não está respondendo e como ligar")
 
 for frase, esperada in (("Find lasagna recipe videos on YouTube", "busca"), ("open youtube", "simples"),

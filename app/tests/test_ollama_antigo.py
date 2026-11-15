@@ -19,7 +19,7 @@ class Resposta(io.BytesIO):
 
 linhas = b'{"status": "pulling manifest"}\n{"error": "pull model manifest: 412: this model requires a newer version of Ollama"}\n'
 ok, erro = pu.baixar_modelo("ProjectOpenTARS/Gargantua:lite", "http://x", abrir=lambda p, timeout=0: Resposta(linhas))
-assert not ok and "install.sh" in erro and "412" not in erro, erro
+assert not ok and ("Atualize o openTARS" in erro or "Update openTARS" in erro) and "412" not in erro, erro
 
 
 def http_412(p, timeout=0):
@@ -27,7 +27,7 @@ def http_412(p, timeout=0):
 
 
 ok, erro = pu.baixar_modelo("x", "http://x", abrir=http_412)
-assert not ok and "install.sh" in erro, erro
+assert not ok and ("Atualize o openTARS" in erro or "Update openTARS" in erro), erro
 ok, erro = pu.baixar_modelo("x", "http://x", abrir=lambda p, timeout=0: Resposta(b'{"error": "file does not exist"}\n'))
 assert erro == "file does not exist", "os outros erros continuam como vêm"
 print("OK: Ollama velho demais vira 'atualize o Ollama'; os outros erros continuam iguais")
