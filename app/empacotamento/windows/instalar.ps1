@@ -62,7 +62,9 @@ try {
     $obtido = (Get-FileHash -Algorithm SHA256 $setup).Hash.ToLower()
     if (-not $esperado -or $obtido -ne $esperado.ToLower()) { throw "SHA-256 check failed: $obtido" }
     Dizer "Conferido (SHA-256). Instalando, sem pedir nada..." "Verified (SHA-256). Installing, no questions asked..."
-    $p = Start-Process -FilePath $setup -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/REABRIR=1" -Wait -PassThru
+    # WaitForExit espera só o instalador; o Start-Process -Wait do PowerShell 5.1 espera também o app que ele reabre (nunca acaba)
+    $p = Start-Process -FilePath $setup -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/REABRIR=1" -PassThru
+    $p.WaitForExit()
     if ($p.ExitCode -ne 0) { throw "setup exit code $($p.ExitCode)" }
 } finally {
     Remove-Item -Recurse -Force $temp -ErrorAction SilentlyContinue

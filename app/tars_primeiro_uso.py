@@ -78,12 +78,19 @@ def _gravar_json(caminho, dados, modo=0o600):
     os.replace(temporario, caminho)
 
 
+def _empacotado():
+    return (Path(__file__).resolve().parent / ".empacotado").exists()
+
+
 def primeiro_uso_concluido():
-    return bool(_ler_json(arquivo_estado(), {}).get("concluido"))
+    """14/11 (pedido do Enzo): no Windows e no macOS, quem passa da instalação por script para o app empacotado faz o primeiro
+    uso de novo (o motor, a nuvem e o modelo mudaram). O primeiro uso feito no app empacotado grava "pacote" e vale daí em diante."""
+    dados = _ler_json(arquivo_estado(), {})
+    return bool(dados.get("concluido")) and (dados.get("pacote") or not _empacotado())
 
 
 def marcar_concluido(valor=True):
-    _gravar_json(arquivo_estado(), {"concluido": bool(valor), "quando": int(time.time())}, 0o644)
+    _gravar_json(arquivo_estado(), {"concluido": bool(valor), "quando": int(time.time()), "pacote": _empacotado()}, 0o644)
 
 
 # ------------------------------------------------------------

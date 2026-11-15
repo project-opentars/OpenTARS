@@ -27,8 +27,8 @@ def rodar(completo):
 tars._SESSION.get = lambda *a, **k: (_ for _ in ()).throw(ConnectionError("recusado"))
 tars.ollama_online = lambda: False
 codigo, texto = rodar(completo=True)
-assert codigo == 1 and "Ollama" in texto and "não está respondendo" in texto, texto
-assert "sem Ollama ou sem modelo de conversa" in texto
+assert codigo == 1 and "llama.cpp" in texto and "não está respondendo" in texto, texto
+assert "sem motor de IA ou sem modelo de conversa" in texto
 print("OK: sem Ollama, o relatório aponta o problema (e não quebra)")
 
 

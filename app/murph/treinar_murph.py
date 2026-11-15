@@ -22,6 +22,9 @@ import tars_murph as mm  # noqa: E402
 
 def amostras():
     ger = [(f, c) for f, c, _ in json.load(open(os.path.join(AQUI, "gerado_limpo.json"), encoding="utf-8"))]
+    novas = os.path.join(AQUI, "gerado", "5.3.json")       # 14/11: as frases novas (gerar_5_3.py), já filtradas contra as provas
+    if os.path.exists(novas):
+        ger += [(f, c) for f, c, _ in json.load(open(novas, encoding="utf-8"))]
     return treino() + ger
 
 
@@ -100,7 +103,7 @@ if __name__ == "__main__":
         print(f"validação cruzada: {100 * precisao:.1f}%, folga 'confiante' >= {limite:.3f}, "
               f"cobertura mínima {cobertura_minima:.2f}")
         m = treinar(dados, C)
-        saida = mm.CAMINHO_PADRAO
+        saida = os.environ.get("MURPH_SAIDA") or mm.CAMINHO_PADRAO     # MURPH_SAIDA: grava um candidato para comparar antes de trocar
         with open(saida, "w", encoding="utf-8") as f:
             json.dump({"formato": mm.VERSAO_FORMATO, "versao": mm.VERSAO, "tarefas": m.tarefas, "idf": m.idf, "vies": m.vies,
                        "pesos": m.pesos,

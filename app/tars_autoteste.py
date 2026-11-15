@@ -102,14 +102,20 @@ def diagnostico(core, rel):
 
     rel.secao(t("diag.titulo_ia"))
     versao = _versao_ollama(core)
+    try:
+        import tars_motor_local
+        if versao and str(core.OLLAMA_HOST).rstrip("/") == tars_motor_local.URL:
+            versao = "llama.cpp " + tars_motor_local.VERSAO_LLAMA      # o motor responde no formato antigo; mostra o que ele é
+    except Exception:  # noqa: BLE001
+        pass
     if versao:
-        rel.item(True, "Ollama", t("diag.ollama_ok", versao=versao, host=core.OLLAMA_HOST))
+        rel.item(True, "llama.cpp", t("diag.ollama_ok", versao=versao, host=core.OLLAMA_HOST))
         if core.OLLAMA_NO_WINDOWS:
-            rel.item("info", "Ollama", t("diag.wsl_ollama_windows", host=core.OLLAMA_HOST))
+            rel.item("info", "llama.cpp", t("diag.wsl_ollama_windows", host=core.OLLAMA_HOST))
     else:
-        rel.item(False, "Ollama", t("aviso.ollama_offline", host=core.OLLAMA_HOST))
+        rel.item(False, "llama.cpp", t("aviso.ollama_offline", host=core.OLLAMA_HOST))
         if core.EM_WSL and not os.environ.get("OLLAMA_HOST"):
-            rel.item("info", "Ollama", t("diag.wsl_sem_ollama"))
+            rel.item("info", "llama.cpp", t("diag.wsl_sem_ollama"))
 
     catalogo = core.catalogar_modelos(forcar=True) if versao else {}
     # A helper Murph vem no pacote e decide o tipo de cada pedido (sem Ollama).

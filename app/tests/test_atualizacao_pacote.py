@@ -57,4 +57,15 @@ assert not atual.with_name("openTARS.app.velho").exists() and not atual.with_nam
 falha = lambda cmd: type("R", (), {"returncode": 1, "stdout": "", "stderr": "não montou"})()  # noqa: E731
 assert a.instalar_dmg(casa / "x.dmg", destino=atual, rodar=falha) == (False, "não montou") and (atual / "Contents" / "novo").exists()
 print("OK: no macOS o .app novo troca o velho só depois de copiado; se o .dmg não monta, nada muda")
+# quem vem da instalação por script faz o primeiro uso de novo no app empacotado; depois de feito, não pede mais
+os.environ["TARS_ARQUIVO_PRIMEIRO_USO"] = str(casa / "pu.json")
+import tars_primeiro_uso as pu  # noqa: E402
+pu._empacotado = lambda: False
+pu.marcar_concluido()
+assert pu.primeiro_uso_concluido(), "fora do pacote (Linux), concluído continua concluído"
+pu._empacotado = lambda: True
+assert not pu.primeiro_uso_concluido(), "o primeiro uso feito antes do app empacotado não vale: faz de novo"
+pu.marcar_concluido()
+assert pu.primeiro_uso_concluido(), "feito no app empacotado, vale daí em diante"
+print("OK: no Windows e no macOS, a atualização para o app empacotado passa pelo primeiro uso de novo, uma vez")
 print("TUDO OK.")

@@ -261,7 +261,7 @@ for nome in ("geral", "voz", "memoria", "nuvem", "atualizacoes", "sobre"):
     app.processEvents()
     assert j.config.nav[nome].isChecked() and j.pilha.currentIndex() == 2
     foto(j, f"config_{nome}")
-esperar(lambda: "Ollama" in j.config.paginas["geral"].estado.text() and "…" != j.config.paginas["geral"].estado.text(), o_que="estado do Ollama")
+esperar(lambda: t("cfg.gargantua_falta") in j.config.paginas["geral"].estado.text(), o_que="estado do motor")
 assert t("cfg.gargantua_falta") in j.config.paginas["geral"].estado.text()
 
 # memória

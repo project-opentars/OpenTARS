@@ -135,6 +135,8 @@ def montar_windows(saida, cache):
     copiar_app(raiz / "app")
     embutir_motor(raiz / "app", "windows", "x86_64", cache)
     (raiz / "app" / ".empacotado").write_text("windows\n")
+    subprocess.run([str(python_do(raiz / "runtime", "windows")), "-m", "compileall", "-q", "-j", "0", str(raiz / "app"),
+                    str(raiz / "runtime" / "Lib")], check=False)      # abre mais rápido na primeira vez
     (raiz / "bin").mkdir(exist_ok=True)
     # o comando do terminal; %~dp0 é a pasta deste .cmd, então o pacote funciona em qualquer pasta
     (raiz / "bin" / "opentars.cmd").write_text('@echo off\r\nset PYTHONUTF8=1\r\n"%~dp0..\\runtime\\python.exe" "%~dp0..\\app\\tars.py" %*\r\n',
@@ -162,6 +164,8 @@ INFO_PLIST = """<?xml version="1.0" encoding="UTF-8"?>
 
 # o lançador: entra na pasta do código e troca de processo para o Python do próprio app (exec), que vira o processo do app
 LANCADOR_MAC = """#!/bin/bash
+# o Python não escreve .pyc dentro do app: isso quebraria a assinatura (e as permissões do macOS ligadas a ela)
+export PYTHONDONTWRITEBYTECODE=1
 RES="$(cd "$(dirname "$0")/../Resources" && pwd)"
 cd "$RES/app" && exec "$RES/runtime/bin/python3" -m tars_qt "$@"
 """
@@ -170,6 +174,7 @@ CLI_MAC = """#!/bin/bash
 ALVO="$0"
 while [ -L "$ALVO" ]; do ALVO="$(readlink "$ALVO")"; done
 RES="$(cd "$(dirname "$ALVO")/.." && pwd)"
+export PYTHONDONTWRITEBYTECODE=1
 exec "$RES/runtime/bin/python3" "$RES/app/tars.py" "$@"
 """
 
@@ -195,6 +200,9 @@ def montar_macos(saida, cache):
     cli.write_text(CLI_MAC)
     for f in (lancador, cli):
         f.chmod(0o755)
+    # tudo pré-compilado antes de assinar (abre rápido sem gravar .pyc no app; o lançador proíbe gravar depois)
+    subprocess.run([str(python_do(recursos / "runtime", s)), "-m", "compileall", "-q", "-j", "0", str(recursos / "app"),
+                    str(recursos / "runtime" / "lib")], check=False)
     # assinatura ad-hoc (grátis, sem conta da Apple): o Apple Silicon só roda código assinado
     subprocess.run(["codesign", "--force", "--deep", "--sign", "-", str(pacote)], check=True)
     subprocess.run(["codesign", "--verify", "--deep", "--strict", str(pacote)], check=True)

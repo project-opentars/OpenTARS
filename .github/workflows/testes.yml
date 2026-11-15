@@ -183,7 +183,8 @@ jobs:
       - name: Instalar por cima (como a atualização do app, com /REABRIR=1)
         shell: powershell
         run: |
-          $p = Start-Process app\dist\opentars-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/REABRIR=1" -Wait -PassThru
+          $p = Start-Process app\dist\opentars-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/REABRIR=1" -PassThru
+          $p.WaitForExit()
           if ($p.ExitCode -ne 0) { throw "setup por cima saiu com $($p.ExitCode)" }
           Start-Sleep 8
           $abertos = Get-Process pythonw -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "$env:LOCALAPPDATA\Programs\openTARS\*" }
@@ -198,6 +199,7 @@ jobs:
           Set-Content -Encoding ascii rel\SHA256SUMS "$h  opentars-setup.exe"
           $env:OPENTARS_RELEASE = "file:///" + ((Resolve-Path rel).Path -replace "\\", "/")
           .\app\empacotamento\windows\instalar.ps1
+          Start-Sleep 5
           Get-Process pythonw -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "$env:LOCALAPPDATA\Programs\openTARS\*" } | Stop-Process -Force
       - name: Desinstalar
         shell: powershell
