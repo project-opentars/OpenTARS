@@ -21,6 +21,16 @@ UninstallDisplayName=openTARS
 AppVersion={#Versao}
 AppPublisher=project-opentars
 AppPublisherURL=https://project-opentars.github.io/OpenTARS/
+; metadados que o Windows mostra em Propriedades > Detalhes e que o Defender/SmartScreen leem: instalador sem editora,
+; sem descrição e sem versão pontua pior na reputação do que um que se identifica
+; versão de quatro partes nos metadados do .exe ("5.3" vira 5.3.0.0)
+VersionInfoVersion={#Versao}.0.0
+VersionInfoProductVersion={#Versao}.0.0
+VersionInfoCompany=project-opentars
+VersionInfoDescription=openTARS Setup
+VersionInfoProductName=openTARS
+VersionInfoCopyright=MIT License, project-opentars
+VersionInfoOriginalFileName=opentars-setup.exe
 AppSupportURL=https://github.com/project-opentars/OpenTARS/issues
 DefaultDirName={localappdata}\Programs\openTARS
 UsePreviousAppDir=no

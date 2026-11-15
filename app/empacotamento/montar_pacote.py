@@ -115,9 +115,11 @@ def embutir_motor(app_destino, s, m, cache):
                 t.extractall(raiz, filter="data")
         for executavel in raiz.rglob("llama-server*"):
             executavel.chmod(0o755)
-        # só o servidor e as bibliotecas dele: as outras ferramentas do llama.cpp (llama-cli, quantize...) ficam de fora
+        # só o servidor e as bibliotecas dele: as outras ferramentas do llama.cpp (llama-cli, quantize...) ficam de fora.
+        # Só os executáveis saem: as DLLs ficam TODAS (15/11: apagar "llama-*" levou o llama-common.dll junto e o
+        # llama-server.exe do Windows não abria: "llama-common.dll não foi encontrado").
         for f in raiz.rglob("*"):
-            if f.is_file() and f.name.startswith("llama-") and not f.name.startswith("llama-server"):
+            if f.is_file() and f.name.startswith("llama-") and not f.name.startswith("llama-server") and f.suffix in ("", ".exe"):
                 f.unlink()
         print("motor embutido:", variante, flush=True)
 

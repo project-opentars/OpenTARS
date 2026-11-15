@@ -41,6 +41,7 @@
       <ul>
         <li><b>Native apps for Windows and macOS.</b> openTARS now ships as a ready-to-run app: opentars-setup.exe on Windows and a signed .dmg on macOS, for Apple Silicon and Intel. Python, Qt and the llama.cpp engine are inside, so installing no longer downloads and builds anything.</li>
         <li><b>One-click updates that just work.</b> Windows and macOS update from the latest release, verified by SHA-256, and reopen by themselves. After this update, Windows and macOS walk through the welcome setup once more.</li>
+        <li><b>Windows engine fix (November 15, later).</b> The first Windows build of this update could stop with "llama-common.dll was not found" when the AI engine started. The engine is now packaged whole, and the build checks that both engine variants (processor and Vulkan) actually start before it is published. The installer also carries proper version and publisher details, and each build is scanned with Microsoft Defender before release.</li>
         <li><b>A model store on Hugging Face.</b> Hand-picked GGUF models (Qwen3.5, Gemma 4, Ministral 3, Llama 3.2, Phi-4 mini, gpt-oss and more) with fixed checksums, plus search across the Hugging Face community.</li>
         <li><b>All in on llama.cpp.</b> The engine sizes each model to your GPU memory, falls back to the processor if the graphics driver fails, restarts itself if it stops, and replaces an old engine after an update.</li>
       </ul>

@@ -152,6 +152,60 @@ jobs:
           & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /DVersao=$v "/DPacote=$PWD\dist\pacote\openTARS" app\empacotamento\windows\opentars.iss
           if (-not (Test-Path app\dist\opentars-setup.exe)) { throw "o setup não saiu" }
           (Get-Item app\dist\opentars-setup.exe).Length / 1MB
+      - name: Assinar o setup.exe (só se a conta de assinatura existir)
+        # 15/11: a assinatura de código é o que de fato derruba o aviso do SmartScreen. Fica desligada até o Enzo abrir a
+        # conta (SignPath Foundation, grátis para open source): segredo SIGNPATH_API_TOKEN e variáveis SIGNPATH_ORG_ID,
+        # SIGNPATH_PROJECT e SIGNPATH_POLITICA no repositório. Sem o segredo, o passo não faz nada.
+        shell: powershell
+        env:
+          TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+        run: |
+          if (-not $env:TOKEN) { "sem conta de assinatura: setup.exe segue sem assinatura"; exit 0 }
+          "com conta: o passo seguinte assina"
+          "assinar=1" | Out-File -Append $env:GITHUB_ENV
+      - uses: actions/upload-artifact@v4
+        if: env.assinar == '1'
+        id: setup_bruto
+        with: { name: opentars-setup-sem-assinar, path: app/dist/opentars-setup.exe }
+      - name: Enviar ao SignPath e baixar o assinado
+        if: env.assinar == '1'
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORG_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLITICA }}
+          github-artifact-id: ${{ steps.setup_bruto.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: assinado
+      - name: Trocar pelo setup.exe assinado
+        if: env.assinar == '1'
+        shell: powershell
+        run: |
+          Copy-Item assinado\opentars-setup.exe app\dist\opentars-setup.exe -Force
+          $a = Get-AuthenticodeSignature app\dist\opentars-setup.exe
+          if ($a.Status -ne "Valid") { throw "assinatura inválida: $($a.Status)" }
+      - name: Varredura do Microsoft Defender (o setup.exe e o que ele instala)
+        # Mostra o que o Defender acusa ANTES de publicar. Atualiza as definições, varre o instalador e a pasta do pacote
+        # (Python, Qt e o llama-server); acusação derruba o job. Se o Defender do runner estiver desligado, avisa e segue.
+        shell: powershell
+        run: |
+          $mp = "$env:ProgramFiles\Windows Defender\MpCmdRun.exe"
+          if (-not (Test-Path $mp)) { "::warning::MpCmdRun não existe neste runner: varredura pulada"; exit 0 }
+          try { Update-MpSignature -ErrorAction Stop } catch { "::warning::não atualizou as definições: $_" }
+          $v = Get-MpComputerStatus
+          "motor $($v.AMEngineVersion), definições $($v.AntivirusSignatureVersion) de $($v.AntivirusSignatureLastUpdated)"
+          $alvos = @("$PWD\app\dist\opentars-setup.exe", "$PWD\dist\pacote\openTARS")
+          $achou = $false
+          foreach ($a in $alvos) {
+            & $mp -Scan -ScanType 3 -File $a -DisableRemediation
+            "varredura de $a saiu com $LASTEXITCODE"
+            if ($LASTEXITCODE -eq 2) { $achou = $true }
+          }
+          $d = Get-MpThreatDetection -ErrorAction SilentlyContinue
+          if ($d) { $d | Format-List ThreatID, Resources, ActionSuccess; $achou = $true }
+          if ($achou) { throw "o Defender acusou algo no instalador ou no pacote (veja acima)" }
+          "Defender: nada acusado"
       - uses: actions/upload-artifact@v4
         with: { name: opentars-setup, path: app/dist/opentars-setup.exe }
       - name: Instalar em silêncio e conferir
@@ -172,7 +226,16 @@ jobs:
           if (-not (Test-Path "$env:USERPROFILE\opentars-autoteste.txt")) { throw "sem relatório do diagnóstico" }
           $s = Get-ChildItem -Recurse "$raiz\app\motor-embutido" -Filter llama-server.exe
           if ($s.Count -lt 2) { throw "o motor embutido (Vulkan e CPU) não está no pacote" }
-          & ($s | Where-Object { $_.FullName -like "*\cpu\*" } | Select-Object -First 1).FullName --version
+          # cada variante tem de ABRIR (15/11: faltava llama-common.dll e o --version nunca foi conferido)
+          $ErrorActionPreference = "Continue"   # o --version escreve no stderr e o PowerShell trataria como erro
+          foreach ($e in $s) {
+            $out = & $e.FullName --version 2>&1 | Out-String
+            "$($e.FullName): saiu com $LASTEXITCODE"
+            if ($LASTEXITCODE -ne 0) { throw "o llama-server não abre: $($e.FullName)`n$out" }
+          }
+          foreach ($d in "llama-common.dll", "llama.dll", "ggml.dll") {
+            if (-not (Get-ChildItem -Recurse "$raiz\app\motor-embutido" -Filter $d)) { throw "falta $d no motor embutido" }
+          }
           $env:QT_QPA_PLATFORM = "offscreen"
           Push-Location "$raiz\app"
           & "$raiz\runtime\python.exe" -c "import tars_qt.principal, tars_qt.atalhos_windows, uiautomation, tars_motor_local as m; b = m.binario(); print('motor:', b); assert b and 'motor-embutido' in str(b)"
