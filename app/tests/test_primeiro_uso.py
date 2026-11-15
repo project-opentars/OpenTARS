@@ -40,39 +40,6 @@ assert pu.nome_do_gargantua(modelos) == "ProjectOpenTARS/Gargantua:latest"
 assert pu.nome_do_gargantua(["qwen3:4b"]) == pu.MODELO_GARGANTUA
 assert pu.modelos_instalados("http://127.0.0.1:9") == []
 
-# --- instalar / iniciar (sem rodar nada de verdade) --------------------
-class _R:
-    def __init__(self, codigo, saida="", erro=""):
-        self.returncode, self.stdout, self.stderr = codigo, saida, erro
-
-
-if pu.plataforma.sistema() == "linux":
-    cmd = pu.comando_instalar_ollama()
-    assert cmd[-1].endswith("| sh") and "ollama.com/install.sh" in cmd[-1]
-    assert pu.instalar_ollama(rodar=lambda c: _R(0)) == (True, "")
-    ok, msg = pu.instalar_ollama(rodar=lambda c: _R(1, erro="sem rede"))
-    assert not ok and "sem rede" in msg
-    ok, msg = pu.instalar_ollama(rodar=lambda c: (_ for _ in ()).throw(OSError("boom")))
-    assert not ok and "boom" in msg
-else:       # no Windows e no macOS quem instala o Ollama é o instalador do openTARS: a janela mostra a página de download
-    assert pu.instalar_ollama(rodar=lambda c: _R(0)) == (False, "https://ollama.com/download")
-assert pu.iniciar_ollama(procurar=lambda: True) == (True, "")
-# Windows: o Ollama é o app da bandeja (ollama app.exe), não um "ollama serve" num console
-lancados, original_popen, original_sistema = [], pu.subprocess.Popen, pu.plataforma.sistema
-pu.subprocess.Popen = lambda cmd, **k: lancados.append(cmd)
-pu.plataforma.sistema = lambda: "windows"
-os.environ["LOCALAPPDATA"] = pasta_local = tempfile.mkdtemp()
-app_ollama = os.path.join(pasta_local, "Programs", "Ollama", "ollama app.exe")
-os.makedirs(os.path.dirname(app_ollama))
-open(app_ollama, "w").close()
-try:
-    vezes = iter([False, True])
-    assert pu.iniciar_ollama(procurar=lambda: next(vezes)) == (True, "") and lancados == [[app_ollama]], lancados
-finally:
-    pu.subprocess.Popen, pu.plataforma.sistema = original_popen, original_sistema
-    del os.environ["LOCALAPPDATA"]
-print("OK: no Windows, iniciar o Ollama abre o app da bandeja")
-
 # --- baixar o Gargantua -----------------------------------------------
 vistos = []
 ok, erro = pu.baixar_modelo("ProjectOpenTARS/Gargantua", url, ao_progredir=lambda p: vistos.append((p.feito, p.total)))
@@ -150,9 +117,9 @@ assert pu.testar_nuvem("http://127.0.0.1:9", "x") == (False, "rede")
 for _, texto in (pu.testar_nuvem(url_n, "SEGREDO-DA-CHAVE"),):
     assert "SEGREDO-DA-CHAVE" not in texto
 
-assert pu.provedor("ollama")["nome"] == "Ollama Cloud" and pu.provedor("ollama")["a_confirmar"]
+assert pu.provedor("ollama")["id"] == "outro", "14/11: o Ollama Cloud saiu; quem tinha cai em Outro, com o endereço salvo"
 assert pu.provedor("inexistente")["id"] == "outro"
-assert [p["id"] for p in pu.PROVEDORES][:1] == ["ollama"], "o Ollama Cloud vem primeiro"
+assert [p["id"] for p in pu.PROVEDORES][:1] == ["groq"], "14/11: sem o Ollama Cloud, o Groq vem primeiro"
 
 # --- estado do assistente --------------------------------------------
 assert pu.primeiro_uso_concluido() is False

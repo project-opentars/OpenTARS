@@ -620,6 +620,7 @@ class JanelaPrincipal(QMainWindow):
             except OSError:          # sem o Carbon (não deveria acontecer): fica sem atalho, a janela abre igual
                 self._atalhos = None
         assistente.aplicar_padroes()     # 5.2: tudo ligado por padrão, uma vez (decisão do Enzo, 24/10)
+        assistente.renovar_inicio_com_sistema()
         self._registrar_atalhos_globais()
         self._ocioso = QTimer(self)
         self._ocioso.timeout.connect(self._checar_ocioso)
@@ -1444,14 +1445,13 @@ class JanelaPrincipal(QMainWindow):
         self.config.paginas["atualizacoes"].mostrar_versao(nova)
 
     def _migrar_motor(self):
-        """5.3 (F9): o motor passa a ser o llama.cpp. Quem vem da 5.2 recebe o llama-server e os Gargantua que já tinha no
-        Ollama (copiados do disco quando o arquivo é o mesmo, senão do Hugging Face); se algo falhar, o app segue no Ollama."""
+        """5.3 (F9): o motor é o llama.cpp. Quem vem da 5.2 recebe o llama-server e os Gargantua que já tinha (o arquivo do
+        Ollama é copiado do disco quando o SHA-256 é o mesmo, sem falar com o Ollama; senão vem do Hugging Face)."""
         import tars_motor_local as motor
         if os.environ.get("TARS_SEM_ATALHO") == "1" or motor.escolhido() == "ollama" or os.environ.get("OLLAMA_HOST") \
                 or motor.pronto() or getattr(self, "_migrando", False):
             return
-        tem = set(pu.modelos_instalados(self.nucleo.OLLAMA_HOST))
-        nomes = [n for n in motor.CATALOGO if n in tem] or ["ProjectOpenTARS/Gargantua-2.5:lite"]
+        nomes = [n for n, f in motor.CATALOGO.items() if motor._blob_do_ollama(f["gguf"][1])] or ["ProjectOpenTARS/Gargantua-2.5:lite"]
         self._migrando = True
         self.depois(lambda: self.faixa.mostrar(t("motor.preparando")))
         try:
@@ -1531,8 +1531,11 @@ class JanelaPrincipal(QMainWindow):
                 ok, motivo = tars_atualizacao.instalar_arquivo(
                     destino, sha256=arquivo.get("sha256", ""), git_sha=arquivo.get("git_sha", ""))
                 if ok:
-                    motivo = ""
                     tars_atualizacao.marcar_instalada(arquivo.get("id") or arquivo["sha256"], *ids)
+                    if motivo == "sair":        # Windows: o setup.exe novo troca os arquivos e reabre; este app sai já
+                        self.depois(self._sair_de_vez)
+                        return
+                    motivo = ""
             self.depois(lambda: pronto(ok, motivo))
 
         threading.Thread(target=trabalho, daemon=True).start()

@@ -37,7 +37,6 @@ import tars_voz as voz_lib
 from tars_i18n import t
 
 from . import fio, icones, tema
-from .login_ollama import LoginOllama
 from .tema import CORES, rotulo
 
 PAGINAS = ("geral", "assistente", "voz", "memoria", "rotinas", "probes", "nuvem", "modelos", "gerenciar", "avancado", "diagnostico", "atualizacoes", "sobre")
@@ -558,9 +557,6 @@ class PModelos(Pagina):
         for grupo, itens in mm.GRUPOS:
             s, v = _secao(t(f"cfg.modelos.g.{grupo}"), t(f"cfg.modelos.g.{grupo}_sub"))
             self._secoes[grupo] = (s, [i[0] for i in itens])
-            if grupo == "imagem":
-                self.bonsai = _CartaoBonsai(cfg)
-                v.addWidget(self.bonsai)
             if grupo in mm.GRUPOS_RECOMENDADOS:             # os que combinam com este computador vêm primeiro
                 itens = sorted(itens, key=lambda i: i[0] not in self.recomendados)
             for tag, nome, gb, capacidades in itens:
@@ -571,6 +567,10 @@ class PModelos(Pagina):
                 self.cartoes[tag] = c
                 v.addWidget(c)
             self.adicionar(s)
+        si, vi = _secao(t("cfg.modelos.g.imagem"), t("cfg.modelos.g.imagem_sub"))   # as fotos não usam o motor (tars_imagem)
+        self.bonsai = _CartaoBonsai(cfg)
+        vi.addWidget(self.bonsai)
+        self.adicionar(si)
         self.terminar()
 
     def _filtrar(self, texto=""):
@@ -590,7 +590,7 @@ class PModelos(Pagina):
             return
         self.web_resultado.setText(t("cfg.modelos.buscando"))
         self.web_secao.show()
-        self.cfg.em_segundo_plano(lambda: mm.buscar_biblioteca(consulta), lambda r: self._mostrar_web(r, consulta))
+        self.cfg.em_segundo_plano(lambda: mm.buscar_hf(consulta), lambda r: self._mostrar_web(r, consulta))
 
     def _mostrar_web(self, r, consulta):
         if consulta != self.busca.text().strip():          # a pessoa já mudou a pergunta
@@ -605,17 +605,17 @@ class PModelos(Pagina):
             self.web_resultado.setText(t("cfg.modelos.busca_erro"))
             return
         self.web_resultado.setText("" if r else t("cfg.modelos.busca_nada"))
-        for achado in r[:12]:
-            for tamanho in (achado["tamanhos"] or ("latest",)):
-                tag = achado["nome"] if tamanho == "latest" else f'{achado["nome"]}:{tamanho}'
-                if tag in self.cartoes:
-                    continue
-                c = _CartaoModelo(tag, 0, achado["capacidades"] or ("text",))
-                c.setToolTip(achado["descricao"])
-                c.clicou.connect(lambda tag=tag: self._clicou(tag))
-                self.cartoes[tag] = c
-                self._web_tags.append(tag)
-                self.web_v.addWidget(c)
+        curados = {f["repo"] for f in mm.FICHAS.values()}
+        for achado in r[:15]:
+            tag = "hf:" + achado["repo"]               # o nome de verdade (com a quantização) só se sabe ao resolver, no clique
+            if tag in self.cartoes or achado["repo"] in curados:
+                continue
+            c = _CartaoModelo(achado["repo"], 0, ("text",))
+            c.setToolTip(t("cfg.modelos.g.web_info", downloads=f'{achado["downloads"]:,}'))
+            c.clicou.connect(lambda tag=tag: self._clicou(tag))
+            self.cartoes[tag] = c
+            self._web_tags.append(tag)
+            self.web_v.addWidget(c)
         self._atualizar()
 
     def ao_abrir(self):
@@ -640,7 +640,7 @@ class PModelos(Pagina):
         for tag, c in self.cartoes.items():
             if tag == self._baixando:
                 continue
-            if mm.instalado(tag, self._instalados):
+            if mm.instalado(getattr(c, "_nome", tag), self._instalados):
                 c.definir_estado("instalado")
             elif self._baixando or not self._ollama_ok:
                 c.definir_estado("bloqueado")
@@ -654,15 +654,18 @@ class PModelos(Pagina):
             return
         if self._baixando or not self._ollama_ok:
             return
-        if tag in self._web_tags and not c.gb and not getattr(c, "_tamanho_tentado", False):
-            c._tamanho_tentado = True                      # resultado da busca: descobre o tamanho antes de baixar
-            c.nota(t("cfg.modelos.calculando"))
+        if tag in self._web_tags and not getattr(c, "_ficha", None):
+            c.nota(t("cfg.modelos.calculando"))    # resultado da busca: escolhe o GGUF e lê o tamanho e o SHA-256 no Hugging Face
 
             def saber(r):
-                c.gb = 0 if isinstance(r, Exception) or not r else r
+                if isinstance(r, Exception):
+                    c.definir_estado("livre")
+                    c.erro(t("cfg.baixar_erro", erro=str(r)))
+                    return
+                c._nome, c._ficha, c.gb, _caps = r
                 c.definir_estado("livre")
                 self._clicou(tag)
-            self.cfg.em_segundo_plano(lambda: mm.tamanho_da_tag(tag), saber)
+            self.cfg.em_segundo_plano(lambda: mm.resolver_hf(tag[3:]), saber)
             return
         livre = pu.espaco_livre_gb()
         if not mm.cabe(c.gb, livre):
@@ -681,13 +684,17 @@ class PModelos(Pagina):
                           total=mm.tamanho_texto(p.total / 1e9) if p.total else mm.tamanho_texto(c.gb),
                           resto=pu.formatar_tempo(p.segundos_restantes(), t))
                 self.cfg.depois(lambda: c.progresso(pct, texto))
-            return pu.baixar_modelo(tag, host, ao_progredir=andamento, cancelado=lambda: self._cancelar)
+            nome, ficha = getattr(c, "_nome", tag), mm.FICHAS.get(tag) or getattr(c, "_ficha", None)
+            if ficha:                                   # modelo da loja: o motor passa a conhecer o arquivo e o SHA-256
+                import tars_motor_local
+                tars_motor_local.adicionar_da_loja(nome, ficha)
+            return pu.baixar_modelo(nome, host, ao_progredir=andamento, cancelado=lambda: self._cancelar)
 
         def pronto(r):
             ok, erro = r if not isinstance(r, Exception) else (False, str(r))
             self._baixando = None
             if ok:
-                self._instalados.append(tag)
+                self._instalados.append(getattr(c, "_nome", tag))
                 c.definir_estado("instalado")
             else:
                 c.definir_estado("livre")
@@ -1669,10 +1676,6 @@ class PNuvem(Pagina):
     def __init__(self, cfg):
         super().__init__(t("cfg.nuvem.titulo"), t("cfg.nuvem.sub"))
         self.cfg = cfg
-        s0, v0 = _secao(t("nuvem.login.titulo"), t("nuvem.login.sub"))
-        self.login = LoginOllama(lambda: cfg.nucleo.OLLAMA_HOST, ao_mudar=self._modelos_mudaram)
-        v0.addWidget(self.login)
-        self.adicionar(s0)
         s, v = _secao(t("cfg.nuvem.cartao"), t("cfg.nuvem.cartao_sub"))
         self.ativa = QCheckBox(t("cfg.nuvem.ativar"))
         v.addWidget(self.ativa)
@@ -1682,8 +1685,9 @@ class PNuvem(Pagina):
         self.grupo.setExclusive(True)
         self.chips = {}
         for prov in pu.PROVEDORES:
-            b = _botao(prov["nome"], "chip")
-            b.setMinimumWidth(len(prov["nome"]) * 9 + 44)
+            nome = t("pu.chave.outro") if prov["id"] == "outro" else prov["nome"]
+            b = _botao(nome, "chip")
+            b.setMinimumWidth(len(nome) * 9 + 44)
             b.setCheckable(True)
             b.clicked.connect(lambda _=False, p=prov["id"]: self._escolheu(p))
             self.grupo.addButton(b)
@@ -1757,7 +1761,6 @@ class PNuvem(Pagina):
         self.web_resultado.setText(t("web.salva_ligada" if self.web.isChecked() else "web.salva_desligada"))
 
     def ao_abrir(self):
-        self.login.atualizar()
         w = web_lib.config()
         self.web.setChecked(w["ligada"])
         self.web_endereco.setText(w["endereco"])
@@ -1765,7 +1768,7 @@ class PNuvem(Pagina):
         d = pu.carregar_nuvem()
         self._salva = bool(d["chave"])
         self.ativa.setChecked(d["ativa"])
-        inicial = d["provedor"] if d["provedor"] in self.chips else "ollama"
+        inicial = d["provedor"] if d["provedor"] in self.chips else ("outro" if d["endereco"] else "groq")
         self.chips[inicial].setChecked(True)
         self.endereco.setText(d["endereco"] or pu.provedor(inicial)["endereco"])
         self.chave.clear()
@@ -2445,14 +2448,6 @@ class PAvancado(Pagina):
         v2.addWidget(self.contexto)
         self.adicionar(s2)
 
-        sm, vm = _secao(t("cfg.av.motor"), t("cfg.av.motor_sub"))
-        self.motor = QComboBox()
-        self.motor.setMaximumWidth(260)
-        self.motor.addItem(t("cfg.av.motor_llamacpp"), "llamacpp")
-        self.motor.addItem(t("cfg.av.motor_ollama"), "ollama")
-        vm.addWidget(self.motor)
-        self.adicionar(sm)
-
         s3, v3 = _secao(t("cfg.av.instrucoes"), t("cfg.av.instrucoes_sub"))
         self.instrucoes = QPlainTextEdit()
         self.instrucoes.setFixedHeight(110)
@@ -2483,24 +2478,17 @@ class PAvancado(Pagina):
         self.temperatura.setCurrentIndex(max(0, self.temperatura.findData(a["temperatura"])))
         self.contexto.setCurrentIndex(max(0, self.contexto.findData(a["contexto"])))
         self.instrucoes.setPlainText(a["instrucoes"])
-        import tars_motor_local
-        self.motor.setCurrentIndex(max(0, self.motor.findData(tars_motor_local.escolhido())))
-        self.motor.setEnabled(os.environ.get("TARS_MOTOR") not in ("ollama", "llamacpp"))     # a variável de ambiente manda
         for nome, c in self.caixas.items():
             c.setChecked(nome not in a["ferramentas_desligadas"])
         self.aviso.setText("" if modos.dev_ligado() else t("cfg.av.so_pro"))
         self.msg.setText("")
 
     def _salvar(self):
-        import tars_motor_local
-        mudou_motor = self.motor.isEnabled() and self.motor.currentData() != tars_motor_local.escolhido()
-        if self.motor.isEnabled():
-            tars_i18n.salvar_config(motor=self.motor.currentData())
         modos.salvar_avancado(temperatura=self.temperatura.currentData(), contexto=self.contexto.currentData(),
                               instrucoes=self.instrucoes.toPlainText(),
                               ferramentas_desligadas=[n for n, c in self.caixas.items() if not c.isChecked()])
         self.ao_abrir()
-        self.msg.setText(t("cfg.av.motor_reiniciar") if mudou_motor else t("cfg.av.salvo"))
+        self.msg.setText(t("cfg.av.salvo"))
 
     def _restaurar(self):
         tars_i18n.salvar_config(avancado={})

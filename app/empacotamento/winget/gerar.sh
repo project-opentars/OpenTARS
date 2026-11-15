@@ -47,7 +47,7 @@ PackageName: openTARS
 PackageUrl: https://project-opentars.github.io/OpenTARS/
 License: MIT
 LicenseUrl: https://github.com/project-opentars/OpenTARS/blob/main/LICENSE
-ShortDescription: A 100% local AI assistant for your computer, local by default.
+ShortDescription: Your AI assistant on your own computer, local by default.
 Description: openTARS runs small AI models on your own machine (llama.cpp), controls apps, files and the screen with your approval, and keeps your data at home. Cloud is optional and off by default.
 Moniker: opentars
 Tags: [ai, assistant, local, llm, privacy, llama-cpp]

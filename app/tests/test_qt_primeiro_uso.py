@@ -113,7 +113,7 @@ nuvem.grupo.escolher(nuvem.sim)
 nuvem.continuar()
 assert j3.atual == "chave"
 c = j3.paginas["chave"]
-assert c.prov_id == "ollama" and c.nota.isVisibleTo(c), "Ollama Cloud avisa que o endereço é a confirmar"
+assert c.prov_id == "groq", "14/11: sem o Ollama Cloud, o primeiro provedor é o Groq"
 c.chips["groq"].click()
 assert c.prov_id == "groq" and "groq" in c.endereco.text() and not c.nota.isVisibleTo(c)
 c.continuar()                                   # sem chave: não avança

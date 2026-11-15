@@ -34,30 +34,23 @@ print("OK: pedido do Ollama vira pedido do llama-server (imagem, ferramentas, op
 assert m._keep_alive(None) == 300 and m._keep_alive(-1) == -1 and m._keep_alive("10m") == 600 and m._keep_alive("0") == 0
 print("OK: keep_alive no formato do Ollama")
 
-# o motor escolhido: llama.cpp por padrão; a config de dev ("motor") troca; a variável de ambiente manda mais que a config
+# o motor: sempre llama.cpp; a config não troca mais (14/11, o Ollama saiu); só a variável de desenvolvimento TARS_MOTOR=ollama
 import tars_i18n  # noqa: E402
 _antes_env, _antes_cfg = os.environ.pop("TARS_MOTOR", None), tars_i18n._config
 try:
-    tars_i18n._config = {}
-    assert m.escolhido() == "llamacpp", "o padrão é o llama.cpp (quem vem da 5.2 é migrado)"
     tars_i18n._config = {"motor": "ollama"}
-    assert m.escolhido() == "ollama"
-    os.environ["TARS_MOTOR"] = "llamacpp"
-    assert m.escolhido() == "llamacpp", "a variável vale mais que a config"
+    assert m.escolhido() == "llamacpp", "a chave antiga da config não leva mais ao Ollama"
     os.environ["TARS_MOTOR"] = "ollama"
-    tars_i18n._config = {}
-    assert m.escolhido() == "ollama"
-    tars_i18n._config = {"motor": "qualquer coisa"}
-    os.environ.pop("TARS_MOTOR")
-    assert m.escolhido() == "llamacpp", "valor desconhecido cai no padrão"
+    assert m.escolhido() == "ollama", "a variável de desenvolvimento continua (baterias do Lab)"
 finally:
     tars_i18n._config = _antes_cfg
+    os.environ.pop("TARS_MOTOR", None)
     if _antes_env is not None:
         os.environ["TARS_MOTOR"] = _antes_env
-print("OK: motor escolhido: llama.cpp por padrão, Ollama pela config de dev, variável de ambiente manda")
+print("OK: motor sempre llama.cpp; só TARS_MOTOR=ollama (desenvolvimento) muda")
 
-assert not m.pronto() and m.instalados() == [] and m.garantir() is None, "sem motor instalado o app fica no Ollama"
-print("OK: sem llama-server e sem modelo, garantir() devolve None e o app segue no Ollama")
+assert not m.pronto() and m.instalados() == [] and m.garantir() is None, "sem llama-server, garantir() não sobe nada"
+print("OK: sem llama-server e sem modelo, garantir() devolve None")
 
 conteudo = b"gguf de mentira" * 1000
 
@@ -98,4 +91,39 @@ assert destino.read_bytes() == conteudo and m.sha_do_arquivo(destino) == hashlib
 m._HF = _hf_antes
 servidor.shutdown()
 print("OK: modelo velho com o mesmo nome é trocado; a marca guarda o SHA-256")
+# 14/11: modelos da loja (Hugging Face) entram no catálogo pela loja.json; ficha ruim (caminho no nome, hash torto) não entra
+sha = "a" * 64
+boa = {"repo": "bartowski/Qwen3-4B-GGUF", "gguf": ["Qwen3-4B-Q4_K_M.gguf", sha, 123], "mmproj": None, "capabilities": ["completion", "tools"]}
+for ruim in ({**boa, "gguf": ["../../x.gguf", sha, 1]}, {**boa, "gguf": ["a.gguf", "zz", 1]}, {**boa, "repo": "a/b/c"},
+             {**boa, "mmproj": ["m.bin", sha, 1]}):
+    try:
+        m.adicionar_da_loja("hf.co/x:y", ruim)
+        raise AssertionError(f"ficha ruim entrou: {ruim}")
+    except ValueError:
+        pass
+try:
+    m.adicionar_da_loja("ProjectOpenTARS/Gargantua-2.5:latest", boa)
+    raise AssertionError("a loja não pode trocar um Gargantua")
+except ValueError:
+    pass
+m.adicionar_da_loja("hf.co/bartowski/Qwen3-4B-GGUF:Q4_K_M", boa)
+assert m.CATALOGO["hf.co/bartowski/Qwen3-4B-GGUF:Q4_K_M"]["repo"] == "bartowski/Qwen3-4B-GGUF"
+assert m.CATALOGO["ProjectOpenTARS/Gargantua-2.5:latest"]["repo"] == "OpenTARS/Gargantua-2.5"
+assert not m.instalado("hf.co/bartowski/Qwen3-4B-GGUF:Q4_K_M")
+m.remover_da_loja("hf.co/bartowski/Qwen3-4B-GGUF:Q4_K_M")
+assert "hf.co/bartowski/Qwen3-4B-GGUF:Q4_K_M" not in m.CATALOGO and "ProjectOpenTARS/Gargantua-2.5:latest" in m.CATALOGO
+print("OK: loja do Hugging Face: ficha validada, entra e sai do catálogo, não troca os Gargantua")
+
+# a variante pelo caminho, e a marca sem-gpu tira o Vulkan das opções
+from pathlib import Path  # noqa: E402
+assert m.variante_do(Path("/x") / m.VERSAO_LLAMA / "vulkan" / "bin" / "llama-server") == "vulkan" and m.variante_do("/x/y") == ""
+m.tem_vulkan, _tv = (lambda: True), m.tem_vulkan
+m.sistema_e_maquina, _sm = (lambda: ("windows", "x86_64")), m.sistema_e_maquina
+assert m.variantes() == ["vulkan", "cpu"]
+m._marca_sem_gpu().parent.mkdir(parents=True, exist_ok=True)
+m._marca_sem_gpu().write_text("x")
+assert m.variantes() == ["cpu"], "depois que a GPU falhou, só CPU"
+m._marca_sem_gpu().unlink()
+m.tem_vulkan, m.sistema_e_maquina = _tv, _sm
+print("OK: reserva em CPU depois que a GPU falha")
 print("TUDO OK.")

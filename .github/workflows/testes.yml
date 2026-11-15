@@ -133,97 +133,127 @@ jobs:
       - name: Instalar e conferir no contêiner
         run: docker run --rm -v "$PWD/app:/fonte:ro" ${{ matrix.imagem }} bash /fonte/empacotamento/linux/testar_conteiner.sh
 
-  instalador_windows:
-    # o instalar.ps1 de ponta a ponta com o código deste commit (sem baixar o Ollama), o app instalado e a remoção
+  pacote_windows:
+    # 14/11: o app pronto do Windows (Python, Qt e o llama-server dentro), no setup.exe do Inno Setup. Monta, instala em
+    # silêncio como o app faz na atualização, confere o comando, o motor e a janela, instala por cima (atualização), passa
+    # pelo instalar.ps1 apontado para os arquivos daqui e desinstala.
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Instalar
-        shell: powershell
-        run: .\app\empacotamento\windows\instalar.ps1 -Fonte app -SemOllama
-      - name: Diagnóstico pelo comando instalado
-        shell: powershell
-        run: |
-          & "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd" --diagnostico
-          if (-not (Test-Path "$env:USERPROFILE\opentars-autoteste.txt")) { throw "sem relatório" }
-          if (-not (Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\openTARS.lnk")) { throw "sem atalho" }
-          exit 0
-      - name: O comando opentars está no PATH do usuário e roda
-        shell: powershell
-        run: |
-          $u = [Environment]::GetEnvironmentVariable("Path", "User")
-          if (($u -split ";") -notcontains "$env:LOCALAPPDATA\openTARS\bin") { throw "opentars não está no PATH do usuário" }
-          $env:Path = $u + ";" + $env:Path
-          opentars --version
-          if ($LASTEXITCODE -ne 0) { throw "opentars --version falhou" }
-      - name: Backend do Windows no Python instalado
-        shell: powershell
-        run: |
-          $env:QT_QPA_PLATFORM = "offscreen"
-          & "$env:LOCALAPPDATA\openTARS\venv\Scripts\python.exe" app\tests\test_plataforma_windows.py
-          & "$env:LOCALAPPDATA\openTARS\venv\Scripts\python.exe" -c "import sys; sys.path.insert(0, r'$env:LOCALAPPDATA\openTARS\app'); import tars_qt.atalhos_windows, tars_qt.principal; print('qt ok')"
-      - name: Remover
-        shell: powershell
-        run: |
-          .\app\empacotamento\windows\instalar.ps1 -Remover
-          if (Test-Path "$env:LOCALAPPDATA\openTARS") { throw "não removeu" }
-
-  instalador_exe_windows:
-    # o opentars-setup.exe (Inno Setup, o que o winget instala): compila, instala em silêncio, confere e desinstala
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Compilar
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Montar o pacote (Python portátil, dependências, app e motor)
+        run: python app/empacotamento/montar_pacote.py --saida dist/pacote
+      - name: Compilar o setup.exe
         shell: powershell
         run: |
           choco install innosetup -y --no-progress
-          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /DVersao=5.3 app\empacotamento\windows\opentars.iss
+          $v = (Select-String -Path app\tars.py -Pattern '^VERSAO = "(.+)"').Matches[0].Groups[1].Value
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /DVersao=$v "/DPacote=$PWD\dist\pacote\openTARS" app\empacotamento\windows\opentars.iss
           if (-not (Test-Path app\dist\opentars-setup.exe)) { throw "o setup não saiu" }
+          (Get-Item app\dist\opentars-setup.exe).Length / 1MB
       - uses: actions/upload-artifact@v4
         with: { name: opentars-setup, path: app/dist/opentars-setup.exe }
-      - name: Instalar em silêncio (como o winget)
+      - name: Instalar em silêncio e conferir
         shell: powershell
         run: |
-          $p = Start-Process app\dist\opentars-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SemOllama=1" -Wait -PassThru
+          $p = Start-Process app\dist\opentars-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART" -Wait -PassThru
           if ($p.ExitCode -ne 0) { throw "setup saiu com $($p.ExitCode)" }
-          if (-not (Test-Path "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd")) { throw "opentars.cmd não existe" }
-          & "$env:LOCALAPPDATA\openTARS\bin\opentars.cmd" --version
+          $raiz = "$env:LOCALAPPDATA\Programs\openTARS"
+          foreach ($f in "runtime\python.exe", "runtime\pythonw.exe", "app\tars.py", "app\.empacotado", "bin\opentars.cmd", "unins000.exe") {
+            if (-not (Test-Path "$raiz\$f")) { throw "falta $f" }
+          }
+          if (-not (Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\openTARS.lnk")) { throw "sem atalho" }
+          $u = [Environment]::GetEnvironmentVariable("Path", "User")
+          if (($u -split ";") -notcontains "$raiz\bin") { throw "opentars não está no PATH do usuário" }
+          & "$raiz\bin\opentars.cmd" --version
           if ($LASTEXITCODE -ne 0) { throw "opentars --version falhou" }
-          $arp = Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" | Where-Object { $_.GetValue("DisplayName") -eq "openTARS" }
-          if (-not $arp) { throw "não aparece em Aplicativos instalados" }
+          & "$raiz\bin\opentars.cmd" --diagnostico
+          if (-not (Test-Path "$env:USERPROFILE\opentars-autoteste.txt")) { throw "sem relatório do diagnóstico" }
+          $s = Get-ChildItem -Recurse "$raiz\app\motor-embutido" -Filter llama-server.exe
+          if ($s.Count -lt 2) { throw "o motor embutido (Vulkan e CPU) não está no pacote" }
+          & ($s | Where-Object { $_.FullName -like "*\cpu\*" } | Select-Object -First 1).FullName --version
+          $env:QT_QPA_PLATFORM = "offscreen"
+          Push-Location "$raiz\app"
+          & "$raiz\runtime\python.exe" -c "import tars_qt.principal, tars_qt.atalhos_windows, uiautomation, tars_motor_local as m; b = m.binario(); print('motor:', b); assert b and 'motor-embutido' in str(b)"
+          if ($LASTEXITCODE -ne 0) { throw "o app empacotado não carrega" }
+          & "$raiz\runtime\python.exe" -c "import tars_atualizacao as a; assert a.empacotado() and not a.pelo_script(); print('atualização pelo pacote')"
+          if ($LASTEXITCODE -ne 0) { throw "o app não se reconhece como empacotado" }
+          Pop-Location
+      - name: Instalar por cima (como a atualização do app, com /REABRIR=1)
+        shell: powershell
+        run: |
+          $p = Start-Process app\dist\opentars-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/REABRIR=1" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "setup por cima saiu com $($p.ExitCode)" }
+          Start-Sleep 8
+          $abertos = Get-Process pythonw -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "$env:LOCALAPPDATA\Programs\openTARS\*" }
+          if (-not $abertos) { throw "o app não reabriu depois da atualização" }
+          $abertos | Stop-Process -Force
+      - name: O instalar.ps1 (irm | iex) com os arquivos daqui
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force rel | Out-Null
+          Copy-Item app\dist\opentars-setup.exe rel\
+          $h = (Get-FileHash -Algorithm SHA256 rel\opentars-setup.exe).Hash.ToLower()
+          Set-Content -Encoding ascii rel\SHA256SUMS "$h  opentars-setup.exe"
+          $env:OPENTARS_RELEASE = "file:///" + ((Resolve-Path rel).Path -replace "\\", "/")
+          .\app\empacotamento\windows\instalar.ps1
+          Get-Process pythonw -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "$env:LOCALAPPDATA\Programs\openTARS\*" } | Stop-Process -Force
       - name: Desinstalar
         shell: powershell
         run: |
           $u = (Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" | Where-Object { $_.GetValue("DisplayName") -eq "openTARS" }).GetValue("UninstallString")
           $exe = ($u -replace '^"([^"]+)".*','$1')
           Start-Process $exe -ArgumentList "/VERYSILENT" -Wait
-          if (Test-Path "$env:LOCALAPPDATA\openTARS") { throw "não removeu" }
+          Start-Sleep 3
+          if (Test-Path "$env:LOCALAPPDATA\Programs\openTARS\app") { throw "não removeu" }
 
-  instalador_macos:
-    runs-on: macos-latest
+  pacote_macos:
+    # 14/11: o openTARS.app pronto (Python, Qt e o llama-server com Metal ou CPU dentro), assinado ad-hoc, no .dmg.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {runner: macos-latest, maquina: arm64}
+          - {runner: macos-13, maquina: x86_64}
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
-      - name: Instalar
-        run: bash app/empacotamento/macos/instalar.sh --fonte app --sem-ollama
-      - name: Diagnóstico pelo comando instalado e o app assinado
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Montar o openTARS.app e o .dmg
+        run: python3 app/empacotamento/montar_pacote.py --saida dist/pacote
+      - uses: actions/upload-artifact@v4
+        with: { name: "openTARS-macos-${{ matrix.maquina }}", path: "dist/pacote/openTARS-macos-${{ matrix.maquina }}.dmg" }
+      - name: O instalar.sh (curl | bash) com os arquivos daqui
         run: |
-          ~/.local/bin/opentars --diagnostico || true
-          test -f ~/opentars-autoteste.txt
-          test -x ~/Applications/openTARS.app/Contents/MacOS/openTARS
-          codesign -v ~/Applications/openTARS.app
-      - name: Um Terminal novo (zsh) acha o comando opentars
+          mkdir rel && cp dist/pacote/openTARS-macos-*.dmg rel/
+          (cd rel && shasum -a 256 openTARS-macos-*.dmg > SHA256SUMS && cat SHA256SUMS)
+          OPENTARS_RELEASE="file://$PWD/rel" bash app/empacotamento/macos/instalar.sh
+          pkill -f "$HOME/Applications/openTARS.app/Contents/Resources/runtime" || true
+      - name: Conferir o app instalado
+        env: {QT_QPA_PLATFORM: offscreen}
         run: |
+          A="$HOME/Applications/openTARS.app"
+          codesign --verify --deep --strict "$A"
+          test -x "$A/Contents/MacOS/openTARS" && test -f "$A/Contents/Resources/app/.empacotado"
+          plutil -extract NSMicrophoneUsageDescription raw "$A/Contents/Info.plist"
           zsh -ic 'command -v opentars && opentars --version' | tee /tmp/zsh.txt
           grep -q "openTARS 5\." /tmp/zsh.txt
-      - name: A janela carrega (sem tela)
-        env: {QT_QPA_PLATFORM: offscreen}
-        run: cd "$HOME/Library/Application Support/openTARS/app" && "../venv/bin/python3" -c "import tars_qt.principal; print('qt ok')"
-      - name: Backend do macOS no Python instalado
-        env: {QT_QPA_PLATFORM: offscreen}
+          ~/.local/bin/opentars --diagnostico || true
+          test -f ~/opentars-autoteste.txt
+          S="$(find "$A/Contents/Resources/app/motor-embutido" -name llama-server -type f | head -1)"
+          test -n "$S" && "$S" --version
+          cd "$A/Contents/Resources/app"
+          ../runtime/bin/python3 -c "import tars_qt.principal, tars_motor_local as m; b = m.binario(); print('motor:', b); assert b and 'motor-embutido' in str(b)"
+          ../runtime/bin/python3 -c "import tars_atualizacao as a; assert a.empacotado() and a.pacote_mac_atual().name == 'openTARS.app'; print('atualização pelo pacote')"
+          ../runtime/bin/python3 "$GITHUB_WORKSPACE/app/tests/test_plataforma_macos.py"
+      - name: Atualizar pelo .dmg (o caminho do botão Atualizar)
         run: |
-          "$HOME/Library/Application Support/openTARS/venv/bin/python3" app/tests/test_plataforma_macos.py
-          plutil -extract NSMicrophoneUsageDescription raw ~/Applications/openTARS.app/Contents/Info.plist
+          cd "$HOME/Applications/openTARS.app/Contents/Resources/app"
+          ../runtime/bin/python3 -c "import tars_atualizacao as a, glob; print(a.instalar_dmg(glob.glob('$GITHUB_WORKSPACE/rel/*.dmg')[0]))"
+          test -x "$HOME/Applications/openTARS.app/Contents/MacOS/openTARS" && test ! -e "$HOME/Applications/openTARS.app.velho"
       - name: Remover
         run: |
           bash app/empacotamento/macos/instalar.sh --remover
-          test ! -e "$HOME/Library/Application Support/openTARS"
+          test ! -e "$HOME/Applications/openTARS.app" && test ! -e ~/.local/bin/opentars

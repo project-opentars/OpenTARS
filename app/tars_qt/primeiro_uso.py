@@ -29,7 +29,6 @@ import tars_primeiro_uso as pu
 from tars_i18n import t
 
 from . import fio, tema
-from .login_ollama import LoginOllama
 from .tema import CORES, Marcador, aplicar_papel, rotulo
 
 LARGURA = 620          # largura do conteúdo, como no mockup
@@ -310,8 +309,8 @@ class PaginaOllama(Pagina):
         self.erro.setText(erro)
         self.erro.setVisible(bool(erro))
         parado = estado in ("procurando", "instalando", "iniciando")
-        self.b_instalar.setVisible(estado == "faltando")
-        self.b_iniciar.setVisible(estado == "parado")
+        self.b_instalar.setVisible(False)
+        self.b_iniciar.setVisible(False)
         self.b_procurar.setVisible(estado in ("parado", "faltando"))
         self.b_procurar.setEnabled(not parado)
         self.b_continuar.setEnabled(estado == "ok")
@@ -321,67 +320,46 @@ class PaginaOllama(Pagina):
         self.procurar()
 
     def procurar(self):
+        """14/11: só o motor llama.cpp (o Ollama saiu). O app empacotado já traz o llama-server; sem ele, baixa sozinho (~35 MB)."""
         self.mostrar("procurando")
         sinais = self.jan.sinais
         threading.Thread(target=lambda: fio.emitir(sinais.ollama, self._achar_motor()), daemon=True).start()
 
     @staticmethod
     def _achar_motor():
-        """5.3 (F9): o motor llama.cpp primeiro; um Ollama que já está aqui também serve."""
         import tars_motor_local as motor
-        if motor.binario() is not None and motor.escolhido() == "llamacpp":
-            endereco = motor.garantir()
-            if endereco:
-                return {"instalado": True, "responde": True, "host": endereco, "versao": "llama.cpp " + motor.VERSAO_LLAMA}
-        r = pu.achar_ollama()
-        if r["versao"]:
-            r["versao"] = "Ollama " + r["versao"]
-        return r
+        if os.environ.get("OLLAMA_HOST") or motor.escolhido() == "ollama":     # endereço de fora, dado à mão (testes, desenvolvimento)
+            return pu.achar_ollama([pu.endereco_ollama()], tem_comando=False)
+        erro = ""
+        try:
+            if motor.binario() is None:
+                motor.instalar_binario()
+            endereco = motor.garantir(espera=30)
+        except (OSError, ValueError) as e:
+            endereco, erro = None, str(e)
+        if endereco:
+            return {"instalado": True, "responde": True, "host": endereco, "versao": "llama.cpp " + motor.VERSAO_LLAMA}
+        return {"instalado": motor.binario() is not None, "responde": False, "host": motor.URL, "versao": "",
+                "erro": erro or "llama-server"}
 
     def resultado(self, r):
         self.jan.estado["host"] = r["host"]
         if r["responde"]:
             self.mostrar("ok", t("pu.ollama.ok", versao=r["versao"]))
-        elif r["instalado"]:
-            self.mostrar("parado")
         else:
-            self.mostrar("faltando")
+            self.mostrar("faltando", erro=t("pu.ollama.erro_instalar", motivo=r.get("erro") or "?"))
 
     def instalar(self):
-        self.mostrar("instalando")
-        sinais = self.jan.sinais
-        threading.Thread(target=lambda: fio.emitir(sinais.instalado, *self._instalar_motor()), daemon=True).start()
-
-    @staticmethod
-    def _instalar_motor():
-        """Baixa o llama-server (~35 MB, SHA-256 conferido, sem senha) e sobe o motor. Devolve (ok, motivo)."""
-        import tars_motor_local as motor
-        try:
-            motor.instalar_binario()
-        except (OSError, ValueError) as e:
-            return False, str(e)
-        return (True, "") if motor.garantir() else (False, "llama-server")
+        self.procurar()
 
     def instalou(self, ok, msg):
-        if ok:
-            self.procurar()
-        elif msg.startswith("https://"):      # Windows e macOS: o instalador do Ollama é o do site, a pessoa instala
-            import webbrowser
-            webbrowser.open(msg)
-            self.mostrar("faltando", erro=t("pu.ollama.abri_download"))
-        else:
-            self.mostrar("faltando", erro=t("pu.ollama.erro_instalar", motivo=msg))
+        self.procurar()
 
     def iniciar(self):
-        self.mostrar("iniciando")
-        sinais = self.jan.sinais
-        threading.Thread(target=lambda: fio.emitir(sinais.iniciado, *pu.iniciar_ollama()), daemon=True).start()
+        self.procurar()
 
     def iniciou(self, ok, msg):
-        if ok:
-            self.procurar()
-        else:
-            self.mostrar("parado", erro=t("pu.ollama.erro_iniciar", motivo=msg))
+        self.procurar()
 
 
 class PaginaNuvem(Pagina):
@@ -419,9 +397,7 @@ class PaginaChave(Pagina):
         super().__init__(jan, t("pu.chave.titulo"), t("pu.chave.texto"))
 
     def construir(self):
-        # 5.1: o caminho principal é a conta do Ollama (sem chave); a chave de API fica como alternativa
-        self.login = LoginOllama(lambda: self.jan.estado["host"])
-        self.corpo.addWidget(self.login)
+        # 14/11: sem a conta do Ollama (o Ollama saiu); só a chave de API da própria pessoa
         self.corpo.addWidget(rotulo(t("pu.chave.ou_chave"), "campo"))
         salvo = pu.carregar_nuvem()
         self.grupo_chips = QButtonGroup(self)
@@ -430,7 +406,7 @@ class PaginaChave(Pagina):
         linha.setSpacing(6)
         self.chips = {}
         for prov in pu.PROVEDORES:
-            b = botao(prov["nome"], "chip")
+            b = botao(t("pu.chave.outro") if prov["id"] == "outro" else prov["nome"], "chip")
             b.setCheckable(True)
             self.grupo_chips.addButton(b)
             self.chips[prov["id"]] = b
@@ -465,10 +441,10 @@ class PaginaChave(Pagina):
         self.nav.addWidget(botao(t("pu.voltar"), "contorno", lambda: self.jan.ir("nuvem")))
         self.nav.addStretch(1)
         self.nav.addWidget(botao(t("pu.continuar"), "primario", self.continuar))
-        inicial = salvo["provedor"] if salvo["provedor"] in self.chips else "ollama"
+        inicial = salvo["provedor"] if salvo["provedor"] in self.chips else ("outro" if salvo["endereco"] else "groq")
         self.chips[inicial].setChecked(True)
         self.escolheu(inicial)
-        if salvo["endereco"] and salvo["provedor"] == inicial:
+        if salvo["endereco"] and (salvo["provedor"] == inicial or inicial == "outro"):
             self.endereco.setText(salvo["endereco"])
 
     def escolheu(self, id_):
@@ -493,17 +469,8 @@ class PaginaChave(Pagina):
                  "rede": "pu.chave.erro_rede", "limite": "pu.chave.erro_limite"}.get(motivo)
         self.resultado.setText(t(chave) if chave else t("pu.chave.erro_outro", motivo=motivo))
 
-    def ao_entrar(self):
-        self.login.atualizar()
-
     def continuar(self):
         sem_chave = not self.endereco.text().strip() or not self.chave.text().strip()
-        conta = self.login.conta if self.login.conferido else (sem_chave and pu.conta_ollama(self.jan.estado["host"]))
-        if sem_chave and conta:
-            pu.salvar_nuvem(False)                 # a nuvem vem pela conta do Ollama: nenhuma chave guardada
-            self.jan.estado["nuvem_conta"] = True
-            self.jan.ir("gargantua")
-            return
         if sem_chave:
             self.resultado.setText(t("pu.chave.falta"))
             return
@@ -819,11 +786,10 @@ class PaginaPronto(Pagina):
         self.nav.addWidget(botao(t("pu.pronto.abrir"), "primario", self.jan.terminar))
 
     def ao_entrar(self):
-        if self.jan.estado.get("nuvem_conta"):
-            self.resumo_nuvem.definir("feito", t("pu.pronto.nuvem_conta"))
-        elif self.jan.estado.get("nuvem_sim"):
+        if self.jan.estado.get("nuvem_sim"):
             n = pu.carregar_nuvem()
-            self.resumo_nuvem.definir("feito", t("pu.pronto.nuvem_sim", provedor=pu.provedor(n["provedor"])["nome"]))
+            p = pu.provedor(n["provedor"])
+            self.resumo_nuvem.definir("feito", t("pu.pronto.nuvem_sim", provedor=t("pu.chave.outro") if p["id"] == "outro" else p["nome"]))
         else:
             self.resumo_nuvem.definir("feito", t("pu.pronto.nuvem_nao"))
 

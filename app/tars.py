@@ -225,11 +225,13 @@ def _normalizar_ollama_host(valor):
 
 
 OLLAMA_HOST = _normalizar_ollama_host(os.environ.get("OLLAMA_HOST"))
-if not os.environ.get("OLLAMA_HOST"):   # 5.3: o motor llama.cpp é o padrão (se já instalado); senão, ou se a config de dev escolheu o Ollama, o Ollama
+if not os.environ.get("OLLAMA_HOST"):   # 14/11: o motor é sempre o llama.cpp (o Ollama saiu); TARS_MOTOR=ollama é só para desenvolvimento
     try:
         import tars_motor_local
         if tars_motor_local.escolhido() == "llamacpp":
-            OLLAMA_HOST = tars_motor_local.garantir() or OLLAMA_HOST
+            # o endereço do motor mesmo que ele ainda não esteja de pé (primeiro uso, antes de baixar): quem sobe o motor depois
+            # (primeiro uso, garantir()) usa a mesma porta, e o app não fica apontando para um Ollama que não existe até reiniciar
+            OLLAMA_HOST = tars_motor_local.garantir() or tars_motor_local.URL
     except Exception:
         pass
 
@@ -246,7 +248,7 @@ def _ollama_responde(url, espera=0.8):
 # do Windows (servidor DNS e gateway do WSL). O Ollama do Windows precisa
 # escutar fora do 127.0.0.1 (OLLAMA_HOST=0.0.0.0 lá).
 OLLAMA_NO_WINDOWS = False
-if EM_WSL and not os.environ.get("OLLAMA_HOST") and not _ollama_responde(OLLAMA_HOST):
+if EM_WSL and os.environ.get("TARS_MOTOR", "").lower() == "ollama" and not os.environ.get("OLLAMA_HOST") and not _ollama_responde(OLLAMA_HOST):
     for _candidato in ambiente.candidatos_ollama_wsl():
         if _ollama_responde(_candidato):
             OLLAMA_HOST, OLLAMA_NO_WINDOWS = _candidato, True

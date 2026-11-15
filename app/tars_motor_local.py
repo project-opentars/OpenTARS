@@ -1,11 +1,14 @@
 """O motor do openTARS 5.3 (F9 do PLANO_5.3.md): llama.cpp por dentro, a API do Ollama por fora.
 
-Decidido pelo Enzo em 07/11: llama.cpp nos três sistemas, e a parte de visão (mmproj) só quando chega uma imagem. O app continua
-falando "Ollama" (13 chamadas, tars_motor.ROTAS): este processo responde nessas rotas e roda um `llama-server` por modelo em uso.
+Decidido pelo Enzo em 07/11: llama.cpp nos três sistemas, e a parte de visão (mmproj) só quando chega uma imagem. Em 14/11 ele
+tirou o Ollama de tudo: o app não fala mais com um Ollama de verdade. Por dentro o app ainda usa o formato de pedido que era o
+do Ollama (13 chamadas, tars_motor.ROTAS): este processo responde nessas rotas e roda um `llama-server` por modelo em uso.
 
 - Modelos Gargantua baixados do Hugging Face (OpenTARS/...) com SHA-256 conferido, na pasta de dados do app.
 - `llama-server` da Release fixa do ggml-org (VERSAO_LLAMA), conferido pelo hash: Vulkan no Linux e no Windows (com reserva em CPU
-  se a máquina não tiver Vulkan), Metal no macOS.
+  se a máquina não tiver Vulkan ou se o Vulkan cair ao carregar), Metal no macOS. O app empacotado do Windows e do macOS já traz o
+  llama-server (pasta motor-embutido/ ao lado deste arquivo): nada a baixar além do modelo.
+- Modelos da loja (Hugging Face, qualquer GGUF): a ficha fica em loja.json, na pasta do motor, e entra no catálogo.
 - Uma instância por modelo; a de visão só sobe quando o pedido traz imagem. Cada uma sai depois do keep_alive parado (padrão 5 min,
   -1 = fica, 0 = sai já). O processo do motor fica aberto (como o serviço do Ollama), só com uns MB de Python.
 
@@ -42,7 +45,7 @@ BINARIOS = {   # (sistema, máquina, aceleração): (arquivo, sha256)
     ("macos", "arm64", "metal"): ("llama-b12032-bin-macos-arm64.tar.gz", "00468fe833eb000b78a748122f5921b6c7b07dc82331a8d0c68196c69cb26382"),
     ("macos", "x86_64", "cpu"): ("llama-b12032-bin-macos-x64.tar.gz", "291d99f3b6f45f67f73afe5381540f29928840a1a14d9c19d6595bd649a035fc"),
 }
-_HF = "https://huggingface.co/OpenTARS/{repo}/resolve/main/{arquivo}"
+_HF = "https://huggingface.co/{repo}/resolve/main/{arquivo}"
 _PARAMETROS_QWEN = "top_k                          20\ntop_p                          0.8\nrepeat_penalty                 1.05\ntemperature                    0.4"
 _PARAMETROS_GEMMA = "top_k                          64\ntop_p                          0.95\ntemperature                    0.4"
 CATALOGO = {   # a ficha que o Ollama dava para cada modelo (copiada em 07/11), mais os arquivos do Hugging Face
@@ -76,8 +79,16 @@ CATALOGO = {   # a ficha que o Ollama dava para cada modelo (copiada em 07/11), 
         "mmproj": None, "capabilities": ["completion", "tools", "insert"], "family": "qwen2", "parameter_size": "7.6B", "quantization_level": "Q4_K_M",
         "parameters": _PARAMETROS_QWEN},
 }
+for _ficha in CATALOGO.values():          # os nossos ficam na organização OpenTARS do Hugging Face
+    _ficha["repo"] = "OpenTARS/" + _ficha["repo"]
+_FIXOS = frozenset(CATALOGO)
+_PARAMETROS_LOJA = "top_k                          40\ntop_p                          0.95\nrepeat_penalty                 1.05\ntemperature                    0.6"
 KEEP_ALIVE_PADRAO = 300
-OLLAMA = os.environ.get("TARS_OLLAMA_REAL") or "http://127.0.0.1:11434"   # modelos que não são do catálogo ("Mais modelos") seguem para ele
+# a identidade deste código do motor: depois de uma atualização, um motor antigo ainda aberto responde com outra e é trocado
+try:
+    IDENTIDADE = "%d-%d" % (os.stat(__file__).st_mtime, os.stat(__file__).st_size)
+except OSError:
+    IDENTIDADE = "?"
 CONTEXTO = 8192
 
 
@@ -109,25 +120,55 @@ def tem_vulkan():
     return False
 
 
+def _marca_sem_gpu():
+    return pasta() / "sem-gpu"
+
+
 def variantes():
-    """As acelerações a tentar, da melhor para a reserva."""
+    """As acelerações a tentar, da melhor para a reserva. Se a GPU já falhou ao carregar um modelo nesta máquina (marca
+    sem-gpu), só a CPU: um Vulkan quebrado (driver velho, placa integrada fraca) não pode deixar a pessoa sem IA."""
     s, m = sistema_e_maquina()
     if s == "macos":
         return ["metal"] if m == "arm64" else ["cpu"]
-    return (["vulkan"] if tem_vulkan() else []) + ["cpu"]
+    gpu = ["vulkan"] if tem_vulkan() and not _marca_sem_gpu().exists() else []
+    return gpu + ["cpu"]
 
 
-def binario():
-    """O llama-server instalado (o da melhor variante que já foi baixada), ou None."""
-    s, m = sistema_e_maquina()
-    nome = "llama-server.exe" if s == "windows" else "llama-server"
-    for v in variantes():
-        raiz = pasta() / VERSAO_LLAMA / v
+def _raizes(v):
+    """Onde procurar o llama-server da variante v: o que veio dentro do app empacotado e o que o app baixou."""
+    return [Path(__file__).resolve().parent / "motor-embutido" / VERSAO_LLAMA / v, pasta() / VERSAO_LLAMA / v]
+
+
+def _binario_da(v):
+    nome = "llama-server.exe" if sistema_e_maquina()[0] == "windows" else "llama-server"
+    for raiz in _raizes(v):
         if raiz.exists():
             achado = next(iter(sorted(raiz.rglob(nome))), None)
             if achado:
                 return achado
     return None
+
+
+def binario():
+    """O llama-server instalado (o da melhor variante que existe aqui), ou None."""
+    for v in variantes():
+        achado = _binario_da(v)
+        if achado:
+            return achado
+    return None
+
+
+def variante_do(caminho):
+    """"vulkan", "cpu" ou "metal": a pasta da variante é o nome logo abaixo de VERSAO_LLAMA."""
+    partes = Path(caminho).parts
+    return partes[partes.index(VERSAO_LLAMA) + 1] if VERSAO_LLAMA in partes else ""
+
+
+def cair_para_cpu(ao_progresso=None):
+    """A GPU falhou: marca a máquina como sem GPU e garante o llama-server de CPU (baixa se não veio no app). Devolve o caminho."""
+    _marca_sem_gpu().parent.mkdir(parents=True, exist_ok=True)
+    _marca_sem_gpu().write_text(time.strftime("%Y-%m-%d %H:%M"))
+    return _binario_da("cpu") or instalar_binario(ao_progresso)
 
 
 def _sha256(caminho, algoritmo="sha256"):
@@ -176,6 +217,8 @@ def instalar_binario(ao_progresso=None):
     """Baixa e extrai o llama-server desta máquina (a melhor variante; a de CPU se a outra não existir aqui)."""
     s, m = sistema_e_maquina()
     for v in variantes():
+        if _binario_da(v):
+            return _binario_da(v)
         chave = (s, m, v)
         if chave not in BINARIOS:
             continue
@@ -257,6 +300,70 @@ def preparar(nomes, ao_progresso=None):
             obter_arquivo(ficha["repo"], arquivo, sha, ao_progresso)
 
 
+# ---------------------------------------------------------------- modelos da loja (Hugging Face)
+
+def arquivo_loja():
+    return pasta() / "loja.json"
+
+
+def _arquivo_valido(item):
+    """[nome do arquivo, sha256, tamanho]: nome simples terminado em .gguf (nada de pasta nem "..": o nome vira caminho no disco)."""
+    try:
+        nome, sha, tamanho = item
+    except (TypeError, ValueError):
+        return False
+    return (isinstance(nome, str) and nome.endswith(".gguf") and Path(nome).name == nome and not nome.startswith(".")
+            and isinstance(sha, str) and len(sha) == 64 and all(c in "0123456789abcdef" for c in sha) and isinstance(tamanho, int))
+
+
+def ficha_valida(ficha):
+    import re
+    return (isinstance(ficha, dict) and isinstance(ficha.get("repo"), str) and re.fullmatch(r"[\w.-]+/[\w.-]+", ficha["repo"]) is not None
+            and _arquivo_valido(ficha.get("gguf")) and (ficha.get("mmproj") is None or _arquivo_valido(ficha["mmproj"])))
+
+
+def _ler_loja():
+    try:
+        dados = json.loads(arquivo_loja().read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return {n: f for n, f in dados.items() if n not in _FIXOS and ficha_valida(f)} if isinstance(dados, dict) else {}
+
+
+def recarregar_loja():
+    """Põe no catálogo os modelos que a pessoa trouxe da loja (e tira os que ela apagou). O app grava, o motor relê a cada pedido."""
+    loja = _ler_loja()
+    for nome in [n for n in CATALOGO if n not in _FIXOS and n not in loja]:
+        CATALOGO.pop(nome)
+    for nome, f in loja.items():
+        CATALOGO[nome] = {"repo": f["repo"], "gguf": tuple(f["gguf"]), "mmproj": tuple(f["mmproj"]) if f.get("mmproj") else None,
+                          "capabilities": list(f.get("capabilities") or ["completion"]), "family": str(f.get("family") or "gguf"),
+                          "parameter_size": str(f.get("parameter_size") or ""), "quantization_level": str(f.get("quantization_level") or ""),
+                          "parameters": _PARAMETROS_LOJA, "loja": True}
+
+
+def adicionar_da_loja(nome, ficha):
+    """Grava a ficha de um modelo da loja (o motor passa a aceitar /api/pull dele). Levanta ValueError se a ficha não é válida."""
+    if nome in _FIXOS or not ficha_valida(ficha):
+        raise ValueError(f"invalid model entry: {nome}")
+    dados = _ler_loja()
+    dados[nome] = ficha
+    arquivo_loja().parent.mkdir(parents=True, exist_ok=True)
+    temporario = arquivo_loja().with_suffix(".novo")
+    temporario.write_text(json.dumps(dados, ensure_ascii=False, indent=1), encoding="utf-8")
+    os.replace(temporario, arquivo_loja())
+    recarregar_loja()
+
+
+def remover_da_loja(nome):
+    dados = _ler_loja()
+    if dados.pop(nome, None) is not None:
+        temporario = arquivo_loja().with_suffix(".novo")
+        temporario.write_text(json.dumps(dados, ensure_ascii=False, indent=1), encoding="utf-8")
+        os.replace(temporario, arquivo_loja())
+    recarregar_loja()
+
+
 def _nome(nome):
     """"ProjectOpenTARS/Gargantua-2" é o mesmo que ":latest", como no Ollama."""
     return nome if not nome or ":" in nome.split("/")[-1] else nome + ":latest"
@@ -269,19 +376,14 @@ def instalado(nome):
 
 
 def instalados():
+    recarregar_loja()
     return [n for n in CATALOGO if instalado(n)]
 
 
 def escolhido():
-    """"llamacpp" (padrão) ou "ollama". A variável TARS_MOTOR vale mais que a config (chave "motor", Configurações > Avançado, de dev)."""
-    v = (os.environ.get("TARS_MOTOR") or "").strip().lower()
-    if v not in ("ollama", "llamacpp"):
-        try:
-            import tars_i18n
-            v = str(tars_i18n.ler_config().get("motor", "")).strip().lower()
-        except Exception:
-            v = ""
-    return "ollama" if v == "ollama" else "llamacpp"
+    """Sempre "llamacpp" para quem usa o app (14/11: o Ollama saiu de tudo). Só a variável de desenvolvimento TARS_MOTOR=ollama
+    (baterias do Lab e modelos de teste locais) aponta o app para um Ollama de verdade; não há chave na interface nem na config."""
+    return "ollama" if (os.environ.get("TARS_MOTOR") or "").strip().lower() == "ollama" else "llamacpp"
 
 
 def pronto():
@@ -308,7 +410,11 @@ class Instancia:
         self.nome, self.visao, self.porta = nome, visao, _porta_livre()
         self.ultimo, self.keep_alive = time.time(), KEEP_ALIVE_PADRAO
         comando = [str(binario()), "-m", str(pasta_modelos() / ficha["gguf"][0]), "--host", "127.0.0.1", "--port", str(self.porta),
-                   "-c", str(CONTEXTO), "--jinja", "--parallel", "1", "--no-webui", "-ngl", "99"]
+                   "-c", str(CONTEXTO), "--jinja", "--parallel", "1", "--no-webui"]
+        # sem -ngl: o padrão do b12032 é "auto" com --fit, que põe na placa só as camadas que cabem. O -ngl 99 de antes desligava
+        # isso e um modelo maior que a VRAM (o 2.5 tem 5,3 GB; muito notebook tem 4 GB) nem carregava (revisão do Windows, 14/11)
+        if variante_do(comando[0]) == "cpu":
+            comando += ["-ngl", "0"]
         if visao and ficha.get("mmproj"):
             comando += ["--mmproj", str(pasta_modelos() / ficha["mmproj"][0])]
         registro = open(pasta() / "llama-server.log", "ab")
@@ -348,7 +454,14 @@ class Motor:
             chave = (nome, visao)
             atual = self.instancias.get(chave)
             if atual is None or atual.processo.poll() is not None:
-                atual = self.instancias[chave] = Instancia(nome, visao)
+                try:
+                    atual = Instancia(nome, visao)
+                except RuntimeError:
+                    if variante_do(binario() or "") != "vulkan":
+                        raise
+                    cair_para_cpu()             # o Vulkan caiu ao carregar: daqui em diante, CPU (marca sem-gpu)
+                    atual = Instancia(nome, visao)
+                self.instancias[chave] = atual
             atual.ultimo = time.time()
             return atual
 
@@ -466,15 +579,6 @@ def _tem_imagem(corpo):
 
 # ---------------------------------------------------------------- o servidor com cara de Ollama
 
-def _do_ollama(caminho):
-    """Os modelos do Ollama da pessoa, menos os que o motor já tem (ele serve esses). Lista vazia se não há Ollama."""
-    try:
-        with urllib.request.urlopen(OLLAMA + caminho, timeout=1.5) as r:
-            return [m for m in json.loads(r.read()).get("models", []) if not instalado(m.get("name"))]
-    except (OSError, ValueError):
-        return []
-
-
 def _ficha_tags(nome):
     ficha = CATALOGO[nome]
     caminho = pasta_modelos() / ficha["gguf"][0]
@@ -521,14 +625,15 @@ def servir():
 
         def do_GET(self):
             motor.ultimo_pedido = time.time()
+            recarregar_loja()
             if self.path == "/api/version":
-                return self._json({"version": "0.40.6"})
+                return self._json({"version": "0.40.6", "motor": IDENTIDADE})
             if self.path == "/api/tags":
-                return self._json({"models": [_ficha_tags(n) for n in instalados()] + _do_ollama("/api/tags")})
+                return self._json({"models": [_ficha_tags(n) for n in instalados()]})
             if self.path == "/api/ps":
                 with motor.trava:
                     vivos = {c[0] for c in motor.instancias}
-                return self._json({"models": [dict(_ficha_tags(n), size_vram=0, expires_at="") for n in vivos] + _do_ollama("/api/ps")})
+                return self._json({"models": [dict(_ficha_tags(n), size_vram=0, expires_at="") for n in vivos]})
             if self.path in ("/", "/api"):
                 return self._json({"status": "openTARS motor (llama.cpp)"})
             self._json({"error": "not found"}, 404)
@@ -538,34 +643,21 @@ def servir():
             self.send_header("Content-Length", "0")
             self.end_headers()
 
-        def _repassar(self, corpo):
-            """Pedido de um modelo de fora do catálogo: vai igual para o Ollama da pessoa, e a resposta volta pedaço por pedaço."""
-            pedido = urllib.request.Request(OLLAMA + self.path, json.dumps(corpo).encode(), {"Content-Type": "application/json"}, method=self.command)
-            try:
-                r = urllib.request.urlopen(pedido, timeout=900)
-            except urllib.error.HTTPError as e:
-                r = e
-            except OSError:
-                return self._json({"error": f"model '{corpo.get('model') or corpo.get('name')}' not found"}, 404)
-            with r:
-                self.send_response(r.status)
-                self.send_header("Content-Type", r.headers.get("Content-Type") or "application/json")
-                self.send_header("Transfer-Encoding", "chunked")
-                self.end_headers()
-                for bloco in iter(lambda: r.read1(1 << 16), b""):
-                    self.wfile.write(f"{len(bloco):x}\r\n".encode() + bloco + b"\r\n")
-                    self.wfile.flush()
-                self._fim_linhas()
+        def _nao_tem(self, corpo):
+            return self._json({"error": f"model '{corpo.get('model') or corpo.get('name')}' not found"}, 404)
 
         def do_DELETE(self):
             corpo = self._corpo()
             nome = _nome(corpo.get("model") or corpo.get("name"))
             if nome not in CATALOGO:
-                return self._repassar(corpo)
+                return self._nao_tem(corpo)
             motor.descarregar(nome)
             ficha = CATALOGO[nome]
             for arquivo in [ficha["gguf"]] + ([ficha["mmproj"]] if ficha.get("mmproj") else []):
                 (pasta_modelos() / arquivo[0]).unlink(missing_ok=True)
+                (pasta_modelos() / (arquivo[0] + ".sha256")).unlink(missing_ok=True)
+            if ficha.get("loja"):
+                remover_da_loja(nome)
             self._json({})
 
         def _corpo(self):
@@ -577,10 +669,15 @@ def servir():
 
         def do_POST(self):
             motor.ultimo_pedido = time.time()
+            if self.path == "/api/encerrar":            # o app de outra versão pede a vez (garantir)
+                self._json({"status": "bye"})
+                threading.Thread(target=servidor.shutdown, daemon=True).start()
+                return
+            recarregar_loja()
             corpo = self._corpo()
             nome = _nome(corpo.get("model") or corpo.get("name"))
             if nome not in CATALOGO or (self.path != "/api/pull" and not instalado(nome) and self.path != "/api/delete"):
-                return self._repassar(corpo)
+                return self._nao_tem(corpo)
             if self.path == "/api/show":
                 if nome not in CATALOGO or not instalado(nome):
                     return self._json({"error": f"model '{nome}' not found"}, 404)
@@ -759,17 +856,57 @@ def servir():
 # ---------------------------------------------------------------- o lado do app
 
 def respondendo(tempo=1.0):
+    return identidade_no_ar(tempo) is not None
+
+
+def identidade_no_ar(tempo=1.0):
+    """A identidade do motor que responde na porta ("" se é um motor antigo, sem o campo), ou None se ninguém responde."""
     try:
         with urllib.request.urlopen(f"{URL}/api/version", timeout=tempo) as r:
-            return r.status == 200
+            return str(json.loads(r.read()).get("motor") or "") if r.status == 200 else None
     except (OSError, ValueError):
-        return False
+        return None
+
+
+def _trocar_motor_antigo():
+    """Um motor de outra versão (de antes de uma atualização) está na porta: pede para sair e espera a porta soltar. O motor
+    de antes de 14/11 não conhece o pedido: aí o processo é achado pela porta e encerrado (psutil)."""
+    try:
+        _pedir(f"{URL}/api/encerrar", {}, tempo=3).close()
+    except OSError:
+        pass
+    for _ in range(25):
+        if identidade_no_ar(0.3) is None:
+            return
+        time.sleep(0.2)
+    try:        # pela linha de comando, não pela porta: ver as portas de outro processo pede root no macOS
+        import psutil
+        for p in psutil.process_iter(["pid", "cmdline"]):
+            linha = p.info.get("cmdline") or []
+            if p.info["pid"] != os.getpid() and "--servir" in linha and any(str(x).endswith("tars_motor_local.py") for x in linha):
+                try:
+                    porta = int(p.environ().get("TARS_MOTOR_PORTA") or 11435)
+                except Exception:  # noqa: BLE001  (o ambiente de outro processo pode ser fechado: vale a porta padrão)
+                    porta = 11435
+                if porta == PORTA:      # só o motor desta porta (outro, de teste ou de outra porta, fica)
+                    p.terminate()
+    except Exception:  # noqa: BLE001  (sem permissão de ver os processos: o motor antigo continua servindo)
+        pass
+    for _ in range(25):
+        if identidade_no_ar(0.3) is None:
+            return
+        time.sleep(0.2)
 
 
 def garantir(espera=15):
     """Deixa o motor de pé (sobe em segundo plano se não estiver) e devolve o endereço, ou None se não deu."""
-    if respondendo():
+    no_ar = identidade_no_ar()
+    if no_ar == IDENTIDADE:
         return URL
+    if no_ar is not None:        # o motor de antes de uma atualização: sai para este subir
+        _trocar_motor_antigo()
+        if respondendo(0.5):
+            return URL           # não deu para trocar: segue com o que está aí
     if binario() is None:        # sem modelo também sobe: o primeiro uso baixa os modelos pelo /api/pull dele
         return None
     extra = {"creationflags": 0x08000000 | 0x00000200} if plataforma.sistema() == "windows" else {"start_new_session": True}

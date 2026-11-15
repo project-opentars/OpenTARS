@@ -7,7 +7,7 @@
 # O que faz: instala os pacotes do sistema que o openTARS usa pelo gerenciador da distribuição (dnf, pacman, zypper ou
 # apt; é a única parte que pede a senha), baixa o código do app (pasta app/ do repositório) para a pasta do usuário, cria
 # um ambiente Python com o Python do sistema (que enxerga o PyGObject e o tkinter da distribuição), e cria os comandos opentars e opentars-gui em ~/.local/bin e o atalho no menu. O motor llama.cpp e o
-# Gargantua 2.5 vêm na primeira abertura (--com-ollama instala o Ollama também). Rodar de novo atualiza. Remover: "| bash -s -- --remover".
+# Gargantua 2.5 vêm na primeira abertura. Rodar de novo atualiza. Remover: "| bash -s -- --remover".
 # Suas conversas e configurações (em ~/.config/opentars e ~/.local/share/opentars) ficam; apague as pastas se quiser.
 set -euo pipefail
 
@@ -21,15 +21,13 @@ ICONE="$DADOS/icons/hicolor/scalable/apps/opentars.svg"
 INICIO="${XDG_CONFIG_HOME:-$HOME/.config}/autostart"
 ZIP="https://github.com/project-opentars/OpenTARS/archive/refs/heads/main.zip"
 FONTE=""            # --fonte PASTA: a pasta app/ local em vez de baixar (o CI usa)
-SEM_OLLAMA=1        # 5.3: o motor é o llama.cpp (o app baixa); --com-ollama instala o Ollama também; --sem-ollama fica aceito
 SEM_SISTEMA=0       # --sem-sistema: não instala pacotes do sistema (quem já instalou à mão, ou sem sudo)
 REMOVER=0
 while [ $# -gt 0 ]; do
     case "$1" in
         --remover) REMOVER=1 ;;
         --fonte) FONTE="$2"; shift ;;
-        --sem-ollama) SEM_OLLAMA=1 ;;
-        --com-ollama) SEM_OLLAMA=0 ;;
+        --sem-ollama|--com-ollama) ;;        # aceitos e ignorados: o Ollama saiu em 14/11
         --sem-sistema) SEM_SISTEMA=1 ;;
     esac
     shift
@@ -41,8 +39,8 @@ if [ "$(id -u)" = 0 ]; then SUDO=(); else SUDO=(sudo); fi
 if [ "$REMOVER" = 1 ]; then
     rm -rf "$PASTA" "$BIN/opentars" "$BIN/opentars-gui" "$ATALHO" "$ICONE" \
            "$INICIO/opentars-assistente.desktop" "$INICIO/opentars-probes.desktop"
-    dizer "Removido. Suas conversas e configurações ficaram em ~/.config/opentars e ~/.local/share/opentars; o Ollama e os modelos também." \
-          "Removed. Your chats and settings stay in ~/.config/opentars and ~/.local/share/opentars; Ollama and the models stay too."
+    dizer "Removido. Suas conversas, configurações e modelos ficaram em ~/.config/opentars e ~/.local/share/opentars." \
+          "Removed. Your chats, settings and models stay in ~/.config/opentars and ~/.local/share/opentars."
     exit 0
 fi
 
@@ -138,17 +136,6 @@ fi
 "$VENV/bin/python3" -m pip install --quiet keyring || dizer "Aviso: o keyring não instala neste Python; o e-mail do assistente fica desligado." \
     "Warning: keyring does not install on this Python; the assistant's email stays off."
 
-# 4. O Ollama, pelo instalador oficial (ele mesmo pede a senha). Sem ele o openTARS abre, mas não tem IA local.
-if [ "$SEM_OLLAMA" = 0 ]; then
-    if command -v ollama >/dev/null 2>&1; then
-        dizer "Ollama já instalado." "Ollama already installed."
-    else
-        dizer "Instalando o Ollama (o instalador oficial; pode pedir a sua senha)..." \
-              "Installing Ollama (the official installer; may ask for your password)..."
-        curl -fsSL https://ollama.com/install.sh -o "$TEMP/ollama.sh" && sh "$TEMP/ollama.sh" \
-            || dizer "Não consegui instalar o Ollama; veja https://ollama.com/download" "Could not install Ollama; see https://ollama.com/download"
-    fi
-fi
 
 # 5. Comandos: o opentars-gui é o mesmo do .deb (instância única, modo seguro do Qt), com os caminhos daqui
 printf '#!/bin/bash\nexec "%s/bin/python3" "%s/tars.py" "$@"\n' "$VENV" "$APP" > "$BIN/opentars"

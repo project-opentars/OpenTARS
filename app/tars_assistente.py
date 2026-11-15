@@ -51,6 +51,9 @@ def comando_residente():
         python = Path(sys.executable)
         sem_console = python.with_name("pythonw.exe")
         return [str(sem_console if sem_console.exists() else python), "-m", "tars_qt", "--residente"]
+    lancador_mac = Path(__file__).resolve().parent.parent.parent / "MacOS" / "openTARS"     # o app empacotado (openTARS.app)
+    if plataforma.sistema() == "macos" and lancador_mac.exists():
+        return [str(lancador_mac), "--residente"]
     # shortcut: rodando da fonte (sem o pacote instalado) o início com o sistema não acha o opentars-gui; só vale instalado
     return [plataforma.lancador("opentars-gui") or "opentars-gui", "--residente"]
 
@@ -64,6 +67,23 @@ def inicia_com_sistema():
 
 def iniciar_com_sistema(ativo):
     return plataforma.autostart(NOME_AUTOSTART, "openTARS", comando_residente(), bool(ativo))
+
+
+def renovar_inicio_com_sistema():
+    """O atalho do início com o sistema guarda o caminho do Python. Quando o app muda de lugar (a instalação por script do
+    Windows e do macOS virou app empacotado em 14/11), o atalho antigo aponta para um Python que não existe mais: regrava
+    com o caminho de agora, numa thread (no Windows passa pelo PowerShell). Só se a pessoa tinha o início ligado."""
+    if os.environ.get("TARS_SEM_ATALHO") == "1" or not inicia_com_sistema():
+        return
+    import threading
+    threading.Thread(target=lambda: _tentar(iniciar_com_sistema, True), daemon=True).start()
+
+
+def _tentar(f, *a):
+    try:
+        f(*a)
+    except Exception:  # noqa: BLE001  (o atalho antigo fica; a pessoa pode religar nas Configurações)
+        pass
 
 
 def aplicar_padroes(em_segundo_plano=True):

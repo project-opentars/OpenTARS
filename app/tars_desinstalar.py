@@ -53,10 +53,20 @@ def executar(host, t, entrada=input, rodar=subprocess.run, soltar=subprocess.Pop
         for nome in oficiais:
             ok, erro = tars_gerenciar_modelos.apagar(nome, host)
             print(f"  {nome}: {'ok' if ok else erro}")
+    so = plataforma.sistema()
+    if tars_atualizacao.empacotado():       # 14/11: o app empacotado sai pelo desinstalador do Windows ou apagando o .app
+        if so == "windows":
+            soltar([str(APP.parent / "unins000.exe"), "/SILENT"], creationflags=0x00000008 | 0x00000200)
+            print(t("desinst.windows"))
+            return 0
+        pacote = tars_atualizacao.pacote_mac_atual()
+        if pacote:
+            shutil.rmtree(pacote, ignore_errors=True)
+        (Path.home() / ".local" / "bin" / "opentars").unlink(missing_ok=True)
+        return 0
     if not tars_atualizacao.pelo_script():
         print(t("desinst.deb"))
         return 0
-    so = plataforma.sistema()
     if so == "windows":       # o removedor fecha o Python do openTARS e apaga a pasta: roda solto, depois que este sair
         soltar(REMOVEDOR[so], creationflags=subprocess.CREATE_NEW_CONSOLE)
         print(t("desinst.windows"))

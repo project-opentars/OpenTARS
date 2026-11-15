@@ -94,20 +94,9 @@ assert not cfg.nav["avancado"].isVisibleTo(cfg) and modos.avancado()["temperatur
 cfg.paginas["geral"].dev.setChecked(True)
 print("OK: Ajustes avançados gravam e só valem com o dev ligado")
 
-# Motor de IA (5.3): llama.cpp por padrão; a chave de dev troca para o Ollama e avisa que vale ao reabrir
-import tars_i18n  # noqa: E402
-import tars_motor_local  # noqa: E402
-os.environ.pop("TARS_MOTOR", None)
-av.ao_abrir()
-assert av.motor.currentData() == "llamacpp" and av.motor.isEnabled(), av.motor.currentData()
-av.motor.setCurrentIndex(av.motor.findData("ollama"))
-av._salvar()
-assert tars_i18n.ler_config().get("motor") == "ollama" and tars_motor_local.escolhido() == "ollama"
-assert av.msg.text() == tars_i18n.t("cfg.av.motor_reiniciar")
-av.motor.setCurrentIndex(av.motor.findData("llamacpp"))
-av._salvar()
-assert tars_motor_local.escolhido() == "llamacpp"
-print("OK: a chave de dev troca o motor entre llama.cpp (padrão) e Ollama")
+# 14/11: o Ollama saiu de tudo; Ajustes avançados não têm mais a escolha do motor
+assert not hasattr(av, "motor")
+print("OK: sem escolha de motor nos Ajustes avançados (o Ollama saiu)")
 
 # Busca de arquivos (5.3): o índice local é opcional e desligado por padrão; ligar monta em segundo plano, desligar apaga
 import tars_busca_arquivos  # noqa: E402

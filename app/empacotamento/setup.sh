@@ -101,9 +101,9 @@ modelos_instalados() {
 # criaria um segundo serviço brigando pela mesma porta.
 # ------------------------------------------------------------------
 # 5.3: o motor padrão é o llama.cpp, que o próprio app baixa no primeiro uso (sem senha), junto com o Gargantua 2.5.
-# O Ollama só entra se a pessoa escolher: TARS_MOTOR=ollama, ou "motor": "ollama" na config (Configurações > Avançado).
+# 14/11: o Ollama saiu de tudo; só a variável de desenvolvimento TARS_MOTOR=ollama (baterias do Lab) ainda o usa.
 USAR_OLLAMA=0
-if [ "${TARS_MOTOR:-}" = "ollama" ] || grep -qs '"motor": *"ollama"' "$HOME/.config/opentars/config.json"; then
+if [ "${TARS_MOTOR:-}" = "ollama" ]; then
     USAR_OLLAMA=1
 fi
 if [ "$USAR_OLLAMA" != 1 ]; then

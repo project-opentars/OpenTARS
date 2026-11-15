@@ -156,58 +156,6 @@ def achar_ollama(candidatos=None, tem_comando=None):
     return {"instalado": bool(tem_comando), "responde": False, "host": primeiro or endereco_ollama(), "versao": None}
 
 
-def comando_instalar_ollama():
-    """O instalador oficial. Pede a senha por uma janela do sistema (pkexec)
-    quando existe; sem ele, roda direto (quem é root, ou já tem sudo sem senha)."""
-    receita = "curl -fsSL https://ollama.com/install.sh | sh"
-    if os.geteuid() != 0 and shutil.which("pkexec"):
-        return ["pkexec", "sh", "-c", receita]
-    return ["sh", "-c", receita]
-
-
-def instalar_ollama(rodar=None):
-    """(ok, mensagem). `rodar` existe pros testes; no uso normal executa o instalador."""
-    if plataforma.sistema() != "linux":      # no Windows e no macOS quem instala o Ollama é o instalador do openTARS
-        return False, "https://ollama.com/download"
-    rodar = rodar or (lambda cmd: subprocess.run(cmd, capture_output=True, text=True, timeout=1800))
-    try:
-        r = rodar(comando_instalar_ollama())
-    except Exception as e:
-        return False, str(e)
-    if r.returncode != 0:
-        return False, (r.stderr or r.stdout or f"código {r.returncode}").strip()[-400:]
-    return True, ""
-
-
-def iniciar_ollama(esperar=12, procurar=None):
-    """Instalado mas parado: sobe o servidor e espera ele responder. (ok, mensagem)"""
-    procurar = procurar or (lambda: achar_ollama(tem_comando=True)["responde"])
-    if procurar():
-        return True, ""
-    so = plataforma.sistema()
-    app_windows = Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "Programs" / "Ollama" / "ollama app.exe"
-    # no Windows e no macOS o Ollama é um app de bandeja/barra de menus: abrir o app sobe o servidor do jeito dele
-    if so == "windows" and app_windows.exists():
-        comando = [str(app_windows)]
-    elif so == "macos" and Path("/Applications/Ollama.app").exists():
-        comando = ["open", "-a", "Ollama"]
-    elif shutil.which("ollama"):
-        comando = ["ollama", "serve"]
-    else:
-        return False, "ollama: comando não encontrado"
-    try:
-        subprocess.Popen(comando, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                         start_new_session=True)
-    except OSError as e:
-        return False, str(e)
-    limite = time.time() + esperar
-    while time.time() < limite:
-        if procurar():
-            return True, ""
-        time.sleep(0.5)
-    return False, "o servidor não respondeu"
-
-
 def modelos_instalados(host):
     try:
         _, corpo = _obter(motor.url("modelos", host), 4)
@@ -442,34 +390,6 @@ _RE_URL_LOGIN = re.compile(r"https://ollama\.com/\S+")
 _RE_NUVEM = re.compile(r"(^|[-:])cloud($|[-:])", re.IGNORECASE)
 
 
-def conta_ollama(host, abrir=None, timeout=4):
-    """O nome da conta do ollama.com em que este Ollama entrou (POST /api/me), ou None. Só o nome: o e-mail fica fora."""
-    pedido = urllib.request.Request(motor.url("conta", host), data=b"{}", method="POST", headers={"Content-Type": "application/json"})
-    try:
-        with (abrir or urllib.request.urlopen)(pedido, timeout=timeout) as r:
-            dados = json.loads(r.read() or b"{}")
-        return str(dados.get("name") or "").strip() or None if isinstance(dados, dict) else None
-    except Exception:
-        return None
-
-
-def iniciar_login(rodar=None):
-    """Roda `ollama signin`. Devolve (já entrou: nome ou None, endereço da página de login ou None, erro ou None).
-    O Ollama imprime o endereço; a pessoa entra (ou cria a conta) no navegador, e conta_ollama passa a responder."""
-    if not shutil.which("ollama") and rodar is None:
-        return None, None, "sem_ollama"
-    try:
-        r = (rodar or subprocess.run)(["ollama", "signin"], capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
-    except (OSError, subprocess.SubprocessError) as e:
-        return None, None, str(e)
-    saida = (r.stdout or "") + (r.stderr or "")
-    ja = re.search(r"signed in as user '([^']+)'", saida)
-    if ja:
-        return ja.group(1), None, None
-    url = _RE_URL_LOGIN.search(saida)
-    return None, (url.group(0).rstrip(".,)") if url else None), (None if url else (saida.strip()[:200] or "sem_endereco"))
-
-
 def sair_da_conta(rodar=None):
     try:
         r = (rodar or subprocess.run)(["ollama", "signout"], capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
@@ -480,10 +400,6 @@ def sair_da_conta(rodar=None):
 
 def e_modelo_de_nuvem(modelo):
     return bool(_RE_NUVEM.search(str(modelo or "")))
-
-
-def modelos_de_nuvem(modelos):
-    return [m for m in modelos if e_modelo_de_nuvem(m)]
 
 
 def testar_gargantua(host, modelo, enviar=None):
@@ -513,7 +429,6 @@ def testar_gargantua(host, modelo, enviar=None):
 # O endereço de cada provedor vem do próprio provedor; 'a_confirmar' marca os
 # que a documentação oficial ainda precisa confirmar (as fontes divergiram).
 PROVEDORES = (
-    {"id": "ollama", "nome": "Ollama Cloud", "endereco": "https://ollama.com/v1", "a_confirmar": True},
     {"id": "groq", "nome": "Groq", "endereco": "https://api.groq.com/openai/v1", "a_confirmar": False},
     {"id": "cerebras", "nome": "Cerebras", "endereco": "https://api.cerebras.ai/v1", "a_confirmar": False},
     {"id": "outro", "nome": "Outro", "endereco": "", "a_confirmar": False},

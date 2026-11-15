@@ -15,7 +15,7 @@ from pathlib import Path
 import tars_plataforma as plataforma
 
 URL_TARS_PUBLICADO = ("https://raw.githubusercontent.com/project-opentars/OpenTARS/"
-                      "main/tars.py")
+                      "main/app/tars.py")
 INTERVALO_S = 24 * 3600
 
 
@@ -54,8 +54,27 @@ COMANDO_REINSTALAR = {"windows": f"irm {_RAW}/windows/instalar.ps1 | iex", "maco
                       "linux": f"curl -fsSL {_RAW}/linux/instalar.sh | bash"}
 
 
+# 14/11: no Windows e no macOS o app vem empacotado (montar_pacote.py grava esta marca). A versão nova é a da Release: o
+# arquivo versao.json (a REVISAO) sobe por último, depois do setup.exe, dos .dmg e do SHA256SUMS, então o app nunca vê uma
+# versão nova antes de os instaladores dela estarem lá.
+MARCA_PACOTE = Path(__file__).resolve().parent / ".empacotado"
+
+
+def empacotado():
+    return MARCA_PACOTE.exists()
+
+
+def arquivo_do_pacote(sistema=None, maquina=None):
+    import platform
+    sistema = sistema or plataforma.sistema()
+    if sistema == "windows":
+        return "opentars-setup.exe"
+    maquina = maquina or {"aarch64": "arm64", "amd64": "x86_64"}.get(platform.machine().lower(), platform.machine().lower())
+    return f"openTARS-macos-{maquina}.dmg"
+
+
 def pelo_script():
-    return plataforma.sistema() != "linux" or MARCA_SCRIPT.exists()
+    return not empacotado() and (plataforma.sistema() != "linux" or MARCA_SCRIPT.exists())
 
 
 def argumentos_um_clique(sistema=None):
@@ -289,10 +308,47 @@ def procurar_no_repositorio(obter_json=None, extras=(), compilado=None, ultima=N
     return {"versao": quando, "notas": "", "arquivos": {"deb": {"nome": str(arq["name"]).split("/")[-1], "url": url, "sha256": "", "git_sha": blob, "id": blob}}}
 
 
+def revisao_local():
+    try:
+        return int((ler_versao((Path(__file__).resolve().parent / "tars.py").read_text(encoding="utf-8")) or {}).get("revisao") or 0)
+    except OSError:
+        return 0
+
+
+def procurar_pacote(revisao, obter_json=None, obter_texto=None, extras=(), arquivo=None):
+    """App empacotado (Windows, macOS): a Release mais nova traz versao.json com uma REVISAO maior que `revisao`? Devolve o
+    mesmo formato de procurar_atualizacao, com o instalador deste sistema e o SHA-256 do SHA256SUMS; senão None."""
+    obter_json, obter_texto = obter_json or _get_json, obter_texto or _get_texto
+    try:
+        release = _release_mais_recente(obter_json)
+        ativos = {a.get("name"): a for a in (release or {}).get("assets") or [] if isinstance(a, dict)}
+        url_info = (ativos.get("versao.json") or {}).get("browser_download_url")
+        if not url_info or not host_permitido(url_info, extras):
+            return None
+        info = json.loads(obter_texto(url_info) or "{}")
+        if int(info.get("revisao") or 0) <= int(revisao):
+            return None
+        nome = arquivo or arquivo_do_pacote()
+        url = (ativos.get(nome) or {}).get("browser_download_url")
+        url_somas = (ativos.get("SHA256SUMS") or {}).get("browser_download_url")
+        if not url or not host_permitido(url, extras) or not url_somas or not host_permitido(url_somas, extras):
+            return None
+        sha = ler_somas(obter_texto(url_somas)).get(nome, "")
+    except Exception:  # noqa: BLE001  (sem internet, Release sem os arquivos: fica quieto)
+        return None
+    if not re.fullmatch(r"[0-9a-f]{64}", sha):
+        return None
+    return {"versao": str(info.get("versao") or "?"), "notas": str(release.get("body") or "")[:2000],
+            "arquivos": {"pacote": {"nome": nome, "url": url, "sha256": sha, "id": sha}}}
+
+
 def procurar_atualizacao(versao_local, obter_json=None, obter_texto=None, extras=(), compilado=None, ultima=None):
-    """Primeiro o upload direto no repositório; se não houver, a Release do GitHub. TARS_SEM_AVISO_VERSAO desliga os dois."""
+    """Primeiro o upload direto no repositório; se não houver, a Release do GitHub. TARS_SEM_AVISO_VERSAO desliga os dois.
+    O app empacotado (Windows, macOS) olha só a Release (procurar_pacote)."""
     if _desligado():
         return None
+    if empacotado():
+        return procurar_pacote(revisao_local(), obter_json, obter_texto, extras)
     if pelo_script():
         if compilado is None:
             compilado = MARCA_SCRIPT.stat().st_mtime if MARCA_SCRIPT.exists() else compilado_em()
@@ -420,7 +476,7 @@ def baixar_verificado(url, destino, sha256, ao_progredir=None, cancelado=None, e
         return False, "rede"
 
 
-TAMANHO_MAXIMO_BYTES = 600 * 1024 * 1024      # um .deb/AppImage do openTARS tem ~1 a 70 MB; mais que isso não é o nosso
+TAMANHO_MAXIMO_BYTES = 900 * 1024 * 1024      # .deb ~1 a 70 MB; o setup.exe e o .dmg (Python e Qt dentro) ~150 a 350 MB
 
 # Roda COMO ROOT (pkexec): copia o .deb pra uma pasta só do root, CONFERE o hash lá e só então instala. Conferir antes,
 # no arquivo da pasta da pessoa, deixava uma janela (o aviso da senha) em que outro programa dela trocava o arquivo.
@@ -443,10 +499,55 @@ dpkg-deb --fsys-tarfile "$d/pacote.deb" | tar -xO ./usr/share/opentars/tars.py |
 '''
 
 
+def instalar_setup_windows(arquivo, popen=subprocess.Popen):
+    """Roda o setup.exe novo em silêncio, solto deste processo: ele fecha o openTARS, troca os arquivos e reabre (/REABRIR=1).
+    Devolve (True, "sair"): quem chamou encerra o app para o instalador não esperar."""
+    popen([str(arquivo), "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/REABRIR=1"],
+          creationflags=0x00000008 | 0x00000200, close_fds=True)     # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+    return True, "sair"
+
+
+def pacote_mac_atual():
+    """O openTARS.app em que este código roda (Contents/Resources/app/este arquivo), ou None fora do app empacotado."""
+    contents = Path(__file__).resolve().parent.parent.parent
+    return contents.parent if contents.name == "Contents" and contents.parent.suffix == ".app" else None
+
+
+def instalar_dmg(arquivo, destino=None, rodar=None):
+    """Troca o openTARS.app pelo do .dmg (já conferido): monta sem abrir janela, copia para o lado (.novo) com ditto e só
+    então troca as pastas; o app aberto continua com os arquivos antigos até reiniciar. Devolve (ok, motivo)."""
+    import tempfile
+    rodar = rodar or (lambda cmd: subprocess.run(cmd, capture_output=True, text=True, timeout=600))
+    destino = Path(destino or pacote_mac_atual() or Path.home() / "Applications" / "openTARS.app")
+    ponto = tempfile.mkdtemp(prefix="opentars-dmg-")
+    r = rodar(["hdiutil", "attach", "-nobrowse", "-readonly", "-noautoopen", "-mountpoint", ponto, str(arquivo)])
+    if r.returncode != 0:
+        return False, (r.stderr or r.stdout or "hdiutil").strip()[-300:]
+    novo, velho = destino.with_name(destino.name + ".novo"), destino.with_name(destino.name + ".velho")
+    try:
+        shutil.rmtree(novo, ignore_errors=True)
+        r = rodar(["ditto", str(Path(ponto) / "openTARS.app"), str(novo)])
+        if r.returncode != 0:
+            return False, (r.stderr or r.stdout or "ditto").strip()[-300:]
+    finally:
+        rodar(["hdiutil", "detach", ponto, "-quiet"])
+    shutil.rmtree(velho, ignore_errors=True)
+    if destino.exists():
+        os.replace(destino, velho)
+    os.replace(novo, destino)
+    shutil.rmtree(velho, ignore_errors=True)
+    return True, "reabrir"
+
+
 def instalar_arquivo(arquivo, appimage_atual=None, rodar=None, sha256="", git_sha=""):
     """Instala o que foi baixado e conferido. AppImage: troca o arquivo que está rodando (reabrir pra usar a nova);
-    .deb: instala com a senha do sistema (pkexec apt-get). Devolve (ok, mensagem)."""
+    .deb: instala com a senha do sistema (pkexec apt-get); setup.exe (Windows) e .dmg (macOS): o app empacotado.
+    Devolve (ok, mensagem)."""
     arquivo = Path(arquivo)
+    if arquivo.name.endswith(".exe"):
+        return instalar_setup_windows(arquivo)
+    if arquivo.name.endswith(".dmg"):
+        return instalar_dmg(arquivo, rodar=rodar)
     rodar = rodar or (lambda cmd: subprocess.run(cmd, capture_output=True, text=True, timeout=900))
     try:
         if arquivo.name.endswith(".AppImage"):

@@ -234,12 +234,26 @@ def descarregar_modelo(modelo):
         return False
 
 
-def ollama_online():
-    """O servidor do Ollama responde no endereço configurado?"""
+def acordar_motor():
+    """O motor llama.cpp caiu ou ainda não tinha subido (primeiro uso, processo morto pelo sistema): sobe de novo no mesmo endereço.
+    Devolve True se ele respondeu. Fora do motor (TARS_MOTOR=ollama, OLLAMA_HOST de fora) não faz nada."""
     try:
-        return _SESSION.get(motor_lib.url("versao", OLLAMA_HOST), timeout=TIMEOUT_HTTP_CURTO).status_code == 200
+        import tars_motor_local
+        if str(OLLAMA_HOST).rstrip("/") == tars_motor_local.URL:
+            return bool(tars_motor_local.garantir())
     except Exception:
-        return False
+        pass
+    return False
+
+
+def ollama_online():
+    """O motor responde no endereço configurado? Se é o motor llama.cpp e ele não responde, tenta subir antes de dizer que não."""
+    try:
+        if _SESSION.get(motor_lib.url("versao", OLLAMA_HOST), timeout=TIMEOUT_HTTP_CURTO).status_code == 200:
+            return True
+    except Exception:
+        pass
+    return acordar_motor()
 
 
 def avisos_de_ambiente():

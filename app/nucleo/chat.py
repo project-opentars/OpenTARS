@@ -1108,6 +1108,11 @@ def perguntar_modelo(modelo, texto, tarefa=None, multi_etapas=False, anexos=None
         modelo_carregado, tentados = _carregar_com_fallback(modelo, tarefa)
     except OllamaOffline:
         modelo_carregado, tentados = None, [modelo]
+        if acordar_motor():          # o motor tinha caído: sobe de novo e tenta uma vez
+            try:
+                modelo_carregado, tentados = _carregar_com_fallback(modelo, tarefa)
+            except OllamaOffline:
+                pass
 
     if not modelo_carregado and not ollama_online():
         # "Não consegui carregar o modelo" escondia a causa: o Ollama
